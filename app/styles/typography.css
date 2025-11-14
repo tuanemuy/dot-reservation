@@ -1,0 +1,49 @@
+@theme {
+  --font-sans:
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    Meiryo, sans-serif;
+  --font-mono: monospace;
+  --text-xs--line-height: 1.75;
+  --text-sm--line-height: 1.75;
+  --text-base--line-height: 1.75;
+  --text-lg--line-height: 1.75;
+  --text-xl--line-height: 1.75;
+  --text-2xl--line-height: 1.25;
+  --text-3xl--line-height: 1.25;
+  --text-4xl--line-height: 1.25;
+  --text-5xl--line-height: 1.25;
+  --text-6xl--line-height: 1.25;
+  --text-7xl--line-height: 1.25;
+  --text-8xl--line-height: 1.25;
+  --text-9xl--line-height: 1.25;
+}
+
+@layer base {
+  html,
+  body {
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-break: strict;
+    line-height: 1.75;
+    font-feature-settings: "pkna";
+    font-size: 16px;
+
+    @media (width < 48rem) {
+      font-size: 14px;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: auto-phrase;
+  }
+
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}

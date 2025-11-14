@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./themes/teal-orange.css";
+@import "./typography.css";
+@import "./tweakcn.css";
+@import "./utilities/article.css";
+@import "./utilities/glass.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  @apply light;
+}
+
+.dark {
+  @apply dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    scrollbar-gutter: stable;
+  }
+}
