@@ -2,7 +2,7 @@
 
 ## 背景
 
-- `docs/scenario.md` に利用シナリオを記載した
+- `spec/scenario.md` に利用シナリオを記載した
 
 ## タスク
 
