@@ -79,21 +79,21 @@ export type TemporaryClosure = Readonly<{
 - 既存予約がある日は設定不可
 - 理由は任意
 
-### BookingSettings
+### ReservationSettings
 
 予約設定を表すエンティティ。
 
 ```typescript
-export type BookingSettings = Readonly<{
-  id: BookingSettingsId;
+export type ReservationSettings = Readonly<{
+  id: ReservationSettingsId;
   clinicId: ClinicId;
 
   // 予約枠設定
   slotDurationMinutes: number;
-  maxBookingsPerSlot: number;
+  maxReservationsPerSlot: number;
 
   // 期限設定（単位: 時間）
-  bookingDeadlineHours: number;
+  reservationDeadlineHours: number;
   cancellationDeadlineHours: number;
   updateDeadlineHours: number;
 
@@ -118,18 +118,18 @@ export type BookingSettings = Readonly<{
 
 ## 値オブジェクト
 
-### ClinicId / BusinessHoursId / TemporaryClosureId / BookingSettingsId
+### ClinicId / BusinessHoursId / TemporaryClosureId / ReservationSettingsId
 
 ```typescript
 export type ClinicId = string & { readonly brand: "ClinicId" };
 export type BusinessHoursId = string & { readonly brand: "BusinessHoursId" };
 export type TemporaryClosureId = string & { readonly brand: "TemporaryClosureId" };
-export type BookingSettingsId = string & { readonly brand: "BookingSettingsId" };
+export type ReservationSettingsId = string & { readonly brand: "ReservationSettingsId" };
 
 export function createClinicId(id: string): ClinicId;
 export function generateBusinessHoursId(): BusinessHoursId;
 export function generateTemporaryClosureId(): TemporaryClosureId;
-export function generateBookingSettingsId(): BookingSettingsId;
+export function generateReservationSettingsId(): ReservationSettingsId;
 ```
 
 ### ClinicName
@@ -171,18 +171,18 @@ export enum ClinicErrorCode {
   InvalidTimePeriod = "INVALID_TIME_PERIOD",
   OverlappingTimePeriods = "OVERLAPPING_TIME_PERIODS",
   InvalidSlotDuration = "INVALID_SLOT_DURATION",
-  InvalidMaxBookings = "INVALID_MAX_BOOKINGS",
+  InvalidMaxReservations = "INVALID_MAX_RESERVATIONS",
   InvalidDeadline = "INVALID_DEADLINE",
 
   // 臨時休業
-  ClosureDateHasBookings = "CLOSURE_DATE_HAS_BOOKINGS",
+  ClosureDateHasReservations = "CLOSURE_DATE_HAS_RESERVATIONS",
   ClosureAlreadyExists = "CLOSURE_ALREADY_EXISTS",
 
   // その他
   ClinicNotFound = "CLINIC_NOT_FOUND",
   BusinessHoursNotFound = "BUSINESS_HOURS_NOT_FOUND",
   TemporaryClosureNotFound = "TEMPORARY_CLOSURE_NOT_FOUND",
-  BookingSettingsNotFound = "BOOKING_SETTINGS_NOT_FOUND",
+  ReservationSettingsNotFound = "RESERVATION_SETTINGS_NOT_FOUND",
 }
 ```
 
@@ -224,12 +224,12 @@ export interface TemporaryClosureRepository {
 }
 ```
 
-### BookingSettingsRepository
+### ReservationSettingsRepository
 
 ```typescript
-export interface BookingSettingsRepository {
-  save(settings: BookingSettings): Promise<void>;
-  find(clinicId: ClinicId): Promise<BookingSettings | null>;
+export interface ReservationSettingsRepository {
+  save(settings: ReservationSettings): Promise<void>;
+  find(clinicId: ClinicId): Promise<ReservationSettings | null>;
 }
 ```
 
@@ -412,15 +412,15 @@ export async function getTemporaryClosures(
 2. 日付範囲で臨時休業を検索
 3. 臨時休業一覧を返却
 
-### 8. createOrUpdateBookingSettings
+### 8. createOrUpdateReservationSettings
 
 予約設定を作成または更新する（管理者のみ）。
 
 ```typescript
-export type CreateOrUpdateBookingSettingsInput = {
+export type CreateOrUpdateReservationSettingsInput = {
   slotDurationMinutes: number;
-  maxBookingsPerSlot: number;
-  bookingDeadlineHours: number;
+  maxReservationsPerSlot: number;
+  reservationDeadlineHours: number;
   cancellationDeadlineHours: number;
   updateDeadlineHours: number;
   reminderEnabled: boolean;
@@ -428,10 +428,10 @@ export type CreateOrUpdateBookingSettingsInput = {
   staffSelectionRequired: boolean;
 };
 
-export async function createOrUpdateBookingSettings(
+export async function createOrUpdateReservationSettings(
   context: Context,
-  input: CreateOrUpdateBookingSettingsInput
-): Promise<BookingSettings>;
+  input: CreateOrUpdateReservationSettingsInput
+): Promise<ReservationSettings>;
 ```
 
 **処理フロー**:
@@ -439,7 +439,7 @@ export async function createOrUpdateBookingSettings(
 2. クリニックを検索
 3. 既存の予約設定を検索
 4. 値オブジェクトの作成（バリデーション）
-5. BookingSettingsエンティティの作成または更新
+5. ReservationSettingsエンティティの作成または更新
 6. データベースに保存
 
 **エラー**:
@@ -447,14 +447,14 @@ export async function createOrUpdateBookingSettings(
 - `NotFoundError`: クリニックが見つからない
 - `BusinessRuleError`: バリデーションエラー
 
-### 9. getBookingSettings
+### 9. getReservationSettings
 
 予約設定を取得する。
 
 ```typescript
-export async function getBookingSettings(
+export async function getReservationSettings(
   context: Context
-): Promise<BookingSettings | null>;
+): Promise<ReservationSettings | null>;
 ```
 
 **処理フロー**:

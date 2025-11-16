@@ -98,7 +98,7 @@ export enum MenuErrorCode {
   MenuNameAlreadyExists = "MENU_NAME_ALREADY_EXISTS",
 
   // 削除制約
-  MenuHasActiveBookings = "MENU_HAS_ACTIVE_BOOKINGS",
+  MenuHasActiveReservations = "MENU_HAS_ACTIVE_RESERVATIONS",
 
   // その他
   MenuNotFound = "MENU_NOT_FOUND",
@@ -268,18 +268,18 @@ export async function listMenus(context: Context): Promise<Menu[]>;
 1. すべてのメニューを検索
 2. メニュー一覧を返却
 
-### 6. checkMenuHasActiveBookings
+### 6. checkMenuHasActiveReservations
 
 メニューに有効な予約があるかチェックする（内部ユースケース）。
 
 ```typescript
-export type CheckMenuHasActiveBookingsInput = {
+export type CheckMenuHasActiveReservationsInput = {
   menuId: string;
 };
 
-export async function checkMenuHasActiveBookings(
+export async function checkMenuHasActiveReservations(
   context: Context,
-  input: CheckMenuHasActiveBookingsInput
+  input: CheckMenuHasActiveReservationsInput
 ): Promise<boolean>;
 ```
 

@@ -145,11 +145,11 @@ export enum StaffErrorCode {
   OverlappingWorkingPeriods = "OVERLAPPING_WORKING_PERIODS",
 
   // 削除制約
-  StaffHasActiveBookings = "STAFF_HAS_ACTIVE_BOOKINGS",
+  StaffHasActiveReservations = "STAFF_HAS_ACTIVE_RESERVATIONS",
 
   // シフト
   ShiftAlreadyExists = "SHIFT_ALREADY_EXISTS",
-  ShiftConflictsWithBooking = "SHIFT_CONFLICTS_WITH_BOOKING",
+  ShiftConflictsWithReservation = "SHIFT_CONFLICTS_WITH_RESERVATION",
 
   // その他
   StaffNotFound = "STAFF_NOT_FOUND",
@@ -451,18 +451,18 @@ export async function getStaffWorkingHours(
 **エラー**:
 - `NotFoundError`: スタッフが見つからない
 
-### 10. checkStaffHasActiveBookings
+### 10. checkStaffHasActiveReservations
 
 スタッフに有効な予約があるかチェックする（内部ユースケース）。
 
 ```typescript
-export type CheckStaffHasActiveBookingsInput = {
+export type CheckStaffHasActiveReservationsInput = {
   staffId: string;
 };
 
-export async function checkStaffHasActiveBookings(
+export async function checkStaffHasActiveReservations(
   context: Context,
-  input: CheckStaffHasActiveBookingsInput
+  input: CheckStaffHasActiveReservationsInput
 ): Promise<boolean>;
 ```
 
@@ -470,22 +470,22 @@ export async function checkStaffHasActiveBookings(
 1. スタッフIDで有効な予約を検索
 2. 予約が存在すれば true を返却
 
-### 11. checkShiftConflictsWithBookings
+### 11. checkShiftConflictsWithReservations
 
 シフト変更により影響を受ける予約があるかチェックする（内部ユースケース）。
 
 ```typescript
-export type CheckShiftConflictsWithBookingsInput = {
+export type CheckShiftConflictsWithReservationsInput = {
   staffId: string;
   date: Date;
   workingHours: WorkingHours | null;
   isOff: boolean;
 };
 
-export async function checkShiftConflictsWithBookings(
+export async function checkShiftConflictsWithReservations(
   context: Context,
-  input: CheckShiftConflictsWithBookingsInput
-): Promise<Booking[]>;
+  input: CheckShiftConflictsWithReservationsInput
+): Promise<Reservation[]>;
 ```
 
 **処理フロー**:
@@ -526,7 +526,7 @@ export async function checkShiftConflictsWithBookings(
 1. 営業時間（Clinicドメイン）
 2. スタッフの勤務時間（Staffドメイン）
 3. 臨時休業（Clinicドメイン）
-4. 既存予約（Bookingドメイン）
+4. 既存予約（Reservationドメイン）
 
 これらを組み合わせて、実際に予約可能な時間枠を算出します。
 

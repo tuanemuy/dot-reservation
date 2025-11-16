@@ -51,7 +51,7 @@ export type NotificationTemplate = Readonly<{
 **ビジネスルール**:
 - テンプレートは通知タイプごとに1つ
 - テンプレート変数を使用して動的なコンテンツを生成
-- 変数はプレースホルダー形式（例: `{{customerName}}`, `{{bookingDate}}`）
+- 変数はプレースホルダー形式（例: `{{customerName}}`, `{{reservationDate}}`）
 
 ## 値オブジェクト
 
@@ -69,10 +69,10 @@ export function generateNotificationTemplateId(): NotificationTemplateId;
 
 ```typescript
 export type NotificationType =
-  | "booking-confirmation"
-  | "booking-update"
-  | "booking-cancellation"
-  | "booking-reminder"
+  | "reservation-confirmation"
+  | "reservation-update"
+  | "reservation-cancellation"
+  | "reservation-reminder"
   | "email-verification"
   | "password-reset"
   | "staff-invitation"
@@ -87,35 +87,35 @@ export function createNotificationType(type: string): NotificationType;
 
 ```typescript
 // 予約確認メール
-export type BookingConfirmationVariables = {
+export type ReservationConfirmationVariables = {
   customerName: string;
   menuName: string;
   staffName: string | null;
-  bookingDate: string;
-  bookingTime: string;
+  reservationDate: string;
+  reservationTime: string;
   clinicName: string;
   clinicAddress: string;
   clinicPhone: string;
 };
 
 // 予約変更メール
-export type BookingUpdateVariables = BookingConfirmationVariables & {
-  oldBookingDate: string;
-  oldBookingTime: string;
+export type ReservationUpdateVariables = ReservationConfirmationVariables & {
+  oldReservationDate: string;
+  oldReservationTime: string;
 };
 
 // 予約キャンセルメール
-export type BookingCancellationVariables = {
+export type ReservationCancellationVariables = {
   customerName: string;
   menuName: string;
   staffName: string | null;
-  bookingDate: string;
-  bookingTime: string;
+  reservationDate: string;
+  reservationTime: string;
   cancellationReason: string | null;
 };
 
 // リマインドメール
-export type BookingReminderVariables = BookingConfirmationVariables;
+export type ReservationReminderVariables = ReservationConfirmationVariables;
 
 // メールアドレス確認メール
 export type EmailVerificationVariables = {
@@ -206,18 +206,18 @@ export interface TemplateEngine {
 
 ## ユースケース
 
-### 1. sendBookingConfirmation
+### 1. sendReservationConfirmation
 
 予約確認メールを送信する。
 
 ```typescript
-export type SendBookingConfirmationInput = {
-  bookingId: string;
+export type SendReservationConfirmationInput = {
+  reservationId: string;
 };
 
-export async function sendBookingConfirmation(
+export async function sendReservationConfirmation(
   context: Context,
-  input: SendBookingConfirmationInput
+  input: SendReservationConfirmationInput
 ): Promise<void>;
 ```
 
@@ -239,39 +239,39 @@ export async function sendBookingConfirmation(
 - `NotFoundError`: 予約、顧客、テンプレートが見つからない
 - `SystemError`: メール送信失敗
 
-### 2. sendBookingUpdate
+### 2. sendReservationUpdate
 
 予約変更メールを送信する。
 
 ```typescript
-export type SendBookingUpdateInput = {
-  bookingId: string;
-  oldBookingDate: Date;
-  oldBookingTime: Date;
+export type SendReservationUpdateInput = {
+  reservationId: string;
+  oldReservationDate: Date;
+  oldReservationTime: Date;
 };
 
-export async function sendBookingUpdate(
+export async function sendReservationUpdate(
   context: Context,
-  input: SendBookingUpdateInput
+  input: SendReservationUpdateInput
 ): Promise<void>;
 ```
 
 **処理フロー**:
-sendBookingConfirmationと同様ですが、変更前の情報も含めます。
+sendReservationConfirmationと同様ですが、変更前の情報も含めます。
 
-### 3. sendBookingCancellation
+### 3. sendReservationCancellation
 
 予約キャンセルメールを送信する。
 
 ```typescript
-export type SendBookingCancellationInput = {
-  bookingId: string;
+export type SendReservationCancellationInput = {
+  reservationId: string;
   cancellationReason?: string;
 };
 
-export async function sendBookingCancellation(
+export async function sendReservationCancellation(
   context: Context,
-  input: SendBookingCancellationInput
+  input: SendReservationCancellationInput
 ): Promise<void>;
 ```
 
@@ -288,23 +288,23 @@ export async function sendBookingCancellation(
 10. メールを送信
 11. 送信結果を記録
 
-### 4. sendBookingReminder
+### 4. sendReservationReminder
 
 予約リマインドメールを送信する。
 
 ```typescript
-export type SendBookingReminderInput = {
-  bookingId: string;
+export type SendReservationReminderInput = {
+  reservationId: string;
 };
 
-export async function sendBookingReminder(
+export async function sendReservationReminder(
   context: Context,
-  input: SendBookingReminderInput
+  input: SendReservationReminderInput
 ): Promise<void>;
 ```
 
 **処理フロー**:
-sendBookingConfirmationと同様です。
+sendReservationConfirmationと同様です。
 
 ### 5. sendEmailVerification
 
@@ -518,7 +518,7 @@ export async function sendPendingReminders(context: Context): Promise<void>;
 ご予約内容:
 - メニュー: {{menuName}}
 - スタッフ: {{staffName}}
-- 日時: {{bookingDate}} {{bookingTime}}
+- 日時: {{reservationDate}} {{reservationTime}}
 
 店舗情報:
 - 住所: {{clinicAddress}}

@@ -37,7 +37,7 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 
 **詳細**: [customer.md](./customer.md)
 
-### 3. Booking（予約）
+### 3. Reservation（予約）
 
 **責務**: 予約のライフサイクル管理、予約可能枠の管理
 
@@ -50,9 +50,9 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 - 重複予約の防止
 - 予約期限チェック（受付期限、変更期限、キャンセル期限）
 
-**主要エンティティ**: Booking, TimeSlot, BookingStatus
+**主要エンティティ**: Reservation, TimeSlot, ReservationStatus
 
-**詳細**: [booking.md](./booking.md)
+**詳細**: [reservation.md](./reservation.md)
 
 ### 4. Menu（メニュー）
 
@@ -136,9 +136,9 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
                      │
                      v
             ┌─────────────────┐
-            │     Booking     │
+            │   Reservation   │
             │                 │
-            │  - Booking      │
+            │  - Reservation  │
             │  - TimeSlot     │
             └────────┬────────┘
                      │
@@ -157,7 +157,7 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 - **Staff**: Authenticationに依存（UserId参照）
 - **Menu**: 独立したドメイン
 - **Clinic**: 独立したドメイン（システム全体で1つ）
-- **Booking**: Customer、Staff、Menu、Clinicに依存
+- **Reservation**: Customer、Staff、Menu、Clinicに依存
 - **Notification**: 各ドメインのイベントを受けて通知を送信（すべてのドメインから呼ばれる可能性）
 
 ## アーキテクチャパターン
@@ -219,7 +219,7 @@ app/core/
 
 1. [authentication.md](./authentication.md) - 認証ドメイン
 2. [customer.md](./customer.md) - 顧客ドメイン
-3. [booking.md](./booking.md) - 予約ドメイン
+3. [reservation.md](./reservation.md) - 予約ドメイン
 4. [menu.md](./menu.md) - メニュードメイン
 5. [staff.md](./staff.md) - スタッフドメイン
 6. [clinic.md](./clinic.md) - クリニックドメイン
