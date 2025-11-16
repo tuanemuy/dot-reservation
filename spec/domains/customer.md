@@ -23,11 +23,6 @@ export type Customer = Readonly<{
   email: Email;
   phoneNumber: PhoneNumber;
 
-  // スポーツ情報（任意）
-  isSportsActive: boolean;
-  sportsName: string | null;
-  sportsAffiliation: string | null;
-
   createdAt: Date;
   updatedAt: Date;
 }>;
@@ -36,7 +31,6 @@ export type Customer = Readonly<{
 **ビジネスルール**:
 - UserIdと1対1の関係
 - 基本情報（名前、カナ、Email、電話番号）は必須
-- スポーツをしている場合、競技名と所属は任意
 - Emailは変更できない（Authenticationドメインで管理）
 
 ### PersonalInfo
@@ -58,6 +52,11 @@ export type PersonalInfo = Readonly<{
   dateOfBirth: Date | null;
   gender: Gender | null;
   occupation: string | null;
+
+  // スポーツ情報（任意）
+  isSportsActive: boolean | null;
+  sportsName: string | null;
+  sportsAffiliation: string | null;
 
   // 緊急連絡先（任意）
   emergencyContactName: PersonName | null;
@@ -324,9 +323,6 @@ export type CreateCustomerInput = {
   lastNameKana: string;
   email: string;
   phoneNumber: string;
-  isSportsActive: boolean;
-  sportsName?: string;
-  sportsAffiliation?: string;
 };
 
 export async function createCustomer(
@@ -359,9 +355,6 @@ export type UpdateCustomerInput = {
   firstNameKana?: string;
   lastNameKana?: string;
   phoneNumber?: string;
-  isSportsActive?: boolean;
-  sportsName?: string;
-  sportsAffiliation?: string;
 };
 
 export async function updateCustomer(
@@ -453,6 +446,9 @@ export type CreateOrUpdatePersonalInfoInput = {
   dateOfBirth?: Date;
   gender?: string;
   occupation?: string;
+  isSportsActive?: boolean;
+  sportsName?: string;
+  sportsAffiliation?: string;
   emergencyContactName?: string;
   emergencyContactRelationship?: string;
   emergencyContactPhone?: string;
