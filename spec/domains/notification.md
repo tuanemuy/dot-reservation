@@ -93,9 +93,9 @@ export type ReservationConfirmationVariables = {
   staffName: string | null;
   reservationDate: string;
   reservationTime: string;
-  clinicName: string;
-  clinicAddress: string;
-  clinicPhone: string;
+  storeName: string;
+  storeAddress: string;
+  storePhone: string;
 };
 
 // 予約変更メール
@@ -509,11 +509,11 @@ export async function sendPendingReminders(context: Context): Promise<void>;
 
 例:
 ```
-件名: {{clinicName}} - ご予約確認
+件名: {{storeName}} - ご予約確認
 
 {{customerName}} 様
 
-この度は{{clinicName}}をご予約いただき、ありがとうございます。
+この度は{{storeName}}をご予約いただき、ありがとうございます。
 
 ご予約内容:
 - メニュー: {{menuName}}
@@ -521,8 +521,8 @@ export async function sendPendingReminders(context: Context): Promise<void>;
 - 日時: {{reservationDate}} {{reservationTime}}
 
 店舗情報:
-- 住所: {{clinicAddress}}
-- 電話: {{clinicPhone}}
+- 住所: {{storeAddress}}
+- 電話: {{storePhone}}
 
 ご来院をお待ちしております。
 ```

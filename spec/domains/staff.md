@@ -523,9 +523,9 @@ export async function checkShiftConflictsWithReservations(
 
 予約可能な時間枠を計算する際、以下の要素を考慮します:
 
-1. 営業時間（Clinicドメイン）
+1. 営業時間（Storeドメイン）
 2. スタッフの勤務時間（Staffドメイン）
-3. 臨時休業（Clinicドメイン）
+3. 臨時休業（Storeドメイン）
 4. 既存予約（Reservationドメイン）
 
 これらを組み合わせて、実際に予約可能な時間枠を算出します。

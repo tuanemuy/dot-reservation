@@ -1,19 +1,19 @@
-# Clinic ドメイン
+# Store ドメイン
 
 ## 概要
 
-Clinicドメインは、店舗情報と運営設定の管理を担当します。店舗情報（名前、住所、電話番号）、営業時間（曜日ごとの営業時間、定休日）、臨時休業、予約設定（予約枠間隔、最大予約数、各種期限、リマインド設定）を管理します。
+Storeドメインは、店舗情報と運営設定の管理を担当します。店舗情報（名前、住所、電話番号）、営業時間（曜日ごとの営業時間、定休日）、臨時休業、予約設定（予約枠間隔、最大予約数、各種期限、リマインド設定）を管理します。
 
 ## エンティティ
 
-### Clinic
+### Store
 
-クリニック（店舗）を表すエンティティ。システム全体で1つのみ存在します。
+店舗を表すエンティティ。システム全体で1つのみ存在します。
 
 ```typescript
-export type Clinic = Readonly<{
-  id: ClinicId;
-  name: ClinicName;
+export type Store = Readonly<{
+  id: StoreId;
+  name: StoreName;
   postalCode: PostalCode;
   prefecture: Prefecture;
   city: string;
@@ -28,7 +28,7 @@ export type Clinic = Readonly<{
 ```
 
 **ビジネスルール**:
-- システム全体で1つのクリニックのみ
+- システム全体で1つの店舗のみ
 - 名前、住所、電話番号は必須
 - Emailは任意（問い合わせ用）
 
@@ -39,7 +39,7 @@ export type Clinic = Readonly<{
 ```typescript
 export type BusinessHours = Readonly<{
   id: BusinessHoursId;
-  clinicId: ClinicId;
+  storeId: StoreId;
   dayOfWeek: DayOfWeek;
   periods: TimePeriod[];
   isClosed: boolean;
@@ -66,7 +66,7 @@ export type TimePeriod = Readonly<{
 ```typescript
 export type TemporaryClosure = Readonly<{
   id: TemporaryClosureId;
-  clinicId: ClinicId;
+  storeId: StoreId;
   date: Date;
   reason: string | null;
   createdAt: Date;
@@ -86,7 +86,7 @@ export type TemporaryClosure = Readonly<{
 ```typescript
 export type ReservationSettings = Readonly<{
   id: ReservationSettingsId;
-  clinicId: ClinicId;
+  storeId: StoreId;
 
   // 予約枠設定
   slotDurationMinutes: number;
@@ -118,26 +118,26 @@ export type ReservationSettings = Readonly<{
 
 ## 値オブジェクト
 
-### ClinicId / BusinessHoursId / TemporaryClosureId / ReservationSettingsId
+### StoreId / BusinessHoursId / TemporaryClosureId / ReservationSettingsId
 
 ```typescript
-export type ClinicId = string & { readonly brand: "ClinicId" };
+export type StoreId = string & { readonly brand: "StoreId" };
 export type BusinessHoursId = string & { readonly brand: "BusinessHoursId" };
 export type TemporaryClosureId = string & { readonly brand: "TemporaryClosureId" };
 export type ReservationSettingsId = string & { readonly brand: "ReservationSettingsId" };
 
-export function createClinicId(id: string): ClinicId;
+export function createStoreId(id: string): StoreId;
 export function generateBusinessHoursId(): BusinessHoursId;
 export function generateTemporaryClosureId(): TemporaryClosureId;
 export function generateReservationSettingsId(): ReservationSettingsId;
 ```
 
-### ClinicName
+### StoreName
 
 ```typescript
-export type ClinicName = string & { readonly brand: "ClinicName" };
+export type StoreName = string & { readonly brand: "StoreName" };
 
-export function createClinicName(name: string): ClinicName;
+export function createStoreName(name: string): StoreName;
 ```
 
 **バリデーション**:
@@ -164,9 +164,9 @@ export function createDayOfWeek(day: number): DayOfWeek;
 ## エラーコード
 
 ```typescript
-export enum ClinicErrorCode {
+export enum StoreErrorCode {
   // バリデーション
-  InvalidClinicName = "INVALID_CLINIC_NAME",
+  InvalidStoreName = "INVALID_STORE_NAME",
   InvalidDayOfWeek = "INVALID_DAY_OF_WEEK",
   InvalidTimePeriod = "INVALID_TIME_PERIOD",
   OverlappingTimePeriods = "OVERLAPPING_TIME_PERIODS",
@@ -179,7 +179,7 @@ export enum ClinicErrorCode {
   ClosureAlreadyExists = "CLOSURE_ALREADY_EXISTS",
 
   // その他
-  ClinicNotFound = "CLINIC_NOT_FOUND",
+  StoreNotFound = "STORE_NOT_FOUND",
   BusinessHoursNotFound = "BUSINESS_HOURS_NOT_FOUND",
   TemporaryClosureNotFound = "TEMPORARY_CLOSURE_NOT_FOUND",
   ReservationSettingsNotFound = "RESERVATION_SETTINGS_NOT_FOUND",
@@ -188,12 +188,12 @@ export enum ClinicErrorCode {
 
 ## ポート
 
-### ClinicRepository
+### StoreRepository
 
 ```typescript
-export interface ClinicRepository {
-  save(clinic: Clinic): Promise<void>;
-  find(): Promise<Clinic | null>;
+export interface StoreRepository {
+  save(store: Store): Promise<void>;
+  find(): Promise<Store | null>;
 }
 ```
 
@@ -202,8 +202,8 @@ export interface ClinicRepository {
 ```typescript
 export interface BusinessHoursRepository {
   save(hours: BusinessHours): Promise<void>;
-  findByDayOfWeek(clinicId: ClinicId, dayOfWeek: DayOfWeek): Promise<BusinessHours | null>;
-  findAll(clinicId: ClinicId): Promise<BusinessHours[]>;
+  findByDayOfWeek(storeId: StoreId, dayOfWeek: DayOfWeek): Promise<BusinessHours | null>;
+  findAll(storeId: StoreId): Promise<BusinessHours[]>;
   delete(id: BusinessHoursId): Promise<void>;
 }
 ```
@@ -214,9 +214,9 @@ export interface BusinessHoursRepository {
 export interface TemporaryClosureRepository {
   save(closure: TemporaryClosure): Promise<void>;
   findById(id: TemporaryClosureId): Promise<TemporaryClosure | null>;
-  findByDate(clinicId: ClinicId, date: Date): Promise<TemporaryClosure | null>;
+  findByDate(storeId: StoreId, date: Date): Promise<TemporaryClosure | null>;
   findByDateRange(
-    clinicId: ClinicId,
+    storeId: StoreId,
     startDate: Date,
     endDate: Date
   ): Promise<TemporaryClosure[]>;
@@ -229,18 +229,18 @@ export interface TemporaryClosureRepository {
 ```typescript
 export interface ReservationSettingsRepository {
   save(settings: ReservationSettings): Promise<void>;
-  find(clinicId: ClinicId): Promise<ReservationSettings | null>;
+  find(storeId: StoreId): Promise<ReservationSettings | null>;
 }
 ```
 
 ## ユースケース
 
-### 1. createOrUpdateClinic
+### 1. createOrUpdateStore
 
-クリニック情報を作成または更新する（管理者のみ）。
+店舗情報を作成または更新する（管理者のみ）。
 
 ```typescript
-export type CreateOrUpdateClinicInput = {
+export type CreateOrUpdateStoreInput = {
   name: string;
   postalCode: string;
   prefecture: string;
@@ -252,34 +252,34 @@ export type CreateOrUpdateClinicInput = {
   description?: string;
 };
 
-export async function createOrUpdateClinic(
+export async function createOrUpdateStore(
   context: Context,
-  input: CreateOrUpdateClinicInput
-): Promise<Clinic>;
+  input: CreateOrUpdateStoreInput
+): Promise<Store>;
 ```
 
 **処理フロー**:
 1. 管理者権限チェック
-2. 既存のクリニックを検索
+2. 既存の店舗を検索
 3. 値オブジェクトの作成（バリデーション）
-4. Clinicエンティティの作成または更新
+4. Storeエンティティの作成または更新
 5. データベースに保存
 
 **エラー**:
 - `ForbiddenError`: 管理者権限なし
 - `BusinessRuleError`: バリデーションエラー
 
-### 2. getClinic
+### 2. getStore
 
-クリニック情報を取得する。
+店舗情報を取得する。
 
 ```typescript
-export async function getClinic(context: Context): Promise<Clinic | null>;
+export async function getStore(context: Context): Promise<Store | null>;
 ```
 
 **処理フロー**:
-1. クリニックを検索
-2. クリニック情報を返却
+1. 店舗を検索
+2. 店舗情報を返却
 
 ### 3. createOrUpdateBusinessHours
 
@@ -303,7 +303,7 @@ export async function createOrUpdateBusinessHours(
 
 **処理フロー**:
 1. 管理者権限チェック
-2. クリニックを検索
+2. 店舗を検索
 3. 既存の営業時間を検索
 4. 値オブジェクトの作成（バリデーション）
 5. 時間帯の重複チェック
@@ -312,7 +312,7 @@ export async function createOrUpdateBusinessHours(
 
 **エラー**:
 - `ForbiddenError`: 管理者権限なし
-- `NotFoundError`: クリニックが見つからない
+- `NotFoundError`: 店舗が見つからない
 - `BusinessRuleError`: バリデーションエラー、時間帯の重複
 
 ### 4. getBusinessHours
@@ -331,7 +331,7 @@ export async function getBusinessHours(
 ```
 
 **処理フロー**:
-1. クリニックを検索
+1. 店舗を検索
 2. dayOfWeekが指定されている場合:
    - その曜日の営業時間を返却
 3. 指定されていない場合:
@@ -355,7 +355,7 @@ export async function createTemporaryClosure(
 
 **処理フロー**:
 1. 管理者権限チェック
-2. クリニックを検索
+2. 店舗を検索
 3. 既存の臨時休業をチェック（重複防止）
 4. 指定日に予約があるかチェック
 5. TemporaryClosureエンティティの作成
@@ -363,7 +363,7 @@ export async function createTemporaryClosure(
 
 **エラー**:
 - `ForbiddenError`: 管理者権限なし
-- `NotFoundError`: クリニックが見つからない
+- `NotFoundError`: 店舗が見つからない
 - `ConflictError`: 臨時休業が既に存在
 - `BusinessRuleError`: 予約がある
 
@@ -408,7 +408,7 @@ export async function getTemporaryClosures(
 ```
 
 **処理フロー**:
-1. クリニックを検索
+1. 店舗を検索
 2. 日付範囲で臨時休業を検索
 3. 臨時休業一覧を返却
 
@@ -436,7 +436,7 @@ export async function createOrUpdateReservationSettings(
 
 **処理フロー**:
 1. 管理者権限チェック
-2. クリニックを検索
+2. 店舗を検索
 3. 既存の予約設定を検索
 4. 値オブジェクトの作成（バリデーション）
 5. ReservationSettingsエンティティの作成または更新
@@ -444,7 +444,7 @@ export async function createOrUpdateReservationSettings(
 
 **エラー**:
 - `ForbiddenError`: 管理者権限なし
-- `NotFoundError`: クリニックが見つからない
+- `NotFoundError`: 店舗が見つからない
 - `BusinessRuleError`: バリデーションエラー
 
 ### 9. getReservationSettings
@@ -458,27 +458,27 @@ export async function getReservationSettings(
 ```
 
 **処理フロー**:
-1. クリニックを検索
+1. 店舗を検索
 2. 予約設定を検索
 3. 予約設定を返却
 
-### 10. isClinicOpen
+### 10. isStoreOpen
 
-クリニックが営業中かチェックする（内部ユースケース）。
+店舗が営業中かチェックする（内部ユースケース）。
 
 ```typescript
-export type IsClinicOpenInput = {
+export type IsStoreOpenInput = {
   dateTime: Date;
 };
 
-export async function isClinicOpen(
+export async function isStoreOpen(
   context: Context,
-  input: IsClinicOpenInput
+  input: IsStoreOpenInput
 ): Promise<boolean>;
 ```
 
 **処理フロー**:
-1. クリニックを検索
+1. 店舗を検索
 2. 日付から曜日を取得
 3. 営業時間を検索
 4. 臨時休業をチェック
@@ -500,7 +500,7 @@ export async function getOpeningHours(
 ```
 
 **処理フロー**:
-1. クリニックを検索
+1. 店舗を検索
 2. 日付から曜日を取得
 3. 営業時間を検索
 4. 臨時休業をチェック
@@ -511,7 +511,7 @@ export async function getOpeningHours(
 
 ### シングルトンパターン
 
-Clinicエンティティは、システム全体で1つのみ存在します（シングルトン）。複数店舗に対応する場合は、別途設計が必要になります。
+Storeエンティティは、システム全体で1つのみ存在します（シングルトン）。複数店舗に対応する場合は、別途設計が必要になります。
 
 ### 営業時間の柔軟性
 

@@ -93,7 +93,7 @@ export type TimeSlot = Readonly<{
 
 ### ReservationConstraints
 
-予約制約を表す値オブジェクト（Clinicドメインの設定から取得）。
+予約制約を表す値オブジェクト（Storeドメインの設定から取得）。
 
 ```typescript
 export type ReservationConstraints = Readonly<{

@@ -81,7 +81,7 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 
 **詳細**: [staff.md](./staff.md)
 
-### 6. Clinic（クリニック）
+### 6. Store（店舗）
 
 **責務**: 店舗情報と運営設定の管理
 
@@ -90,9 +90,9 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 - 臨時休業管理
 - 予約設定管理（予約枠間隔、最大予約数、各種期限、リマインド設定）
 
-**主要エンティティ**: Clinic, BusinessHours, TemporaryClosure, BookingSettings
+**主要エンティティ**: Store, BusinessHours, TemporaryClosure, BookingSettings
 
-**詳細**: [clinic.md](./clinic.md)
+**詳細**: [store.md](./store.md)
 
 ### 7. Notification（通知）
 
@@ -125,9 +125,9 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
          │                  │                  │                  │
          v                  v                  v                  v
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│    Customer     │ │      Staff      │ │     Clinic      │ │  Notification   │
+│    Customer     │ │      Staff      │ │      Store      │ │  Notification   │
 │                 │ │                 │ │                 │ │                 │
-│  - Customer     │ │  - Staff        │ │  - Clinic       │ │  - Email        │
+│  - Customer     │ │  - Staff        │ │  - Store        │ │  - Email        │
 │  - Interview    │ │  - Shift        │ │  - Settings     │ │  - Template     │
 └────────┬────────┘ └────────┬────────┘ └────────┬────────┘ └─────────────────┘
          │                   │                   │
@@ -156,8 +156,8 @@ DDDにおけるヘキサゴナルアーキテクチャを採用し、ビジネ�
 - **Customer**: Authenticationに依存（UserId参照）
 - **Staff**: Authenticationに依存（UserId参照）
 - **Menu**: 独立したドメイン
-- **Clinic**: 独立したドメイン（システム全体で1つ）
-- **Reservation**: Customer、Staff、Menu、Clinicに依存
+- **Store**: 独立したドメイン（システム全体で1つ）
+- **Reservation**: Customer、Staff、Menu、Storeに依存
 - **Notification**: 各ドメインのイベントを受けて通知を送信（すべてのドメインから呼ばれる可能性）
 
 ## アーキテクチャパターン
@@ -222,5 +222,5 @@ app/core/
 3. [reservation.md](./reservation.md) - 予約ドメイン
 4. [menu.md](./menu.md) - メニュードメイン
 5. [staff.md](./staff.md) - スタッフドメイン
-6. [clinic.md](./clinic.md) - クリニックドメイン
+6. [store.md](./store.md) - 店舗ドメイン
 7. [notification.md](./notification.md) - 通知ドメイン
