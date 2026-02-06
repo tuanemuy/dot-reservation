@@ -1,0 +1,168 @@
+<div
+  class="p-5 space-y-5 flex flex-col bg-white border border-stone-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Radio Group -->
+  <div>
+    <div class="flex flex-wrap justify-between items-center gap-x-3 mb-2">
+      <label
+        for="hs-pro-epati"
+        class="block text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Account type
+      </label>
+
+      <p>
+        <a
+          class="text-xs text-stone-600 decoration-2 hover:underline focus:outline-hidden focus:underline dark:text-neutral-400"
+          href="#"
+        >
+          What type of account should I choose?
+        </a>
+      </p>
+    </div>
+
+    <!-- Radio Grid -->
+    <div class="grid lg:grid-cols-2 gap-3 lg:gap-5">
+      <!-- Radio -->
+      <label
+        for="hs-pro-epati"
+        class="py-3 px-4 flex text-sm text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-green-600 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-green-500"
+      >
+        <input
+          type="radio"
+          id="hs-pro-epati"
+          class="hidden"
+          value="Individual"
+          name="hs-pro-epat"
+          checked
+        />
+        <svg
+          class="shrink-0 size-4 mt-0.5 text-stone-800 dark:text-neutral-200"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="10" r="3" />
+          <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+        </svg>
+        <span class="grow ps-3">
+          <span class="block font-medium"> Individual </span>
+          <span class="block text-stone-500 dark:text-neutral-500">
+            When you are selling as yourself.
+          </span>
+        </span>
+      </label>
+      <!-- End Radio -->
+
+      <!-- Radio -->
+      <label
+        for="hs-pro-epatb"
+        class="py-3 px-4 flex text-sm text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-green-600 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-green-500"
+      >
+        <input
+          type="radio"
+          id="hs-pro-epatb"
+          class="hidden"
+          value="Business"
+          name="hs-pro-epat"
+        />
+        <svg
+          class="shrink-0 size-4 mt-0.5 text-stone-800 dark:text-neutral-200"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="10" r="3" />
+          <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+        </svg>
+        <span class="grow ps-3">
+          <span class="block font-medium"> Business </span>
+          <span class="block text-stone-500 dark:text-neutral-500">
+            When you are selling as a business
+          </span>
+        </span>
+      </label>
+      <!-- End Radio -->
+    </div>
+    <!-- End Radio Grid -->
+  </div>
+  <!-- End Radio Group -->
+
+  <!-- Input -->
+  <div>
+    <label
+      for="hs-pro-epyahn"
+      class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+    >
+      Account holder name
+    </label>
+    <input
+      id="hs-pro-epyahn"
+      type="text"
+      class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+    />
+    <p
+      class="inline-flex items-center gap-x-1 text-xs text-stone-500 dark:text-neutral-500"
+    >
+      Enter the account holder's name exactly as it appears on bank statements.
+    </p>
+  </div>
+  <!-- End Input -->
+
+  <!-- Input -->
+  <div>
+    <label
+      for="hs-pro-epyrn"
+      class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+    >
+      Routing name
+    </label>
+    <input
+      id="hs-pro-epyrn"
+      type="text"
+      class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+    />
+    <p
+      class="inline-flex items-center gap-x-1 text-xs text-stone-500 dark:text-neutral-500"
+    >
+      Enter the routing number.
+    </p>
+  </div>
+  <!-- End Input -->
+
+  <!-- Input -->
+  <div>
+    <label
+      for="hs-pro-epyan"
+      class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+    >
+      Account number
+    </label>
+    <input
+      id="hs-pro-epyan"
+      type="text"
+      class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+    />
+    <p
+      class="inline-flex items-center gap-x-1 text-xs text-stone-500 dark:text-neutral-500"
+    >
+      Enter the account number. This can usually be found within the account
+      details.
+    </p>
+  </div>
+  <!-- End Input -->
+</div>

@@ -1,0 +1,297 @@
+<div class="hs-dropdown [--auto-close:inside] relative inline-flex">
+  <button
+    id="hs-pro-inthmtdid1"
+    type="button"
+    class="py-1.5 lg:px-2.5 flex justify-center items-center text-[13px] text-gray-600 lg:hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden lg:focus:bg-gray-100 dark:text-neutral-400 lg:dark:hover:bg-neutral-800 lg:dark:focus:bg-neutral-800"
+  >
+    <span class="shrink-0 size-2 block me-2 bg-red-500 rounded-full"></span>
+    <span class="max-w-20 truncate">Gmail</span>
+    <svg
+      class="shrink-0 size-3.5 ms-1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+
+  <!-- Move To Dropdown -->
+  <div
+    class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-52 transition-[opacity,margin] duration opacity-0 hidden z-11 bg-white rounded-xl shadow-lg dark:bg-neutral-950"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="hs-pro-inthmtdid1"
+  >
+    <!-- Heading -->
+    <div class="py-2 px-4 flex justify-between items-center gap-x-2">
+      <span
+        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+      >
+        <span class="truncate">Move to</span>
+      </span>
+
+      <!-- Button -->
+      <div class="hs-tooltip [--placement:left] inline-block -me-2">
+        <button
+          type="button"
+          class="hs-tooltip-toggle size-8 flex justify-center items-center gap-x-2 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+          data-hs-overlay="#hs-pro-incnlm"
+        >
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12h8" />
+            <path d="M12 8v8" />
+          </svg>
+        </button>
+        <span
+          class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg dark:bg-neutral-800"
+          role="tooltip"
+        >
+          Create new label
+        </span>
+      </div>
+      <!-- End Button -->
+    </div>
+    <!-- End Heading -->
+
+    <!-- Input -->
+    <div class="p-1 relative border-t border-gray-200 dark:border-neutral-800">
+      <input
+        type="text"
+        class="py-1.5 px-3 block w-full border-transparent rounded-lg sm:text-sm text-base placeholder:text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:border-transparent focus:ring-0 focus:bg-gray-100 disabled:opacity-100 disabled:pointer-events-none dark:bg-transparent dark:border-transparent dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:ring-neutral-600 dark:focus:bg-neutral-800"
+        placeholder="Search"
+      />
+      <div class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1">
+        <button
+          type="button"
+          class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+          aria-label="Close"
+        >
+          <span class="sr-only">Close</span>
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m15 9-6 6" />
+            <path d="m9 9 6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- End Input -->
+
+    <!-- List -->
+    <div class="p-1 border-t border-gray-200 dark:border-neutral-800">
+      <button
+        type="button"
+        class="w-full flex items-center gap-x-3 py-1.5 px-3 rounded-lg text-[13px] text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      >
+        <svg
+          class="shrink-0 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+          />
+        </svg>
+        Starred
+        <svg
+          class="hidden shrink-0 size-4 ms-auto"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </button>
+    </div>
+    <!-- List -->
+
+    <!-- List -->
+    <div class="p-1 border-t border-gray-200 dark:border-neutral-800">
+      <div
+        class="space-y-0.5 max-h-48 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+      >
+        <!-- Item -->
+        <label
+          for="hs-pro-initgh"
+          class="py-1.5 px-3 group flex items-center gap-x-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        >
+          <input
+            type="checkbox"
+            class="hidden"
+            id="hs-pro-initgh"
+            name="hs-pro-init"
+          />
+          <span class="shrink-0 size-3.5 flex justify-center items-center">
+            <span
+              class="shrink-0 size-2 block mx-auto bg-indigo-500 rounded-full"
+            ></span>
+          </span>
+          Github
+          <svg
+            class="shrink-0 size-3.5 ms-auto opacity-0 group-has-checked:opacity-100"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </label>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <label
+          for="hs-pro-initgm"
+          class="py-1.5 px-3 group flex items-center gap-x-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        >
+          <input
+            type="checkbox"
+            class="hidden"
+            id="hs-pro-initgm"
+            name="hs-pro-init"
+            checked
+          />
+          <span class="shrink-0 size-3.5 flex justify-center items-center">
+            <span
+              class="shrink-0 size-2 block mx-auto bg-red-500 rounded-full"
+            ></span>
+          </span>
+          Gmail
+          <svg
+            class="shrink-0 size-3.5 ms-auto opacity-0 group-has-checked:opacity-100"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </label>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <label
+          for="hs-pro-initcr"
+          class="py-1.5 px-3 group flex items-center gap-x-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        >
+          <input
+            type="checkbox"
+            class="hidden"
+            id="hs-pro-initcr"
+            name="hs-pro-init"
+          />
+          <span class="shrink-0 size-3.5 flex justify-center items-center">
+            <span
+              class="shrink-0 size-2 block mx-auto bg-blue-500 rounded-full"
+            ></span>
+          </span>
+          Crisp
+          <svg
+            class="shrink-0 size-3.5 ms-auto opacity-0 group-has-checked:opacity-100"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </label>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <label
+          for="hs-pro-initsl"
+          class="py-1.5 px-3 group flex items-center gap-x-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        >
+          <input
+            type="checkbox"
+            class="hidden"
+            id="hs-pro-initsl"
+            name="hs-pro-init"
+          />
+          <span class="shrink-0 size-3.5 flex justify-center items-center">
+            <span
+              class="shrink-0 size-2 block mx-auto bg-orange-500 rounded-full"
+            ></span>
+          </span>
+          Slack - Internal
+          <svg
+            class="shrink-0 size-3.5 ms-auto opacity-0 group-has-checked:opacity-100"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </label>
+        <!-- End Item -->
+      </div>
+    </div>
+    <!-- List -->
+  </div>
+  <!-- End Move To Dropdown -->
+</div>

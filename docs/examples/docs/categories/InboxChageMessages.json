@@ -1,0 +1,199 @@
+{
+  "name": "InboxChageMessages",
+  "description": "チャット・メッセージング",
+  "componentCount": 28,
+  "subcategories": [
+    {
+      "name": "ChatBubbles",
+      "path": "InboxChageMessages/ChatBubbles/",
+      "components": [
+        {
+          "name": "AttachedImageWithCommentChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/AttachedImageWithCommentChatBubble/",
+          "description": "画像サムネイルとテキストコメントを横並びで表示するメッセージバブル。画像のファイル名とサイズ、ダウンロードリンクを含む。",
+          "useCases": "画像ファイルの共有と説明、スクリーンショット付きの問い合わせ、ファイル添付と説明文の組み合わせ"
+        },
+        {
+          "name": "CommentWithReaction",
+          "path": "InboxChageMessages/ChatBubbles/CommentWithReaction/",
+          "description": "絵文字リアクション機能付きのコメントバブル。メンション（@ユーザー名）に対応し、リアクションの追加・表示ができる。アクションボタン群（リアクション追加、返信、編集、削除）がホバー時に表示される。",
+          "useCases": "Slackスタイルのメッセージリアクション、チーム内コミュニケーション、コメント機能付きのチャット"
+        },
+        {
+          "name": "DownloadAttachedFileChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/DownloadAttachedFileChatBubble/",
+          "description": "ファイル添付付きのメッセージバブル。ダウンロードボタン、ファイル名、ファイルサイズを表示。ファイルのダウンロードリンク付き。",
+          "useCases": "ファイル共有、ZIPやドキュメントの送信、添付ファイル付きメッセージ"
+        },
+        {
+          "name": "ImageGroupChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/ImageGroupChatBubble/",
+          "description": "複数の画像をグリッドレイアウトで表示するメッセージバブル。左側に大きな画像、右側に縦に2枚の小さな画像を配置するギャラリー形式。",
+          "useCases": "複数画像の一括共有、写真ギャラリーの送信、メディアリッチなメッセージ"
+        },
+        {
+          "name": "ImageWithCommentChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/ImageWithCommentChatBubble/",
+          "description": "画像とテキストコメントを組み合わせたメッセージバブル。画像の下にコメントを表示する形式で、連続した複数メッセージにも対応。",
+          "useCases": "スクリーンショットと説明文の送信、バグ報告、画像付きの質問や説明"
+        },
+        {
+          "name": "MessageChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/MessageChatBubble/",
+          "description": "基本的なテキストメッセージバブル。送信者側（右寄せ）のスタイルで、コピーと編集のアクションボタンがホバー時に表示される。シンプルなテキストメッセージの表示に最適。",
+          "useCases": "1対1のチャット画面でのテキストメッセージ送信表示、シンプルなメッセージUI"
+        },
+        {
+          "name": "MessageWithLinks",
+          "path": "InboxChageMessages/ChatBubbles/MessageWithLinks/",
+          "description": "テキスト内にクリック可能なリンクを含むメッセージバブル。メールアドレスやURLを自動的にリンク化して表示。",
+          "useCases": "メールアドレスやURLを含むメッセージ、リンク付きの説明文、連絡先情報の共有"
+        },
+        {
+          "name": "PreviewLinkChatBubble",
+          "path": "InboxChageMessages/ChatBubbles/PreviewLinkChatBubble/",
+          "description": "URLを共有した際にリンクプレビュー（OGP）を表示するメッセージバブル。サイト名、タイトル、説明文、プレビュー画像を含むリッチなリンクカードを表示。",
+          "useCases": "URLシェア時のリンクプレビュー、SNSのようなリンク共有機能、記事やサイトの共有"
+        },
+        {
+          "name": "Reply",
+          "path": "InboxChageMessages/ChatBubbles/Reply/",
+          "description": "AIチャットボットや詳細な回答を表示するためのメッセージバブル。見出し、リスト、段落などのリッチテキスト形式に対応。再生成、コピー、Good/Bad評価、共有、ソースリンクなどの多彩なアクションボタン付き。",
+          "useCases": "AIアシスタントの回答表示、チャットボットの応答UI、詳細な説明やドキュメント形式の返信"
+        },
+        {
+          "name": "ReplyToMessage",
+          "path": "InboxChageMessages/ChatBubbles/ReplyToMessage/",
+          "description": "引用付きの返信メッセージバブル。元のメッセージを引用ブロックとして表示し、その下に返信内容を表示する形式。タイムスタンプと既読マーク付き。",
+          "useCases": "メッセージへの返信機能、スレッド形式の会話、Slackやメッセンジャーのような引用返信"
+        },
+        {
+          "name": "VoiceMessage",
+          "path": "InboxChageMessages/ChatBubbles/VoiceMessage/",
+          "description": "音声メッセージを表示するバブル（受信者側）。再生ボタンと波形ビジュアライザー、再生時間を表示。",
+          "useCases": "音声メッセージの受信表示、ボイスチャット機能、音声メモの共有"
+        },
+        {
+          "name": "VoiceMessageNotPlayed",
+          "path": "InboxChageMessages/ChatBubbles/VoiceMessageNotPlayed/",
+          "description": "未再生状態の音声メッセージバブル（送信者側）。再生ボタン、波形ビジュアライザー、再生時間に加え、未再生を示すインジケーター（青いドット）と既読マークを表示。",
+          "useCases": "送信した音声メッセージの表示、未再生状態の視覚的表示、既読・未読ステータスの表示"
+        }
+      ]
+    },
+    {
+      "name": "ChatThreads",
+      "path": "InboxChageMessages/ChatThreads/",
+      "components": [
+        {
+          "name": "InboxComposeThread",
+          "path": "InboxChageMessages/ChatThreads/InboxComposeThread/",
+          "description": "メール返信・作成フォームのコンポーネント。From、To、Cc、Bcc、Subjectフィールドを備え、宛先はタグ形式で複数選択可能。Tiptapエディタを使用したリッチテキスト入力（太字、イタリック、下線、取り消し線、リスト、引用、コード）、ファイル添付、リンク挿入、絵文字、音声メッセージの追加に対応。送信、送信＆アーカイブ、予約送信のオプション付き。",
+          "useCases": "メール返信フォーム、新規メッセージ作成、チームメンバーへの一斉送信"
+        },
+        {
+          "name": "InboxThread",
+          "path": "InboxChageMessages/ChatThreads/InboxThread/",
+          "description": "メールスレッド形式のアコーディオン型メッセージ表示コンポーネント。送信者名、宛先、日付、メッセージプレビューをヘッダーに表示し、クリックで本文を展開できる。送信者・受信者のポップオーバーで連絡先詳細を確認可能。返信、全員に返信、転送、再送信、未読/既読マーク、アーカイブ、削除、スパム報告、印刷、会話リンクのコピーなど多彩なアクションメニュー付き。",
+          "useCases": "メールクライアントのスレッド表示、サポートチケットの会話履歴、ビジネスコミュニケーションの受信トレイ"
+        }
+      ]
+    },
+    {
+      "name": "ChatWidgets",
+      "path": "InboxChageMessages/ChatWidgets/",
+      "components": [
+        {
+          "name": "ChatWidgetSidebarExample",
+          "path": "InboxChageMessages/ChatWidgets/ChatWidgetSidebarExample/",
+          "description": "サイドバー形式のフルハイトチャットウィジェット。ページ右端にオーバーレイとして表示され、ウェルカム画面、メッセージ一覧、会話画面などを含む完全なチャット体験を提供。ドロップダウン型ではなくサイドバー型のレイアウトバリエーション。",
+          "useCases": "EC サイトのサイドバーチャット、ダッシュボードのヘルプサイドパネル、画面端固定のカスタマーサポートウィジェット"
+        },
+        {
+          "name": "ConversationChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/ConversationChatWidget/",
+          "description": "リアルタイムチャット会話画面。ヘッダーに担当者のアバター、名前、オンラインステータスを表示。チャットエリアにメッセージバブル（送受信両方）を時系列で表示し、フッターにメッセージ入力欄と送信ボタンを配置。絵文字ピッカーとファイル添付ボタンも備える。",
+          "useCases": "カスタマーサポートとのリアルタイムチャット、1対1のメッセージング画面、ライブチャットサポート"
+        },
+        {
+          "name": "HelpTopicsChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/HelpTopicsChatWidget/",
+          "description": "ヘルプトピック選択画面。ボットアイコンとともにヘルプカテゴリ（Getting Started、Billing、など）をボタン形式で一覧表示。ユーザーがトピックを選択してFAQや関連情報にアクセスするための導線画面。戻るボタンとタブナビゲーションを含む。",
+          "useCases": "FAQカテゴリ選択、セルフサービスヘルプの入口、チャットボットのトピック選択画面"
+        },
+        {
+          "name": "LeaveMessageChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/LeaveMessageChatWidget/",
+          "description": "オフライン時やチャット不可時のお問い合わせフォーム画面。名前、メールアドレス、件名、メッセージ本文の入力フィールドとファイル添付機能を備える。送信ボタンと戻るナビゲーションを含むシンプルなコンタクトフォーム。",
+          "useCases": "サポート担当者不在時のメッセージ送信、問い合わせフォーム、フィードバック収集画面"
+        },
+        {
+          "name": "MessagesChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/MessagesChatWidget/",
+          "description": "チャットウィジェット内のメッセージ一覧画面。各会話のプレビュー（送信者アバター、名前、最新メッセージ抜粋、タイムスタンプ）をリスト表示する。未読メッセージにはバッジが表示され、会話アイテムはクリッカブル。新規メッセージ作成ボタンとタブナビゲーションを含む。",
+          "useCases": "サポートチャットの会話履歴一覧、複数の問い合わせスレッド管理、過去のチャット履歴へのアクセス画面"
+        },
+        {
+          "name": "SuccessMessageChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/SuccessMessageChatWidget/",
+          "description": "メッセージ送信完了後の確認画面。成功アイコン、完了メッセージ、追加アクション（新規メッセージ作成、ホームに戻る）へのリンクを表示。ユーザーに送信成功をフィードバックするシンプルな確認画面。",
+          "useCases": "問い合わせ送信完了確認、フィードバック送信後のサンキュー画面、フォーム送信成功通知"
+        },
+        {
+          "name": "WelcomeChatWidget",
+          "path": "InboxChageMessages/ChatWidgets/WelcomeChatWidget/",
+          "description": "チャットウィジェットのウェルカム画面コンポーネント。ヘッダーにサポートチームのアバターグループ、挨拶メッセージ、CTAボタンを表示。人気のヘルプトピックリンク一覧とフッターのタブナビゲーション（Home/Messages/Help）を備える。ドロップダウン型チャットウィジェットの初期表示画面として機能する。",
+          "useCases": "カスタマーサポートチャットボットの初期画面、ヘルプデスクウィジェットのランディング画面、FAQ導線を含むチャット開始画面"
+        }
+      ]
+    },
+    {
+      "name": "InboxChatMessagesLayouts",
+      "path": "InboxChageMessages/InboxChatMessagesLayouts/",
+      "components": [
+        {
+          "name": "CRMCustomerDetailsLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/CRMCustomerDetailsLayout/",
+          "description": "CRMシステムの顧客詳細画面レイアウト。ダークテーマのヘッダーにロゴ、グローバル検索、ユーザーアクションを配置。顧客情報、連絡履歴、取引データなどを詳細表示するためのレイアウト。検索ショートカット（Cmd+/）対応。",
+          "useCases": "CRMの顧客詳細ページ、営業管理システムの顧客プロファイル、カスタマーサクセス管理画面"
+        },
+        {
+          "name": "ChatActivityLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/ChatActivityLayout/",
+          "description": "チャットアクティビティ表示レイアウト。Activity/Mentions/Assignedのタブ切り替え、日付範囲指定のカレンダードロップダウンを備える。チームメンバーのアクティビティログ、メンション通知、割り当てられたタスクを一覧表示。",
+          "useCases": "チームコラボレーションツールのアクティビティフィード、通知センター、タスク割り当て管理画面"
+        },
+        {
+          "name": "ChatEmptyStateLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/ChatEmptyStateLayout/",
+          "description": "チャット画面の空状態（会話未選択時）レイアウト。サイドバーにスレッド一覧、メインエリアに「会話を選択してください」などの案内メッセージやイラストを表示。ユーザーにアクションを促すためのビジュアルと説明文を含む。",
+          "useCases": "チャットアプリの初期表示画面、会話未選択時のプレースホルダー、新規ユーザーへのガイダンス表示"
+        },
+        {
+          "name": "ChatLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/ChatLayout/",
+          "description": "チャットアプリケーションのメインレイアウト。左サイドバーにチャットスレッド一覧（検索、ソート、作成機能付き）、メインエリアにチャット会話画面を配置。ユーザーのアバター、最新メッセージプレビュー、タイムスタンプ、未読バッジなどを含む完全なチャットUI。レスポンシブ対応でモバイルではオーバーレイサイドバー。",
+          "useCases": "カスタマーサポートチャットアプリ、社内メッセージングシステム、リアルタイムチャットダッシュボード"
+        },
+        {
+          "name": "ChatReportsLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/ChatReportsLayout/",
+          "description": "チャットシステムのレポート・分析画面レイアウト。リフレッシュボタン、最終更新時刻表示、日付範囲選択のカレンダードロップダウンを備えたヘッダー。グラフやチャート、統計データを表示するためのメインコンテンツエリア。",
+          "useCases": "カスタマーサポートの分析ダッシュボード、チャット統計レポート、パフォーマンス指標表示"
+        },
+        {
+          "name": "ChatTicketsLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/ChatTicketsLayout/",
+          "description": "サポートチケット管理のレイアウト。左サイドバーにナビゲーション（Inbox、Tickets、Visitors、Activity、Reports）とアイコンメニュー、中央にチケット一覧、右にチケット詳細を配置した3カラムレイアウト。チケットのステータス、優先度、担当者管理機能を備える。",
+          "useCases": "ヘルプデスクシステム、カスタマーサポートチケット管理、問い合わせ対応ダッシュボード"
+        },
+        {
+          "name": "InboxLayout",
+          "path": "InboxChageMessages/InboxChatMessagesLayouts/InboxLayout/",
+          "description": "メールクライアント風のインボックスレイアウト。ヘッダーにロゴ、検索バー、ユーザーアクションボタン、左サイドバーにナビゲーションメニュー、メインエリアにメールスレッド一覧を配置。フォルダ分類、検索、フィルタリング機能を備えた本格的なメールUI。",
+          "useCases": "ウェブメールクライアント、サポートチケット管理システム、社内メールアプリケーション"
+        }
+      ]
+    }
+  ]
+}

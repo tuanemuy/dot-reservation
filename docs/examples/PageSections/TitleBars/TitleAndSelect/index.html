@@ -1,0 +1,57 @@
+<div
+  class="flex flex-col sm:flex-wrap sm:flex-row sm:justify-between sm:items-center gap-1"
+>
+  <div class="grow">
+    <h1 class="font-medium text-xl text-gray-800 dark:text-neutral-200">
+      Order history
+    </h1>
+  </div>
+
+  <!-- Select -->
+  <div class="relative inline-flex items-center">
+    <span class="me-1 text-sm">
+      <span class="font-medium text-sm text-gray-800 dark:text-neutral-200"
+        >2 orders</span
+      >
+      <span class="text-gray-500 dark:text-neutral-500">placed in:</span>
+    </span>
+
+    <div class="relative">
+      <select
+        id="hs-pro-select-sort"
+        data-hs-select='{
+          "placeholder": "Sort",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1 ps-2 pe-6 inline-flex shrink-0 justify-center items-center gap-x-1.5 border border-transparent text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+          "dropdownClasses": "end-0 mt-2 p-1 space-y-0.5 z-50 w-20 bg-white rounded-xl shadow-xl dark:bg-neutral-950",
+          "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 flex gap-x-3 py-1.5 px-2 text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div>"
+        }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>2024</option>
+        <option>2023</option>
+        <option>2022</option>
+      </select>
+
+      <div class="absolute top-1/2 end-2 -translate-y-1/2">
+        <svg
+          class="shrink-0 size-3.5 text-gray-800 dark:text-neutral-200"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <!-- End Select -->
+</div>

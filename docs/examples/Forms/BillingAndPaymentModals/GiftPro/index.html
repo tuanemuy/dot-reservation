@@ -1,0 +1,252 @@
+<div
+  class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div
+    class="py-2.5 px-4 flex justify-between items-center border-b border-gray-200 dark:border-neutral-700"
+  >
+    <h3 class="font-medium text-gray-800 dark:text-neutral-200">Gift Pro</h3>
+  </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="p-4 space-y-6">
+    <!-- Input Form -->
+    <div
+      class="pb-6 border-b border-gray-200 flex items-center gap-x-2 dark:border-neutral-700"
+    >
+      <input
+        type="text"
+        class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:ring-neutral-600"
+        placeholder="Add name or emails"
+      />
+
+      <button
+        type="button"
+        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+      >
+        Send
+      </button>
+    </div>
+    <!-- End Input Form -->
+
+    <!-- Nav Tab -->
+    <nav
+      class="inline-flex gap-1 w-full p-1 relative bg-gray-100 rounded-full dark:bg-neutral-900/50"
+      aria-label="Tabs"
+      role="tablist"
+      aria-orientation="horizontal"
+    >
+      <button
+        type="button"
+        class="hs-tab-active:bg-white hs-tab-active:shadow-sm hs-tab-active:focus:bg-gray-50 hs-tab-active:focus:text-gray-800 py-2 px-3 w-full inline-flex justify-center items-center gap-x-2 text-sm text-gray-800 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:text-gray-500 dark:text-neutral-200 dark:focus:text-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-800 dark:hs-tab-active:focus:text-neutral-200 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden active"
+        id="hs-pro-tabs-dgpro-item-one-month"
+        aria-selected="true"
+        data-hs-tab="#hs-pro-tabs-dgpro-one-month"
+        aria-controls="hs-pro-tabs-dgpro-one-month"
+        role="tab"
+      >
+        1 Month
+      </button>
+      <button
+        type="button"
+        class="hs-tab-active:bg-white hs-tab-active:shadow-sm hs-tab-active:focus:bg-gray-50 hs-tab-active:focus:text-gray-800 py-2 px-3 w-full inline-flex justify-center items-center gap-x-2 text-sm text-gray-800 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:text-gray-500 dark:text-neutral-200 dark:focus:text-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-800 dark:hs-tab-active:focus:text-neutral-200 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden"
+        id="hs-pro-tabs-dgpro-item-one-year"
+        aria-selected="false"
+        data-hs-tab="#hs-pro-tabs-dgpro-one-year"
+        aria-controls="hs-pro-tabs-dgpro-one-year"
+        role="tab"
+      >
+        1 Year
+      </button>
+    </nav>
+    <!-- End Nav Tab -->
+
+    <div>
+      <!-- Tab Content -->
+      <div
+        id="hs-pro-tabs-dgpro-one-month"
+        role="tabpanel"
+        class="hidden"
+        aria-labelledby="hs-pro-tabs-dgpro-item-one-month"
+      >
+        <fieldset class="grid gap-y-3">
+          <legend class="sr-only">Monthly pricing list</legend>
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gproms"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gproms"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Startup"
+              name="hs-pro-gpromn"
+              checked
+            />
+            <span class="grow px-4">
+              <span class="block"> Startup </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                $39 / mon
+              </span>
+            </span>
+            <span class="block"> $348 </span>
+          </label>
+          <!-- End Checkbox -->
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gpromp"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gpromp"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Pro"
+              name="hs-pro-gpromn"
+            />
+            <span class="grow px-4">
+              <span class="block"> Pro </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                $69 / mon
+              </span>
+            </span>
+            <span class="block"> $708 </span>
+          </label>
+          <!-- End Checkbox -->
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gprome"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gprome"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Enterprise"
+              name="hs-pro-gpromn"
+            />
+            <span class="grow px-4">
+              <span class="block"> Enterprise </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                $129 / mon
+              </span>
+            </span>
+            <span class="block"> $1428 </span>
+          </label>
+          <!-- End Checkbox -->
+        </fieldset>
+      </div>
+      <!-- End Tab Content -->
+
+      <!-- Tab Content -->
+      <div
+        id="hs-pro-tabs-dgpro-one-year"
+        role="tabpanel"
+        aria-labelledby="hs-pro-tabs-dgpro-item-one-year"
+      >
+        <fieldset class="grid gap-y-3">
+          <legend class="sr-only">Yearly pricing list</legend>
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gproys"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gproys"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Startup"
+              name="hs-pro-gpromn"
+              checked
+            />
+            <span class="grow px-4">
+              <span class="block"> Startup </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                <span
+                  class="me-1 inline-flex items-center gap-1.5 py-0.5 px-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-lg dark:bg-blue-500/10 dark:text-blue-500"
+                >
+                  15% off
+                </span>
+                $29 / mon
+              </span>
+            </span>
+            <span class="block"> $368 </span>
+          </label>
+          <!-- End Checkbox -->
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gproyp"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gproyp"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Pro"
+              name="hs-pro-gpromn"
+            />
+            <span class="grow px-4">
+              <span class="block"> Pro </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                <span
+                  class="me-1 inline-flex items-center gap-1.5 py-0.5 px-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-lg dark:bg-blue-500/10 dark:text-blue-500"
+                >
+                  15% off
+                </span>
+                $59 / mon
+              </span>
+            </span>
+            <span class="block"> $828 </span>
+          </label>
+          <!-- End Checkbox -->
+
+          <!-- Checkbox -->
+          <label
+            for="hs-pro-gproye"
+            class="py-3 px-4 flex items-center font-medium bg-white text-gray-800 rounded-xl cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+          >
+            <input
+              type="radio"
+              id="hs-pro-gproye"
+              class="bg-transparent border-gray-200 checked:bg-blue-600 checked:border-blue-600 focus:ring-0 focus:ring-offset-0 dark:border-neutral-700 dark:focus:ring-neutral-800"
+              value="Enterprise"
+              name="hs-pro-gpromn"
+            />
+            <span class="grow px-4">
+              <span class="block"> Enterprise </span>
+              <span class="block text-sm/6 text-gray-500 dark:text-neutral-500">
+                <span
+                  class="me-1 inline-flex items-center gap-1.5 py-0.5 px-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-lg dark:bg-blue-500/10 dark:text-blue-500"
+                >
+                  15% off
+                </span>
+                $119 / mon
+              </span>
+            </span>
+            <span class="block"> $1548 </span>
+          </label>
+          <!-- End Checkbox -->
+        </fieldset>
+      </div>
+      <!-- End Tab Content -->
+    </div>
+
+    <!-- Button -->
+    <button
+      type="button"
+      class="py-3 px-4 w-full inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+      data-hs-overlay="#hs-pro-dicm"
+    >
+      Gift Startup for $368
+    </button>
+    <!-- End Button -->
+  </div>
+  <!-- End Body -->
+</div>

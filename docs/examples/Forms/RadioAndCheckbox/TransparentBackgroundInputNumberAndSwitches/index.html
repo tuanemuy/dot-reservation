@@ -1,0 +1,266 @@
+<div
+  class="p-4 pt-8 relative flex flex-col justify-center items-center gap-y-3 bg-black/10 border border-white/30 backdrop-blur-lg rounded-2xl"
+>
+  <!-- Header -->
+  <div class="text-center">
+    <span
+      class="mb-1 inline-flex shrink-0 justify-center items-center size-10 rounded-full bg-white/10 text-white"
+    >
+      <svg
+        class="shrink-0 size-6"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+      </svg>
+    </span>
+
+    <h3 class="text-white">Air Conditioner</h3>
+    <p class="text-sm text-white/70">Living room</p>
+
+    <div class="absolute top-0 end-0 p-2">
+      <label
+        for="hs-pro-shrtpb"
+        class="relative group flex shrink-0 justify-center items-center cursor-pointer text-sm font-medium rounded-full focus:outline-none"
+      >
+        <input type="checkbox" id="hs-pro-shrtpb" class="peer hidden" checked />
+
+        <!-- Unchecked State -->
+        <span
+          class="peer-checked:hidden flex items-center justify-center bg-white/10 border border-white/20 text-white size-9 rounded-full inset-shadow-sm shadow-sm"
+        >
+          <svg
+            class="shrink-0 size-4.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18.36 6.64A9 9 0 0 1 20.77 15" />
+            <path d="M6.16 6.16a9 9 0 1 0 12.68 12.68" />
+            <path d="M12 2v4" />
+            <path d="m2 2 20 20" />
+          </svg>
+        </span>
+
+        <!-- Checked State -->
+        <span
+          class="hidden peer-checked:flex justify-center items-center border border-white/20 text-white size-9 rounded-full peer-checked:bg-teal-600 peer-checked:border-teal-600"
+        >
+          <svg
+            class="shrink-0 size-4.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 2v10" />
+            <path d="M18.4 6.6a9 9 0 1 1-12.77.04" />
+          </svg>
+        </span>
+      </label>
+    </div>
+  </div>
+  <!-- End Header -->
+
+  <!-- Input Number -->
+  <div
+    class="flex justify-center items-center gap-x-3"
+    data-hs-input-number='{
+    "min": -10,
+    "max": 99
+  }'
+  >
+    <button
+      type="button"
+      class="size-7 inline-flex justify-center items-center gap-x-2 border border-white/20 text-white rounded-full hover:bg-white/10 focus:outline-hidden focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+      tabindex="-1"
+      aria-label="Decrease"
+      data-hs-input-number-decrement
+    >
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+      </svg>
+    </button>
+    <input
+      class="p-0 w-18.5 bg-transparent border-0 text-5xl text-white text-center focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      style="-moz-appearance: textfield"
+      type="number"
+      aria-roledescription="Number field"
+      value="22"
+      data-hs-input-number-input
+      readonly
+    />
+    <span class="text-4xl/5 text-white -ms-3 -mt-3">°</span>
+    <button
+      type="button"
+      class="size-7 inline-flex justify-center items-center gap-x-2 border border-white/20 text-white rounded-full hover:bg-white/10 focus:outline-hidden focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+      tabindex="-1"
+      aria-label="Increase"
+      data-hs-input-number-increment
+    >
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+    </button>
+  </div>
+  <!-- End Input Number -->
+
+  <!-- Checkbox Grid -->
+  <div class="relative w-full grid grid-cols-3 gap-3">
+    <!-- Checkbox -->
+    <label
+      for="hs-pro-shrtrac2"
+      class="p-2 flex flex-col justify-center items-center sm:text-xs text-center bg-white/10 border border-white/20 text-white cursor-pointer rounded-lg inset-shadow-sm shadow-sm has-checked:bg-teal-600 has-checked:border-teal-600 has-checked:inset-shadow-none"
+    >
+      <input
+        type="radio"
+        id="hs-pro-shrtrac2"
+        class="peer hidden"
+        name="hs-pro-shrtrac"
+      />
+      <svg
+        class="shrink-0 size-4 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M10 21v-1" />
+        <path d="M10 4V3" />
+        <path d="M10 9a3 3 0 0 0 0 6" />
+        <path d="m14 20 1.25-2.5L18 18" />
+        <path d="m14 4 1.25 2.5L18 6" />
+        <path d="m17 21-3-6 1.5-3H22" />
+        <path d="m17 3-3 6 1.5 3" />
+        <path d="M2 12h1" />
+        <path d="m20 10-1.5 2 1.5 2" />
+        <path d="m3.64 18.36.7-.7" />
+        <path d="m4.34 6.34-.7-.7" /></svg
+      ><span class="block mt-1">Auto</span>
+    </label>
+    <!-- End Checkbox -->
+
+    <!-- Checkbox -->
+    <label
+      for="hs-pro-shrtrac3"
+      class="p-2 flex flex-col justify-center items-center sm:text-xs text-center bg-white/10 border border-white/20 text-white cursor-pointer rounded-lg inset-shadow-sm shadow-sm has-checked:bg-teal-600 has-checked:border-teal-600 has-checked:inset-shadow-none"
+    >
+      <input
+        type="radio"
+        id="hs-pro-shrtrac3"
+        class="peer hidden"
+        name="hs-pro-shrtrac"
+      />
+      <svg
+        class="shrink-0 size-4 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="m4.93 4.93 1.41 1.41" />
+        <path d="m17.66 17.66 1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="m6.34 17.66-1.41 1.41" />
+        <path d="m19.07 4.93-1.41 1.41" /></svg
+      ><span class="block mt-1">Hot</span>
+    </label>
+    <!-- End Checkbox -->
+
+    <!-- Checkbox -->
+    <label
+      for="hs-pro-shrtrac4"
+      class="p-2 flex flex-col justify-center items-center sm:text-xs text-center bg-white/10 border border-white/20 text-white cursor-pointer rounded-lg inset-shadow-sm shadow-sm has-checked:bg-teal-600 has-checked:border-teal-600 has-checked:inset-shadow-none"
+    >
+      <input
+        type="radio"
+        id="hs-pro-shrtrac4"
+        class="peer hidden"
+        name="hs-pro-shrtrac"
+        checked
+      />
+      <svg
+        class="shrink-0 size-4 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m10 20-1.25-2.5L6 18" />
+        <path d="M10 4 8.75 6.5 6 6" />
+        <path d="m14 20 1.25-2.5L18 18" />
+        <path d="m14 4 1.25 2.5L18 6" />
+        <path d="m17 21-3-6h-4" />
+        <path d="m17 3-3 6 1.5 3" />
+        <path d="M2 12h6.5L10 9" />
+        <path d="m20 10-1.5 2 1.5 2" />
+        <path d="M22 12h-6.5L14 15" />
+        <path d="m4 10 1.5 2L4 14" />
+        <path d="m7 21 3-6-1.5-3" />
+        <path d="m7 3 3 6h4" /></svg
+      ><span class="block mt-1">Cold</span>
+    </label>
+    <!-- End Checkbox -->
+  </div>
+  <!-- End Checkbox Grid -->
+</div>

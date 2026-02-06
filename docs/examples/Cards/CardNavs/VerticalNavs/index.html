@@ -1,0 +1,792 @@
+<div
+  class="flex flex-col lg:flex-row bg-white rounded-lg shadow-md dark:bg-neutral-800"
+>
+  <div class="shrink-0">
+    <div
+      class="h-full lg:w-50 lg:border-e border-gray-200 dark:border-neutral-700"
+    >
+      <div class="p-4 lg:p-0">
+        <!-- Select Nav -->
+        <select
+          id="hs-pro-vcnadpn-select"
+          class="hidden"
+          data-hs-select='{
+          "placeholder": "Select option...",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200 \" data-title></span></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 px-2 pe-8 flex items-center text-nowrap w-full cursor-pointer bg-gray-100 text-gray-800 rounded-lg text-start text-sm dark:bg-neutral-800 dark:text-neutral-200",
+          "wrapperClasses": "lg:hidden",
+          "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+          "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+          "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-3\" data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div></div>",
+          "extraMarkup": "<div class=\"absolute top-1/2 end-2 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+        }'
+        >
+          <option
+            value="#hs-pro-tabs-sg-all"
+            data-hs-select-option='{
+            "icon": "<svg class=\"shrink-0 size-4\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>"
+          }'
+            selected
+          >
+            All
+          </option>
+          <option
+            value="#hs-pro-tabs-sg-archived"
+            data-hs-select-option='{
+            "icon": "<svg class=\"shrink-0 size-4\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/></svg>"
+          }'
+          >
+            Archived
+          </option>
+          <option
+            value="#hs-pro-tabs-sg-spammed"
+            data-hs-select-option='{
+            "icon": "<svg class=\"shrink-0 size-4\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 16h.01\"/><path d=\"M12 8v4\"/><path d=\"M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z\"/></svg>"
+          }'
+          >
+            Spammed
+          </option>
+        </select>
+        <!-- End Select Nav -->
+      </div>
+
+      <!-- Nav Tab -->
+      <nav
+        id="hs-pro-vcnadpn-tabs"
+        class="p-4 hidden lg:flex flex-col gap-1"
+        aria-label="Tabs"
+        role="tablist"
+        aria-orientation="horizontal"
+      >
+        <button
+          type="button"
+          class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 w-full flex items-center gap-x-2 p-2 text-start text-sm rounded-lg text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden active"
+          id="hs-pro-tabs-sg-item-all"
+          aria-selected="true"
+          data-hs-tab="#hs-pro-tabs-sg-all"
+          aria-controls="hs-pro-tabs-sg-all"
+          role="tab"
+        >
+          <svg
+            class="shrink-0 size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+            />
+            <circle cx="12" cy="12" r="3" /></svg
+          >All
+        </button>
+        <button
+          type="button"
+          class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 w-full flex items-center gap-x-2 p-2 text-start text-sm rounded-lg text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden"
+          id="hs-pro-tabs-sg-item-archived"
+          aria-selected="false"
+          data-hs-tab="#hs-pro-tabs-sg-archived"
+          aria-controls="hs-pro-tabs-sg-archived"
+          role="tab"
+        >
+          <svg
+            class="shrink-0 size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="20" height="5" x="2" y="3" rx="1" />
+            <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+            <path d="M10 12h4" /></svg
+          >Archived
+        </button>
+        <button
+          type="button"
+          class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 w-full flex items-center gap-x-2 p-2 text-start text-sm rounded-lg text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden"
+          id="hs-pro-tabs-sg-item-spammed"
+          aria-selected="false"
+          data-hs-tab="#hs-pro-tabs-sg-spammed"
+          aria-controls="hs-pro-tabs-sg-spammed"
+          role="tab"
+        >
+          <svg
+            class="shrink-0 size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 16h.01" />
+            <path d="M12 8v4" />
+            <path
+              d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"
+            /></svg
+          >Spammed
+        </button>
+      </nav>
+      <!-- End Nav Tab -->
+    </div>
+  </div>
+
+  <div class="grow">
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-sg-all"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-sg-item-all"
+    >
+      <!-- Empty State -->
+      <div class="p-5 flex flex-col justify-center items-center text-center">
+        <svg
+          class="w-48 mx-auto mb-4"
+          width="178"
+          height="90"
+          viewBox="0 0 178 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-50 dark:stroke-neutral-700/10"
+          />
+          <rect
+            x="34.5"
+            y="58"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="61"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="73"
+            width="77"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-100 dark:stroke-neutral-700/30"
+          />
+          <rect
+            x="27"
+            y="36"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="39"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="51"
+            width="92"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <g filter="url(#filter5)">
+            <rect
+              x="12"
+              y="6"
+              width="154"
+              height="40"
+              rx="8"
+              fill="currentColor"
+              class="fill-white dark:fill-neutral-800"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="12.5"
+              y="6.5"
+              width="153"
+              height="39"
+              rx="7.5"
+              stroke="currentColor"
+              class="stroke-gray-100 dark:stroke-neutral-700/60"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="20"
+              y="14"
+              width="24"
+              height="24"
+              rx="4"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="17"
+              width="60"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="29"
+              width="106"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter5"
+              x="0"
+              y="0"
+              width="178"
+              height="64"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="6" />
+              <feGaussianBlur stdDeviation="6" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_1187_14810"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_1187_14810"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="max-w-sm mx-auto">
+          <p class="mt-2 font-medium text-gray-800 dark:text-neutral-200">
+            No data
+          </p>
+          <p class="mb-5 text-sm text-gray-500 dark:text-neutral-500">
+            No data here yet. We will notify you when there's an update.
+          </p>
+        </div>
+
+        <a
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          href="#"
+        >
+          Learn more
+        </a>
+      </div>
+      <!-- End Empty State -->
+    </div>
+    <!-- End Tab Content -->
+
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-sg-archived"
+      class="hidden"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-sg-item-archived"
+    >
+      <!-- Empty State -->
+      <div class="p-5 flex flex-col justify-center items-center text-center">
+        <svg
+          class="w-48 mx-auto mb-4"
+          width="178"
+          height="90"
+          viewBox="0 0 178 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-50 dark:stroke-neutral-700/10"
+          />
+          <rect
+            x="34.5"
+            y="58"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="61"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="73"
+            width="77"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-100 dark:stroke-neutral-700/30"
+          />
+          <rect
+            x="27"
+            y="36"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="39"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="51"
+            width="92"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <g filter="url(#filter6)">
+            <rect
+              x="12"
+              y="6"
+              width="154"
+              height="40"
+              rx="8"
+              fill="currentColor"
+              class="fill-white dark:fill-neutral-800"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="12.5"
+              y="6.5"
+              width="153"
+              height="39"
+              rx="7.5"
+              stroke="currentColor"
+              class="stroke-gray-100 dark:stroke-neutral-700/60"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="20"
+              y="14"
+              width="24"
+              height="24"
+              rx="4"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="17"
+              width="60"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="29"
+              width="106"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter6"
+              x="0"
+              y="0"
+              width="178"
+              height="64"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="6" />
+              <feGaussianBlur stdDeviation="6" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_1187_14810"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_1187_14810"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="max-w-sm mx-auto">
+          <p class="mt-2 font-medium text-gray-800 dark:text-neutral-200">
+            No archived data
+          </p>
+          <p class="mb-5 text-sm text-gray-500 dark:text-neutral-500">
+            No data here yet. We will notify you when there's an update.
+          </p>
+        </div>
+
+        <a
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          href="#"
+        >
+          Learn more
+        </a>
+      </div>
+      <!-- End Empty State -->
+    </div>
+    <!-- End Tab Content -->
+
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-sg-spammed"
+      class="hidden"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-sg-item-spammed"
+    >
+      <!-- Empty State -->
+      <div class="p-5 flex flex-col justify-center items-center text-center">
+        <svg
+          class="w-48 mx-auto mb-4"
+          width="178"
+          height="90"
+          viewBox="0 0 178 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="27"
+            y="50.5"
+            width="124"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-50 dark:stroke-neutral-700/10"
+          />
+          <rect
+            x="34.5"
+            y="58"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="61"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="66.5"
+            y="73"
+            width="77"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-50 dark:fill-neutral-700/30"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            fill="currentColor"
+            class="fill-white dark:fill-neutral-800"
+          />
+          <rect
+            x="19.5"
+            y="28.5"
+            width="139"
+            height="39"
+            rx="7.5"
+            stroke="currentColor"
+            class="stroke-gray-100 dark:stroke-neutral-700/30"
+          />
+          <rect
+            x="27"
+            y="36"
+            width="24"
+            height="24"
+            rx="4"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="39"
+            width="60"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <rect
+            x="59"
+            y="51"
+            width="92"
+            height="6"
+            rx="3"
+            fill="currentColor"
+            class="fill-gray-100 dark:fill-neutral-700/70"
+          />
+          <g filter="url(#filter7)">
+            <rect
+              x="12"
+              y="6"
+              width="154"
+              height="40"
+              rx="8"
+              fill="currentColor"
+              class="fill-white dark:fill-neutral-800"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="12.5"
+              y="6.5"
+              width="153"
+              height="39"
+              rx="7.5"
+              stroke="currentColor"
+              class="stroke-gray-100 dark:stroke-neutral-700/60"
+              shape-rendering="crispEdges"
+            />
+            <rect
+              x="20"
+              y="14"
+              width="24"
+              height="24"
+              rx="4"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="17"
+              width="60"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+            <rect
+              x="52"
+              y="29"
+              width="106"
+              height="6"
+              rx="3"
+              fill="currentColor"
+              class="fill-gray-200 dark:fill-neutral-700"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter7"
+              x="0"
+              y="0"
+              width="178"
+              height="64"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="6" />
+              <feGaussianBlur stdDeviation="6" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_1187_14810"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_1187_14810"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="max-w-sm mx-auto">
+          <p class="mt-2 font-medium text-gray-800 dark:text-neutral-200">
+            No spammed data
+          </p>
+          <p class="mb-5 text-sm text-gray-500 dark:text-neutral-500">
+            No data here yet. We will notify you when there's an update.
+          </p>
+        </div>
+
+        <a
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          href="#"
+        >
+          Learn more
+        </a>
+      </div>
+      <!-- End Empty State -->
+    </div>
+    <!-- End Tab Content -->
+  </div>
+</div>

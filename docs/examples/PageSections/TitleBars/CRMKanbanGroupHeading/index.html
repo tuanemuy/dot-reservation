@@ -1,0 +1,384 @@
+<div class="pe-5 w-full inline-flex justify-between items-center gap-x-2">
+  <div class="inline-flex items-center gap-x-1.5">
+    <div class="flex items-center gap-x-1.5 ps-3 rounded-md">
+      <span class="size-2 bg-gray-400 dark:bg-neutral-500 rounded-full"></span>
+      <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+        No status
+      </span>
+    </div>
+    <span
+      class="flex shrink-0 justify-center items-center size-4 bg-gray-200 text-gray-600 text-[13px] leading-3 rounded-sm dark:bg-neutral-700 dark:text-neutral-400"
+    >
+      1
+    </span>
+  </div>
+
+  <!-- Button Group -->
+  <div class="flex items-center gap-x-1">
+    <!-- More Dropdown -->
+    <div
+      class="hs-dropdown [--auto-close:inside] [--placement:bottom-right] relative inline-flex"
+    >
+      <button
+        id="@@moreDropdownID"
+        type="button"
+        class="flex justify-center items-center gap-x-3 size-5 text-sm text-gray-400 hover:bg-gray-200 rounded-md disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-label="Dropdown"
+      >
+        <svg
+          class="shrink-0 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </svg>
+        <span class="sr-only">More</span>
+      </button>
+
+      <!-- More Dropdown -->
+      <div
+        class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-48 transition-[opacity,margin] duration opacity-0 hidden z-10 bg-white rounded-xl shadow-xl dark:bg-neutral-900"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="@@moreDropdownID"
+      >
+        <div class="p-1 border-b border-gray-200 dark:border-neutral-800">
+          <input
+            type="text"
+            class="py-1 sm:py-1.5 px-3 block w-full bg-gray-100 border-transparent rounded-lg sm:text-sm placeholder:text-gray-500 focus:outline-hidden focus:border-teal-500 focus:ring-teal-500 focus:bg-white disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-transparent dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-600 dark:focus:bg-neutral-900"
+            value="No statusValue"
+          />
+        </div>
+
+        <!-- Colors List -->
+        <div class="p-1 border-b border-gray-200 dark:border-neutral-800">
+          <fieldset class="relative">
+            <legend class="sr-only">Colors</legend>
+
+            <div class="grid gap-y-0.5">
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcidGray1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-gray-400 border-0 rounded-full appearance-none checked:bg-none checked:text-gray-400 focus:bg-none focus:ring-0 focus:ring-offset-0 dark:bg-neutral-500 dark:checked:bg-neutral-500"
+                  id="hs-pro-dpghmdcidGray1"
+                  name="hs-pro-dpghmdcn1"
+                  checked
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Gray</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcidRed1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-red-500 border-0 rounded-full appearance-none checked:bg-none checked:text-red-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="hs-pro-dpghmdcidRed1"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Red</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcOrange1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-orange-500 border-0 rounded-full appearance-none checked:bg-none checked:text-orange-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="hs-pro-dpghmdcOrange1"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Orange</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcYellow1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-yellow-500 border-0 rounded-full appearance-none checked:bg-none checked:text-yellow-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="hs-pro-dpghmdcYellow1"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Yellow</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="@@teal"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-teal-500 border-0 rounded-full appearance-none checked:bg-none checked:text-teal-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="@@teal"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Teal</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcIndigo1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-indigo-500 border-0 rounded-full appearance-none checked:bg-none checked:text-indigo-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="hs-pro-dpghmdcIndigo1"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Indigo</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+
+              <!-- Checkbox -->
+              <label
+                for="hs-pro-dpghmdcSky1"
+                class="group py-1 px-3 flex items-center cursor-pointer rounded-md has-checked:bg-gray-100 hover:bg-gray-100 has-disabled:opacity-50 has-disabled:pointer-events-none dark:has-checked:bg-neutral-800 dark:hover:bg-neutral-800"
+              >
+                <input
+                  type="radio"
+                  class="w-1 h-3 bg-sky-500 border-0 rounded-full appearance-none checked:bg-none checked:text-sky-500 focus:bg-none focus:ring-0 focus:ring-offset-0"
+                  id="hs-pro-dpghmdcSky1"
+                  name="hs-pro-dpghmdcn1"
+                />
+                <span class="ms-2 text-sm text-gray-800 dark:text-neutral-200"
+                  >Sky</span
+                >
+                <svg
+                  class="ms-auto group-has-checked:opacity-100 opacity-0 shrink-0 size-3 cursor-pointer text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </label>
+              <!-- End Checkbox -->
+            </div>
+          </fieldset>
+        </div>
+        <!-- End Colors List -->
+
+        <div class="p-1 space-y-0.5">
+          <a
+            class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            href="#"
+          >
+            <svg
+              class="shrink-0 mt-0.5 size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+              <path
+                d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
+              />
+              <path
+                d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
+              />
+              <line x1="2" x2="22" y1="2" y2="22" />
+            </svg>
+            Hide group
+          </a>
+          <a
+            class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-red-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            href="#"
+          >
+            <svg
+              class="shrink-0 mt-0.5 size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              <line x1="10" x2="10" y1="11" y2="17" />
+              <line x1="14" x2="14" y1="11" y2="17" />
+            </svg>
+            Delete group
+          </a>
+        </div>
+      </div>
+      <!-- End More Dropdown -->
+    </div>
+    <!-- End More Dropdown -->
+
+    <!-- Button -->
+    <div class="hs-tooltip inline-block">
+      <button
+        type="button"
+        class="hs-tooltip-toggle relative flex justify-center items-center gap-x-3 size-5 text-sm text-gray-400 hover:bg-gray-200 rounded-md disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+        data-hs-overlay="#hs-pro-chhtgm"
+      >
+        <svg
+          class="shrink-0 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14"></path>
+          <path d="M12 5v14"></path>
+        </svg>
+        <span class="sr-only">New</span>
+      </button>
+      <span
+        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700"
+        role="tooltip"
+      >
+        Create new list
+      </span>
+    </div>
+    <!-- End Button -->
+  </div>
+  <!-- End Button Group -->
+</div>

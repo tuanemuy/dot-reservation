@@ -1,0 +1,503 @@
+<div
+  class="p-5 md:p-8 bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Title -->
+  <div class="mb-4 xl:mb-8">
+    <h1 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
+      Preferences
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-neutral-500">
+      Customize your Preline workspace personal preferences.
+    </p>
+  </div>
+  <!-- End Title -->
+
+  <!-- Form -->
+  <form>
+    <!-- Grid -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Language
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <!-- Select -->
+          <div class="relative inline-block">
+            <select
+              data-hs-select='{
+                "placeholder": "Select option...",
+                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+                "dropdownClasses": "mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+                "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+              }'
+              class="hidden"
+            >
+              <option value="">Choose</option>
+              <option>English (US)</option>
+              <option selected>English (UK)</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>German</option>
+              <option>Italian</option>
+              <option>Portuguese</option>
+              <option>Russian</option>
+              <option>Turkish</option>
+              <option>Chinese</option>
+              <option>Japanese</option>
+              <option>Korean</option>
+              <option>Arabic</option>
+            </select>
+
+            <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+              <svg
+                class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m7 15 5 5 5-5" />
+                <path d="m7 9 5-5 5 5" />
+              </svg>
+            </div>
+          </div>
+          <!-- End Select -->
+
+          <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">
+            Change the language used in the user interface.
+          </p>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Grid -->
+
+    <!-- Time Zone -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Time zone
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <div class="flex flex-wrap items-center gap-4">
+            <!-- Switch -->
+            <div class="flex items-center gap-x-3">
+              <label
+                for="hs-pro-daptzts"
+                class="text-sm text-gray-500 dark:text-neutral-400"
+                >Automatic time zone</label
+              >
+              <label
+                for="hs-pro-daptzts"
+                class="relative inline-block w-11 h-6 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  id="hs-pro-daptzts"
+                  class="peer sr-only"
+                />
+                <span
+                  class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
+                ></span>
+                <span
+                  class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"
+                ></span>
+              </label>
+            </div>
+            <!-- End Switch -->
+
+            <!-- Select -->
+            <div class="relative inline-block">
+              <select
+                data-hs-select='{
+                  "placeholder": "Select option...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+                  "dropdownClasses": "mt-2 z-50 min-w-57.5 max-h-72 p-1 space-y-0.5 overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+                  "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }'
+                class="hidden"
+              >
+                <option value="">Choose</option>
+                <option selected>Europe/London (GMT)</option>
+                <option>Asia/Singapore (GMT)</option>
+              </select>
+
+              <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+                <svg
+                  class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m7 15 5 5 5-5" />
+                  <path d="m7 9 5-5 5 5" />
+                </svg>
+              </div>
+            </div>
+            <!-- End Select -->
+          </div>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Time Zone -->
+
+    <!-- Time Zone -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Date Format
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <div class="flex flex-wrap gap-2 sm:gap-4">
+            <label
+              for="hs-pro-dapdfmdych"
+              class="flex py-2 px-3 w-37.5 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:border-neutral-700"
+            >
+              <input
+                id="hs-pro-dapdfmdych"
+                type="radio"
+                name="hs-pro-dapdfch-name"
+                class="shrink-0 mt-0.5 border-gray-200 text-blue-600 checked:border-blue-600 focus:ring-offset-0 dark:bg-neutral-800 dark:checked:bg-blue-500 dark:border-neutral-700"
+                checked
+              />
+              <span class="text-sm text-gray-800 ms-3 dark:text-neutral-200">
+                MM/DD/YYYY
+              </span>
+            </label>
+
+            <label
+              for="hs-pro-dapdfdmych"
+              class="flex py-2 px-3 w-37.5 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:border-neutral-700"
+            >
+              <input
+                id="hs-pro-dapdfdmych"
+                type="radio"
+                name="hs-pro-dapdfch-name"
+                class="shrink-0 mt-0.5 border-gray-200 text-blue-600 checked:border-blue-600 focus:ring-offset-0 dark:bg-neutral-800 dark:checked:bg-blue-500 dark:border-neutral-700"
+              />
+              <span class="text-sm text-gray-800 ms-3 dark:text-neutral-200">
+                DD/MM/YYYY
+              </span>
+            </label>
+          </div>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Time Zone -->
+
+    <!-- Week Start -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Week start
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <!-- Select -->
+          <div class="relative inline-block">
+            <select
+              data-hs-select='{
+                "placeholder": "Select option...",
+                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+                "dropdownClasses": "mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+                "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+              }'
+              class="hidden"
+            >
+              <option value="">Choose</option>
+              <option selected>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+
+            <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+              <svg
+                class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m7 15 5 5 5-5" />
+                <path d="m7 9 5-5 5 5" />
+              </svg>
+            </div>
+          </div>
+          <!-- End Select -->
+
+          <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">
+            This will change how all calendars in your app look.
+          </p>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Week Start -->
+
+    <!-- Weekend -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Weekend
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <!-- Select -->
+          <div class="relative inline-block">
+            <select
+              data-hs-select='{
+                "placeholder": "Select option...",
+                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+                "dropdownClasses": "mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+                "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+              }'
+              class="hidden"
+            >
+              <option value="">Choose</option>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option selected>Sunday</option>
+            </select>
+
+            <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+              <svg
+                class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m7 15 5 5 5-5" />
+                <path d="m7 9 5-5 5 5" />
+              </svg>
+            </div>
+          </div>
+          <!-- End Select -->
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Weekend -->
+
+    <!-- Appearance -->
+    <div
+      class="py-6 sm:py-8 space-y-5 border-t border-gray-200 first:border-t-0 dark:border-neutral-700"
+    >
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
+        <div class="sm:col-span-4 2xl:col-span-2">
+          <label
+            class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Appearance
+          </label>
+        </div>
+        <!-- End Col -->
+
+        <div class="sm:col-span-8 xl:col-span-6 2xl:col-span-5">
+          <p class="text-sm text-gray-500 dark:text-neutral-500">
+            Choose how Preline looks to you. Select a single theme, or sync with
+            your system and automatically switch between day and night themes.
+          </p>
+
+          <h3
+            class="mt-3 text-sm font-semibold text-gray-800 dark:text-neutral-200"
+          >
+            Theme mode
+          </h3>
+
+          <p class="text-sm text-gray-500 dark:text-neutral-500">
+            Preline theme will match your system active settings
+          </p>
+
+          <div class="mt-5">
+            <!-- Grid -->
+            <div class="grid grid-cols-3 gap-x-2 sm:gap-x-4">
+              <!-- Card Radio -->
+              <label
+                for="hs-pro-dapta1"
+                class="w-full sm:w-auto flex flex-col bg-white text-center cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+              >
+                <input
+                  type="radio"
+                  id="hs-pro-dapta1"
+                  name="hs-pro-dapta"
+                  class="hidden"
+                  checked
+                />
+                <img
+                  class="rounded-t-[14px] -mt-px"
+                  src="https://preline.co/assets/svg/pro/account-system-image.svg"
+                  alt="System"
+                />
+                <span
+                  class="py-3 px-2 text-sm font-semibold text-gray-800 dark:text-neutral-200"
+                >
+                  System
+                </span>
+              </label>
+              <!-- End Card Radio -->
+
+              <!-- Card Radio -->
+              <label
+                for="hs-pro-dapta2"
+                class="w-full sm:w-auto flex flex-col bg-white text-center cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+              >
+                <input
+                  type="radio"
+                  id="hs-pro-dapta2"
+                  name="hs-pro-dapta"
+                  class="hidden"
+                />
+                <img
+                  class="rounded-t-[14px] -mt-px"
+                  src="https://preline.co/assets/svg/pro/account-light-image.svg"
+                  alt="Light"
+                />
+                <span
+                  class="py-3 px-2 text-sm font-semibold text-gray-800 dark:text-neutral-200"
+                >
+                  Light
+                </span>
+              </label>
+              <!-- End Card Radio -->
+
+              <!-- Card Radio -->
+              <label
+                for="hs-pro-dapta3"
+                class="w-full sm:w-auto flex flex-col bg-white text-center cursor-pointer rounded-xl ring-1 ring-gray-200 has-checked:ring-2 has-checked:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-200 dark:ring-neutral-700 dark:has-checked:ring-blue-500"
+              >
+                <input
+                  type="radio"
+                  id="hs-pro-dapta3"
+                  name="hs-pro-dapta"
+                  class="hidden"
+                />
+                <img
+                  class="rounded-t-[14px] -mt-px"
+                  src="https://preline.co/assets/svg/pro/account-dark-image.svg"
+                  alt="Dark"
+                />
+                <span
+                  class="py-3 px-2 text-sm font-semibold text-gray-800 dark:text-neutral-200"
+                >
+                  Dark
+                </span>
+              </label>
+              <!-- End Card Radio -->
+            </div>
+            <!-- End Grid -->
+          </div>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Appearance -->
+
+    <!-- Button Group -->
+    <div class="flex gap-x-3">
+      <button
+        type="button"
+        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+      >
+        Save changes
+      </button>
+      <button
+        type="button"
+        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      >
+        Cancel
+      </button>
+    </div>
+    <!-- End Button Group -->
+  </form>
+  <!-- End Form -->
+</div>

@@ -1,0 +1,87 @@
+<div class="mb-6 flex flex-wrap justify-between items-center gap-3">
+  <div class="grow">
+    <!-- Filter Button -->
+    <button
+      type="button"
+      class="hs-dropdown-toggle flex items-center gap-x-2 text-xs sm:text-sm text-start text-gray-800 rounded-lg underline-offset-4 hover:underline disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:underline dark:text-neutral-200"
+      data-hs-overlay="#hs-pro-shflo"
+    >
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="21" x2="14" y1="4" y2="4" />
+        <line x1="10" x2="3" y1="4" y2="4" />
+        <line x1="21" x2="12" y1="12" y2="12" />
+        <line x1="8" x2="3" y1="12" y2="12" />
+        <line x1="21" x2="16" y1="20" y2="20" />
+        <line x1="12" x2="3" y1="20" y2="20" />
+        <line x1="14" x2="14" y1="2" y2="6" />
+        <line x1="8" x2="8" y1="10" y2="14" />
+        <line x1="16" x2="16" y1="18" y2="22" />
+      </svg>
+      Filter
+    </button>
+    <!-- End Filter Button -->
+  </div>
+
+  <!-- Filter Group -->
+  <div class="flex flex-wrap items-center">
+    <span class="me-1 text-xs sm:text-sm text-gray-800 dark:text-neutral-200"
+      >140 Items</span
+    >
+
+    <div class="mx-3 w-px h-3 bg-gray-300 dark:bg-neutral-700"></div>
+
+    <!-- Select -->
+    <div class="relative min-h-7.5 inline-flex items-center">
+      <span class="me-1 text-xs sm:text-sm text-gray-800 dark:text-neutral-200"
+        >Sort By:</span
+      >
+      <select
+        data-hs-select='{
+          "placeholder": "Sort",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1 ps-1.5 pe-7 inline-flex shrink-0 justify-center items-center gap-x-1.5 border border-transparent text-sm text-gray-500 rounded-lg underline-offset-4 hover:underline hover:text-gray-600 focus:outline-hidden focus:underline focus:text-gray-600 before:absolute before:inset-0 before:z-1 dark:text-neutral-500 dark:hover:text-neutral-400 dark:focus:text-neutral-400",
+          "dropdownClasses": "end-0 mt-2 p-1 z-20 w-44 bg-white rounded-xl shadow-xl dark:bg-neutral-800",
+          "optionClasses": "flex items-center gap-x-3 py-2 px-3 text-xs sm:text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+        }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>Bestseller</option>
+        <option>Trending</option>
+        <option>Price low to high</option>
+        <option>Price hight to low</option>
+      </select>
+
+      <div class="absolute top-1/2 end-2 sm:end-1.5 -translate-y-1/2">
+        <svg
+          class="shrink-0 size-3 sm:size-4 text-gray-400 dark:text-neutral-600"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </div>
+    </div>
+    <!-- End Select -->
+  </div>
+  <!-- End Filter Group -->
+</div>

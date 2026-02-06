@@ -1,0 +1,127 @@
+{
+  "name": "Finance",
+  "description": "金融・決済",
+  "componentCount": 16,
+  "subcategories": [
+    {
+      "name": "FinanceCards",
+      "path": "Finance/FinanceCards/",
+      "components": [
+        {
+          "name": "PaymentGradientCards",
+          "path": "Finance/FinanceCards/PaymentGradientCards/",
+          "description": "クレジットカードやデビットカードを視覚的に再現したカードコンポーネント。ICチップ、NFC/タップ対応アイコン、マスキングされたカード番号、通貨、有効期限、カードブランドロゴ（Mastercard）を表示する。ダーク背景とライト背景の2種類のカラーバリエーションがあり、有効期限切れの状態も赤色テキストで表現できる。グリッドレイアウトで複数カードを並べて表示可能。",
+          "useCases": "ウォレットアプリやダッシュボードでの登録済み決済カード一覧表示、カード選択UI、決済手段管理画面、カード詳細ページへのナビゲーション、有効期限切れカードの視覚的警告表示"
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "path": "Finance/Payments/",
+      "components": [
+        {
+          "name": "ManageCardsWithSavedPaymentOptions",
+          "path": "Finance/Payments/ManageCardsWithSavedPaymentOptions/",
+          "description": "ヘッダー付きのカード管理リストコンポーネント。登録済み決済カード（Visa、Mastercardなど）を一覧表示し、カードブランドロゴ、マスキングされたカード番号、カード種類（Debit）、有効期限を表示する。デフォルトカードの設定・変更ボタン、編集ボタンを備え、有効期限切れカードも赤色テキストで識別可能。",
+          "useCases": "アカウント設定画面での決済カード管理、複数カードの一元管理UI、デフォルト決済手段の変更、カード情報の編集・更新"
+        },
+        {
+          "name": "PaymentCards",
+          "path": "Finance/Payments/PaymentCards/",
+          "description": "通貨残高を表示するコンパクトなカードコンポーネント。国旗アイコン（USD、GBPなど）と残高金額、通貨コードを表示する。関連付けられたカード番号の末尾4桁も表示可能。クリックで残高詳細ページへ遷移できるリンクカード形式。",
+          "useCases": "マルチカレンシーウォレットでの残高一覧表示、外貨口座の残高確認、決済アプリのホーム画面での残高サマリー"
+        },
+        {
+          "name": "PaymentDetailsCard",
+          "path": "Finance/Payments/PaymentDetailsCard/",
+          "description": "選択された決済方法を表示するコンパクトなボタン型カード。カードブランドロゴ、カード種類、マスキングされたカード番号、有効期限を横並びで表示し、「Change」リンクで決済方法変更モーダルを開く。",
+          "useCases": "チェックアウト画面での決済方法確認・変更、注文確認画面での支払い方法表示、定期購読の支払い方法表示"
+        },
+        {
+          "name": "PaymentListGroupWithDescriptionList",
+          "path": "Finance/Payments/PaymentListGroupWithDescriptionList/",
+          "description": "決済プロバイダーとの連携オプションを表示するリストコンポーネント。PayPal、Stripeなどのサービスロゴと、各サービスの特徴（処理時間、手数料情報など）を箇条書きで表示。各サービスに「Connect」ボタンを配置。",
+          "useCases": "出金方法の選択画面、決済プロバイダー連携設定、売上受け取り方法の設定、外部サービス連携オプションの提示"
+        },
+        {
+          "name": "SavedPaymentOptions",
+          "path": "Finance/Payments/SavedPaymentOptions/",
+          "description": "保存された決済オプションのシンプルなリストコンポーネント。ヘッダーなしのリスト形式で、カードブランドロゴ、カード番号、種類、有効期限、デフォルト設定ボタン、編集ボタンを表示する。",
+          "useCases": "決済方法選択画面でのカードリスト、シンプルな決済カード一覧表示、設定画面内の決済方法セクション"
+        },
+        {
+          "name": "SavedPaymentOptionsWithModalsInCard",
+          "path": "Finance/Payments/SavedPaymentOptionsWithModalsInCard/",
+          "description": "決済方法管理の完全なUIセット。タイトル・説明文付きのカード内に保存済み決済カードをリスト表示し、編集・追加用のモーダルダイアログも統合されている。カードの追加、編集、デフォルト設定の変更がすべてこのコンポーネント内で完結する。",
+          "useCases": "設定ページ内の決済方法管理セクション、独立した決済方法管理ページ、カード追加・編集機能が必要なシナリオ"
+        }
+      ]
+    },
+    {
+      "name": "PricingAndPlans",
+      "path": "Finance/PricingAndPlans/",
+      "components": [
+        {
+          "name": "AgencyListingPlans",
+          "path": "Finance/PricingAndPlans/AgencyListingPlans/",
+          "description": "エージェンシー/サービス向けのダークテーマ料金プラン一覧コンポーネント。複数のプラン（Starter、Pro、Elite）を縦並びで表示し、各プランに価格（月額）、プラン名、説明、2カラムの機能リストを含む。ホバー時にイエローのボーダーとグラデーション効果を表示。",
+          "useCases": "デザインエージェンシーや制作会社のサービス料金ページ、サブスクリプション型サービスのプラン選択画面、ダークテーマを採用したランディングページの料金セクション"
+        },
+        {
+          "name": "CompareTableWithFAQ",
+          "path": "Finance/PricingAndPlans/CompareTableWithFAQ/",
+          "description": "料金プラン比較テーブルとFAQセクションを組み合わせた包括的なコンポーネント。複数プラン（Free、Startup、Team、Enterprise）の機能をカテゴリ別に比較表示し、チェックマーク/マイナスアイコンで機能の有無を示す。下部にはよくある質問と回答のグリッドを配置。スティッキーヘッダー対応。",
+          "useCases": "料金ページでのプラン詳細比較、機能差分を明確にしたい場合のプラン選択支援、顧客の疑問解消を含む料金説明ページ"
+        },
+        {
+          "name": "PlanAndBilling",
+          "path": "Finance/PricingAndPlans/PlanAndBilling/",
+          "description": "現在のプランと請求情報を表示するカードコンポーネント。プラン名、Activeステータスバッジ、月額料金、更新日、シート使用状況（プログレスバー）を表示する。フッターには「Cancel subscription」と「Upgrade plan」ボタンを配置。",
+          "useCases": "アカウント設定ページのプラン情報セクション、ダッシュボードでの現在プラン表示、サブスクリプション管理画面"
+        },
+        {
+          "name": "PricingCardGridWithUpgradeModal",
+          "path": "Finance/PricingAndPlans/PricingCardGridWithUpgradeModal/",
+          "description": "グリッドレイアウトの料金プランカードとMonthly/Annual切り替えトグルを備えたコンポーネント。「Save up to 10%」バッジで年間プランの割引を強調。各プランカードにはロゴアイコン、価格（トグルで動的切替）、機能リスト、CTAボタンを表示。「Most popular」バッジで人気プランを強調可能。",
+          "useCases": "SaaS製品の料金ページ、ダッシュボード内のプランアップグレード画面、プラン選択フロー"
+        },
+        {
+          "name": "StartupPricingHero",
+          "path": "Finance/PricingAndPlans/StartupPricingHero/",
+          "description": "ヒーローセクション付きの料金プラン表示コンポーネント。大きなタイトル・サブタイトル、Monthly/Annuallyスイッチ、4カラムのプランカードグリッドで構成。グラデーション背景のヒーローエリアで視覚的なインパクトを与える。",
+          "useCases": "スタートアップやSaaSサービスの料金ページ、ランディングページの料金セクション、製品サイトのプライシングページ"
+        },
+        {
+          "name": "StartupPricingPlanFeatures",
+          "path": "Finance/PricingAndPlans/StartupPricingPlanFeatures/",
+          "description": "プランの機能比較テーブルコンポーネント。スティッキーヘッダーで4つのプラン（Free、Startup、Team、Enterprise）と価格を常に表示しながら、カテゴリ別に機能を比較できる。各機能の値（数値やテキスト）をプランごとに表示。",
+          "useCases": "料金ページでの詳細な機能比較セクション、プラン選択の意思決定支援、StartupPricingHeroと組み合わせた完全な料金ページ"
+        }
+      ]
+    },
+    {
+      "name": "ReceiptsOrTransactionDetails",
+      "path": "Finance/ReceiptsOrTransactionDetails/",
+      "components": [
+        {
+          "name": "PaymentReceivedTransactionDetails",
+          "path": "Finance/ReceiptsOrTransactionDetails/PaymentReceivedTransactionDetails/",
+          "description": "完了した送金取引の詳細を表示する2カラムカードコンポーネント。左側にタイムライン形式の取引履歴（更新ステップ）を表示し、各ステップにタイムスタンプと説明を含む。最終ステップには成功を示す緑のチェックマークアイコンを配置。右側には取引詳細（送金額、手数料、受取額）と受取人詳細（口座名義、SWIFT/BIC、IBAN、メール、銀行名）を表示。ダウンロードボタンでレポート出力が可能。",
+          "useCases": "送金完了後の取引確認画面、取引履歴の詳細表示、送金レシート・明細の表示、カスタマーサポート向けの取引情報参照"
+        },
+        {
+          "name": "PaymentRequestTransactionDetails",
+          "path": "Finance/ReceiptsOrTransactionDetails/PaymentRequestTransactionDetails/",
+          "description": "支払いリクエストの詳細を表示するコンパクトなカードコンポーネント。金額、ステータス（Pendingバッジ）、有効期限、参照番号、備考、支払いリンク（クリップボードコピー機能付き）、作成日を2カラムのdescription list形式で表示する。",
+          "useCases": "支払いリクエストの詳細確認画面、請求書リンクの共有、リクエスト状況の追跡、未払い請求の管理"
+        },
+        {
+          "name": "PaymentSendingConfirmationDetails",
+          "path": "Finance/ReceiptsOrTransactionDetails/PaymentSendingConfirmationDetails/",
+          "description": "送金前の確認画面を構成する包括的なカードコンポーネント。Transfer details（送金額、手数料、実送金額）、Recipient details（受取人口座情報）、Schedule details（送金タイミング、到着予定日）、Payment method（選択した決済方法）の4セクションで構成。各セクションにEdit/Changeリンクを配置し、モーダルで決済方法の変更が可能。決済方法選択モーダルでは、最近使用した方法とその他の方法（デビットカード、銀行口座、Wire transfer、SWIFT）を手数料・到着予定日と共にリスト表示。",
+          "useCases": "送金フローの最終確認ステップ、国際送金の詳細確認、決済方法の選択・変更、送金内容のレビュー画面"
+        }
+      ]
+    }
+  ]
+}

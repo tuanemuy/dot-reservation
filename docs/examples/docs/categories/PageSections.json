@@ -1,0 +1,981 @@
+{
+  "name": "PageSections",
+  "description": "ページセクション",
+  "componentCount": 90,
+  "subcategories": [
+    {
+      "name": "Banners",
+      "path": "PageSections/Banners/",
+      "components": [
+        {
+          "name": "GiftBanner",
+          "path": "PageSections/Banners/GiftBanner/",
+          "description": "絵文字付きのグラデーション背景バナー。プロモーションコードや無料プレゼントキャンペーンの告知に特化したデザインで、閉じるボタン付き。",
+          "useCases": [
+            "キャンペーン告知",
+            "クーポンコードの訴求",
+            "期間限定オファーの表示",
+            "購入特典の案内"
+          ]
+        },
+        {
+          "name": "LoginRegisterBanner",
+          "path": "PageSections/Banners/LoginRegisterBanner/",
+          "description": "グラデーション背景のアラートバナー。送料無料などの特典メッセージとともにログイン・会員登録へのリンクを表示する横長のバナー。",
+          "useCases": [
+            "未ログインユーザーへの会員登録促進",
+            "送料無料などの特典告知",
+            "ECサイトのヘッダー下部バナー"
+          ]
+        },
+        {
+          "name": "MiniNewsAnnouncementCard",
+          "path": "PageSections/Banners/MiniNewsAnnouncementCard/",
+          "description": "画像付きの小型お知らせカード。サムネイル画像、ラベル（New等）、タイトルを縦に配置し、ホバー時に矢印アイコンが表示されるインタラクティブなカード。",
+          "useCases": [
+            "新機能・新サービスの告知",
+            "ニュースのハイライト表示",
+            "サイドバーやウィジェットエリアでのお知らせ表示"
+          ]
+        },
+        {
+          "name": "RatePurchaseInFloatingCard",
+          "path": "PageSections/Banners/RatePurchaseInFloatingCard/",
+          "description": "画面下部に固定表示されるフローティングカード。購入済み商品をカルーセルで表示し、各商品の評価を促すUI。閉じるボタンと「後で評価する」オプション付き。",
+          "useCases": [
+            "購入後のレビュー依頼",
+            "商品評価の促進",
+            "ECサイトでの顧客フィードバック収集"
+          ]
+        },
+        {
+          "name": "SimpleSliderInGrayBackgroundBanner",
+          "path": "PageSections/Banners/SimpleSliderInGrayBackgroundBanner/",
+          "description": "グレー背景の自動再生カルーセルバナー。アイコン付きの短いメッセージを複数スライドで切り替え表示する。",
+          "useCases": [
+            "商品ページでのトレンド情報表示",
+            "閲覧数・販売数の表示",
+            "サイズ情報やその他の補足情報の表示"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DescriptionLists",
+      "path": "PageSections/DescriptionLists/",
+      "components": [
+        {
+          "name": "DescriptionListWithPointerIcon",
+          "path": "PageSections/DescriptionLists/DescriptionListWithPointerIcon/",
+          "description": "アイコン付きラベルと矢印、値を横に並べたコンパクトなリスト形式。プロジェクトや作業の統計情報を簡潔に表示する。",
+          "useCases": [
+            "プロジェクト統計の表示",
+            "作業時間・日数・コストのサマリー",
+            "ダッシュボードのメトリクス表示"
+          ]
+        },
+        {
+          "name": "ListGroupWithGroupLinks",
+          "path": "PageSections/DescriptionLists/ListGroupWithGroupLinks/",
+          "description": "カード形式の複合リストグループ。顧客情報、注文数、連絡先、配送先・請求先住所、決済情報などを複数セクションに分けて表示。各セクションに編集リンク付き。",
+          "useCases": [
+            "ECサイトの顧客詳細パネル",
+            "注文詳細のサイドバー",
+            "顧客管理画面の情報表示"
+          ]
+        },
+        {
+          "name": "ListWithDashedDividerAndClipboard",
+          "path": "PageSections/DescriptionLists/ListWithDashedDividerAndClipboard/",
+          "description": "破線区切りの2カラムリスト。各項目の値にクリップボードコピーボタンが付属し、ワンクリックでテキストをコピー可能。",
+          "useCases": [
+            "ユーザー詳細情報の表示",
+            "連絡先情報の参照",
+            "コピー操作が頻繁に必要な管理画面"
+          ]
+        },
+        {
+          "name": "ListWithDottedDividerAndClipboardAndCollapse",
+          "path": "PageSections/DescriptionLists/ListWithDottedDividerAndClipboardAndCollapse/",
+          "description": "点線区切りの2カラムリストで、クリップボードコピー機能と折りたたみ（Show more/Show less）機能を併せ持つ。長い仕様リストを省スペースで表示可能。",
+          "useCases": [
+            "商品仕様の表示",
+            "製品詳細ページ",
+            "技術仕様やスペック一覧"
+          ]
+        },
+        {
+          "name": "SimpleWithIcons",
+          "path": "PageSections/DescriptionLists/SimpleWithIcons/",
+          "description": "アイコン付きの縦並びリスト。組織名、所在地、タイムゾーン、メール、外部リンクなどを各行にアイコンとともに表示。リンク項目はホバー時にアンダーライン表示。",
+          "useCases": [
+            "ユーザープロフィールのサイドバー",
+            "会社情報の表示",
+            "連絡先・SNSリンクの一覧"
+          ]
+        },
+        {
+          "name": "UserInfoDescriptionList",
+          "path": "PageSections/DescriptionLists/UserInfoDescriptionList/",
+          "description": "3カラムグリッドの区切り線付きリスト。ユーザーID（リンク）、電話番号（国旗付き）、住所、ステータスバッジなど多様な形式の情報を表示可能。",
+          "useCases": [
+            "管理画面のユーザー詳細",
+            "アカウント情報ページ",
+            "顧客データの閲覧画面"
+          ]
+        },
+        {
+          "name": "UserInfoDescriptionStretchedBetweenList",
+          "path": "PageSections/DescriptionLists/UserInfoDescriptionStretchedBetweenList/",
+          "description": "シンプルな2カラムの定義リスト（dl/dt/dd）。ラベルを左、値を右寄せで配置。区切り線なしのミニマルなデザイン。",
+          "useCases": [
+            "コンパクトなプロフィール情報表示",
+            "カード内の詳細情報",
+            "ポップオーバーやツールチップ内の情報"
+          ]
+        },
+        {
+          "name": "UserProfileCardWithDescriptionList",
+          "path": "PageSections/DescriptionLists/UserProfileCardWithDescriptionList/",
+          "description": "カラフルなSVGヘッダー背景とアバター画像を持つプロフィールカード。2カラムグリッドで詳細情報を表示し、フッターにアクションボタン（削除・キャンセル・追加）を配置。",
+          "useCases": [
+            "ユーザー追加・編集モーダル",
+            "会員情報の確認画面",
+            "プロフィール詳細ページ"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Galleries",
+      "path": "PageSections/Galleries/",
+      "components": [
+        {
+          "name": "SmartHomeGallery",
+          "path": "PageSections/Galleries/SmartHomeGallery/",
+          "description": "無限ループのカルーセル形式ギャラリー。ガラスモーフィズム（半透明・ぼかし）スタイルのカードに画像を表示し、各スライドに「Live」バッジとデバイス名ラベルを配置。左右のナビゲーションボタンで操作可能。",
+          "useCases": [
+            "スマートホームアプリの監視カメラ映像表示",
+            "IoTデバイスのライブフィード一覧",
+            "セキュリティカメラのダッシュボード"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Invoice",
+      "path": "PageSections/Invoice/",
+      "components": [
+        {
+          "name": "ListingInvoice",
+          "path": "PageSections/Invoice/ListingInvoice/",
+          "description": "請求書リスト項目のカード形式コンポーネント。顧客名、請求書番号、日付、金額のサマリーを表示し、折りたたみで詳細（請求先・送信元住所・銀行情報）を展開可能。ステータスバッジ（Overdue等）、再送・キャンセルボタン、ダウンロード・アーカイブ・削除のアクションを備える。",
+          "useCases": [
+            "請求書管理画面のリスト表示",
+            "未払い請求書の一覧",
+            "SaaS管理ダッシュボードの請求履歴"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ListGroup",
+      "path": "PageSections/ListGroup/",
+      "components": [
+        {
+          "name": "AttachedFilesAndAvatarGroup",
+          "path": "PageSections/ListGroup/AttachedFilesAndAvatarGroup/",
+          "description": "カード形式の複合リスト。予定項目（時間・タイトル・カラーバー）、添付ファイルアイコン（Excel、Notion等）、参加者アバターグループを表示。会議やイベントの詳細表示に適している。",
+          "useCases": [
+            "カレンダーイベントの詳細表示",
+            "会議情報カード",
+            "タスク詳細のサイドパネル"
+          ]
+        },
+        {
+          "name": "BrandingLogosAndIcons",
+          "path": "PageSections/ListGroup/BrandingLogosAndIcons/",
+          "description": "ブランドロゴ付きプロジェクトリスト。各項目にサービスロゴ、タイトル、更新日時、コピー・アーカイブボタングループを配置。ツールチップ付き。",
+          "useCases": [
+            "連携サービスのプロジェクト一覧",
+            "外部ツール統合の管理画面",
+            "最近のファイル一覧"
+          ]
+        },
+        {
+          "name": "BrandingLogosWithButtons",
+          "path": "PageSections/ListGroup/BrandingLogosWithButtons/",
+          "description": "ブランドロゴ（Gmail、Notion、Word等）と説明文、Connectボタンを横並びに配置したリスト。外部サービス連携のUI。",
+          "useCases": [
+            "サードパーティ連携設定",
+            "インポートオプションの選択",
+            "アカウント連携画面"
+          ]
+        },
+        {
+          "name": "CardListWithBrandingLogosAndButtons",
+          "path": "PageSections/ListGroup/CardListWithBrandingLogosAndButtons/",
+          "description": "カード形式のリストで、ブランドロゴ、組織名とコラボレーション情報、Leaveボタンを配置。組織やプロジェクトへの参加状況を表示。",
+          "useCases": [
+            "参加中の組織一覧",
+            "コラボレーションの管理",
+            "チーム脱退の確認画面"
+          ]
+        },
+        {
+          "name": "ColorfulIconsInGroupHover",
+          "path": "PageSections/ListGroup/ColorfulIconsInGroupHover/",
+          "description": "カラフルなアイコン（青・紫・シアン・藍）付きのリンクリスト。各項目にラベルと矢印アイコンを配置し、ホバー時に背景色が変化。",
+          "useCases": [
+            "ヘルプメニュー",
+            "リソースリンク一覧",
+            "サポートオプションの表示"
+          ]
+        },
+        {
+          "name": "DownloadAppsListGroup",
+          "path": "PageSections/ListGroup/DownloadAppsListGroup/",
+          "description": "アプリダウンロードリスト。各プラットフォーム（MacOS、App Store、Google Play）のアイコン、名前、評価（星）、レビュー数を表示。",
+          "useCases": [
+            "アプリダウンロードページ",
+            "プラットフォーム選択画面",
+            "アプリ紹介セクション"
+          ]
+        },
+        {
+          "name": "IconAndButtonListWithDashedDivider",
+          "path": "PageSections/ListGroup/IconAndButtonListWithDashedDivider/",
+          "description": "破線区切りのタスクリスト。アイコン、タスク名、Done/Startボタンを配置。完了済みタスクはボタンが無効化される。",
+          "useCases": [
+            "オンボーディングチェックリスト",
+            "セットアップウィザード",
+            "タスク進捗の表示"
+          ]
+        },
+        {
+          "name": "ListGroupWithLegendIndicators",
+          "path": "PageSections/ListGroup/ListGroupWithLegendIndicators/",
+          "description": "曜日別リストで、各項目に会話数とレベルインジケーター（Low/Medium/High）をドット表示で可視化。色分けで優先度や負荷を表現。",
+          "useCases": [
+            "週間アクティビティレポート",
+            "サポート負荷の可視化",
+            "スケジュールの混雑度表示"
+          ]
+        },
+        {
+          "name": "PendingTeamInvitationsList",
+          "path": "PageSections/ListGroup/PendingTeamInvitationsList/",
+          "description": "チーム招待リスト。アバター、名前、メールアドレス、ステータス（Accepted/Requested）をアイコンとともに表示。",
+          "useCases": [
+            "招待管理画面",
+            "チームメンバーの承認状況",
+            "ペンディング招待の一覧"
+          ]
+        },
+        {
+          "name": "TransparentBackgroundWithIconAndTextsInListView",
+          "path": "PageSections/ListGroup/TransparentBackgroundWithIconAndTextsInListView/",
+          "description": "ガラスモーフィズムスタイル（半透明・ぼかし）の暗い背景カードに、アイコン付きデバイスリストを表示。各項目にデバイス名、モデル名、消費電力（kWh）を配置。スクロール可能。",
+          "useCases": [
+            "スマートホームダッシュボード",
+            "エネルギー消費モニター",
+            "IoTデバイス管理画面"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Navs",
+      "path": "PageSections/Navs/",
+      "components": [
+        {
+          "name": "BottomBorderedNav",
+          "path": "PageSections/Navs/BottomBorderedNav/",
+          "description": "下部にボーダーラインを持つシンプルなタブナビゲーション。アクティブなタブには下線インジケーターが表示され、ホバー時に背景色が変化。",
+          "useCases": [
+            "ページ内セクション切り替え",
+            "ECサイトのストア概要・支払いタブ",
+            "シンプルなサブナビゲーション"
+          ]
+        },
+        {
+          "name": "HorizontallyScrollableNavGroup",
+          "path": "PageSections/Navs/HorizontallyScrollableNavGroup/",
+          "description": "横スクロール可能なPillボタン（丸角）形式のナビゲーション。アイコン付きカテゴリボタンが横に並び、右端にフェードグラデーションでスクロールを示唆。",
+          "useCases": [
+            "製品カテゴリフィルター",
+            "ECサイトのカテゴリ選択",
+            "タグベースの絞り込みUI"
+          ]
+        },
+        {
+          "name": "UserProfileNav",
+          "path": "PageSections/Navs/UserProfileNav/",
+          "description": "アイコン付きの横スクロール可能なナビゲーション。各タブにSVGアイコンとラベルを配置し、アクティブ状態で下部に短いインジケーターバーを表示。自動センタリング機能付き。",
+          "useCases": [
+            "ユーザープロフィールページのタブ（プロフィール・チーム・ファイル・接続）",
+            "アカウント管理のサブナビ"
+          ]
+        },
+        {
+          "name": "WhitePilledNav",
+          "path": "PageSections/Navs/WhitePilledNav/",
+          "description": "白背景のPill形式タブナビゲーション。アクティブなタブはカード風の白背景・ボーダー・影を持ち、非アクティブタブは透明。自動センタリングとスナップスクロール対応。",
+          "useCases": [
+            "アカウント設定ページのナビゲーション",
+            "ダッシュボードのセクション切り替え",
+            "管理画面のタブメニュー"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NotificationSystems",
+      "path": "PageSections/NotificationSystems/",
+      "components": [
+        {
+          "name": "TableFormatListOfCheckboxes",
+          "path": "PageSections/NotificationSystems/TableFormatListOfCheckboxes/",
+          "description": "通知設定のマトリックス形式UI。Email・Desktop・Mobileの3つの通知チャンネルを列に、各通知項目を行に配置したグリッドレイアウト。セクションヘッダー（General、API、Tasks）で項目を分類し、各セクションに「Toggle all」リンクを配置。レスポンシブ対応でモバイルでは2列表示。",
+          "useCases": [
+            "アカウント設定の通知管理",
+            "アプリの通知設定画面",
+            "チームワークスペースの通知プリファレンス"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "QuickActions",
+      "path": "PageSections/QuickActions/",
+      "components": [
+        {
+          "name": "ButtonLinks",
+          "path": "PageSections/QuickActions/ButtonLinks/",
+          "description": "画面下部に固定表示されるフローティングアクションバー。選択数バッジ、メール送信・削除などのアクションリンク、閉じるボタンを黒背景の丸角バーに配置。複数アイテム選択時のバルク操作UI。",
+          "useCases": [
+            "テーブルやリストの複数選択時アクション",
+            "一括操作のフローティングメニュー",
+            "選択モードのコントロールバー"
+          ]
+        },
+        {
+          "name": "ButtonLinksInDardBackground",
+          "path": "PageSections/QuickActions/ButtonLinksInDardBackground/",
+          "description": "ダーク背景のフローティングアクションバー。Delete（赤）・Cancel・Save changes（緑）のリンクと閉じるボタンを配置。編集モード時の保存・キャンセル操作用。",
+          "useCases": [
+            "フォーム編集時の保存確認バー",
+            "変更操作のフローティングコントロール",
+            "編集モードのアクションバー"
+          ]
+        },
+        {
+          "name": "CardLinkWithIconGridView",
+          "path": "PageSections/QuickActions/CardLinkWithIconGridView/",
+          "description": "3列グリッドのアカウント設定カード。各カードにアイコン、タイトル、説明を配置し、ホバー時にインディゴ色のボーダーと影が表示。注意が必要な項目には赤いバッジ表示。",
+          "useCases": [
+            "アカウント設定ダッシュボード",
+            "ECサイトのマイページメニュー",
+            "ユーザー設定のカテゴリ選択"
+          ]
+        },
+        {
+          "name": "CardsWithLargeSoftIcons",
+          "path": "PageSections/QuickActions/CardsWithLargeSoftIcons/",
+          "description": "ソフトカラー背景の大きなアイコンを持つカードグリッド。Blank page、Whiteboard、Diagram、Empathy Mapsなどのテンプレート選択用。「All templates」リンクカードも含む。",
+          "useCases": [
+            "テンプレート選択画面",
+            "新規作成ウィザード",
+            "ホワイトボードアプリのスタート画面"
+          ]
+        },
+        {
+          "name": "ContactsList",
+          "path": "PageSections/QuickActions/ContactsList/",
+          "description": "アイコン付きの連絡先リスト。Chat、Phone、Email、Feedbackの各項目にアクションリンク（Open chat、電話番号、Send us email等）を配置。",
+          "useCases": [
+            "ヘルプセンターの連絡先一覧",
+            "サポートページのコンタクト情報",
+            "フッターの連絡先ウィジェット"
+          ]
+        },
+        {
+          "name": "DarkCardStyleButton",
+          "path": "PageSections/QuickActions/DarkCardStyleButton/",
+          "description": "ダーク背景（黒/白）のコンパクトなアクションボタン。白い丸アイコンとラベルを縦に配置。新規タスク追加などの単一アクション用。",
+          "useCases": [
+            "カンバンボードの新規タスク追加",
+            "クイック作成ボタン",
+            "コンパクトなCTAボタン"
+          ]
+        },
+        {
+          "name": "GridListLinkWithTitleAndGrayBackgroundIcon",
+          "path": "PageSections/QuickActions/GridListLinkWithTitleAndGrayBackgroundIcon/",
+          "description": "グレー背景の丸アイコン、タイトル、右矢印を横並びに配置したグリッドリンク。Show PIN、Card details、Freeze cardなどのカード管理アクション用。",
+          "useCases": [
+            "クレジットカード管理のクイックアクション",
+            "設定メニュー",
+            "モバイルバンキングアプリの操作メニュー"
+          ]
+        },
+        {
+          "name": "GroupHoverActions",
+          "path": "PageSections/QuickActions/GroupHoverActions/",
+          "description": "日付でグループ化されたトランザクションリスト。各項目にアバター/ロゴ、名前、送受信アイコン、時刻、金額、残高を表示。受信は緑、送信はデフォルト色で区別。",
+          "useCases": [
+            "銀行アプリの取引履歴",
+            "支払いアプリのトランザクション一覧",
+            "決済履歴ページ"
+          ]
+        },
+        {
+          "name": "ItemSummaryLinkCard",
+          "path": "PageSections/QuickActions/ItemSummaryLinkCard/",
+          "description": "ボーダー付きカード形式のリンク。左にアイコン、中央にタイトルと説明文、右に矢印を配置。注文追跡などの説明付きアクションに適している。",
+          "useCases": [
+            "FAQのクイックリンク",
+            "ヘルプトピックカード",
+            "ECサイトの注文状況確認リンク"
+          ]
+        },
+        {
+          "name": "ListLinkWithTitleAndAvatar",
+          "path": "PageSections/QuickActions/ListLinkWithTitleAndAvatar/",
+          "description": "国旗画像をアバターに使用したリスト形式のリンク。通貨名と銀行情報（Sort code、IBAN等）を表示。通貨・国選択用のUI。",
+          "useCases": [
+            "通貨選択メニュー",
+            "国際送金の送金先選択",
+            "マルチカレンシー口座の選択"
+          ]
+        },
+        {
+          "name": "ListLinkWithTitleAndGrayBackgroundIcon",
+          "path": "PageSections/QuickActions/ListLinkWithTitleAndGrayBackgroundIcon/",
+          "description": "グレー背景の丸アイコン、タイトル、サブテキスト、右矢印を配置したリストリンク。未払い件数などのバッジ表示も可能。支払い管理のナビゲーション用。",
+          "useCases": [
+            "支払い管理メニュー",
+            "スケジュール転送・自動引落の管理",
+            "決済設定のナビゲーション"
+          ]
+        },
+        {
+          "name": "SimpleBorderedCardWithIcon",
+          "path": "PageSections/QuickActions/SimpleBorderedCardWithIcon/",
+          "description": "グレー背景の丸アイコンとタイトル・サブテキストを横並びに配置したシンプルなボーダーカード。「Open a new balance」などの単一アクション用。",
+          "useCases": [
+            "新規作成アクション",
+            "残高開設ボタン",
+            "シンプルなCTAカード"
+          ]
+        },
+        {
+          "name": "SimpleCardsWithIcons",
+          "path": "PageSections/QuickActions/SimpleCardsWithIcons/",
+          "description": "横スクロール可能なカード群。各カードにアイコン、タイトル、説明を縦に配置。Product、Discount、Collection、Get paid、Preline productsなどのアクション選択用。",
+          "useCases": [
+            "ECダッシュボードのクイックアクション",
+            "管理画面の機能選択",
+            "オンボーディングのオプション選択"
+          ]
+        },
+        {
+          "name": "UserDetailsWithMoreButtonsOnHover",
+          "path": "PageSections/QuickActions/UserDetailsWithMoreButtonsOnHover/",
+          "description": "ユーザーリストでホバー時にアクションボタン群（表示/非表示、オプション、削除）が表示されるUI。アバター、名前、役職/メールを表示。オーガナイザーには緑のチェックバッジ。",
+          "useCases": [
+            "会議参加者の管理",
+            "チームメンバーリスト",
+            "イベント出席者の編集"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SetUpFlows",
+      "path": "PageSections/SetUpFlows/",
+      "components": [
+        {
+          "name": "SetUpFlowListGroup",
+          "path": "PageSections/SetUpFlows/SetUpFlowListGroup/",
+          "description": "プログレスバー付きのリスト形式セットアップカード。4分割のプログレスバーで完了度を可視化し、各タスクをグレー背景のリストアイテムとして表示。完了済みはチェックマーク、未完了はアイコンを表示。",
+          "useCases": [
+            "ダッシュボードのプロフィール完成度ウィジェット",
+            "オンボーディング進捗カード",
+            "アカウント設定の完了チェック"
+          ]
+        },
+        {
+          "name": "SetUpFlowTimeline",
+          "path": "PageSections/SetUpFlows/SetUpFlowTimeline/",
+          "description": "タイムライン形式の進捗インジケーター付きセットアップカード。縦のラインで接続されたステップを表示し、完了済みはティールのチェックマーク、未完了はアイコンを表示。各ステップにアクションボタン付き。",
+          "useCases": [
+            "プロフィールセットアップウィザード",
+            "新規ユーザーのオンボーディング",
+            "マイルストーン形式のタスク管理"
+          ]
+        },
+        {
+          "name": "SetUpWithButtons",
+          "path": "PageSections/SetUpFlows/SetUpWithButtons/",
+          "description": "番号付きのコンパクトな縦リスト。完了済みはチェックマークと取り消し線、未完了は番号（破線円）で表示。各ステップに小型のアクションボタン（Download、Enable、Connect等）。",
+          "useCases": [
+            "ウィジェット内のクイックセットアップ",
+            "サイドバーのタスクリスト",
+            "コンパクトなオンボーディングチェックリスト"
+          ]
+        },
+        {
+          "name": "SidebarAndAccordionSetUp",
+          "path": "PageSections/SetUpFlows/SidebarAndAccordionSetUp/",
+          "description": "2カラムレイアウトの複合セットアップUI。左サイドバーにタイムライン形式の進捗インジケーター、右にアコーディオン形式の詳細セットアップステップ。アプリ連携（Slack、Notion、Gmail等）、プロジェクト追跡、チーム招待などの複数セクションを展開可能。",
+          "useCases": [
+            "初回セットアップウィザード",
+            "SaaS製品のオンボーディングページ",
+            "ワークスペース設定のガイド付きフロー"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SuccessMessage",
+      "path": "PageSections/SuccessMessage/",
+      "components": [
+        {
+          "name": "PaymentShareLink",
+          "path": "PageSections/SuccessMessage/PaymentShareLink/",
+          "description": "支払いリクエスト送信完了後の共有リンクUI。紫色のチェックマークアイコン、タイトル、説明文を中央配置し、共有URL入力欄（Openリンク付き）、コピー・新規リクエストボタン、Doneボタンを縦に配置。",
+          "useCases": [
+            "支払いリクエスト完了画面",
+            "共有リンク生成後の確認画面",
+            "決済リンクの共有ページ"
+          ]
+        },
+        {
+          "name": "PaymentSuccessMessage",
+          "path": "PageSections/SuccessMessage/PaymentSuccessMessage/",
+          "description": "シンプルな送金完了の成功メッセージ。紫色のチェックマークアイコン、見出し、説明文を中央配置し、「転送を管理」と「追加送金」の2つのアクションボタンを横並びで配置。",
+          "useCases": [
+            "送金完了確認画面",
+            "支払い処理成功ページ",
+            "入金スケジュール完了通知"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Timeline",
+      "path": "PageSections/Timeline/",
+      "components": [
+        {
+          "name": "Activity",
+          "path": "PageSections/Timeline/Activity/",
+          "description": "タスクやファイルの操作履歴を表示するアクティビティフィード。各アクティビティにアイコン、操作内容、タイムスタンプを縦に配置し、コネクターラインで接続。",
+          "useCases": [
+            "プロジェクト管理のアクティビティログ",
+            "ファイル操作履歴",
+            "タスク変更履歴"
+          ]
+        },
+        {
+          "name": "ActivityTimeline",
+          "path": "PageSections/Timeline/ActivityTimeline/",
+          "description": "プロジェクトのアクティビティを日付別にグループ化して表示するタイムライン。各エントリにブランドロゴ/アバター、アクション説明、タイムスタンプを配置し、日付ヘッダーで区切りを表示。",
+          "useCases": [
+            "プロジェクト活動ログ",
+            "インテグレーション履歴",
+            "外部サービス連携の操作履歴"
+          ]
+        },
+        {
+          "name": "ChatActivity",
+          "path": "PageSections/Timeline/ChatActivity/",
+          "description": "サポートチケットのアクティビティをチャット形式で表示するタイムライン。各エントリにアバター、ユーザー名、アクション内容、タイムスタンプを配置し、Telegram等の外部サービス連携も表示可能。",
+          "useCases": [
+            "カスタマーサポートのチケット履歴",
+            "ヘルプデスクの対応ログ",
+            "問い合わせ対応の経緯表示"
+          ]
+        },
+        {
+          "name": "CollapsableShowMoreButton",
+          "path": "PageSections/Timeline/CollapsableShowMoreButton/",
+          "description": "折りたたみ可能なアクティビティフィード。各アクティビティにアバター、ユーザー名、アクション内容、ファイルプレビュー（サムネイル・ファイル名・サイズ）を表示し、「Show more」ボタンで過去のアクティビティを展開表示。",
+          "useCases": [
+            "ダッシュボードのアクティビティ概要",
+            "通知一覧の省スペース表示",
+            "長いフィードの折りたたみ表示"
+          ]
+        },
+        {
+          "name": "CommentWithImages",
+          "path": "PageSections/Timeline/CommentWithImages/",
+          "description": "チャット形式のコメントタイムラインで画像添付機能付き。各コメントにユーザーアバター、名前、投稿日時、コメント本文、添付画像を表示し、ホバー時に絵文字リアクションと返信ボタンを表示。",
+          "useCases": [
+            "チームコラボレーションのコメント機能",
+            "タスクへのコメントスレッド",
+            "ファイルレビューのフィードバック"
+          ]
+        },
+        {
+          "name": "HistoryTimeline",
+          "path": "PageSections/Timeline/HistoryTimeline/",
+          "description": "ダークテーマのカルーセル形式で会社のマイルストーンを表示するタイムライン。スライダーで年を切り替え、各年の画像と説明を大きく表示。ナビゲーションボタンと年ラベルで操作。",
+          "useCases": [
+            "コーポレートサイトの沿革セクション",
+            "ブランドストーリーページ",
+            "会社紹介のインタラクティブ年表"
+          ]
+        },
+        {
+          "name": "HistoryTimelineWithImages",
+          "path": "PageSections/Timeline/HistoryTimelineWithImages/",
+          "description": "会社や組織の歴史を年単位で表示するタイムライン。左側に年ラベル、右側に画像と説明文を2カラムレイアウトで配置し、重要なマイルストーンを視覚的に表現。",
+          "useCases": [
+            "会社沿革ページ",
+            "組織の歴史紹介",
+            "プロジェクトの経緯説明"
+          ]
+        },
+        {
+          "name": "OrderStatus",
+          "path": "PageSections/Timeline/OrderStatus/",
+          "description": "縦型ステップタイムラインで注文の進捗状況を表示。各ステップにチェックマークアイコン、ステータス名、日時を配置し、完了済みステップは緑色、進行中は点滅アニメーション、未完了はグレーで視覚的に区別。",
+          "useCases": [
+            "注文追跡ページ",
+            "配送状況確認画面",
+            "ECサイトのマイページ注文詳細"
+          ]
+        },
+        {
+          "name": "PaymentTransactionsUpdates",
+          "path": "PageSections/Timeline/PaymentTransactionsUpdates/",
+          "description": "支払い処理の進行状況を表示するステップタイムライン。各ステップにチェックマークアイコン、処理名、日時を配置し、完了済みは紫色のチェック、未完了はグレーの円で表示。",
+          "useCases": [
+            "決済処理状況の確認画面",
+            "振込進捗ページ",
+            "支払いトラッキング"
+          ]
+        },
+        {
+          "name": "ReceiptTimeline",
+          "path": "PageSections/Timeline/ReceiptTimeline/",
+          "description": "支払い明細をタイムライン形式で表示するレシートコンポーネント。各項目に金額と説明を配置し、手数料、税金、合計金額を明確に区分して表示。",
+          "useCases": [
+            "支払い明細ページ",
+            "手数料内訳の表示",
+            "取引レシートの詳細画面"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TitleBars",
+      "path": "PageSections/TitleBars/",
+      "components": [
+        {
+          "name": "AnalyticsSurveyPageTitleBar",
+          "path": "PageSections/TitleBars/AnalyticsSurveyPageTitleBar/",
+          "description": "アンケート詳細ページ用のシンプルなタイトルバー。戻るリンクとページタイトルを横並びで配置。",
+          "useCases": [
+            "アンケート結果ページ",
+            "詳細画面への遷移後のナビゲーション",
+            "サブページのヘッダー"
+          ]
+        },
+        {
+          "name": "AnalyticsVisitorsPageTitleBar",
+          "path": "PageSections/TitleBars/AnalyticsVisitorsPageTitleBar/",
+          "description": "訪問者分析用の高機能タイトルバー。タイトル、現在の訪問者数（ライブインジケーター）、チャート表示トグルスイッチ、日付範囲ピッカー（2つのカレンダー並列表示）を配置。",
+          "useCases": [
+            "アクセス解析ダッシュボード",
+            "リアルタイム訪問者モニター",
+            "期間指定分析ページ"
+          ]
+        },
+        {
+          "name": "ButtonAndDropdownTitleBar",
+          "path": "PageSections/TitleBars/ButtonAndDropdownTitleBar/",
+          "description": "注文詳細ページ用のタイトルバー。注文番号タイトル、エクスポートボタン、Moreドロップダウン（Duplicate/Cancel/Archive/Edit/Print/Delete）を配置。",
+          "useCases": ["注文詳細ページ", "取引履歴の詳細画面", "レコード操作UI"]
+        },
+        {
+          "name": "CRMKanbanGroupHeading",
+          "path": "PageSections/TitleBars/CRMKanbanGroupHeading/",
+          "description": "CRM用カンバンボードのカラムヘッダー。ステータスバッジ（カラーインジケーター付き）、アイテム数、ドロップダウンメニュー（カラーピッカー、非表示、削除）、リスト追加ボタンを配置。",
+          "useCases": [
+            "CRMのパイプライン管理",
+            "営業案件管理ボード",
+            "顧客ステータス管理"
+          ]
+        },
+        {
+          "name": "CalendarHeader",
+          "path": "PageSections/TitleBars/CalendarHeader/",
+          "description": "カレンダーアプリ用のタイトルバー。サイドバートグル、表示切替ボタン（日/週/月/年）、日付表示、前後ナビゲーション、Todayボタン、イベント追加ボタンを配置。",
+          "useCases": [
+            "カレンダーアプリのヘッダー",
+            "スケジュール管理画面",
+            "予定表示ページのナビゲーション"
+          ]
+        },
+        {
+          "name": "ClipboardTitleWithButtonGroup",
+          "path": "PageSections/TitleBars/ClipboardTitleWithButtonGroup/",
+          "description": "トランザクション詳細用のタイトルバー。取引ID（クリップボードコピー機能付き）、アクションボタン群（Repeat transfer/Cancel transfer）を配置。",
+          "useCases": [
+            "送金詳細ページ",
+            "取引履歴の詳細画面",
+            "決済キャンセル/再実行UI"
+          ]
+        },
+        {
+          "name": "DashboardKanbanGroupHeading",
+          "path": "PageSections/TitleBars/DashboardKanbanGroupHeading/",
+          "description": "ダッシュボード用カンバンボードのカラムヘッダー。ステータスドロップダウン（カラーピッカー付き）、アイテム数、タスク追加ボタンを配置。",
+          "useCases": [
+            "汎用ダッシュボードのカンバンビュー",
+            "タスク管理システム",
+            "ステータス管理ボード"
+          ]
+        },
+        {
+          "name": "DatepickerAndActionButtonTitleBar",
+          "path": "PageSections/TitleBars/DatepickerAndActionButtonTitleBar/",
+          "description": "概要セクション用のタイトルバー。セクションタイトル、カレンダードロップダウン（月/年選択付き）、アクションボタン（Add project）を配置。",
+          "useCases": [
+            "ダッシュボードの概要セクション",
+            "プロジェクト一覧ページ",
+            "日付フィルター付きレポート"
+          ]
+        },
+        {
+          "name": "DraftDetailsNavbar",
+          "path": "PageSections/TitleBars/DraftDetailsNavbar/",
+          "description": "下書き詳細用のメタデータバー。作成日時と更新日時を横並びで表示するシンプルなナビゲーションバー。",
+          "useCases": [
+            "ドキュメント編集画面のメタ情報",
+            "下書き管理ページ",
+            "コンテンツの更新履歴表示"
+          ]
+        },
+        {
+          "name": "DropdownOptionsTitleBar",
+          "path": "PageSections/TitleBars/DropdownOptionsTitleBar/",
+          "description": "チャート/レポート用のタイトルバー。セクションタイトル、ダウンロードドロップダウン（Excel/Word切替、オプションチェックボックス）、その他オプションドロップダウン（共有/全画面/連携）を配置。",
+          "useCases": [
+            "分析ダッシュボードのチャートヘッダー",
+            "レポート出力機能",
+            "データ可視化コンポーネント"
+          ]
+        },
+        {
+          "name": "E-CommerceKanbanGroupHeading",
+          "path": "PageSections/TitleBars/E-CommerceKanbanGroupHeading/",
+          "description": "EC用カンバンボードのシンプルなカラムヘッダー。ステータス名、アイテム数、タスク追加ボタンのみを配置したミニマルデザイン。",
+          "useCases": [
+            "EC注文管理のカンバンボード",
+            "配送ステータス管理",
+            "簡易タスク管理"
+          ]
+        },
+        {
+          "name": "InputAndButtonTitleBar",
+          "path": "PageSections/TitleBars/InputAndButtonTitleBar/",
+          "description": "プロジェクト一覧用のタイトルバー。セクションタイトル、検索入力欄、追加ボタンを配置。",
+          "useCases": [
+            "プロジェクト一覧ページ",
+            "検索機能付きリストヘッダー",
+            "アイテム追加機能付きセクション"
+          ]
+        },
+        {
+          "name": "LargeSubtitleAndActionButtons",
+          "path": "PageSections/TitleBars/LargeSubtitleAndActionButtons/",
+          "description": "残高表示用の大型タイトルバー。通貨フラグアイコン、金額表示、サブタイトル、アクションボタン群（Add/Send/Request）、Moreドロップダウン（明細/引落/自動変換等）、カード情報ボタンを配置。",
+          "useCases": [
+            "決済アプリの残高ページ",
+            "ウォレット管理画面",
+            "送金サービスのダッシュボード"
+          ]
+        },
+        {
+          "name": "ProfileActionButton",
+          "path": "PageSections/TitleBars/ProfileActionButton/",
+          "description": "プロフィールページ用のタイトルバー。サービスロゴ（GitLab等）、店舗名、クリップボードコピー可能なリファラルURL、アクションボタンを配置。",
+          "useCases": [
+            "リファラルプログラムのダッシュボード",
+            "ストア管理画面",
+            "アフィリエイトリンク共有ページ"
+          ]
+        },
+        {
+          "name": "SelectAndShowingAmountTitleBar",
+          "path": "PageSections/TitleBars/SelectAndShowingAmountTitleBar/",
+          "description": "レビューセクション用のタイトルバー。セクションタイトル、表示件数（例：4 of 12）、ソート選択ドロップダウン（Relevant/Helpful/Newest等）を配置。",
+          "useCases": [
+            "レビュー一覧ページ",
+            "コメントセクション",
+            "フィードバック一覧の並べ替え"
+          ]
+        },
+        {
+          "name": "SubtitleAndNavigationButtons",
+          "path": "PageSections/TitleBars/SubtitleAndNavigationButtons/",
+          "description": "商品詳細ページ用のタイトルバー。ブランドリンク（サブタイトル）、商品名、Prev/Nextナビゲーションボタンを横並びで配置。",
+          "useCases": [
+            "ECサイトの商品詳細ページ",
+            "記事一覧のナビゲーション",
+            "コンテンツ間の移動UI"
+          ]
+        },
+        {
+          "name": "TitleAndSelect",
+          "path": "PageSections/TitleBars/TitleAndSelect/",
+          "description": "注文履歴用のタイトルバー。セクションタイトル、注文件数、年フィルター選択ドロップダウンを配置。",
+          "useCases": [
+            "注文履歴ページ",
+            "年別フィルター付きリスト",
+            "履歴データの絞り込み"
+          ]
+        },
+        {
+          "name": "TitleDropdownWithActionButtons",
+          "path": "PageSections/TitleBars/TitleDropdownWithActionButtons/",
+          "description": "プロジェクトヘッダー用のタイトルバー。プロジェクト名ドロップダウン（設定/管理画面/リンクコピー/退出）、アクションボタン群（Project/Invite/Members/お気に入り）を配置。",
+          "useCases": [
+            "チームプロジェクトのダッシュボード",
+            "コラボレーションツールのヘッダー",
+            "ワークスペース管理画面"
+          ]
+        },
+        {
+          "name": "TitleWithStorageProgressInfo",
+          "path": "PageSections/TitleBars/TitleWithStorageProgressInfo/",
+          "description": "ストレージ情報付きのタイトルバー。セクションタイトル、使用量表示テキスト、プログレスバー、ストレージ追加リンクを配置。",
+          "useCases": [
+            "クラウドストレージの管理画面",
+            "ファイル管理ページ",
+            "容量モニタリングUI"
+          ]
+        },
+        {
+          "name": "TitleWithTagsAndDropdowns",
+          "path": "PageSections/TitleBars/TitleWithTagsAndDropdowns/",
+          "description": "チャット/会話用のタイトルバー。会話タイトル、タグドロップダウン群（各タグに編集/削除/全会話表示オプション）を配置。",
+          "useCases": [
+            "チャットスレッドのヘッダー",
+            "チケット管理画面",
+            "タグ付きコンテンツの管理"
+          ]
+        },
+        {
+          "name": "WorkspaceKanbanGroupHeading",
+          "path": "PageSections/TitleBars/WorkspaceKanbanGroupHeading/",
+          "description": "ワークスペース用カンバンボードのカラムヘッダー。ステータスバッジ（カラーインジケーター付き）、アイテム数、ドロップダウンメニュー（カラーピッカー、非表示、削除）、タスク追加ボタンを配置。",
+          "useCases": [
+            "プロジェクト管理のカンバンボード",
+            "タスク管理システム",
+            "ワークフロー管理画面"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UserProfiles",
+      "path": "PageSections/UserProfiles/",
+      "components": [
+        {
+          "name": "BrandingLogoWithDatepickerAndClipboard",
+          "path": "PageSections/UserProfiles/BrandingLogoWithDatepickerAndClipboard/",
+          "description": "ブランディングストア用のプロフィールカード。サービスロゴ（GitLab等）、ストア名、クリップボードコピー可能なリファラルURL、日付ピッカー付きコミッション概要、統計指標（紹介数/完了数/売上）、Make payoutsボタンを配置。",
+          "useCases": [
+            "アフィリエイトダッシュボード",
+            "リファラルプログラム管理画面",
+            "コミッション収益レポートページ"
+          ]
+        },
+        {
+          "name": "CustomerDetails",
+          "path": "PageSections/UserProfiles/CustomerDetails/",
+          "description": "プロジェクト詳細用のコンパクトなヘッダー。ブランドアイコン（Dropbox等）、プロジェクト名、開始日/締切日、Moreドロップダウン（Edit/Archive/Delete）を白背景で配置。",
+          "useCases": [
+            "プロジェクト詳細ページのヘッダー",
+            "タスク管理の詳細表示",
+            "クライアント案件の概要表示"
+          ]
+        },
+        {
+          "name": "DescriptionWithAvatarInDarkBackground",
+          "path": "PageSections/UserProfiles/DescriptionWithAvatarInDarkBackground/",
+          "description": "ダーク背景のユーザープロフィールヘッダー。大きなアバター画像にProバッジ、ユーザー名、役職・電話・メールの詳細リスト、Contactボタンを配置したリッチなプロフィール表示。",
+          "useCases": [
+            "管理画面のユーザー詳細ページ",
+            "チームメンバーのプロフィール画面",
+            "クリエイターやエキスパートの紹介ページ"
+          ]
+        },
+        {
+          "name": "PaymentAvatarDetailsWithButtonGroup",
+          "path": "PageSections/UserProfiles/PaymentAvatarDetailsWithButtonGroup/",
+          "description": "支払いリクエスト用のユーザーヘッダー。イニシャルアバター（受信アイコン付き）、ユーザー名、Request again/Cancel requestボタンを配置。",
+          "useCases": [
+            "支払いリクエスト詳細ページ",
+            "送金依頼の管理画面",
+            "請求管理のユーザー表示"
+          ]
+        },
+        {
+          "name": "PaymentTransactionDetails",
+          "path": "PageSections/UserProfiles/PaymentTransactionDetails/",
+          "description": "支払い取引用のコンパクトなユーザー表示行。イニシャルアバター（送金アイコン付き）、ユーザー名、ステータスバッジ（Succeeded）、金額を横並びで配置。",
+          "useCases": [
+            "取引履歴のリスト項目",
+            "送金完了一覧",
+            "支払い明細の相手先表示"
+          ]
+        },
+        {
+          "name": "ProjectDetails",
+          "path": "PageSections/UserProfiles/ProjectDetails/",
+          "description": "プロジェクト詳細用のダーク背景対応ヘッダー。ブランドアイコン（Dropbox等）、クライアント名、プロジェクトタイトル、開始日/締切日、Moreドロップダウンを配置。",
+          "useCases": [
+            "プロジェクト管理画面のヘッダー",
+            "案件詳細ページ",
+            "タスクボードの上部表示"
+          ]
+        },
+        {
+          "name": "SimpleUserProfile",
+          "path": "PageSections/UserProfiles/SimpleUserProfile/",
+          "description": "シンプルなミニプロフィールコンポーネント。丸型アバター、ユーザー名、メールアドレス、Logoutリンクを横並びで配置したコンパクトなデザイン。",
+          "useCases": [
+            "サイドバーのユーザー情報表示",
+            "ヘッダーのログインユーザー表示",
+            "設定画面のアカウント概要"
+          ]
+        },
+        {
+          "name": "UserProfileCardWithActiveStatusModal",
+          "path": "PageSections/UserProfiles/UserProfileCardWithActiveStatusModal/",
+          "description": "カラフルなSVGバナー背景付きのユーザープロフィールカード。アバター画像、Offline状態インジケーター（赤色）、Follow/Unfollowトグルボタン、タブナビゲーション、ステータス設定モーダルを配置。",
+          "useCases": [
+            "SNS風のユーザープロフィール",
+            "コミュニティメンバーの詳細ページ",
+            "チームメンバー一覧からの詳細表示"
+          ]
+        },
+        {
+          "name": "UserProfileCardWithSetStatusModal",
+          "path": "PageSections/UserProfiles/UserProfileCardWithSetStatusModal/",
+          "description": "SVGバナー背景付きのユーザープロフィールカード。アバター画像、Set Statusボタン（絵文字ステータス選択モーダルを開く）、名前とユーザー名、タブナビゲーション（My Profile/Teams/Files/Connections）、Editボタンを配置。モーダルにはオフライン/おやすみモード/スケジュール設定機能あり。",
+          "useCases": [
+            "チームコラボレーションツールのプロフィール",
+            "チャットアプリのユーザー設定",
+            "社内SNSのプロフィールページ"
+          ]
+        }
+      ]
+    }
+  ]
+}

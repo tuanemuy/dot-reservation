@@ -1,0 +1,70 @@
+<div class="relative">
+  <div id="hs-pro-pytfrrch-bg"></div>
+  <div class="absolute top-0 start-0 size-full overflow-hidden">
+    <div id="hs-pro-pytfrrch-fg"></div>
+  </div>
+</div>
+
+<!-- Chart -->
+<div
+  id="hs-pro-pytfrrch"
+  class="mx-3 --prevent-on-load-init"
+  data-hs-range-slider='{
+    "start": [0, 1000],
+    "range": {
+      "min": 0,
+      "max": 1000
+    },
+    "connect": true,
+    "formatter": "integer",
+    "cssClasses": {
+      "target": "relative h-1 rounded-full bg-gray-100 dark:bg-neutral-700",
+      "base": "size-full relative z-1",
+      "origin": "absolute top-0 end-0 size-full origin-[0_0] rounded-full",
+      "handle": "absolute top-1/2 end-0 z-2 size-7 bg-white border border-gray-200 rounded-full shadow-lg cursor-pointer translate-x-2/4 -translate-y-2/4 dark:bg-neutral-800 dark:border-neutral-700",
+      "connects": "relative z-0 size-full rounded-full overflow-hidden",
+      "connect": "absolute top-0 end-0 z-1 size-full bg-purple-500 origin-[0_0]",
+      "touchArea": "absolute -top-1 -bottom-1 -start-1 -end-1"
+    }
+  }'
+></div>
+<!-- End Chart -->
+
+<!-- Input Group -->
+<div class="mt-8 flex justify-between gap-3">
+  <!-- Input -->
+  <div class="text-center">
+    <label
+      for="hs-pro-pytfrrch-vtit-min"
+      class="block mb-1 text-sm text-gray-500 dark:text-neutral-500"
+    >
+      Min
+    </label>
+    <input
+      id="hs-pro-pytfrrch-vtit-min"
+      type="number"
+      class="py-2 sm:py-2.5 px-3 block w-16 text-center border-gray-200 rounded-xl sm:text-sm ring-1 ring-transparent hover:border-purple-500 hover:ring-purple-500 focus:border-purple-500 focus:ring-purple-500 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:hover:ring-neutral-600 dark:focus:ring-neutral-600"
+      value="250"
+      style="-moz-appearance: textfield"
+    />
+  </div>
+  <!-- End Input -->
+
+  <!-- Input -->
+  <div class="text-center">
+    <label
+      for="hs-pro-pytfrrch-vtit-max"
+      class="block mb-1 text-sm text-gray-500 dark:text-neutral-500"
+    >
+      Max
+    </label>
+    <input
+      id="hs-pro-pytfrrch-vtit-max"
+      type="number"
+      class="py-2 sm:py-2.5 px-3 block w-16 text-center border-gray-200 rounded-xl sm:text-sm ring-1 ring-transparent hover:border-purple-500 hover:ring-purple-500 focus:border-purple-500 focus:ring-purple-500 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:hover:ring-neutral-600 dark:focus:ring-neutral-600"
+      value="750"
+      style="-moz-appearance: textfield"
+    />
+  </div>
+  <!-- End Input -->
+</div>

@@ -1,0 +1,156 @@
+<div
+  class="flex flex-col bg-white border border-stone-200 overflow-hidden rounded-xl shadow-2xs dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div
+    class="py-3 px-5 flex justify-between items-center gap-x-5 border-b border-stone-200 dark:border-neutral-700"
+  >
+    <h2 class="inline-block font-semibold text-stone-800 dark:text-neutral-200">
+      Organization
+    </h2>
+  </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div id="hs-add-product-organization-card-body" class="p-5 space-y-4">
+    <!-- Input -->
+    <div>
+      <label
+        for="hs-pro-daufvd"
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Vendor
+      </label>
+      <input
+        id="hs-pro-daufvd"
+        type="text"
+        class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+        placeholder="eg. Nike"
+      />
+    </div>
+    <!-- End Input -->
+
+    <!-- Input -->
+    <div>
+      <label
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Category
+      </label>
+
+      <!-- Select -->
+      <div class="relative">
+        <select
+          data-hs-select='{
+            "placeholder": "Select option...",
+            "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+            "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1.5 sm:py-2 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-stone-200 rounded-lg text-start sm:text-sm text-stone-800 focus:outline-hidden focus:ring-2 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+            "dropdownClasses": "mt-2 z-50 w-full min-w-36 max-h-72 z-50 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-900",
+            "optionClasses": "hs-selected:bg-stone-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-stone-800 cursor-pointer hover:bg-stone-100 rounded-lg focus:outline-hidden focus:bg-stone-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+            "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-stone-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+          }'
+          class="hidden"
+        >
+          <option value="">Choose</option>
+          <option>Clothing</option>
+          <option>Shoes</option>
+          <option>Electronics</option>
+          <option>Others</option>
+        </select>
+
+        <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+          <svg
+            class="shrink-0 size-3.5 text-stone-500"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m7 15 5 5 5-5" />
+            <path d="m7 9 5-5 5 5" />
+          </svg>
+        </div>
+      </div>
+      <!-- End Select -->
+    </div>
+    <!-- End Input -->
+
+    <!-- Input -->
+    <div>
+      <label
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Collections
+      </label>
+
+      <!-- Select -->
+      <div class="relative">
+        <select
+          data-hs-select='{
+            "placeholder": "Select option...",
+            "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+            "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1.5 sm:py-2 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-stone-200 rounded-lg text-start sm:text-sm text-stone-800 focus:outline-hidden focus:ring-2 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
+            "dropdownClasses": "mt-2 z-50 w-full min-w-36 max-h-72 z-50 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-900",
+            "optionClasses": "hs-selected:bg-stone-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-stone-800 cursor-pointer hover:bg-stone-100 rounded-lg focus:outline-hidden focus:bg-stone-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+            "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-stone-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+            "viewport": "#hs-add-product-organization-card-body"
+          }'
+          class="hidden"
+        >
+          <option value="">Choose</option>
+          <option>Winter</option>
+          <option>Spring</option>
+          <option>Summer</option>
+          <option>Autumn</option>
+        </select>
+
+        <div class="absolute top-1/2 end-2.5 -translate-y-1/2">
+          <svg
+            class="shrink-0 size-3.5 text-stone-500"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m7 15 5 5 5-5" />
+            <path d="m7 9 5-5 5 5" />
+          </svg>
+        </div>
+      </div>
+      <!-- End Select -->
+
+      <p class="mt-1.5 text-xs text-stone-500 dark:text-neutral-500">
+        Add this product to a collection so it’s easy to find in your store.
+      </p>
+    </div>
+    <!-- End Input -->
+
+    <!-- Input -->
+    <div>
+      <label
+        for="hs-pro-dauftg"
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Tags
+      </label>
+      <input
+        id="hs-pro-dauftg"
+        type="text"
+        class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+        placeholder="Enter tags"
+      />
+    </div>
+    <!-- End Input -->
+  </div>
+  <!-- End Body -->
+</div>

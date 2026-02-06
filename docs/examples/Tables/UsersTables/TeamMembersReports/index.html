@@ -1,0 +1,488 @@
+<div
+  class="flex flex-col bg-white border border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Heading -->
+  <div class="p-3 ps-4 border-b border-gray-200 dark:border-neutral-700">
+    <h3 class="font-medium text-gray-800 dark:text-neutral-200">
+      Team members
+    </h3>
+  </div>
+  <!-- End Heading -->
+
+  <div class="p-3 h-full">
+    <!-- Filter Group -->
+    <div class="flex justify-between flex-wrap items-center gap-1">
+      <div class="grow flex flex-wrap items-center gap-1">
+        <!-- Select -->
+        <div class="relative inline-block">
+          <select
+            multiple
+            data-hs-select='{
+              "placeholder": "Teams",
+              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 pe-2.5 ps-7 inline-flex shrink-0 justify-center items-center gap-x-1.5 text-xs text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+              "dropdownClasses": "mt-2 z-50 w-36 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-950",
+              "toggleSeparators": {
+                "betweenItemsAndCounter": "&"
+              },
+              "toggleCountText": "+",
+              "toggleCountTextPlacement": "prefix-no-space",
+              "toggleCountTextMinItems": 3,
+              "toggleCountTextMode": "nItemsAndCount",
+              "optionClasses": "py-1.5 px-2 w-full text-[13px] text-gray-800 rounded-lg cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+              "extraMarkup": "<div class=\"absolute top-1/2 start-2 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-600 dark:text-neutral-300 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/></svg></div>"
+            }'
+            class="hidden"
+          >
+            <option value="">Choose</option>
+            <option selected>Preline</option>
+            <option selected>Support</option>
+            <option selected>Finance</option>
+            <option>Others</option>
+          </select>
+        </div>
+        <!-- End Select -->
+
+        <!-- Select -->
+        <div class="relative inline-block">
+          <select
+            multiple
+            data-hs-select='{
+              "placeholder": "Status",
+              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 pe-2.5 ps-7 inline-flex shrink-0 justify-center items-center gap-x-1.5 text-xs text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+              "toggleSeparators": {
+                "betweenItemsAndCounter": "&"
+              },
+              "toggleCountText": "+",
+              "toggleCountTextPlacement": "prefix-no-space",
+              "toggleCountTextMinItems": 3,
+              "toggleCountTextMode": "nItemsAndCount",
+              "dropdownClasses": "mt-2 z-50 w-36 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-950",
+              "optionClasses": "py-1.5 px-2 w-full text-[13px] text-gray-800 rounded-lg cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+              "extraMarkup": "<div class=\"absolute top-1/2 start-2 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-600 dark:text-neutral-300 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10.1 2.182a10 10 0 0 1 3.8 0\"/><path d=\"M13.9 21.818a10 10 0 0 1-3.8 0\"/><path d=\"M17.609 3.721a10 10 0 0 1 2.69 2.7\"/><path d=\"M2.182 13.9a10 10 0 0 1 0-3.8\"/><path d=\"M20.279 17.609a10 10 0 0 1-2.7 2.69\"/><path d=\"M21.818 10.1a10 10 0 0 1 0 3.8\"/><path d=\"M3.721 6.391a10 10 0 0 1 2.7-2.69\"/><path d=\"M6.391 20.279a10 10 0 0 1-2.69-2.7\"/></svg></div>"
+            }'
+            class="hidden"
+          >
+            <option value="">Choose</option>
+            <option selected>Online</option>
+            <option selected>Busy</option>
+            <option>Away</option>
+            <option>Offline</option>
+          </select>
+        </div>
+        <!-- End Select -->
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative min-w-full sm:min-w-56">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-2.5"
+        >
+          <svg
+            class="shrink-0 size-4 text-gray-500 dark:text-neutral-400"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <input
+          type="text"
+          class="py-1 ps-8 pe-3 block w-full bg-gray-100 border-transparent rounded-lg sm:text-[13px] text-base focus:bg-white focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:bg-neutral-800 dark:focus:ring-neutral-600"
+          placeholder="Search members"
+        />
+        <div
+          class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1"
+        >
+          <button
+            type="button"
+            class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+            aria-label="Close"
+          >
+            <span class="sr-only">Close</span>
+            <svg
+              class="shrink-0 size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="m15 9-6 6" />
+              <path d="m9 9 6 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- End Search Input -->
+    </div>
+    <!-- End Filter Group -->
+
+    <!-- Table Section -->
+    <div
+      class="overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+    >
+      <div class="min-w-full inline-block align-middle">
+        <!-- Table -->
+        <table
+          class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700"
+        >
+          <thead>
+            <tr>
+              <th scope="col" class="p-2 text-start whitespace-nowrap min-w-48">
+                <span
+                  class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                >
+                  Name
+                </span>
+              </th>
+
+              <th scope="col" class="p-2 text-start whitespace-nowrap min-w-32">
+                <span
+                  class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                >
+                  Team
+                </span>
+              </th>
+
+              <th scope="col" class="p-2 text-start whitespace-nowrap">
+                <span
+                  class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                >
+                  Status
+                </span>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <img
+                    class="shrink-0 size-7 rounded-full"
+                    src="https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80"
+                    alt="Avatar"
+                  />
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Amanda Harvey
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Preline,
+                </span>
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Support
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-emerald-500 rounded-full"
+                  ></span>
+                  Online <span class="opacity-60">since</span> 08:47 AM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <span
+                    class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-indigo-500 text-white rounded-full"
+                  >
+                    R
+                  </span>
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Rachel Doe
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Preline
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-yellow-500 rounded-full"
+                  ></span>
+                  Busy <span class="opacity-60">since</span> 09:02 AM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <img
+                    class="shrink-0 size-7 rounded-full"
+                    src="https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                    alt="Avatar"
+                  />
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Costa Quinn
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Preline,
+                </span>
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Finance
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-emerald-500 rounded-full"
+                  ></span>
+                  Online <span class="opacity-60">since</span> 08:47 PM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <img
+                    class="shrink-0 size-7 rounded-full"
+                    src="https://images.unsplash.com/photo-1570654639102-bdd95efeca7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                    alt="Avatar"
+                  />
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Anna Richard
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Finance,
+                </span>
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Support
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-emerald-500 rounded-full"
+                  ></span>
+                  Online <span class="opacity-60">since</span> 09:00 PM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <span
+                    class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-pink-500 text-white rounded-full"
+                  >
+                    B
+                  </span>
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Bob Dean
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Preline
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-yellow-500 rounded-full"
+                  ></span>
+                  Busy <span class="opacity-60">since</span> 06:01 PM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <span
+                    class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-teal-500 text-white rounded-full"
+                  >
+                    M
+                  </span>
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Mark Colbert
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Support
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-emerald-500 rounded-full"
+                  ></span>
+                  Online <span class="opacity-60">since</span> 09:12 AM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <img
+                    class="shrink-0 size-7 rounded-full"
+                    src="https://images.unsplash.com/photo-1659482634023-2c4fda99ac0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                    alt="Avatar"
+                  />
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Ella Lauda
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Support,
+                </span>
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Finance
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-yellow-500 rounded-full"
+                  ></span>
+                  Busy <span class="opacity-60">since</span> 08:54 AM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <td class="size-px p-2">
+                <div class="w-full flex items-center gap-x-3">
+                  <span
+                    class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-orange-500 text-white rounded-full"
+                  >
+                    O
+                  </span>
+                  <div class="grow">
+                    <span
+                      class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                    >
+                      Ols Schols
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span class="text-xs text-gray-600 dark:text-neutral-400">
+                  Support
+                </span>
+              </td>
+              <td class="size-px whitespace-nowrap p-2">
+                <span
+                  class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                >
+                  <span
+                    class="inline-block size-2 bg-yellow-500 rounded-full"
+                  ></span>
+                  Busy <span class="opacity-60">since</span> 05:33 PM
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- End Table -->
+      </div>
+    </div>
+    <!-- End Table Section -->
+  </div>
+
+  <div class="p-3 pt-0 text-center">
+    <a
+      class="p-2 inline-flex justify-center items-center gap-x-1 text-xs rounded-lg bg-white text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      href="#"
+    >
+      View all members
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </a>
+  </div>
+</div>

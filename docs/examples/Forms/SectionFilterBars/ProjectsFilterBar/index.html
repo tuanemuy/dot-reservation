@@ -1,0 +1,365 @@
+<div class="flex flex-wrap justify-between items-center gap-y-1 gap-x-5">
+  <h2
+    class="inline-block text-lg font-semibold text-gray-800 dark:text-neutral-200"
+  >
+    Projects
+  </h2>
+
+  <div class="flex flex-wrap sm:justify-end items-center gap-0.5 sm:gap-2">
+    <!-- Select -->
+    <div class="relative inline-block">
+      <select
+        id="hs-pro-select-view"
+        data-hs-select='{
+          "placeholder": "View",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"-ms-0.5 me-1.5\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200\" data-title></span></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1.5 px-2.5 inline-flex justify-center items-center text-start text-gray-800 text-[13px] rounded-lg align-middle hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 focus:outline-hidden before:absolute before:inset-0 before:z-1 dark:text-neutral-200",
+          "dropdownClasses": "mt-2 z-50 w-36 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-900",
+          "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+          "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div data-title></div></div><div class=\"text-sm text-gray-500 dark:text-neutral-500\" data-description></div></div>",
+          "viewport": "#hs-modal-status-body"
+        }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option
+          value="1"
+          selected
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 7v7\"/><path d=\"M12 7v4\"/><path d=\"M16 7v9\"/></svg>"
+        }'
+        >
+          Board
+        </option>
+        <option
+          value="2"
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/></svg>"
+        }'
+        >
+          Table
+        </option>
+        <option
+          value="3"
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 8h7\"/><path d=\"M8 12h6\"/><path d=\"M11 16h5\"/></svg>"
+        }'
+        >
+          Timeline
+        </option>
+      </select>
+    </div>
+    <!-- End Select -->
+
+    <!-- Select -->
+    <div class="relative inline-block">
+      <select
+        id="hs-pro-select-sorting"
+        data-hs-select='{
+          "placeholder": "Sorting",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"-ms-0.5 me-1.5\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200\" data-title></span></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1.5 px-2.5 inline-flex justify-center items-center text-start text-gray-800 text-[13px] rounded-lg align-middle hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 focus:outline-hidden before:absolute before:inset-0 before:z-1 dark:text-neutral-200",
+          "dropdownClasses": "mt-2 z-50 w-36 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-900",
+          "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+          "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div data-title></div></div><div class=\"text-sm text-gray-500 dark:text-neutral-500\" data-description></div></div>",
+          "viewport": "#hs-modal-status-body"
+        }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option
+          value="1"
+          selected
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><rect x=\"15\" y=\"4\" width=\"4\" height=\"6\" ry=\"2\"/><path d=\"M17 20v-6h-2\"/><path d=\"M15 20h4\"/></svg>"
+        }'
+        >
+          Newest first
+        </option>
+        <option
+          value="2"
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"M17 10V4h-2\"/><path d=\"M15 10h4\"/><rect x=\"15\" y=\"14\" width=\"4\" height=\"6\" ry=\"2\"/></svg>"
+        }'
+        >
+          Oldest first
+        </option>
+        <option
+          value="3"
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"M20 8h-5\"/><path d=\"M15 10V6.5a2.5 2.5 0 0 1 5 0V10\"/><path d=\"M15 14h5l-5 6h5\"/></svg>"
+        }'
+        >
+          A to Z
+        </option>
+        <option
+          value="4"
+          data-hs-select-option='{
+          "icon": "<svg class=\"shrink-0 size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 8 4-4 4 4\"/><path d=\"M7 4v16\"/><path d=\"M20 8h-5\"/><path d=\"M15 10V6.5a2.5 2.5 0 0 1 5 0V10\"/><path d=\"M15 14h5l-5 6h5\"/></svg>"
+        }'
+        >
+          Z to A
+        </option>
+      </select>
+    </div>
+    <!-- End Select -->
+
+    <div
+      class="relative ps-0.5 sm:ps-2 before:block before:absolute before:top-1/2 before:-start-px before:w-px before:h-4 before:bg-gray-300 before:-translate-y-1/2 dark:before:bg-neutral-700"
+    >
+      <!-- Filter Dropdown -->
+      <div class="hs-dropdown [--auto-close:inside] relative inline-flex">
+        <button
+          id="hs-pro-eakfd"
+          type="button"
+          class="py-1.5 px-2.5 inline-flex items-center gap-x-1.5 text-[13px] rounded-lg text-gray-800 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden dark:text-neutral-200"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          aria-label="Dropdown"
+        >
+          <svg
+            class="shrink-0 size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="21" x2="14" y1="4" y2="4" />
+            <line x1="10" x2="3" y1="4" y2="4" />
+            <line x1="21" x2="12" y1="12" y2="12" />
+            <line x1="8" x2="3" y1="12" y2="12" />
+            <line x1="21" x2="16" y1="20" y2="20" />
+            <line x1="12" x2="3" y1="20" y2="20" />
+            <line x1="14" x2="14" y1="2" y2="6" />
+            <line x1="8" x2="8" y1="10" y2="14" />
+            <line x1="16" x2="16" y1="18" y2="22" />
+          </svg>
+          Filter
+          <span
+            class="font-medium text-[10px] py-0.5 px-[5px] bg-gray-800 text-white leading-3 rounded-full dark:bg-neutral-500"
+          >
+            5
+          </span>
+        </button>
+
+        <!-- Filter Dropdown -->
+        <div
+          class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-48 transition-[opacity,margin] duration opacity-0 hidden z-20 bg-white rounded-xl shadow-xl dark:bg-neutral-900"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="hs-pro-eakfd"
+        >
+          <!-- Search Input -->
+          <div class="pt-1 px-1">
+            <div class="pb-1 border-b border-gray-200 dark:border-neutral-800">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-2.5"
+                >
+                  <svg
+                    class="shrink-0 size-3.5 text-gray-400 dark:text-white/60"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  class="py-1 sm:py-1.5 px-8 block w-full bg-gray-100 border-transparent rounded-md sm:text-sm placeholder:text-gray-500 focus:outline-hidden focus:border-blue-500 focus:ring-blue-500 focus:bg-white disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-transparent dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-600 dark:focus:bg-neutral-900"
+                  placeholder="Search"
+                />
+                <div
+                  class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1"
+                >
+                  <button
+                    type="button"
+                    class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                    aria-label="Close"
+                  >
+                    <span class="sr-only">Close</span>
+                    <svg
+                      class="shrink-0 size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Search Input -->
+
+          <div class="p-1 space-y-0.5">
+            <a
+              class="w-full flex items-center gap-x-2 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              href="#"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <circle cx="12" cy="10" r="3" />
+                <path d="M7 21v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
+              </svg>
+              Name
+            </a>
+            <a
+              class="w-full flex items-center gap-x-2 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              href="#"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              Email addresses
+            </a>
+            <a
+              class="w-full flex items-center gap-x-2 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              href="#"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M11 12H3" />
+                <path d="M16 6H3" />
+                <path d="M16 18H3" />
+                <path d="M21 12h-6" />
+              </svg>
+              Description
+            </a>
+            <a
+              class="w-full flex items-center gap-x-2 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              href="#"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+                <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+                <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+                <path d="M10 6h4" />
+                <path d="M10 10h4" />
+                <path d="M10 14h4" />
+                <path d="M10 18h4" />
+              </svg>
+              Company
+            </a>
+            <a
+              class="w-full flex items-center gap-x-2 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              href="#"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2" />
+                <rect width="18" height="18" x="3" y="4" rx="2" />
+                <circle cx="12" cy="10" r="2" />
+                <line x1="8" x2="8" y1="2" y2="4" />
+                <line x1="16" x2="16" y1="2" y2="4" />
+              </svg>
+              User ID
+            </a>
+          </div>
+        </div>
+        <!-- End Filter Dropdown -->
+      </div>
+      <!-- End Filter Dropdown -->
+    </div>
+
+    <button
+      type="button"
+      class="py-[7px] px-2 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+      data-hs-overlay="#hs-pro-eakcmnp"
+    >
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+      New
+    </button>
+    <!-- End Button -->
+  </div>
+</div>

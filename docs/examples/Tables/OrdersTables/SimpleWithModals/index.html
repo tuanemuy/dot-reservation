@@ -1,0 +1,765 @@
+<div
+  class="overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+>
+  <div class="min-w-full inline-block align-middle">
+    <!-- Table -->
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+      <thead>
+        <tr>
+          <th scope="col" class="w-1/4">
+            <div
+              class="pe-4 py-3 text-start flex items-center gap-x-1 text-sm font-medium text-gray-800 dark:text-neutral-200"
+            >
+              Invoice
+            </div>
+          </th>
+
+          <th scope="col" class="w-1/4">
+            <div
+              class="px-4 py-3 text-start flex items-center gap-x-1 text-sm font-medium text-gray-800 dark:text-neutral-200"
+            >
+              Billing date
+            </div>
+          </th>
+
+          <th scope="col" class="w-1/4">
+            <div
+              class="px-4 py-3 text-start flex items-center gap-x-1 text-sm font-medium text-gray-800 dark:text-neutral-200"
+            >
+              Amount
+            </div>
+          </th>
+
+          <th scope="col" class="w-1/4">
+            <div
+              class="px-4 py-3 text-start flex items-center gap-x-1 text-sm font-medium text-gray-800 dark:text-neutral-200"
+            >
+              Plan
+            </div>
+          </th>
+
+          <th scope="col"></th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+        <tr>
+          <td class="size-px whitespace-nowrap pe-4 py-3">
+            <div class="w-full flex items-center gap-x-2">
+              <svg
+                class="shrink-0 size-7"
+                width="400"
+                height="492"
+                viewBox="0 0 400 492"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip1)">
+                  <path
+                    d="M50.7496 -0.174609C22.9188 -0.174609 -0.0878906 22.4611 -0.0878906 50.6629V440.664C-0.0878906 468.495 22.5478 491.502 50.7496 491.502H349.095C376.926 491.502 399.932 468.866 399.932 440.664V119.683C399.932 119.683 400.675 110.406 396.593 101.129C392.882 92.5945 386.574 86.6573 386.574 86.6573L312.729 13.9263C312.729 13.9263 306.421 7.98906 297.144 3.90722C286.012 -0.916768 274.88 -0.174609 274.88 -0.174609H50.7496Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M50.7494 16.5238H274.508C274.508 16.5238 283.414 16.5238 290.094 19.4924C296.402 22.09 300.855 26.1718 300.855 26.1718L374.699 98.5317C374.699 98.5317 379.152 103.356 381.378 108.18C383.234 112.262 383.234 119.312 383.234 119.312V119.683V441.035C383.234 459.96 368.02 475.174 349.095 475.174H50.7494C31.8245 475.174 16.6104 459.96 16.6104 441.035V50.6629C16.6104 31.738 31.8245 16.5238 50.7494 16.5238Z"
+                    fill="currentColor"
+                    class="fill-white dark:fill-neutral-800"
+                  />
+                  <path
+                    d="M99.7314 292.976C88.2281 281.472 100.845 265.887 134.242 248.818L155.393 238.427L163.557 220.245C168.009 210.226 175.06 193.898 178.771 184.25L185.45 166.439L180.626 153.08C174.689 136.752 172.833 112.261 176.544 103.356C181.368 91.4812 197.696 92.5944 204.004 105.582C209.199 115.601 208.457 133.784 202.52 156.791L197.696 175.715L202.148 183.137C204.375 187.219 211.425 196.867 217.363 204.288L228.866 218.389L242.967 216.534C288.238 210.597 303.452 220.616 303.452 235.088C303.452 253.27 267.829 254.755 238.143 233.974C231.464 229.15 227.011 224.698 227.011 224.698C227.011 224.698 208.457 228.408 199.18 231.006C189.532 233.603 185.079 235.088 170.978 239.912C170.978 239.912 166.154 246.962 162.814 252.157C150.94 271.453 137.21 287.038 127.191 292.976C117.172 298.171 105.669 298.542 99.7314 292.976ZM117.914 286.296C124.222 282.214 137.581 267 146.487 252.528L150.198 246.591L133.499 255.126C107.895 268.113 96.0207 280.359 101.958 287.781C105.298 291.862 109.75 291.491 117.914 286.296ZM285.27 239.541C291.578 235.088 290.836 226.182 283.414 222.471C277.848 219.502 273.395 219.131 258.923 219.131C250.017 219.874 235.916 221.358 233.319 222.1C233.319 222.1 241.112 227.666 244.451 229.522C248.904 232.119 260.407 236.943 268.571 239.541C276.735 242.138 281.559 242.138 285.27 239.541ZM217.734 211.339C214.023 207.257 207.344 199.093 203.262 192.785C197.696 185.735 195.098 180.911 195.098 180.911C195.098 180.911 191.016 193.527 188.048 201.32L178.029 226.182L175.06 231.748C175.06 231.748 190.645 226.553 198.438 224.698C206.972 222.471 223.671 219.131 223.671 219.131L217.734 211.339ZM196.211 124.507C197.324 116.343 197.696 108.18 195.098 104.098C187.677 96.3051 179.142 102.613 180.626 121.538C180.997 127.847 182.853 138.979 184.708 145.658L188.419 157.904L191.016 148.627C192.501 143.803 194.727 132.671 196.211 124.507Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M119.398 346.04H137.952C143.889 346.04 148.713 346.782 152.424 347.895C156.135 349.008 159.104 351.606 161.701 355.316C164.299 359.027 165.412 363.851 165.412 369.046C165.412 373.87 164.299 378.323 162.443 381.663C160.217 385.374 157.619 387.971 154.28 389.455C150.94 390.94 145.374 391.682 138.323 391.682H132.015V420.997H119.398V346.04ZM132.015 355.688V382.034H138.323C143.889 382.034 147.6 380.921 149.827 379.065C152.053 376.839 153.166 373.499 153.166 369.046C153.166 365.707 152.424 362.738 150.94 360.512C149.456 358.285 147.971 357.172 146.487 356.43C145.003 356.059 142.034 355.688 138.694 355.688H132.015Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M175.431 346.04H192.501C200.664 346.04 207.344 347.524 212.168 350.492C216.992 353.461 220.702 357.543 223.3 363.48C225.898 369.046 227.011 375.726 227.011 382.405C227.011 389.827 225.898 396.506 223.671 402.072C221.445 407.638 218.105 412.462 213.281 415.802C208.828 419.513 202.149 420.997 193.243 420.997H175.431V346.04ZM187.677 356.059V411.349H192.872C200.293 411.349 205.488 408.751 208.828 403.927C212.168 398.732 213.652 392.053 213.652 383.889C213.652 365.336 206.602 356.059 192.872 356.059H187.677Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M238.885 346.04H280.816V356.059H251.501V378.694H274.879V388.713H251.501V421.368H238.885V346.04Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip1">
+                    <rect width="400" height="491.75" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <div class="grow">
+                <span
+                  class="text-sm font-medium text-gray-800 dark:text-neutral-200"
+                >
+                  25-02-2023
+                </span>
+              </div>
+            </div>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              25 Feb, 2023
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              $39
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              Startup
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <div class="flex gap-x-2">
+              <button
+                type="button"
+                class="py-2 px-2.5 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                data-hs-overlay="#hs-pro-dminvm"
+              >
+                View
+              </button>
+              <button
+                type="button"
+                class="size-8.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              >
+                <svg
+                  class="shrink-0 size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="size-px whitespace-nowrap pe-4 py-3">
+            <div class="w-full flex items-center gap-x-2">
+              <svg
+                class="shrink-0 size-7"
+                width="400"
+                height="492"
+                viewBox="0 0 400 492"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip4)">
+                  <path
+                    d="M50.7496 -0.174609C22.9188 -0.174609 -0.0878906 22.4611 -0.0878906 50.6629V440.664C-0.0878906 468.495 22.5478 491.502 50.7496 491.502H349.095C376.926 491.502 399.932 468.866 399.932 440.664V119.683C399.932 119.683 400.675 110.406 396.593 101.129C392.882 92.5945 386.574 86.6573 386.574 86.6573L312.729 13.9263C312.729 13.9263 306.421 7.98906 297.144 3.90722C286.012 -0.916768 274.88 -0.174609 274.88 -0.174609H50.7496Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M50.7494 16.5238H274.508C274.508 16.5238 283.414 16.5238 290.094 19.4924C296.402 22.09 300.855 26.1718 300.855 26.1718L374.699 98.5317C374.699 98.5317 379.152 103.356 381.378 108.18C383.234 112.262 383.234 119.312 383.234 119.312V119.683V441.035C383.234 459.96 368.02 475.174 349.095 475.174H50.7494C31.8245 475.174 16.6104 459.96 16.6104 441.035V50.6629C16.6104 31.738 31.8245 16.5238 50.7494 16.5238Z"
+                    fill="currentColor"
+                    class="fill-white dark:fill-neutral-800"
+                  />
+                  <path
+                    d="M99.7314 292.976C88.2281 281.472 100.845 265.887 134.242 248.818L155.393 238.427L163.557 220.245C168.009 210.226 175.06 193.898 178.771 184.25L185.45 166.439L180.626 153.08C174.689 136.752 172.833 112.261 176.544 103.356C181.368 91.4812 197.696 92.5944 204.004 105.582C209.199 115.601 208.457 133.784 202.52 156.791L197.696 175.715L202.148 183.137C204.375 187.219 211.425 196.867 217.363 204.288L228.866 218.389L242.967 216.534C288.238 210.597 303.452 220.616 303.452 235.088C303.452 253.27 267.829 254.755 238.143 233.974C231.464 229.15 227.011 224.698 227.011 224.698C227.011 224.698 208.457 228.408 199.18 231.006C189.532 233.603 185.079 235.088 170.978 239.912C170.978 239.912 166.154 246.962 162.814 252.157C150.94 271.453 137.21 287.038 127.191 292.976C117.172 298.171 105.669 298.542 99.7314 292.976ZM117.914 286.296C124.222 282.214 137.581 267 146.487 252.528L150.198 246.591L133.499 255.126C107.895 268.113 96.0207 280.359 101.958 287.781C105.298 291.862 109.75 291.491 117.914 286.296ZM285.27 239.541C291.578 235.088 290.836 226.182 283.414 222.471C277.848 219.502 273.395 219.131 258.923 219.131C250.017 219.874 235.916 221.358 233.319 222.1C233.319 222.1 241.112 227.666 244.451 229.522C248.904 232.119 260.407 236.943 268.571 239.541C276.735 242.138 281.559 242.138 285.27 239.541ZM217.734 211.339C214.023 207.257 207.344 199.093 203.262 192.785C197.696 185.735 195.098 180.911 195.098 180.911C195.098 180.911 191.016 193.527 188.048 201.32L178.029 226.182L175.06 231.748C175.06 231.748 190.645 226.553 198.438 224.698C206.972 222.471 223.671 219.131 223.671 219.131L217.734 211.339ZM196.211 124.507C197.324 116.343 197.696 108.18 195.098 104.098C187.677 96.3051 179.142 102.613 180.626 121.538C180.997 127.847 182.853 138.979 184.708 145.658L188.419 157.904L191.016 148.627C192.501 143.803 194.727 132.671 196.211 124.507Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M119.398 346.04H137.952C143.889 346.04 148.713 346.782 152.424 347.895C156.135 349.008 159.104 351.606 161.701 355.316C164.299 359.027 165.412 363.851 165.412 369.046C165.412 373.87 164.299 378.323 162.443 381.663C160.217 385.374 157.619 387.971 154.28 389.455C150.94 390.94 145.374 391.682 138.323 391.682H132.015V420.997H119.398V346.04ZM132.015 355.688V382.034H138.323C143.889 382.034 147.6 380.921 149.827 379.065C152.053 376.839 153.166 373.499 153.166 369.046C153.166 365.707 152.424 362.738 150.94 360.512C149.456 358.285 147.971 357.172 146.487 356.43C145.003 356.059 142.034 355.688 138.694 355.688H132.015Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M175.431 346.04H192.501C200.664 346.04 207.344 347.524 212.168 350.492C216.992 353.461 220.702 357.543 223.3 363.48C225.898 369.046 227.011 375.726 227.011 382.405C227.011 389.827 225.898 396.506 223.671 402.072C221.445 407.638 218.105 412.462 213.281 415.802C208.828 419.513 202.149 420.997 193.243 420.997H175.431V346.04ZM187.677 356.059V411.349H192.872C200.293 411.349 205.488 408.751 208.828 403.927C212.168 398.732 213.652 392.053 213.652 383.889C213.652 365.336 206.602 356.059 192.872 356.059H187.677Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M238.885 346.04H280.816V356.059H251.501V378.694H274.879V388.713H251.501V421.368H238.885V346.04Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip4">
+                    <rect width="400" height="491.75" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div class="grow">
+                <span
+                  class="text-sm font-medium text-gray-800 dark:text-neutral-200"
+                >
+                  25-01-2023
+                </span>
+              </div>
+            </div>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              25 Jan, 2023
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              $39
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              Startup
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <div class="flex gap-x-2">
+              <button
+                type="button"
+                class="py-2 px-2.5 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                data-hs-overlay="#hs-pro-dminvm"
+              >
+                View
+              </button>
+              <button
+                type="button"
+                class="size-8.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              >
+                <svg
+                  class="shrink-0 size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="size-px whitespace-nowrap pe-4 py-3">
+            <div class="w-full flex items-center gap-x-2">
+              <svg
+                class="shrink-0 size-7"
+                width="400"
+                height="492"
+                viewBox="0 0 400 492"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip3)">
+                  <path
+                    d="M50.7496 -0.174609C22.9188 -0.174609 -0.0878906 22.4611 -0.0878906 50.6629V440.664C-0.0878906 468.495 22.5478 491.502 50.7496 491.502H349.095C376.926 491.502 399.932 468.866 399.932 440.664V119.683C399.932 119.683 400.675 110.406 396.593 101.129C392.882 92.5945 386.574 86.6573 386.574 86.6573L312.729 13.9263C312.729 13.9263 306.421 7.98906 297.144 3.90722C286.012 -0.916768 274.88 -0.174609 274.88 -0.174609H50.7496Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M50.7494 16.5238H274.508C274.508 16.5238 283.414 16.5238 290.094 19.4924C296.402 22.09 300.855 26.1718 300.855 26.1718L374.699 98.5317C374.699 98.5317 379.152 103.356 381.378 108.18C383.234 112.262 383.234 119.312 383.234 119.312V119.683V441.035C383.234 459.96 368.02 475.174 349.095 475.174H50.7494C31.8245 475.174 16.6104 459.96 16.6104 441.035V50.6629C16.6104 31.738 31.8245 16.5238 50.7494 16.5238Z"
+                    fill="currentColor"
+                    class="fill-white dark:fill-neutral-800"
+                  />
+                  <path
+                    d="M99.7314 292.976C88.2281 281.472 100.845 265.887 134.242 248.818L155.393 238.427L163.557 220.245C168.009 210.226 175.06 193.898 178.771 184.25L185.45 166.439L180.626 153.08C174.689 136.752 172.833 112.261 176.544 103.356C181.368 91.4812 197.696 92.5944 204.004 105.582C209.199 115.601 208.457 133.784 202.52 156.791L197.696 175.715L202.148 183.137C204.375 187.219 211.425 196.867 217.363 204.288L228.866 218.389L242.967 216.534C288.238 210.597 303.452 220.616 303.452 235.088C303.452 253.27 267.829 254.755 238.143 233.974C231.464 229.15 227.011 224.698 227.011 224.698C227.011 224.698 208.457 228.408 199.18 231.006C189.532 233.603 185.079 235.088 170.978 239.912C170.978 239.912 166.154 246.962 162.814 252.157C150.94 271.453 137.21 287.038 127.191 292.976C117.172 298.171 105.669 298.542 99.7314 292.976ZM117.914 286.296C124.222 282.214 137.581 267 146.487 252.528L150.198 246.591L133.499 255.126C107.895 268.113 96.0207 280.359 101.958 287.781C105.298 291.862 109.75 291.491 117.914 286.296ZM285.27 239.541C291.578 235.088 290.836 226.182 283.414 222.471C277.848 219.502 273.395 219.131 258.923 219.131C250.017 219.874 235.916 221.358 233.319 222.1C233.319 222.1 241.112 227.666 244.451 229.522C248.904 232.119 260.407 236.943 268.571 239.541C276.735 242.138 281.559 242.138 285.27 239.541ZM217.734 211.339C214.023 207.257 207.344 199.093 203.262 192.785C197.696 185.735 195.098 180.911 195.098 180.911C195.098 180.911 191.016 193.527 188.048 201.32L178.029 226.182L175.06 231.748C175.06 231.748 190.645 226.553 198.438 224.698C206.972 222.471 223.671 219.131 223.671 219.131L217.734 211.339ZM196.211 124.507C197.324 116.343 197.696 108.18 195.098 104.098C187.677 96.3051 179.142 102.613 180.626 121.538C180.997 127.847 182.853 138.979 184.708 145.658L188.419 157.904L191.016 148.627C192.501 143.803 194.727 132.671 196.211 124.507Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M119.398 346.04H137.952C143.889 346.04 148.713 346.782 152.424 347.895C156.135 349.008 159.104 351.606 161.701 355.316C164.299 359.027 165.412 363.851 165.412 369.046C165.412 373.87 164.299 378.323 162.443 381.663C160.217 385.374 157.619 387.971 154.28 389.455C150.94 390.94 145.374 391.682 138.323 391.682H132.015V420.997H119.398V346.04ZM132.015 355.688V382.034H138.323C143.889 382.034 147.6 380.921 149.827 379.065C152.053 376.839 153.166 373.499 153.166 369.046C153.166 365.707 152.424 362.738 150.94 360.512C149.456 358.285 147.971 357.172 146.487 356.43C145.003 356.059 142.034 355.688 138.694 355.688H132.015Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M175.431 346.04H192.501C200.664 346.04 207.344 347.524 212.168 350.492C216.992 353.461 220.702 357.543 223.3 363.48C225.898 369.046 227.011 375.726 227.011 382.405C227.011 389.827 225.898 396.506 223.671 402.072C221.445 407.638 218.105 412.462 213.281 415.802C208.828 419.513 202.149 420.997 193.243 420.997H175.431V346.04ZM187.677 356.059V411.349H192.872C200.293 411.349 205.488 408.751 208.828 403.927C212.168 398.732 213.652 392.053 213.652 383.889C213.652 365.336 206.602 356.059 192.872 356.059H187.677Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M238.885 346.04H280.816V356.059H251.501V378.694H274.879V388.713H251.501V421.368H238.885V346.04Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip3">
+                    <rect width="400" height="491.75" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div class="grow">
+                <span
+                  class="text-sm font-medium text-gray-800 dark:text-neutral-200"
+                >
+                  25-12-2022
+                </span>
+              </div>
+            </div>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              25 Dec, 2022
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              $39
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              Startup
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <div class="flex gap-x-2">
+              <button
+                type="button"
+                class="py-2 px-2.5 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                data-hs-overlay="#hs-pro-dminvm"
+              >
+                View
+              </button>
+              <button
+                type="button"
+                class="size-8.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              >
+                <svg
+                  class="shrink-0 size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="size-px whitespace-nowrap pe-4 py-3">
+            <div class="w-full flex items-center gap-x-2">
+              <svg
+                class="shrink-0 size-7"
+                width="400"
+                height="492"
+                viewBox="0 0 400 492"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip2)">
+                  <path
+                    d="M50.7496 -0.174609C22.9188 -0.174609 -0.0878906 22.4611 -0.0878906 50.6629V440.664C-0.0878906 468.495 22.5478 491.502 50.7496 491.502H349.095C376.926 491.502 399.932 468.866 399.932 440.664V119.683C399.932 119.683 400.675 110.406 396.593 101.129C392.882 92.5945 386.574 86.6573 386.574 86.6573L312.729 13.9263C312.729 13.9263 306.421 7.98906 297.144 3.90722C286.012 -0.916768 274.88 -0.174609 274.88 -0.174609H50.7496Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M50.7494 16.5238H274.508C274.508 16.5238 283.414 16.5238 290.094 19.4924C296.402 22.09 300.855 26.1718 300.855 26.1718L374.699 98.5317C374.699 98.5317 379.152 103.356 381.378 108.18C383.234 112.262 383.234 119.312 383.234 119.312V119.683V441.035C383.234 459.96 368.02 475.174 349.095 475.174H50.7494C31.8245 475.174 16.6104 459.96 16.6104 441.035V50.6629C16.6104 31.738 31.8245 16.5238 50.7494 16.5238Z"
+                    fill="currentColor"
+                    class="fill-white dark:fill-neutral-800"
+                  />
+                  <path
+                    d="M99.7314 292.976C88.2281 281.472 100.845 265.887 134.242 248.818L155.393 238.427L163.557 220.245C168.009 210.226 175.06 193.898 178.771 184.25L185.45 166.439L180.626 153.08C174.689 136.752 172.833 112.261 176.544 103.356C181.368 91.4812 197.696 92.5944 204.004 105.582C209.199 115.601 208.457 133.784 202.52 156.791L197.696 175.715L202.148 183.137C204.375 187.219 211.425 196.867 217.363 204.288L228.866 218.389L242.967 216.534C288.238 210.597 303.452 220.616 303.452 235.088C303.452 253.27 267.829 254.755 238.143 233.974C231.464 229.15 227.011 224.698 227.011 224.698C227.011 224.698 208.457 228.408 199.18 231.006C189.532 233.603 185.079 235.088 170.978 239.912C170.978 239.912 166.154 246.962 162.814 252.157C150.94 271.453 137.21 287.038 127.191 292.976C117.172 298.171 105.669 298.542 99.7314 292.976ZM117.914 286.296C124.222 282.214 137.581 267 146.487 252.528L150.198 246.591L133.499 255.126C107.895 268.113 96.0207 280.359 101.958 287.781C105.298 291.862 109.75 291.491 117.914 286.296ZM285.27 239.541C291.578 235.088 290.836 226.182 283.414 222.471C277.848 219.502 273.395 219.131 258.923 219.131C250.017 219.874 235.916 221.358 233.319 222.1C233.319 222.1 241.112 227.666 244.451 229.522C248.904 232.119 260.407 236.943 268.571 239.541C276.735 242.138 281.559 242.138 285.27 239.541ZM217.734 211.339C214.023 207.257 207.344 199.093 203.262 192.785C197.696 185.735 195.098 180.911 195.098 180.911C195.098 180.911 191.016 193.527 188.048 201.32L178.029 226.182L175.06 231.748C175.06 231.748 190.645 226.553 198.438 224.698C206.972 222.471 223.671 219.131 223.671 219.131L217.734 211.339ZM196.211 124.507C197.324 116.343 197.696 108.18 195.098 104.098C187.677 96.3051 179.142 102.613 180.626 121.538C180.997 127.847 182.853 138.979 184.708 145.658L188.419 157.904L191.016 148.627C192.501 143.803 194.727 132.671 196.211 124.507Z"
+                    fill="currentColor"
+                    class="fill-red-500"
+                  />
+                  <path
+                    d="M119.398 346.04H137.952C143.889 346.04 148.713 346.782 152.424 347.895C156.135 349.008 159.104 351.606 161.701 355.316C164.299 359.027 165.412 363.851 165.412 369.046C165.412 373.87 164.299 378.323 162.443 381.663C160.217 385.374 157.619 387.971 154.28 389.455C150.94 390.94 145.374 391.682 138.323 391.682H132.015V420.997H119.398V346.04ZM132.015 355.688V382.034H138.323C143.889 382.034 147.6 380.921 149.827 379.065C152.053 376.839 153.166 373.499 153.166 369.046C153.166 365.707 152.424 362.738 150.94 360.512C149.456 358.285 147.971 357.172 146.487 356.43C145.003 356.059 142.034 355.688 138.694 355.688H132.015Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M175.431 346.04H192.501C200.664 346.04 207.344 347.524 212.168 350.492C216.992 353.461 220.702 357.543 223.3 363.48C225.898 369.046 227.011 375.726 227.011 382.405C227.011 389.827 225.898 396.506 223.671 402.072C221.445 407.638 218.105 412.462 213.281 415.802C208.828 419.513 202.149 420.997 193.243 420.997H175.431V346.04ZM187.677 356.059V411.349H192.872C200.293 411.349 205.488 408.751 208.828 403.927C212.168 398.732 213.652 392.053 213.652 383.889C213.652 365.336 206.602 356.059 192.872 356.059H187.677Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                  <path
+                    d="M238.885 346.04H280.816V356.059H251.501V378.694H274.879V388.713H251.501V421.368H238.885V346.04Z"
+                    fill="currentColor"
+                    class="fill-black dark:fill-white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip2">
+                    <rect width="400" height="491.75" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div class="grow">
+                <span
+                  class="text-sm font-medium text-gray-800 dark:text-neutral-200"
+                >
+                  25-11-2022
+                </span>
+              </div>
+            </div>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              25 Nov, 2022
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              $39
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <span class="text-sm text-gray-600 dark:text-neutral-400">
+              Startup
+            </span>
+          </td>
+          <td class="size-px whitespace-nowrap px-4 py-3">
+            <div class="flex gap-x-2">
+              <button
+                type="button"
+                class="py-2 px-2.5 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                data-hs-overlay="#hs-pro-dminvm"
+              >
+                View
+              </button>
+              <button
+                type="button"
+                class="size-8.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              >
+                <svg
+                  class="shrink-0 size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- End Table -->
+  </div>
+</div>
+<!-- End Table Section -->
+
+<!-- Invoice with Background Image -->
+<div
+  id="hs-pro-dminvm"
+  class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto [--close-when-click-inside:true] pointer-events-none"
+  role="dialog"
+  tabindex="-1"
+  aria-labelledby="hs-pro-dminvm-label"
+>
+  <div
+    class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto h-[calc(100%-56px)] min-h-[calc(100%-56px)] flex items-center"
+  >
+    <div
+      class="relative w-full max-h-full overflow-hidden flex flex-col bg-white rounded-xl pointer-events-auto shadow-xl dark:bg-neutral-800"
+    >
+      <!-- Close Button -->
+      <div class="absolute top-3 end-3 z-10">
+        <button
+          type="button"
+          class="size-8 shrink-0 flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+          aria-label="Close"
+          data-hs-overlay="#hs-pro-dminvm"
+        >
+          <span class="sr-only">Close</span>
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+      <!-- End Close Button -->
+
+      <!-- SVG Background Element -->
+      <figure>
+        <svg
+          preserveAspectRatio="none"
+          width="576"
+          height="120"
+          viewBox="0 0 576 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_666_273469)">
+            <rect width="576" height="120" fill="#B2E7FE" />
+            <rect
+              x="289.678"
+              y="-90.3"
+              width="102.634"
+              height="391.586"
+              transform="rotate(59.5798 289.678 -90.3)"
+              fill="#FF8F5D"
+            />
+            <rect
+              x="41.3926"
+              y="-0.996094"
+              width="102.634"
+              height="209.864"
+              transform="rotate(-31.6412 41.3926 -0.996094)"
+              fill="#3ECEED"
+            />
+            <rect
+              x="66.9512"
+              y="40.4817"
+              width="102.634"
+              height="104.844"
+              transform="rotate(-31.6412 66.9512 40.4817)"
+              fill="#4C48FF"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_666_273469">
+              <rect width="576" height="120" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </figure>
+      <!-- End SVG Background Element -->
+
+      <span
+        class="-mt-8 mx-auto relative z-10 flex shrink-0 justify-center items-center size-16 bg-white border border-gray-200 text-gray-700 text-xl font-medium uppercase shadow-2xs rounded-full dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300"
+      >
+        P
+      </span>
+
+      <!-- Body -->
+      <div
+        class="p-4 pt-3 space-y-8 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+      >
+        <div class="text-center">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
+            Preline
+          </h3>
+          <p
+            id="hs-pro-dminvm-label"
+            class="mt-1 text-sm text-gray-500 dark:text-neutral-500"
+          >
+            Invoice #3682303
+          </p>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-8">
+          <div>
+            <span
+              class="block text-xs uppercase text-gray-500 dark:text-neutral-500"
+              >Amount paid:</span
+            >
+            <span
+              class="block text-sm font-medium text-gray-800 dark:text-neutral-200"
+              >$264.00</span
+            >
+          </div>
+          <!-- End Col -->
+
+          <div>
+            <span
+              class="block text-xs uppercase text-gray-500 dark:text-neutral-500"
+              >Date paid:</span
+            >
+            <span
+              class="block text-sm font-medium text-gray-800 dark:text-neutral-200"
+              >April 22, 2020</span
+            >
+          </div>
+          <!-- End Col -->
+
+          <div>
+            <span
+              class="block text-xs uppercase text-gray-500 dark:text-neutral-500"
+              >Payment method:</span
+            >
+            <div class="flex items-center gap-x-2">
+              <svg
+                class="size-5"
+                width="400"
+                height="248"
+                viewBox="0 0 400 248"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0)">
+                  <path d="M254 220.8H146V26.4H254V220.8Z" fill="#FF5F00" />
+                  <path
+                    d="M152.8 123.6C152.8 84.2 171.2 49 200 26.4C178.2 9.2 151.4 0 123.6 0C55.4 0 0 55.4 0 123.6C0 191.8 55.4 247.2 123.6 247.2C151.4 247.2 178.2 238 200 220.8C171.2 198.2 152.8 163 152.8 123.6Z"
+                    fill="#EB001B"
+                  />
+                  <path
+                    d="M400 123.6C400 191.8 344.6 247.2 276.4 247.2C248.6 247.2 221.8 238 200 220.8C228.8 198.2 247.2 163 247.2 123.6C247.2 84.2 228.8 49 200 26.4C221.8 9.2 248.6 0 276.4 0C344.6 0 400 55.4 400 123.6Z"
+                    fill="#F79E1B"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0">
+                    <rect width="400" height="247.2" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <span
+                class="block text-sm font-medium text-gray-800 dark:text-neutral-200"
+                >•••• 4242</span
+              >
+            </div>
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Grid -->
+
+        <div class="mt-5 sm:mt-10">
+          <h4
+            class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200"
+          >
+            Summary
+          </h4>
+
+          <!-- List Group -->
+          <ul class="mt-3 flex flex-col">
+            <li
+              class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200"
+            >
+              <div class="flex items-center justify-between w-full">
+                <span>Payment to Preline</span>
+                <span>$264.00</span>
+              </div>
+            </li>
+            <li
+              class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200"
+            >
+              <div class="flex items-center justify-between w-full">
+                <span>Tax fee</span>
+                <span>$52.8</span>
+              </div>
+            </li>
+            <li
+              class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-semibold bg-gray-50 border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-neutral-700 dark:border-neutral-700 dark:text-neutral-200"
+            >
+              <div class="flex items-center justify-between w-full">
+                <span>Amount paid</span>
+                <span>$316.8</span>
+              </div>
+            </li>
+          </ul>
+          <!-- End List Group -->
+        </div>
+
+        <!-- Button Group -->
+        <div class="flex justify-end items-center gap-x-2">
+          <button
+            type="button"
+            class="p-2 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          >
+            <svg
+              class="shrink-0 size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"
+              />
+              <path
+                d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.266.266 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.71 12.71 0 0 1 1.01-.193 11.744 11.744 0 0 1-.51-.858 20.801 20.801 0 0 1-.5 1.05zm2.446.45c.15.163.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.876 3.876 0 0 0-.612-.053zM8.078 7.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z"
+              />
+            </svg>
+            PDF
+          </button>
+          <button
+            type="button"
+            class="p-2 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          >
+            <svg
+              class="shrink-0 size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            Print details
+          </button>
+        </div>
+        <!-- End Button Group -->
+      </div>
+      <!-- End Body -->
+
+      <!-- Footer -->
+      <div class="p-4 border-t border-gray-200 dark:border-neutral-700">
+        <p class="text-sm text-gray-500 dark:text-neutral-500">
+          If you have any questions, please contact us at
+          <a
+            class="whitespace-nowrap text-sm text-blue-600 decoration-2 hover:underline font-medium focus:outline-hidden focus:underline dark:text-blue-400 dark:hover:text-blue-500"
+            href="#"
+            >example@site.com</a
+          >
+          or call at
+          <a
+            class="whitespace-nowrap text-sm text-blue-600 decoration-2 hover:underline font-medium focus:outline-hidden focus:underline dark:text-blue-400 dark:hover:text-blue-500"
+            href="tel:+1898345492"
+            >+1 898-34-5492</a
+          >
+        </p>
+      </div>
+      <!-- End Footer -->
+    </div>
+  </div>
+</div>

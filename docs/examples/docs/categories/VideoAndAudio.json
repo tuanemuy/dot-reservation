@@ -1,0 +1,73 @@
+{
+  "name": "VideoAndAudio",
+  "description": "動画・音声",
+  "componentCount": 8,
+  "subcategories": [
+    {
+      "name": "VideoAndAudioInterfaces",
+      "path": "VideoAndAudio/VideoAndAudioInterfaces/",
+      "components": [
+        {
+          "name": "VideoCallSettings",
+          "path": "VideoAndAudio/VideoAndAudioInterfaces/VideoCallSettings/",
+          "description": "ビデオ通話前の設定パネル。カメラ、スピーカー、マイクのデバイス選択ドロップダウンと、スピーカー・マイクのテストボタン、音量レベルインジケーターを備えた包括的なデバイス設定UI。",
+          "useCases": "ビデオ会議アプリの通話前設定画面、オンライン面接システムのデバイス確認画面、ウェビナー参加前のオーディオ・ビデオチェック機能、リモートワークツールのAV設定パネル"
+        }
+      ]
+    },
+    {
+      "name": "VideoCallLayouts",
+      "path": "VideoAndAudio/VideoCallLayouts/",
+      "components": [
+        {
+          "name": "ParticipantPreviewOverlay",
+          "path": "VideoAndAudio/VideoCallLayouts/ParticipantPreviewOverlay/",
+          "description": "メイン発言者を全画面で大きく表示し、右端に他の参加者のサムネイルをスクロール可能なリストでオーバーレイ表示するレイアウト。発言者フォーカス型のビデオ通話UI。",
+          "useCases": "プレゼンテーション中のビデオ会議、ウェビナーの発言者ビュー、オンライン授業の講師画面、ライブ配信中のゲスト表示"
+        },
+        {
+          "name": "VideoCallLayoutFourGrid",
+          "path": "VideoAndAudio/VideoCallLayouts/VideoCallLayoutFourGrid/",
+          "description": "4人の参加者を2x2のグリッドで均等に表示するビデオ通話レイアウト。各参加者に名前ラベルとマイク状態インジケーターを配置。",
+          "useCases": "小規模チームミーティング、グループ面接、オンライン勉強会、4人以下のディスカッション"
+        },
+        {
+          "name": "VideoCallLayoutSixGrid",
+          "path": "VideoAndAudio/VideoCallLayouts/VideoCallLayoutSixGrid/",
+          "description": "6人の参加者を表示するビデオ通話レイアウト。大画面では3x2、小画面では2x3のレスポンシブグリッド。各参加者に名前ラベルとマイク状態インジケーターを配置。",
+          "useCases": "中規模チームミーティング、部門会議、オンラインワークショップ、複数人でのブレインストーミング"
+        },
+        {
+          "name": "VideoCallLayoutTwoGrid",
+          "path": "VideoAndAudio/VideoCallLayouts/VideoCallLayoutTwoGrid/",
+          "description": "2人の参加者を表示するビデオ通話レイアウト。大画面では横並び、小画面では縦並びのレスポンシブグリッド。各参加者に名前ラベルとマイク状態インジケーターを表示。",
+          "useCases": "1対1のビデオ通話画面、オンライン面接の面接官と候補者表示、カスタマーサポートのビデオチャット、リモート相談サービスの通話UI"
+        }
+      ]
+    },
+    {
+      "name": "VoiceMessages",
+      "path": "VideoAndAudio/VoiceMessages/",
+      "components": [
+        {
+          "name": "CRMVoiceMessage",
+          "path": "VideoAndAudio/VoiceMessages/CRMVoiceMessage/",
+          "description": "CRMシステム向けのコンパクトな音声メッセージプレーヤー。再生ボタン、波形ビジュアライザー、再生時間をインラインで表示するミニマルなデザイン。ボーダー付きカードスタイル。",
+          "useCases": "CRMの顧客対応履歴での音声メモ表示、営業管理システムの通話録音プレビュー、カスタマーサポートのボイスメッセージ一覧、業務システムの音声添付ファイル表示"
+        },
+        {
+          "name": "ChatVoiceMessage",
+          "path": "VideoAndAudio/VoiceMessages/ChatVoiceMessage/",
+          "description": "再生済み状態のチャット用音声メッセージバブル。白背景にシャドウ付きのニュートラルなデザインで、再生ボタン、波形ビジュアライザー、再生時間を表示。",
+          "useCases": "メッセージアプリの既読音声メッセージ、チャット履歴内の音声メッセージ表示、会話ログの音声コンテンツ、アーカイブされたボイスメッセージ"
+        },
+        {
+          "name": "ChatVoiceMessageNotPlayed",
+          "path": "VideoAndAudio/VoiceMessages/ChatVoiceMessageNotPlayed/",
+          "description": "未再生状態を示すチャット用音声メッセージバブル。青い背景色で強調され、再生ボタン、波形、再生時間に加えて未再生を示すドットインジケーターを表示。",
+          "useCases": "メッセージアプリの受信音声メッセージ、チャットアプリの未読ボイスメッセージ表示、SNSのDM音声メッセージ、チーム連絡ツールの音声通知"
+        }
+      ]
+    }
+  ]
+}

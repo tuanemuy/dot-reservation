@@ -1,0 +1,673 @@
+{
+  "name": "UIControls",
+  "description": "基本UIコントロール",
+  "componentCount": 103,
+  "subcategories": [
+    {
+      "name": "Badges",
+      "path": "UIControls/Badges/",
+      "components": [
+        {
+          "name": "AvatarWithCloseButtonBadge",
+          "path": "UIControls/Badges/AvatarWithCloseButtonBadge/",
+          "description": "アバター付きで削除可能なユーザーバッジ。閉じるボタン付きの白背景デザイン。",
+          "useCases": "選択済みユーザーの解除可能な表示、フィルターでのユーザー選択、メール宛先の表示。"
+        },
+        {
+          "name": "BadgeGroupWithMoreInDropdown",
+          "path": "UIControls/Badges/BadgeGroupWithMoreInDropdown/",
+          "description": "複数バッジをグループ化し、余剰分をドロップダウンで表示。省スペースでのタグ表示。",
+          "useCases": "多数のスキルタグの表示、カテゴリラベルの表示、ユーザープロフィールのタグ一覧。"
+        },
+        {
+          "name": "DividerWithCloseButtonBadge",
+          "path": "UIControls/Badges/DividerWithCloseButtonBadge/",
+          "description": "区切り線と閉じるボタンを持つバッジ。ラベル、値、削除ボタンの3要素構成。",
+          "useCases": "ファイルフィルターの表示、検索条件の表示と削除、選択済み属性の管理。"
+        },
+        {
+          "name": "GrayBackgroundDividerBadge",
+          "path": "UIControls/Badges/GrayBackgroundDividerBadge/",
+          "description": "カウント部分にグレー背景を持つ区切りバッジ。ラベルとカウントを視覚的に分離。",
+          "useCases": "技術タグと使用回数の表示、カテゴリと記事数の表示、スキルとレベルの表示。"
+        },
+        {
+          "name": "MixedColorTextInWhiteBadge",
+          "path": "UIControls/Badges/MixedColorTextInWhiteBadge/",
+          "description": "一部のテキストに色を付けた白背景バッジ。制限値との差分を強調表示。",
+          "useCases": "制限値との比較表示、残り時間や超過時間の表示、予算との差分表示。"
+        },
+        {
+          "name": "RoundedGreenBadgeWithCloseButton",
+          "path": "UIControls/Badges/RoundedGreenBadgeWithCloseButton/",
+          "description": "緑色背景のフィルターバッジ。クリック可能でホバー効果付き。",
+          "useCases": "ECサイトのセールフィルター、評価フィルター、アクティブなプロモーション条件の表示。"
+        },
+        {
+          "name": "RoundedWhiteBadgeWithGrayBackgroundCloseButton",
+          "path": "UIControls/Badges/RoundedWhiteBadgeWithGrayBackgroundCloseButton/",
+          "description": "日付アイコン付きの丸型バッジ。グレー背景の目立つ閉じるボタン付き。",
+          "useCases": "選択された日付の表示と解除、期間フィルターの表示、スケジュール条件の表示。"
+        },
+        {
+          "name": "SimpleBadge",
+          "path": "UIControls/Badges/SimpleBadge/",
+          "description": "アイコン付きのシンプルなテキストバッジ。背景なしで、トレンドアイコンと増減率を表示する。",
+          "useCases": "ダッシュボードでの数値変化の表示、統計情報の増減トレンド表示、KPI指標の変化率表示。"
+        },
+        {
+          "name": "SoftBadge",
+          "path": "UIControls/Badges/SoftBadge/",
+          "description": "ソフトな背景色付きのトレンドバッジ。矢印アイコンで増減を視覚的に表現。",
+          "useCases": "統計カードでの変化率表示、レポートでのパフォーマンス指標、前期比較の表示。"
+        },
+        {
+          "name": "SoftBorderedBadge",
+          "path": "UIControls/Badges/SoftBorderedBadge/",
+          "description": "ボーダーとソフト背景を組み合わせたトレンドバッジ。三角形のアイコンで増減を表現。",
+          "useCases": "テーブルセル内での数値変化表示、リスト項目での増減表示、フォーマルなダッシュボードでの使用。"
+        },
+        {
+          "name": "SoftStatusBadge",
+          "path": "UIControls/Badges/SoftStatusBadge/",
+          "description": "ステータスに応じた色の背景を持つバッジ。縦長のカラーインジケーター付き。",
+          "useCases": "タスクやプロジェクトのステータス表示、データ同期状態の表示、優先度や重要度の表示。"
+        },
+        {
+          "name": "SoftWithAvatarBadge",
+          "path": "UIControls/Badges/SoftWithAvatarBadge/",
+          "description": "アバター画像またはイニシャル付きのユーザーバッジ。グレー背景で丸型デザイン。",
+          "useCases": "選択されたユーザーの表示、メンション先の表示、チームメンバーのタグ表示。"
+        },
+        {
+          "name": "StatusBadge",
+          "path": "UIControls/Badges/StatusBadge/",
+          "description": "縦長のカラーインジケーター付きステータスバッジ。グレー背景で統一感のあるデザイン。",
+          "useCases": "接続状態の表示、システムステータスの表示、処理状態（インポート中、警告等）の表示。"
+        },
+        {
+          "name": "WhiteBadge",
+          "path": "UIControls/Badges/WhiteBadge/",
+          "description": "白背景にボーダー付きのトレンドバッジ。カラフルなテキストでトレンド方向を表現。",
+          "useCases": "明るいUIでの増減表示、カード内でのパフォーマンス指標、クリーンなデザインのダッシュボード。"
+        },
+        {
+          "name": "WhiteBadgeWithCloseButton",
+          "path": "UIControls/Badges/WhiteBadgeWithCloseButton/",
+          "description": "アイコンと閉じるボタン付きの白背景バッジ。角丸の四角形デザイン。",
+          "useCases": "削除可能なフィルタータグ、選択済み条件の表示、アクティブなフィルターの表示。"
+        },
+        {
+          "name": "WhiteStatusBadge",
+          "path": "UIControls/Badges/WhiteStatusBadge/",
+          "description": "白背景にボーダー付きのステータスバッジ。縦長のカラーインジケーター付き。",
+          "useCases": "ライトテーマでのステータス表示、フォーム内でのステータス表示、モーダル内でのステータス表示。"
+        },
+        {
+          "name": "WithDividerBadge",
+          "path": "UIControls/Badges/WithDividerBadge/",
+          "description": "区切り線でラベルとカウントを分離したバッジ。白背景にボーダー付き。",
+          "useCases": "技術スタックのタグ表示、カテゴリと件数の表示、ラベルと値のペア表示。"
+        },
+        {
+          "name": "WithDotBadge",
+          "path": "UIControls/Badges/WithDotBadge/",
+          "description": "小さなドットインジケーター付きのソフトバッジ。シンプルで視認性の高いデザイン。",
+          "useCases": "オンライン/オフライン状態の表示、有効/無効の状態表示、シンプルなステータスラベル。"
+        },
+        {
+          "name": "WithStatusIndicatorAndTooltipBadge",
+          "path": "UIControls/Badges/WithStatusIndicatorAndTooltipBadge/",
+          "description": "線状のステータスインジケーターとツールチップ付きバッジ。ホバーで詳細説明を表示。",
+          "useCases": "プロジェクト進捗状態の表示、リスクレベルの表示、詳細説明が必要なステータス表示。"
+        }
+      ]
+    },
+    {
+      "name": "ButtonGroups",
+      "path": "UIControls/ButtonGroups/",
+      "components": [
+        {
+          "name": "BasicWhiteButtonGroup",
+          "path": "UIControls/ButtonGroups/BasicWhiteButtonGroup/",
+          "description": "曜日選択用のボタングループ。白背景にボーダー付きで、レスポンシブ対応（モバイルで縦並び、デスクトップで横並び）。",
+          "useCases": "曜日選択、期間選択、複数オプションからの単一選択。"
+        },
+        {
+          "name": "ButtonGroupWithIconsAndTooltips",
+          "path": "UIControls/ButtonGroups/ButtonGroupWithIconsAndTooltips/",
+          "description": "アイコンボタンとツールチップを組み合わせたボタングループ。ボーダーで区切られたデザイン。",
+          "useCases": "プロジェクトのコピーとアーカイブ、ファイル操作、ツールバーアクション。"
+        },
+        {
+          "name": "ButtonWithDropdown",
+          "path": "UIControls/ButtonGroups/ButtonWithDropdown/",
+          "description": "メインボタンとドロップダウンメニューを組み合わせたボタングループ。追加アクションをドロップダウンで表示。",
+          "useCases": "返信と追加オプション、公開/非公開/削除のアクション、プライマリとセカンダリアクションの組み合わせ。"
+        },
+        {
+          "name": "CommentButtonGroup",
+          "path": "UIControls/ButtonGroups/CommentButtonGroup/",
+          "description": "コメント操作用のコンパクトなボタングループ。返信テキストボタンと編集・削除アイコンボタンの組み合わせ。",
+          "useCases": "コメントへの返信と管理、チャットメッセージの操作、フィードバック項目の編集・削除。"
+        },
+        {
+          "name": "CommentTextareaButtonGroup",
+          "path": "UIControls/ButtonGroups/CommentTextareaButtonGroup/",
+          "description": "テキストエリア付随のコンパクトなアイコンボタングループ。ファイル添付、絵文字、音声メッセージ、送信ボタン。",
+          "useCases": "チャット入力欄のツールバー、コメント投稿フォームの付属ボタン、メッセージ送信インターフェース。"
+        },
+        {
+          "name": "IconAndLinkButtonGroup",
+          "path": "UIControls/ButtonGroups/IconAndLinkButtonGroup/",
+          "description": "アイコンとテキストリンク形式のボタンリスト。矢印付きでモーダルなどへの遷移を示唆。",
+          "useCases": "設定項目へのリンク、地域・言語選択、フィードバック送信リンク。"
+        },
+        {
+          "name": "InboxCommentButtonGroup",
+          "path": "UIControls/ButtonGroups/InboxCommentButtonGroup/",
+          "description": "丸型のアイコンボタングループ。リアクション追加、返信、編集、削除のアクション用。ツールチップ付き。",
+          "useCases": "メッセージへのクイックアクション、コメント操作ツールバー、SNS風のインタラクション。"
+        },
+        {
+          "name": "InlineWithTitleButtonGroup",
+          "path": "UIControls/ButtonGroups/InlineWithTitleButtonGroup/",
+          "description": "タイトルラベルと前後ナビゲーションボタンの組み合わせ。矢印アイコン付き。",
+          "useCases": "商品や項目の前後移動、ページネーション、リスト内アイテムのナビゲーション。"
+        },
+        {
+          "name": "LabelButtonGroup",
+          "path": "UIControls/ButtonGroups/LabelButtonGroup/",
+          "description": "アイコンとラベル付きの丸型ボタングループ。アップロード、デザイン、テンプレート作成などのアクション用。",
+          "useCases": "コンテンツ作成のクイックアクション、空状態からの新規作成オプション、ダッシュボードのアクションメニュー。"
+        },
+        {
+          "name": "SegmentStyleButtonGroup",
+          "path": "UIControls/ButtonGroups/SegmentStyleButtonGroup/",
+          "description": "セグメントスタイルのアイコンボタングループ。白背景でコンパクトなデザイン、ツールチップ付き。",
+          "useCases": "通知の既読/アーカイブ操作、項目に対するクイックアクション、コンパクトなツールバー。"
+        },
+        {
+          "name": "VideoCallInMeetingButtonGroup",
+          "path": "UIControls/ButtonGroups/VideoCallInMeetingButtonGroup/",
+          "description": "ビデオ通話中の操作パネル用ボタングループ。カメラ/マイクのトグル、参加者、チャット、共有、録画、リアクション、終了ボタン。",
+          "useCases": "ビデオ会議中のコントロールパネル、オンラインミーティングツールバー、ライブ配信コントロール。"
+        },
+        {
+          "name": "VideoCallMainPageButtonGroup",
+          "path": "UIControls/ButtonGroups/VideoCallMainPageButtonGroup/",
+          "description": "ビデオ通話開始ページ用の大型ボタングループ。参加、新規ミーティング、スケジュール、画面共有のオプション。",
+          "useCases": "ビデオ会議アプリのメイン画面、会議開始オプション、リモートコラボレーションツール。"
+        },
+        {
+          "name": "WasArticleHelpfulButtonGroup",
+          "path": "UIControls/ButtonGroups/WasArticleHelpfulButtonGroup/",
+          "description": "記事の有用性を問うフィードバック用ボタングループ。Yes/Noボタンとフィードバック統計表示。",
+          "useCases": "ヘルプ記事のフィードバック収集、FAQ評価、コンテンツ有用性調査。"
+        }
+      ]
+    },
+    {
+      "name": "Buttons",
+      "path": "UIControls/Buttons/",
+      "components": [
+        {
+          "name": "DashedBorderButton",
+          "path": "UIControls/Buttons/DashedBorderButton/",
+          "description": "点線ボーダーの丸型ボタン。追加アクションを示唆するデザイン。",
+          "useCases": "フィルター追加、比較追加、新規項目の追加、任意の追加アクション。"
+        },
+        {
+          "name": "GhostButton",
+          "path": "UIControls/Buttons/GhostButton/",
+          "description": "背景なしの透明なゴーストボタン。ホバー時にグレー背景が表示される。5種類のサイズバリエーション。",
+          "useCases": "控えめなアクション、テキストリンク的な使用、ツールバー内のボタン、目立たせたくないアクション。"
+        },
+        {
+          "name": "GhostIconButton",
+          "path": "UIControls/Buttons/GhostIconButton/",
+          "description": "アイコンのみの透明なゴーストボタン。5種類のサイズバリエーション。",
+          "useCases": "ツールバーの控えめなアクション、サイドバーのアイコンボタン、閉じるボタン。"
+        },
+        {
+          "name": "LabelButtons",
+          "path": "UIControls/Buttons/LabelButtons/",
+          "description": "アイコンとラベル付きの丸型ナビゲーションボタン。リンク形式のボタングループ。",
+          "useCases": "セクションナビゲーション（受信箱、アクティビティ、ファイル）、カテゴリフィルター、タブ的なナビゲーション。"
+        },
+        {
+          "name": "PrimaryButton",
+          "path": "UIControls/Buttons/PrimaryButton/",
+          "description": "青色背景のプライマリボタン。アイコンとテキストを組み合わせた5種類のサイズバリエーション。",
+          "useCases": "メインアクション（保存、送信、作成）、フォームの確定ボタン、強調したいアクション。"
+        },
+        {
+          "name": "PrimaryIconButton",
+          "path": "UIControls/Buttons/PrimaryIconButton/",
+          "description": "アイコンのみのプライマリボタン。正方形で5種類のサイズバリエーション。",
+          "useCases": "ツールバーのアクションボタン、追加ボタン、コンパクトなアクション、モバイル向けボタン。"
+        },
+        {
+          "name": "SwitchLabelButton",
+          "path": "UIControls/Buttons/SwitchLabelButton/",
+          "description": "クリックでラベルが切り替わるトグルボタン。チェックマーク付きの接続/切断状態表示。",
+          "useCases": "接続/切断のトグル、フォロー/フォロー解除、お気に入り登録、状態切り替え。"
+        },
+        {
+          "name": "WhiteButton",
+          "path": "UIControls/Buttons/WhiteButton/",
+          "description": "白背景にボーダー付きのセカンダリボタン。アイコンとテキストを組み合わせた5種類のサイズバリエーション。",
+          "useCases": "キャンセル、戻る、補助的なアクション、プライマリボタンと組み合わせて使用。"
+        },
+        {
+          "name": "WhiteIconButton",
+          "path": "UIControls/Buttons/WhiteIconButton/",
+          "description": "アイコンのみの白背景ボタン。ボーダー付きで5種類のサイズバリエーション。",
+          "useCases": "セカンダリアクション、編集・削除などのアクション、リスト項目の操作ボタン。"
+        }
+      ]
+    },
+    {
+      "name": "Dropdowns",
+      "path": "UIControls/Dropdowns/",
+      "components": [
+        {
+          "name": "Account-LogIn",
+          "path": "UIControls/Dropdowns/Account-LogIn/",
+          "description": "ログイン/サインアップ用のアカウントドロップダウン。ログインフォームまたはアカウント情報を表示。",
+          "useCases": "ヘッダーのログインメニュー、非認証ユーザー向けアクセスポイント。"
+        },
+        {
+          "name": "AccountDropdown",
+          "path": "UIControls/Dropdowns/AccountDropdown/",
+          "description": "ユーザーアバターから開くアカウント管理ドロップダウン。プロフィール表示、設定リンク、ダークモード切替付き。",
+          "useCases": "ヘッダーのユーザーメニュー、アカウント設定へのアクセス、ログアウト操作。"
+        },
+        {
+          "name": "AssignDropdown",
+          "path": "UIControls/Dropdowns/AssignDropdown/",
+          "description": "アバター付きの担当者割り当てドロップダウン。ユーザー検索とチェックボックスで複数選択可能。",
+          "useCases": "タスクの担当者割り当て、レビュアー選択、チームメンバーの追加。"
+        },
+        {
+          "name": "AvatarGroupDropdown",
+          "path": "UIControls/Dropdowns/AvatarGroupDropdown/",
+          "description": "アバターグループから開くメンバー一覧ドロップダウン。参加者リストと招待ボタン付き。",
+          "useCases": "ミーティング参加者の確認、プロジェクトメンバー一覧、コラボレーター表示。"
+        },
+        {
+          "name": "BadgeStyleButtonWithIconDropdown",
+          "path": "UIControls/Dropdowns/BadgeStyleButtonWithIconDropdown/",
+          "description": "バッジスタイルのボタンから開くドロップダウン。カテゴリ選択やステータス変更用。",
+          "useCases": "カテゴリフィルター、ステータス変更、タイプ選択。"
+        },
+        {
+          "name": "ChatWorkspaceDropdown",
+          "path": "UIControls/Dropdowns/ChatWorkspaceDropdown/",
+          "description": "チャットワークスペース切り替え用のドロップダウン。ワークスペース一覧と管理オプション。",
+          "useCases": "Slackライクなワークスペース切り替え、チーム間の移動、組織管理。"
+        },
+        {
+          "name": "CheckboxListingWithSearchDropdown",
+          "path": "UIControls/Dropdowns/CheckboxListingWithSearchDropdown/",
+          "description": "検索機能付きのチェックボックスリストドロップダウン。複数選択可能なフィルター。",
+          "useCases": "複数カテゴリの選択、ユーザー複数選択、属性フィルタリング。"
+        },
+        {
+          "name": "CompleteTheLockDropdown",
+          "path": "UIControls/Dropdowns/CompleteTheLockDropdown/",
+          "description": "ロック解除用のPIN入力ドロップダウン。数字キーパッドで入力。",
+          "useCases": "セキュリティロック解除、PIN認証、簡易パスワード入力。"
+        },
+        {
+          "name": "DesignToolbar",
+          "path": "UIControls/Dropdowns/DesignToolbar/",
+          "description": "デザインツール用のフローティングツールバー。ツール選択と追加オプションのドロップダウン。",
+          "useCases": "画像編集ツールの選択、描画ツールの切り替え、デザインエディタのツールバー。"
+        },
+        {
+          "name": "DownloadReport",
+          "path": "UIControls/Dropdowns/DownloadReport/",
+          "description": "ダウンロードアイコンから開くレポートダウンロードドロップダウン。フォーマット選択とオプション設定。",
+          "useCases": "レポートのエクスポート、データダウンロード形式の選択、PDF/CSV出力。"
+        },
+        {
+          "name": "FavoritesDropdown",
+          "path": "UIControls/Dropdowns/FavoritesDropdown/",
+          "description": "ハートアイコンから開くお気に入りリストドロップダウン。アイテム数バッジ付き。",
+          "useCases": "ECサイトのウィッシュリスト、ブックマーク一覧、お気に入りプロジェクト。"
+        },
+        {
+          "name": "FormattingOptionsButtonGroup",
+          "path": "UIControls/Dropdowns/FormattingOptionsButtonGroup/",
+          "description": "テキストフォーマット用のボタングループドロップダウン。太字、斜体、リンク、リストなど。",
+          "useCases": "リッチテキストエディタのツールバー、メール作成のフォーマットオプション。"
+        },
+        {
+          "name": "HighlightedLinkDropdown",
+          "path": "UIControls/Dropdowns/HighlightedLinkDropdown/",
+          "description": "強調表示されたリンク付きドロップダウン。推奨アクションをハイライト。",
+          "useCases": "優先アクションの強調表示、おすすめ機能の案内。"
+        },
+        {
+          "name": "InviteUsersDropdown",
+          "path": "UIControls/Dropdowns/InviteUsersDropdown/",
+          "description": "ユーザー招待用のドロップダウン。メール入力と権限選択、招待済みユーザーリスト付き。",
+          "useCases": "プロジェクトへのメンバー招待、ドキュメント共有、チーム招待。"
+        },
+        {
+          "name": "MoveToDropdown",
+          "path": "UIControls/Dropdowns/MoveToDropdown/",
+          "description": "フォルダ移動用のドロップダウン。カラードットでフォルダを識別、新規フォルダ作成も可能。",
+          "useCases": "メールのフォルダ移動、ファイル整理、カテゴリ変更。"
+        },
+        {
+          "name": "NotificationsDropdown",
+          "path": "UIControls/Dropdowns/NotificationsDropdown/",
+          "description": "通知ベルアイコンから開く通知一覧ドロップダウン。未読バッジとアニメーション付き。",
+          "useCases": "ヘッダーの通知表示、未読通知の確認、通知設定へのリンク。"
+        },
+        {
+          "name": "OnHoverWithCompanyDetailsDropdown",
+          "path": "UIControls/Dropdowns/OnHoverWithCompanyDetailsDropdown/",
+          "description": "ホバーで開く会社詳細ドロップダウン。会社情報とクイックアクション表示。",
+          "useCases": "CRMの会社情報プレビュー、リンク先の詳細表示、コンテキスト情報の提供。"
+        },
+        {
+          "name": "ProjectDropdown",
+          "path": "UIControls/Dropdowns/ProjectDropdown/",
+          "description": "プロジェクト切り替え用のドロップダウン。ワークスペース一覧と新規作成ボタン付き。",
+          "useCases": "複数プロジェクト間の切り替え、ワークスペース選択、組織管理。"
+        },
+        {
+          "name": "SendButonGroupDropdown",
+          "path": "UIControls/Dropdowns/SendButonGroupDropdown/",
+          "description": "送信ボタンに追加オプションを持つドロップダウン。スケジュール送信や下書き保存。",
+          "useCases": "メール送信オプション、投稿スケジュール設定、送信方法の選択。"
+        },
+        {
+          "name": "ShopAccountDropdown",
+          "path": "UIControls/Dropdowns/ShopAccountDropdown/",
+          "description": "ECサイト用のアカウントドロップダウン。注文履歴、お気に入り、カート情報へのリンク。",
+          "useCases": "ECサイトのユーザーメニュー、購入履歴へのアクセス、アカウント管理。"
+        },
+        {
+          "name": "SimpleDropdownWithDivider",
+          "path": "UIControls/Dropdowns/SimpleDropdownWithDivider/",
+          "description": "縦3点アイコンから開くシンプルなドロップダウン。アイコン付きメニュー項目と区切り線付き。",
+          "useCases": "カード内のオプションメニュー、テーブル行のアクションメニュー、共有・フルスクリーン・フィードバックなどの操作。"
+        },
+        {
+          "name": "SimpleDropdownWithIcons",
+          "path": "UIControls/Dropdowns/SimpleDropdownWithIcons/",
+          "description": "フィルターボタンから開く検索機能付きドロップダウン。アイコン付きフィルター項目リスト。",
+          "useCases": "ユーザー属性によるフィルタリング、テーブルカラムフィルター、詳細検索条件の選択。"
+        },
+        {
+          "name": "SnoozeDropdown",
+          "path": "UIControls/Dropdowns/SnoozeDropdown/",
+          "description": "通知ベルから開くスヌーズ設定ドロップダウン。時間指定でリマインダーを再通知。",
+          "useCases": "通知の一時停止、リマインダー再設定、後で処理するタスクの管理。"
+        },
+        {
+          "name": "StatusManagementDropdown",
+          "path": "UIControls/Dropdowns/StatusManagementDropdown/",
+          "description": "ステータスバッジから開くステータス変更ドロップダウン。色選択とテキスト入力でカスタムステータスを作成。",
+          "useCases": "タスクステータスの変更、カスタムラベルの作成、プロジェクト状態の管理。"
+        },
+        {
+          "name": "StatusManagementListColorsDropdown",
+          "path": "UIControls/Dropdowns/StatusManagementListColorsDropdown/",
+          "description": "ステータス色選択用のリストスタイルドロップダウン。複数のプリセット色から選択。",
+          "useCases": "ステータスカラーのカスタマイズ、優先度ラベルの色設定、カテゴリ色の選択。"
+        },
+        {
+          "name": "Subdropdown",
+          "path": "UIControls/Dropdowns/Subdropdown/",
+          "description": "ヘルプメニュー用のサブドロップダウン付きメニュー。ホバーでサブメニューが開く。",
+          "useCases": "ヘルプセンター・ドキュメントへのリンク、サポートへの問い合わせ、複数階層のナビゲーション。"
+        },
+        {
+          "name": "SwitchToggleButtonWithSelectsInDropdown",
+          "path": "UIControls/Dropdowns/SwitchToggleButtonWithSelectsInDropdown/",
+          "description": "セレクトボックスを含むドロップダウン。日付範囲や条件の詳細設定が可能。",
+          "useCases": "詳細フィルター設定、日付範囲の選択、複合条件の設定。"
+        },
+        {
+          "name": "TableSortingDropdown",
+          "path": "UIControls/Dropdowns/TableSortingDropdown/",
+          "description": "テーブルヘッダーに配置するソート用ドロップダウン。昇順/降順の切り替え。",
+          "useCases": "テーブルカラムのソート、リストの並び替え、データ表示順序の変更。"
+        },
+        {
+          "name": "TagsDropdown",
+          "path": "UIControls/Dropdowns/TagsDropdown/",
+          "description": "タグアイコンから開くタグ管理ドロップダウン。タグの追加・削除・色変更が可能。",
+          "useCases": "コンテンツへのタグ付け、カテゴリ分類、ラベル管理。"
+        },
+        {
+          "name": "UpdateTicketStatusDropdown",
+          "path": "UIControls/Dropdowns/UpdateTicketStatusDropdown/",
+          "description": "チケットステータス更新用のドロップダウン。ステータス選択とコメント入力。",
+          "useCases": "サポートチケットのステータス変更、課題トラッキング、ワークフロー管理。"
+        },
+        {
+          "name": "VideoCallAccountDropdown",
+          "path": "UIControls/Dropdowns/VideoCallAccountDropdown/",
+          "description": "ビデオ通話アプリ用のアカウントドロップダウン。設定、履歴、サポートへのリンク。",
+          "useCases": "ビデオ会議アプリのユーザーメニュー、通話設定へのアクセス。"
+        }
+      ]
+    },
+    {
+      "name": "Links",
+      "path": "UIControls/Links/",
+      "components": [
+        {
+          "name": "IconWithGrayBackgroundOnHoverLink",
+          "path": "UIControls/Links/IconWithGrayBackgroundOnHoverLink/",
+          "description": "グレー背景のアイコン付き戻るリンク。ホバー時に背景色が変化する丸型デザイン。",
+          "useCases": "前のページへ戻るリンク、パンくずナビの戻る操作、モーダル内の戻るリンク。"
+        },
+        {
+          "name": "SimpleContactInfoLink",
+          "path": "UIControls/Links/SimpleContactInfoLink/",
+          "description": "お問い合わせ情報セクション。営業時間の説明とアンダーライン付きの問い合わせリンク。",
+          "useCases": "フッターのお問い合わせセクション、ヘルプページへの誘導、カスタマーサポート情報。"
+        },
+        {
+          "name": "StaticListWithTitleAndGrayBackgroundIconLink",
+          "path": "UIControls/Links/StaticListWithTitleAndGrayBackgroundIconLink/",
+          "description": "アイコン付きの静的リストアイテム。タイトル、説明、編集リンクを含む情報カード。",
+          "useCases": "設定済み情報の表示と編集リンク、配送先住所の表示、アカウント情報の確認画面。"
+        }
+      ]
+    },
+    {
+      "name": "Popovers",
+      "path": "UIControls/Popovers/",
+      "components": [
+        {
+          "name": "AvatarGroupWithUserInfoPopover",
+          "path": "UIControls/Popovers/AvatarGroupWithUserInfoPopover/",
+          "description": "アバターにホバーすると表示されるユーザー情報ポップオーバー。名前、メール、ステータスを表示。",
+          "useCases": "参加者リストのユーザー詳細表示、メンション先のプレビュー、チームメンバーの情報確認。"
+        },
+        {
+          "name": "ContactProfilePopover",
+          "path": "UIControls/Popovers/ContactProfilePopover/",
+          "description": "クリックで開く連絡先プロフィールポップオーバー。アバター、名前、メール、フラグ・連絡先追加ボタン付き。",
+          "useCases": "メール送信者の詳細表示、CRMの連絡先プレビュー、ユーザー名クリック時のプロフィール表示。"
+        }
+      ]
+    },
+    {
+      "name": "ProgressBars",
+      "path": "UIControls/ProgressBars/",
+      "components": [
+        {
+          "name": "ClothingRating",
+          "path": "UIControls/ProgressBars/ClothingRating/",
+          "description": "衣類評価用のスライダー型プログレスバー。品質、フィット感、快適さの各指標を表示。",
+          "useCases": "ECサイトの商品レビュー詳細、フィットネスアプリの評価指標、サービス品質の多軸評価。"
+        },
+        {
+          "name": "ColumnProgressBarWithIndicators",
+          "path": "UIControls/ProgressBars/ColumnProgressBarWithIndicators/",
+          "description": "縦型のカラムプログレスバー。NPS（顧客推奨度）などの評価分布を表示。",
+          "useCases": "NPS調査結果の表示、満足度調査の回答分布、投票結果の可視化。"
+        },
+        {
+          "name": "ListOfHorizontalProgressGroup",
+          "path": "UIControls/ProgressBars/ListOfHorizontalProgressGroup/",
+          "description": "技術スタックの人気度などを表示する横型プログレスバーリスト。パーセンテージと回答数付き。",
+          "useCases": "技術アンケート結果の表示、スキル習熟度の表示、選択肢ごとの投票率表示。"
+        },
+        {
+          "name": "MultipleBarsProgress",
+          "path": "UIControls/ProgressBars/MultipleBarsProgress/",
+          "description": "複数色の横並びプログレスバーとカラー凡例付きリスト。トラフィック元の比率などを表示。",
+          "useCases": "アクセス元の分布表示、カテゴリ別の統計表示、ストレージ使用量の内訳。"
+        },
+        {
+          "name": "MultipleProgressBarsWithLegendIndicators",
+          "path": "UIControls/ProgressBars/MultipleProgressBarsWithLegendIndicators/",
+          "description": "複数の分離したプログレスバーとストライプパターン付き。凡例インジケーターで色分け。",
+          "useCases": "タスク優先度の分布表示、ステータス別の件数表示、リスクレベルの可視化。"
+        },
+        {
+          "name": "OrderStatusProgress",
+          "path": "UIControls/ProgressBars/OrderStatusProgress/",
+          "description": "注文ステータスを表示するステップ型プログレスバー。現在のステータスをアニメーションで強調。",
+          "useCases": "ECサイトの注文追跡、配送状況の表示、ワークフローの進捗表示。"
+        },
+        {
+          "name": "RatingSnapshot",
+          "path": "UIControls/ProgressBars/RatingSnapshot/",
+          "description": "星評価分布を表示するプログレスバーグループ。5段階評価の各星ごとのレビュー数を表示。",
+          "useCases": "商品レビューの評価分布、アプリストアの評価表示、サービス評価の内訳。"
+        },
+        {
+          "name": "SquareShapedSegmentedProgressSection",
+          "path": "UIControls/ProgressBars/SquareShapedSegmentedProgressSection/",
+          "description": "四角形のセグメント型プログレスバー。10分割で進捗率を視覚的に表示。",
+          "useCases": "ストレージ使用量の表示、目標達成率の表示、処理進捗の段階表示。"
+        },
+        {
+          "name": "WithGradientBackground",
+          "path": "UIControls/ProgressBars/WithGradientBackground/",
+          "description": "グラデーション背景のプログレスバー。現在位置をドットインジケーターで表示。",
+          "useCases": "パフォーマンススコアの表示、健康指標の可視化、評価レベルの表示。"
+        }
+      ]
+    },
+    {
+      "name": "Selects",
+      "path": "UIControls/Selects/",
+      "components": [
+        {
+          "name": "AssigneeSelect",
+          "path": "UIControls/Selects/AssigneeSelect/",
+          "description": "アバター付きの担当者複数選択セレクト。タグモードで選択済みユーザーをチップ表示。検索と削除が可能。",
+          "useCases": "タスクの担当者割り当て、プロジェクトメンバーの選択、レビュアーの指定。"
+        },
+        {
+          "name": "CurrencySelect",
+          "path": "UIControls/Selects/CurrencySelect/",
+          "description": "国旗アイコン付きの通貨選択セレクト。検索機能付きで多くの通貨から選択可能。",
+          "useCases": "決済フォームの通貨選択、国際取引の通貨設定、為替計算の通貨ペア選択。"
+        },
+        {
+          "name": "CustomTemplateWithAvatarSelect",
+          "path": "UIControls/Selects/CustomTemplateWithAvatarSelect/",
+          "description": "国旗アイコン付きの言語・国選択セレクト。各選択肢にカスタムテンプレートを適用。",
+          "useCases": "言語設定の切り替え、国・地域の選択、ローカライズ設定。"
+        },
+        {
+          "name": "InlineWithLabelSelect",
+          "path": "UIControls/Selects/InlineWithLabelSelect/",
+          "description": "ラベル付きのインラインソートセレクト。「Sort:」などのプレフィックスと組み合わせたコンパクトなデザイン。",
+          "useCases": "リストの並び替え（新しい順、古い順、A-Z）、検索結果のソート、ファイル一覧の表示順設定。"
+        },
+        {
+          "name": "ItemListWithDescriptionSelect",
+          "path": "UIControls/Selects/ItemListWithDescriptionSelect/",
+          "description": "アイコンと説明文付きの公開範囲選択セレクト。各選択肢に詳細な説明を表示。",
+          "useCases": "コンテンツの公開範囲設定、プライバシーレベルの選択、共有先の指定。"
+        },
+        {
+          "name": "MiniSelect",
+          "path": "UIControls/Selects/MiniSelect/",
+          "description": "コンパクトな権限選択用セレクト。小さいサイズでインライン使用に最適化。",
+          "useCases": "共有権限の選択（閲覧可能、編集可能、管理者）、ファイルアクセス権限の設定、ユーザー権限の切り替え。"
+        },
+        {
+          "name": "SearchInsideDropdown",
+          "path": "UIControls/Selects/SearchInsideDropdown/",
+          "description": "検索機能内蔵の国選択セレクト。国旗アイコン付きで多数の国から検索・選択可能。",
+          "useCases": "住所フォームの国選択、電話番号の国コード選択、配送先国の指定。"
+        },
+        {
+          "name": "SimpleSelect",
+          "path": "UIControls/Selects/SimpleSelect/",
+          "description": "シンプルなドロップダウンセレクト。ボーダー付きのベーシックなデザインで、選択時にチェックマークが表示される。",
+          "useCases": "基本的なフォームの選択入力、設定画面のオプション選択、カテゴリ選択。"
+        },
+        {
+          "name": "SimpleStyleCurrecySelect",
+          "path": "UIControls/Selects/SimpleStyleCurrecySelect/",
+          "description": "国旗アイコン付きの通貨選択セレクト。検索機能付きで多くの通貨から選択可能。",
+          "useCases": "決済フォームの通貨選択、国際取引の通貨設定、為替計算の通貨ペア選択。"
+        },
+        {
+          "name": "StatusSelect",
+          "path": "UIControls/Selects/StatusSelect/",
+          "description": "カラーインジケーター付きのステータス選択セレクト。タスクの状態を色分けして視覚的に表示。",
+          "useCases": "タスク管理のステータス変更（完了、保留、進行中など）、チケットステータスの更新、ワークフロー状態の選択。"
+        },
+        {
+          "name": "TagStyleSelect",
+          "path": "UIControls/Selects/TagStyleSelect/",
+          "description": "課題タイプのタグ選択セレクト。絵文字付きのラベル（Bug、Support、Feature、Docs）を複数選択可能。",
+          "useCases": "GitHub Issue のラベル選択、タスクカテゴリの分類、バグ・機能要望の種類指定。"
+        },
+        {
+          "name": "TagsSelect",
+          "path": "UIControls/Selects/TagsSelect/",
+          "description": "アバター付きのユーザー複数選択セレクト。丸型タグスタイルで選択済みユーザーを表示。",
+          "useCases": "メンション先のユーザー選択、チームメンバーのタグ付け、コラボレーター追加。"
+        },
+        {
+          "name": "ThreadsTagSelect",
+          "path": "UIControls/Selects/ThreadsTagSelect/",
+          "description": "ピルスタイルの通貨選択セレクト。国旗付きで検索機能を搭載。コンパクトな丸角デザイン。",
+          "useCases": "送金・決済の通貨選択、価格表示の通貨切り替え、取引通貨の選択。"
+        },
+        {
+          "name": "TimeSelect",
+          "path": "UIControls/Selects/TimeSelect/",
+          "description": "時間選択用のセレクト。12時間形式（AM/PM）で1時間単位の時刻を選択。",
+          "useCases": "予約時間の選択、スケジュール設定、リマインダー時刻の指定。"
+        },
+        {
+          "name": "ViewSelect",
+          "path": "UIControls/Selects/ViewSelect/",
+          "description": "表示形式切り替え用のセレクト。アイコンとテキストでボード、テーブル、タイムラインなどのビューを選択。",
+          "useCases": "プロジェクト管理ツールのビュー切り替え、データ表示形式の選択、ダッシュボードのレイアウト変更。"
+        },
+        {
+          "name": "WithIconsSelect",
+          "path": "UIControls/Selects/WithIconsSelect/",
+          "description": "アイコン付きのファイルタイプフィルターセレクト。ファイル種別（ドキュメント、画像、スニペットなど）を選択。",
+          "useCases": "ファイル管理システムのフィルタリング、メディアライブラリの種類別表示、コンテンツタイプの絞り込み。"
+        },
+        {
+          "name": "WithinInputSelect",
+          "path": "UIControls/Selects/WithinInputSelect/",
+          "description": "テキスト入力フィールド内に配置された権限選択セレクト。入力とセレクトを組み合わせたUI。",
+          "useCases": "招待メール入力と権限選択の同時操作、共有リンク作成時の権限設定、ユーザー追加フォーム。"
+        }
+      ]
+    }
+  ]
+}

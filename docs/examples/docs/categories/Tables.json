@@ -1,0 +1,205 @@
+{
+  "name": "Tables",
+  "description": "テーブル・データグリッド",
+  "componentCount": 27,
+  "subcategories": [
+    {
+      "name": "E-CommerceTables",
+      "path": "Tables/E-CommerceTables/",
+      "components": [
+        {
+          "name": "CompareShopProducts",
+          "path": "Tables/E-CommerceTables/CompareShopProducts/",
+          "description": "複数の商品を横並びで比較できるテーブルコンポーネント。商品画像・価格・レビュー評価をヘッダーに表示し、在庫状況、サイズ（EU/UK/US）、商品プロパティ（対象グループ、スポーツウェア対応、色、パターン、フィット、丈、ディテール、洗濯方法）、タイプなどの属性を行ごとに比較できる。削除ボタンやローディング状態のプレースホルダーも含む。",
+          "useCases": "ECサイトの商品比較ページ、ウィッシュリストからの商品比較機能、類似商品の仕様比較、購入検討時の複数商品の詳細比較"
+        },
+        {
+          "name": "SizeGuide",
+          "path": "Tables/E-CommerceTables/SizeGuide/",
+          "description": "アパレル商品のサイズガイドを表形式で表示するコンポーネント。XXS〜XLの各サイズに対して、胸囲（Chest）、ウエスト（Waist）、ヒップ（Hip）、身長（Height）の数値範囲を一覧表示する。交互に背景色が変わるストライプデザインで視認性を確保。",
+          "useCases": "衣料品ECサイトのサイズガイド表示、商品詳細ページのサイズ選択支援、アパレル商品のフィッティング情報提供、サイズ選びに迷う顧客への参考情報表示"
+        }
+      ]
+    },
+    {
+      "name": "OrdersTables",
+      "path": "Tables/OrdersTables/",
+      "components": [
+        {
+          "name": "AdvancedWithSearchableFilterBar",
+          "path": "Tables/OrdersTables/AdvancedWithSearchableFilterBar/",
+          "description": "タブナビゲーション（All/Archived/Publish/Unpublish）、検索バー、日付範囲選択のドロップダウンカレンダーを備えた高機能な注文管理テーブル。注文のフィルタリング、検索、期間指定による絞り込みが可能な管理画面向けのUIを提供する。",
+          "useCases": "管理画面の注文一覧ページ、EC管理ダッシュボードの注文管理、注文ステータス別のフィルタリング機能、期間指定での注文検索"
+        },
+        {
+          "name": "PaymentTable",
+          "path": "Tables/OrdersTables/PaymentTable/",
+          "description": "支払い履歴を一覧表示するテーブルコンポーネント。日付（PDFアイコン付き）、支払い方法（銀行口座マスク表示）、ステータス、金額を列として表示する。グリッドレイアウトでレスポンシブ対応し、モバイルではラベル付きで表示される。",
+          "useCases": "アカウント設定の支払い履歴、サブスクリプション請求履歴の表示、支払い明細の一覧表示、請求書ダウンロード機能"
+        },
+        {
+          "name": "SimpleWithIconsAndBadges",
+          "path": "Tables/OrdersTables/SimpleWithIconsAndBadges/",
+          "description": "日付、支払い方法、ステータス、金額を表示する支払いテーブル。銀行アイコンやPDFアイコンを活用し、ステータスはバッジ形式で表示する。視覚的に分かりやすいシンプルなデザイン。",
+          "useCases": "支払い履歴の一覧表示、トランザクション履歴ページ、ステータス付きの決済履歴確認、請求書管理画面"
+        },
+        {
+          "name": "SimpleWithModals",
+          "path": "Tables/OrdersTables/SimpleWithModals/",
+          "description": "請求書一覧をシンプルなテーブル形式で表示するコンポーネント。Invoice（請求書番号）、Billing date（請求日）、Amount（金額）、Plan（プラン）の列を持ち、各行にViewボタン（モーダル表示用）とダウンロードボタンを配置。",
+          "useCases": "アカウント設定の請求書一覧、サブスクリプション請求履歴ページ、請求書のプレビューとダウンロード機能、プラン別の支払い履歴確認"
+        }
+      ]
+    },
+    {
+      "name": "OtherTables",
+      "path": "Tables/OtherTables/",
+      "components": [
+        {
+          "name": "AnalyticsByRegionTable",
+          "path": "Tables/OtherTables/AnalyticsByRegionTable/",
+          "description": "地域別のアナリティクスデータを表示するテーブルコンポーネント。各国の国旗アイコンと国名、訪問数（Visits）、購入金額（Purchases）、変動率（Change）を表示する。変動率は上昇/下降を示すトレンドアイコン付きで視覚的に分かりやすい。",
+          "useCases": "ダッシュボードの地域別アクセス分析、ECサイトの国別売上レポート、マーケティング分析の地域別パフォーマンス表示、グローバルビジネスの地域別統計"
+        },
+        {
+          "name": "ExportTable",
+          "path": "Tables/OtherTables/ExportTable/",
+          "description": "データエクスポートの履歴と進捗を一覧表示するテーブル。Type（エクスポート形式：CSV等）、Date（実行日）、Status（進行中のパーセンテージまたは完了）、ダウンロードボタンを表示する。レスポンシブ対応でモバイルではラベル付きレイアウト。",
+          "useCases": "データエクスポート履歴の管理画面、バッチ処理の進捗状況確認、エクスポートファイルのダウンロード管理、データ出力ジョブの一覧表示"
+        },
+        {
+          "name": "PostsTable",
+          "path": "Tables/OtherTables/PostsTable/",
+          "description": "ブログ記事やニュースレター投稿の一覧を表示するテーブル。サムネイル画像付きのタイトル、著者名、投稿日、送信数（Sends）、開封率（Opens）、ステータスバッジ（Published等）を表示する。詳細リンク付きで個別ページへ遷移可能。",
+          "useCases": "CMS管理画面の記事一覧、ニュースレター配信履歴の確認、コンテンツ管理ダッシュボード、メールマーケティングのパフォーマンス分析"
+        },
+        {
+          "name": "ReviewsTable",
+          "path": "Tables/OtherTables/ReviewsTable/",
+          "description": "レビューを検索・フィルタリングできるテーブルコンポーネント。検索バーとフィルタードロップダウン（All/Published等のステータス別絞り込み）を備え、レビュー内容を効率的に管理できるUI。フィルター適用数のバッジ表示も含む。",
+          "useCases": "ECサイトのレビュー管理画面、商品レビューの承認・却下管理、カスタマーフィードバックの一覧表示、レビューのモデレーション機能"
+        }
+      ]
+    },
+    {
+      "name": "ProductsTables",
+      "path": "Tables/ProductsTables/",
+      "components": [
+        {
+          "name": "SearchableFilterBarWithColorfulBadgesInTable",
+          "path": "Tables/ProductsTables/SearchableFilterBarWithColorfulBadgesInTable/",
+          "description": "検索バー、エクスポートボタン、フィルタードロップダウンを備えた製品/割引管理テーブル。カラフルなバッジでステータスを視覚的に区別し、フィルター適用数をバッジで表示する。複数条件でのフィルタリングに対応。",
+          "useCases": "EC管理画面の割引クーポン管理、製品カタログの検索・フィルタリング、プロモーション管理ダッシュボード、ステータス別商品一覧"
+        },
+        {
+          "name": "SimpleTableWithSorting",
+          "path": "Tables/ProductsTables/SimpleTableWithSorting/",
+          "description": "上部にクイックアクションカード（Product/Discount/Collection/Get paid）を横スクロールで配置し、その下にソート機能付きテーブルを表示するコンポーネント。新規作成への導線とデータ一覧を統合したUI。",
+          "useCases": "製品管理ダッシュボードのメイン画面、ECストア管理のホーム、製品・割引・コレクション・決済の統合管理、管理機能へのクイックアクセス"
+        },
+        {
+          "name": "TableWithSwitchesInTabs",
+          "path": "Tables/ProductsTables/TableWithSwitchesInTabs/",
+          "description": "タブナビゲーション（All/Archived/Publish/Unpublish）、検索バー、インポート/エクスポートドロップダウンを備えた高機能な製品管理テーブル。各行にスイッチコントロールを配置し、ステータスの即時切り替えが可能。",
+          "useCases": "製品の公開/非公開管理、在庫商品のステータス一括管理、アーカイブ商品の管理、製品データのインポート・エクスポート機能"
+        }
+      ]
+    },
+    {
+      "name": "ProjectTables",
+      "path": "Tables/ProjectTables/",
+      "components": [
+        {
+          "name": "BorderedTableWithSearchableFilterBar",
+          "path": "Tables/ProjectTables/BorderedTableWithSearchableFilterBar/",
+          "description": "プロジェクト追加ボタン、検索バー、フィルター機能を備えたプロジェクト管理テーブル。ボーダーで区切られたカードスタイルのUIで、プロジェクトの検索と新規追加を効率的に行える。",
+          "useCases": "プロジェクト管理ダッシュボード、チームのプロジェクト一覧画面、プロジェクト検索・フィルタリング、新規プロジェクト作成フロー"
+        },
+        {
+          "name": "BrandingLogosAndProgressBars",
+          "path": "Tables/ProjectTables/BrandingLogosAndProgressBars/",
+          "description": "プロジェクト名のヘッダーにソートドロップダウン（昇順/降順）を備えたテーブル。各列でソート機能が利用可能で、進捗バーやブランドロゴを表示するレイアウト。ボーダー付きのテーブルデザイン。",
+          "useCases": "プロジェクト進捗管理、ブランド別プロジェクト一覧、ソート可能なプロジェクトリスト、進捗状況の可視化"
+        },
+        {
+          "name": "Details",
+          "path": "Tables/ProjectTables/Details/",
+          "description": "タブナビゲーション（Tasks/Team/Invoices）とカレンダードロップダウンを備えたプロジェクト詳細テーブル。日付を選択してタスクやチームメンバー、請求書を切り替えて表示できる統合的なプロジェクト詳細UI。",
+          "useCases": "プロジェクト詳細ページ、タスク・チーム・請求の統合管理、日付別プロジェクト進捗確認、プロジェクトダッシュボード"
+        },
+        {
+          "name": "Incidents",
+          "path": "Tables/ProjectTables/Incidents/",
+          "description": "ヘッダーにエクスポートボタンとフィルターボタン、検索バーを備えたテーブル。インシデントやイベントログの一覧表示に適した構成で、データのエクスポートとフィルタリングが可能。",
+          "useCases": "インシデント管理画面、イベントログの一覧表示、システム監視ダッシュボード、障害・エラーの追跡管理"
+        },
+        {
+          "name": "Visitors",
+          "path": "Tables/ProjectTables/Visitors/",
+          "description": "トップソース（流入元）を表示するアナリティクステーブル。Source、Visitors、Bounce Rate、Visit Durationの列を持ち、フィルター追加や比較追加のボタンを備える。ウェブ解析向けのUI。",
+          "useCases": "ウェブアナリティクスダッシュボード、トラフィック流入元分析、訪問者データの比較、マーケティング効果測定"
+        }
+      ]
+    },
+    {
+      "name": "UsersTables",
+      "path": "Tables/UsersTables/",
+      "components": [
+        {
+          "name": "BorderedTable",
+          "path": "Tables/UsersTables/BorderedTable/",
+          "description": "タブナビゲーション（All/Valid accounts/Fake accounts）と検索バーを備えたユーザー管理テーブル。アカウントの有効性でフィルタリングでき、ボーダーで区切られたカードスタイルのデザイン。",
+          "useCases": "ユーザーアカウント管理画面、アカウント検証・審査ダッシュボード、不正アカウントの検出・管理、ユーザー一覧の分類表示"
+        },
+        {
+          "name": "ContactsReports",
+          "path": "Tables/UsersTables/ContactsReports/",
+          "description": "タブナビゲーション（All/Assigned/Unassigned）でコンタクトを分類するテーブル。Message、Platform、Assignedの列を持ち、各タブには件数が表示される。コンタクトの割り当て状況を管理するUI。",
+          "useCases": "カスタマーサポートの問い合わせ管理、コンタクト割り当てダッシュボード、サポートチケットの担当者振り分け、マルチプラットフォームの問い合わせ一覧"
+        },
+        {
+          "name": "ContactsTable",
+          "path": "Tables/UsersTables/ContactsTable/",
+          "description": "ビュー切り替え（Board/Table/Timeline）とソート機能（Newest first/Oldest first/A to Z）を備えた高機能なコンタクト管理テーブル。複数の表示形式とソートオプションで柔軟なデータ閲覧が可能。",
+          "useCases": "CRM管理画面、顧客コンタクト管理、営業リード管理、複数ビュー対応のデータ一覧表示"
+        },
+        {
+          "name": "FiltersAvatersImagesBadgesTable",
+          "path": "Tables/UsersTables/FiltersAvatersImagesBadgesTable/",
+          "description": "検索バーとフィルタードロップダウンを備えたリファラルユーザーテーブル。アバター画像付きのユーザー情報とカラフルなバッジでステータスを表示。フィルター適用数をバッジで表示。",
+          "useCases": "リファラルプログラム管理、紹介ユーザーの一覧表示、アフィリエイト管理画面、ユーザー紹介状況の追跡"
+        },
+        {
+          "name": "MembersTable",
+          "path": "Tables/UsersTables/MembersTable/",
+          "description": "メンバー一覧をシンプルに表示するテーブル。アバター画像付きのメンバー情報（名前、メール、加入日）、ステータス（Free member等）、メール開封数、イベント、詳細リンクを表示。",
+          "useCases": "メンバーシップ管理画面、ニュースレター購読者一覧、メール配信のパフォーマンス確認、会員ステータス管理"
+        },
+        {
+          "name": "SimpleWithBadgeTable",
+          "path": "Tables/UsersTables/SimpleWithBadgeTable/",
+          "description": "メンバー一覧をシンプルなテーブル形式で表示するコンポーネント。Member（アバター付き）、Role、Email、Last activity、Status（Active/Inactive等のバッジ）の列を持つ基本的なテーブル。",
+          "useCases": "チームメンバー管理、ユーザー権限の一覧表示、アクティビティステータスの確認、シンプルなユーザー管理画面"
+        },
+        {
+          "name": "SmallImagesTable",
+          "path": "Tables/UsersTables/SmallImagesTable/",
+          "description": "新規顧客一覧を表示するテーブル。ヘッダーに検索・ソート・フィルターのアイコンボタンと追加ボタンを配置。コンパクトなアバター画像を使用した顧客リスト表示。",
+          "useCases": "新規顧客の一覧表示、顧客管理ダッシュボード、最近登録したユーザーの確認、顧客データのクイック操作"
+        },
+        {
+          "name": "SurveyDataWithUserTable",
+          "path": "Tables/UsersTables/SurveyDataWithUserTable/",
+          "description": "サーベイ（アンケート）の回答データをユーザー情報と共に表示するテーブル。質問文、回答タイプ、回答数をヘッダーに表示し、User、Response、Timeの列で各回答を一覧表示。",
+          "useCases": "アンケート結果の分析画面、ユーザーフィードバックの一覧表示、サーベイ回答データの管理、ユーザー調査結果のレポート"
+        },
+        {
+          "name": "TeamMembersReports",
+          "path": "Tables/UsersTables/TeamMembersReports/",
+          "description": "チームメンバー一覧を表示するテーブル。複数選択可能なチームフィルターとステータスフィルター（Online/Busy/Away/Offline）、検索バーを備える。チームと状態で絞り込み可能な高機能UI。",
+          "useCases": "チーム管理ダッシュボード、チームメンバーのオンライン状況確認、部署・チーム別のメンバー表示、リモートチームの状態管理"
+        }
+      ]
+    }
+  ]
+}

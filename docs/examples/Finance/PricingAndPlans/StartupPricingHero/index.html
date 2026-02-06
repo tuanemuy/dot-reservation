@@ -1,0 +1,913 @@
+<div
+  class="relative py-10 md:py-14 px-4 before:absolute before:inset-0 before:-z-1 before:mx-3 lg:before:mx-6 2xl:before:mx-10 before:bg-linear-to-b before:from-gray-100 before:to-transparent before:rounded-2xl dark:before:from-neutral-800"
+>
+  <div class="max-w-6xl px-4 sm:px-6 lg:px-8 mx-auto">
+    <!-- Heading -->
+    <div class="mb-8 max-w-2xl mx-auto text-center">
+      <h1 class="font-bold text-gray-800 text-4xl md:text-5xl dark:text-white">
+        Simple, transparent pricing
+      </h1>
+
+      <p class="mt-5 text-sm md:text-lg text-gray-800 dark:text-gray-200">
+        Whatever your status, our offers evolve according to your needs.
+      </p>
+    </div>
+    <!-- End Heading -->
+
+    <!-- Switch -->
+    <div id="toggle-count" class="flex justify-center items-center gap-x-3">
+      <label
+        for="pricing-switch"
+        class="text-sm text-gray-800 dark:text-neutral-200"
+        >Monthly</label
+      >
+      <label
+        for="pricing-switch"
+        class="relative inline-block w-11 h-6 cursor-pointer"
+      >
+        <input
+          type="checkbox"
+          id="pricing-switch"
+          class="peer sr-only"
+          checked
+        />
+        <span
+          class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
+        ></span>
+        <span
+          class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"
+        ></span>
+      </label>
+      <label
+        for="pricing-switch"
+        class="text-sm text-gray-800 dark:text-neutral-200"
+        >Annually</label
+      >
+    </div>
+    <!-- End Switch -->
+  </div>
+
+  <div class="my-8">
+    <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">
+      <!-- Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card -->
+        <div
+          class="p-4 md:p-6 h-full flex flex-col bg-white border border-gray-200 rounded-xl shadow-xs dark:bg-neutral-900 dark:border-neutral-700"
+        >
+          <!-- Header -->
+          <header class="flex flex-col">
+            <h4
+              class="font-semibold text-lg text-gray-800 dark:text-neutral-200"
+            >
+              Starter
+            </h4>
+
+            <div class="mt-2">
+              <p class="text-sm text-gray-500 dark:text-neutral-500">
+                Best for individual developers
+              </p>
+            </div>
+          </header>
+          <!-- End Header -->
+
+          <!-- Body -->
+          <div class="flex flex-col">
+            <!-- Price -->
+            <div class="mt-4 flex items-start gap-x-1">
+              <span
+                class="font-semibold text-gray-800 text-xl dark:text-neutral-200"
+                >$</span
+              >
+              <span
+                data-hs-toggle-count='{
+                "target": "#toggle-count",
+                "min": 0,
+                "max": 0
+              }'
+                class="font-semibold text-3xl md:text-4xl text-gray-800 dark:text-neutral-200"
+              >
+                0
+              </span>
+              <span class="block mt-0.5 text-gray-800 dark:text-neutral-200">
+                USD
+              </span>
+            </div>
+            <!-- End Price -->
+
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              /month for one person
+            </p>
+
+            <div
+              class="mt-5 pb-7 border-b border-gray-200 dark:border-neutral-700"
+            >
+              <button
+                type="button"
+                class="py-2 px-2.5 w-full inline-flex justify-center items-center gap-x-1.5 whitespace-nowrap text-[13px] md:text-sm rounded-lg bg-white border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              >
+                Get started
+              </button>
+            </div>
+
+            <!-- List -->
+            <ul class="mt-7 space-y-2.5 text-sm">
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  5 GB Cloud Storage
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  10 API Requests/min
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  2 Team Members
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  1 Project Template
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  100 Build Minutes/month
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Email Support
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Basic Analytics
+                </span>
+              </li>
+            </ul>
+            <!-- End List -->
+          </div>
+          <!-- End Body -->
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div
+          class="p-4 md:p-6 h-full flex flex-col bg-white border border-gray-200 rounded-xl shadow-xs dark:bg-neutral-900 dark:border-neutral-700"
+        >
+          <!-- Header -->
+          <header class="flex flex-col">
+            <h4
+              class="font-semibold text-lg text-gray-800 dark:text-neutral-200"
+            >
+              Pro
+              <span
+                class="font-mono font-normal text-xs text-blue-600 dark:text-blue-500"
+                >— Most popular</span
+              >
+            </h4>
+
+            <div class="mt-2">
+              <p class="text-sm text-gray-500 dark:text-neutral-500">
+                Perfect for small teams
+              </p>
+            </div>
+          </header>
+          <!-- End Header -->
+
+          <!-- Body -->
+          <div class="flex flex-col">
+            <!-- Price -->
+            <div class="mt-4 flex items-start gap-x-1">
+              <span
+                class="font-semibold text-gray-800 text-xl dark:text-neutral-200"
+                >$</span
+              >
+              <span
+                data-hs-toggle-count='{
+                "target": "#toggle-count",
+                "min": 15,
+                "max": 30
+              }'
+                class="font-semibold text-3xl md:text-4xl text-gray-800 dark:text-neutral-200"
+              >
+                15
+              </span>
+              <span class="block mt-0.5 text-gray-800 dark:text-neutral-200">
+                USD
+              </span>
+            </div>
+            <!-- End Price -->
+
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              /month for one person
+            </p>
+
+            <div
+              class="mt-5 pb-7 border-b border-gray-200 dark:border-neutral-700"
+            >
+              <button
+                type="button"
+                class="py-2 px-2.5 w-full inline-flex justify-center items-center gap-x-1.5 whitespace-nowrap text-[13px] md:text-sm rounded-lg shadow-md bg-blue-600 text-white hover:bg-blue-700 hover:shadow-none focus:outline-hidden focus:bg-blue-700 focus:shadow-none disabled:opacity-50 disabled:pointer-events-none"
+              >
+                Get started
+              </button>
+            </div>
+
+            <!-- List -->
+            <ul class="mt-7 space-y-2.5 text-sm">
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  25 GB Cloud Storage
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  50 API Requests/min
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  5 Team Members
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  5 Project Templates
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  500 Build Minutes/month
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Priority Email Support
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Advanced Analytics
+                </span>
+              </li>
+            </ul>
+            <!-- End List -->
+          </div>
+          <!-- End Body -->
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div
+          class="p-4 md:p-6 h-full flex flex-col bg-white border border-gray-200 rounded-xl shadow-xs dark:bg-neutral-900 dark:border-neutral-700"
+        >
+          <!-- Header -->
+          <header class="flex flex-col">
+            <h4
+              class="font-semibold text-lg text-gray-800 dark:text-neutral-200"
+            >
+              Team
+            </h4>
+
+            <div class="mt-2">
+              <p class="text-sm text-gray-500 dark:text-neutral-500">
+                For growing businesses
+              </p>
+            </div>
+          </header>
+          <!-- End Header -->
+
+          <!-- Body -->
+          <div class="flex flex-col">
+            <!-- Price -->
+            <div class="mt-4 flex items-start gap-x-1">
+              <span
+                class="font-semibold text-gray-800 text-xl dark:text-neutral-200"
+                >$</span
+              >
+              <span
+                data-hs-toggle-count='{
+                "target": "#toggle-count",
+                "min": 45,
+                "max": 90
+              }'
+                class="font-semibold text-3xl md:text-4xl text-gray-800 dark:text-neutral-200"
+              >
+                45
+              </span>
+              <span class="block mt-0.5 text-gray-800 dark:text-neutral-200">
+                USD
+              </span>
+            </div>
+            <!-- End Price -->
+
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              /month for one person
+            </p>
+
+            <div
+              class="mt-5 pb-7 border-b border-gray-200 dark:border-neutral-700"
+            >
+              <button
+                type="button"
+                class="py-2 px-2.5 w-full inline-flex justify-center items-center gap-x-1.5 whitespace-nowrap text-[13px] md:text-sm rounded-lg shadow-md bg-blue-600 text-white hover:bg-blue-700 hover:shadow-none focus:outline-hidden focus:bg-blue-700 focus:shadow-none disabled:opacity-50 disabled:pointer-events-none"
+              >
+                Get started
+              </button>
+            </div>
+
+            <!-- List -->
+            <ul class="mt-7 space-y-2.5 text-sm">
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  100 GB Cloud Storage
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  200 API Requests/min
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  15 Team Members
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  20 Project Templates
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  2000 Build Minutes/month
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  24/7 Phone Support
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Enterprise Analytics
+                </span>
+              </li>
+            </ul>
+            <!-- End List -->
+          </div>
+          <!-- End Body -->
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div
+          class="p-4 md:p-6 h-full flex flex-col bg-white border border-gray-200 rounded-xl shadow-xs dark:bg-neutral-900 dark:border-neutral-700"
+        >
+          <!-- Header -->
+          <header class="flex flex-col">
+            <h4
+              class="font-semibold text-lg text-gray-800 dark:text-neutral-200"
+            >
+              Enterprise
+            </h4>
+
+            <div class="mt-2">
+              <p class="text-sm text-gray-500 dark:text-neutral-500">
+                For large organizations
+              </p>
+            </div>
+          </header>
+          <!-- End Header -->
+
+          <!-- Body -->
+          <div class="flex flex-col">
+            <!-- Price -->
+            <div class="mt-4 flex items-start gap-x-1">
+              <span
+                class="font-semibold text-gray-800 text-xl dark:text-neutral-200"
+                >$</span
+              >
+              <span
+                data-hs-toggle-count='{
+                "target": "#toggle-count",
+                "min": 199,
+                "max": 399
+              }'
+                class="font-semibold text-3xl md:text-4xl text-gray-800 dark:text-neutral-200"
+              >
+                199
+              </span>
+              <span class="block mt-0.5 text-gray-800 dark:text-neutral-200">
+                USD
+              </span>
+            </div>
+            <!-- End Price -->
+
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              /month per person (Min 10 people)
+            </p>
+
+            <div
+              class="mt-5 pb-7 border-b border-gray-200 dark:border-neutral-700"
+            >
+              <button
+                type="button"
+                class="py-2 px-2.5 w-full inline-flex justify-center items-center gap-x-1.5 whitespace-nowrap text-[13px] md:text-sm rounded-lg shadow-md bg-blue-600 text-white hover:bg-blue-700 hover:shadow-none focus:outline-hidden focus:bg-blue-700 focus:shadow-none disabled:opacity-50 disabled:pointer-events-none"
+              >
+                Get started
+              </button>
+            </div>
+
+            <!-- List -->
+            <ul class="mt-7 space-y-2.5 text-sm">
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Unlimited Storage
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Unlimited API Requests
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Unlimited Team Members
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Unlimited Project Templates
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Unlimited Build Minutes
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Dedicated Support Team
+                </span>
+              </li>
+              <li class="flex items-center gap-x-3">
+                <svg
+                  class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-gray-800 dark:text-neutral-400">
+                  Custom Analytics
+                </span>
+              </li>
+            </ul>
+            <!-- End List -->
+          </div>
+          <!-- End Body -->
+        </div>
+        <!-- End Card -->
+      </div>
+      <!-- End Grid -->
+    </div>
+  </div>
+
+  <div class="max-w-2xl px-4 sm:px-6 lg:px-8 mx-auto">
+    <!-- Card -->
+    <div
+      class="p-4 bg-white border border-gray-200 rounded-xl dark:bg-neutral-900 dark:border-neutral-700"
+    >
+      <div class="flex gap-x-4">
+        <svg
+          class="shrink-0 size-7 mt-1 text-blue-600 dark:text-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"
+          />
+          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
+        </svg>
+        <div class="grow">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div class="grow">
+              <h4 class="font-medium text-gray-800 dark:text-neutral-200">
+                Need custom plan?
+              </h4>
+              <p class="text-sm text-gray-500 dark:text-neutral-500">
+                Talk to our team to customize a plan that suits your needs.
+              </p>
+            </div>
+            <div>
+              <a
+                class="py-2 px-2.5 inline-flex items-center gap-x-1.5 whitespace-nowrap text-[13px] md:text-sm rounded-lg bg-white border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                href="#"
+              >
+                Contact sales
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Card -->
+  </div>
+</div>

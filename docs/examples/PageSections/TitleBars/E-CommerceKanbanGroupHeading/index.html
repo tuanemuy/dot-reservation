@@ -1,0 +1,45 @@
+<div
+  class="py-1 ps-2.5 pe-1 w-full inline-flex justify-between items-center gap-x-2"
+>
+  <div class="inline-flex items-center gap-x-1">
+    <span class="font-medium text-[13px] text-stone-800 dark:text-neutral-200">
+      Arrived
+    </span>
+    <span class="text-[13px] text-stone-400 leading-3 dark:text-neutral-500">
+      / 0
+    </span>
+  </div>
+
+  <!-- Button -->
+  <div class="hs-tooltip inline-block">
+    <button
+      type="button"
+      class="hs-tooltip-toggle relative flex justify-center items-center gap-x-3 size-5 text-sm text-stone-400 hover:bg-stone-200 rounded-md disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-200 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      data-hs-overlay="#hs-pro-chhtgm"
+    >
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+      <span class="sr-only">New</span>
+    </button>
+    <span
+      class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-stone-900 text-xs text-white rounded-lg whitespace-nowrap dark:bg-neutral-700"
+      role="tooltip"
+    >
+      Create new task
+    </span>
+  </div>
+  <!-- End Button -->
+</div>

@@ -1,0 +1,172 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-11T00:00:00Z",
+  "summary": {
+    "description": "Preline UIコンポーネントライブラリのサンプル集。Webアプリケーション、ダッシュボード、ECサイト、マーケティングページなど幅広いユースケースに対応した720種類のコンポーネントを収録。実装者は目的に応じたカテゴリから必要なコンポーネントを選択できます。",
+    "categories": 20,
+    "subcategories": 127,
+    "components": 720
+  },
+  "categories": [
+    {
+      "name": "CalendarAndScheduling",
+      "description": "日付選択・予定管理のためのカレンダーとスケジュールUI",
+      "summary": "月間カレンダー表示、サイドバー付きカレンダー、ユーザースケジュール管理画面を提供。予約システム、タスク管理、イベント管理アプリケーションの実装に活用できます。",
+      "componentCount": 11,
+      "subcategoryCount": 4,
+      "file": "categories/CalendarAndScheduling.json"
+    },
+    {
+      "name": "Cards",
+      "description": "情報を視覚的にグループ化して表示するカードコンポーネント",
+      "summary": "プロジェクト情報、連絡先、ファイル/フォルダ、統計データ、インテグレーション設定、住所表示などを扱うカードUI。ダッシュボード、管理画面、ポートフォリオサイトでの情報表示に最適です。",
+      "componentCount": 51,
+      "subcategoryCount": 13,
+      "file": "categories/Cards.json"
+    },
+    {
+      "name": "DataVisualization",
+      "description": "数値データやKPIを視覚的に表示するコンポーネント",
+      "summary": "統計カード、チャート付きデータカード、KPI表示など。売上・アクセス数・ユーザー数などの指標をダッシュボードで表示する際に使用します。",
+      "componentCount": 23,
+      "subcategoryCount": 2,
+      "file": "categories/DataVisualization.json"
+    },
+    {
+      "name": "E-Commerce",
+      "description": "オンラインショップ構築に必要なECサイト専用コンポーネント",
+      "summary": "商品一覧（グリッド/リスト）、商品詳細、ギャラリー、カテゴリ表示、チェックアウトフォーム、注文詳細など。ECサイトの商品ページからカート・決済までの一連のフローを実装できます。",
+      "componentCount": 49,
+      "subcategoryCount": 8,
+      "file": "categories/E-Commerce.json"
+    },
+    {
+      "name": "Feedback",
+      "description": "ユーザーからのフィードバック収集と状態表示",
+      "summary": "空状態（Empty State）表示とレビュー入力フォームを提供。データが存在しない場合の案内表示や、ユーザーレビュー・評価の収集に使用します。",
+      "componentCount": 5,
+      "subcategoryCount": 2,
+      "file": "categories/Feedback.json"
+    },
+    {
+      "name": "Finance",
+      "description": "料金プラン・決済・取引履歴など金融関連のUI",
+      "summary": "料金プラン比較表、決済カード管理、決済フォーム、領収書・取引明細表示など。SaaSの課金ページ、サブスクリプション管理、取引履歴画面の実装に活用できます。",
+      "componentCount": 16,
+      "subcategoryCount": 4,
+      "file": "categories/Finance.json"
+    },
+    {
+      "name": "Footer",
+      "description": "ページ下部に配置するフッターレイアウト",
+      "summary": "Webサイト向けの標準フッター、ダッシュボード向けフッター、縦積みレイアウトのフッターを提供。著作権表示、ナビゲーションリンク、ソーシャルリンクなどを配置できます。",
+      "componentCount": 6,
+      "subcategoryCount": 3,
+      "file": "categories/Footer.json"
+    },
+    {
+      "name": "Forms",
+      "description": "ユーザー入力を受け付ける各種フォームコンポーネント",
+      "summary": "作成・追加フォーム、フィルターフォーム、ファイルアップロード、テキストエリア、ラジオ/チェックボックス、スイッチ、レンジスライダーなど。あらゆるデータ入力・検索・フィルタリング機能の実装に対応します。",
+      "componentCount": 108,
+      "subcategoryCount": 14,
+      "file": "categories/Forms.json"
+    },
+    {
+      "name": "Headers",
+      "description": "ページ上部のナビゲーションバーとヘッダーレイアウト",
+      "summary": "Webサイト向けナビゲーションバー、アプリケーション用ナビバー、ツールバー、ダッシュボードヘッダー、縦積みヘッダーレイアウトを提供。ブランドロゴ、メニュー、検索、ユーザーメニューなどを配置できます。",
+      "componentCount": 29,
+      "subcategoryCount": 5,
+      "file": "categories/Headers.json"
+    },
+    {
+      "name": "InboxChageMessages",
+      "description": "リアルタイムコミュニケーション向けチャット・メッセージングUI",
+      "summary": "チャットバブル、メッセージスレッド、チャットウィジェット、メッセージングアプリレイアウトを提供。カスタマーサポートチャット、チームコミュニケーション、DMN機能の実装に使用します。",
+      "componentCount": 28,
+      "subcategoryCount": 4,
+      "file": "categories/InboxChageMessages.json"
+    },
+    {
+      "name": "KanbanBoards",
+      "description": "タスク・プロジェクト管理用のカンバンボードUI",
+      "summary": "カンバン形式のタスクカードとボードレイアウトを提供。タスク管理、プロジェクト進捗管理、ワークフロー可視化などアジャイル開発やプロジェクト管理ツールの実装に活用できます。",
+      "componentCount": 9,
+      "subcategoryCount": 2,
+      "file": "categories/KanbanBoards.json"
+    },
+    {
+      "name": "Marketing",
+      "description": "ランディングページやプロモーションサイト向けのマーケティングUI",
+      "summary": "ヒーローセクション、CTAセクション、機能紹介、チーム紹介、顧客ロゴ、テスティモニアル、統計表示、採用情報セクションなど。製品・サービスの魅力を伝えるLPやコーポレートサイトの構築に最適です。",
+      "componentCount": 48,
+      "subcategoryCount": 10,
+      "file": "categories/Marketing.json"
+    },
+    {
+      "name": "Overlays",
+      "description": "画面上に重ねて表示するモーダル・ドロワー・ポップアップ",
+      "summary": "認証モーダル、決済モーダル、編集フォームモーダル、フィルターモーダル、共有・招待モーダル、フィードバックモーダル、サイドドロワーなど。ユーザーの操作フローを中断せずに追加情報の入力や確認を求める場面で使用します。",
+      "componentCount": 53,
+      "subcategoryCount": 16,
+      "file": "categories/Overlays.json"
+    },
+    {
+      "name": "PageSections",
+      "description": "ページを構成する汎用的なセクションコンポーネント",
+      "summary": "バナー、ギャラリー、タイムライン、通知システム、ユーザープロフィール、説明リスト、リストグループ、ナビゲーション、タイトルバー、クイックアクション、セットアップフローなど。様々なページで再利用可能な汎用セクションを提供します。",
+      "componentCount": 90,
+      "subcategoryCount": 13,
+      "file": "categories/PageSections.json"
+    },
+    {
+      "name": "Pages",
+      "description": "すぐに使える完成されたページテンプレート",
+      "summary": "ログイン・サインアップなどの認証ページ、記事・ブログページ、空白ページテンプレートを提供。新規ページ作成時のベースとして活用できます。",
+      "componentCount": 22,
+      "subcategoryCount": 3,
+      "file": "categories/Pages.json"
+    },
+    {
+      "name": "SearchAndCommandPalettes",
+      "description": "検索機能とキーボード操作対応のコマンドパレット",
+      "summary": "検索結果表示、サイドバー検索、コマンドパレットモーダルを提供。サイト内検索、コンテンツ検索、Spotlight風のクイックアクセス機能の実装に使用します。",
+      "componentCount": 16,
+      "subcategoryCount": 3,
+      "file": "categories/SearchAndCommandPalettes.json"
+    },
+    {
+      "name": "SidebarAndContents",
+      "description": "サイドバーを使ったダッシュボード・管理画面レイアウト",
+      "summary": "ダッシュボード用サイドバー、マルチカラムレイアウト、分離型サイドバーを提供。管理画面やSaaSアプリケーションの基本レイアウト構築に使用します。",
+      "componentCount": 18,
+      "subcategoryCount": 4,
+      "file": "categories/SidebarAndContents.json"
+    },
+    {
+      "name": "Tables",
+      "description": "一覧データを表形式で表示・管理するテーブルコンポーネント",
+      "summary": "ユーザー管理、注文管理、商品管理、プロジェクト管理、EC向けテーブルなど業務別のテーブルUIを提供。ソート、検索、ページネーション、一括操作などを含む管理画面のデータ表示に最適です。",
+      "componentCount": 27,
+      "subcategoryCount": 6,
+      "file": "categories/Tables.json"
+    },
+    {
+      "name": "UIControls",
+      "description": "アプリケーション全体で使用する基本的なUIコントロール",
+      "summary": "ボタン、ボタングループ、バッジ、リンク、ドロップダウン、セレクト、ポップオーバー、プログレスバーなど。他のコンポーネントの構成要素となる基本パーツを提供します。",
+      "componentCount": 103,
+      "subcategoryCount": 8,
+      "file": "categories/UIControls.json"
+    },
+    {
+      "name": "VideoAndAudio",
+      "description": "動画・音声コンテンツの再生とビデオ通話UI",
+      "summary": "ビデオ/オーディオプレーヤーインターフェース、ビデオ通話レイアウト、ボイスメッセージUIを提供。メディア再生機能やオンラインミーティング機能の実装に使用します。",
+      "componentCount": 8,
+      "subcategoryCount": 3,
+      "file": "categories/VideoAndAudio.json"
+    }
+  ]
+}

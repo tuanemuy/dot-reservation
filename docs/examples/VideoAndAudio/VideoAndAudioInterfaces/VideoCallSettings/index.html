@@ -1,0 +1,302 @@
+<div class="flex flex-col gap-y-10">
+  <!-- Camera -->
+  <div>
+    <label
+      class="block mb-1 font-medium text-sm text-gray-800 dark:text-neutral-200"
+    >
+      Camera
+    </label>
+
+    <!-- Select -->
+    <div class="relative inline-block w-full">
+      <select
+        id="hs-pro-select-camera"
+        data-hs-select='{
+        "placeholder": "Select camera",
+        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><div data-icon></div></button>",
+        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 px-9 flex gap-x-2 text-nowrap w-full cursor-pointer border border-gray-200 rounded-lg text-start text-sm text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+        "dropdownClasses": "end-0 w-full min-w-45 max-h-60 p-1 space-y-0.5 z-80 w-full overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+        "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+        "optionTemplate": "<div><div class=\"flex items-center gap-x-2\"><div data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div><span class=\"hidden hs-selected:block ms-auto\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div></div>",
+        "extraMarkup": "<div><div class=\"absolute top-1/2 start-3 z-1 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5\"/><rect x=\"2\" y=\"6\" width=\"14\" height=\"12\" rx=\"2\"/></svg></div><div class=\"absolute top-1/2 end-2 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div></div>",
+        "dropdownScope": "window",
+        "viewport": "#hs-modal-settings-body"
+      }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>FaceTime HD Camera (3A71:F4B5)</option>
+        <option>Logitech C920 (1B2C:2C99)</option>
+        <option>Integrated Webcam (0A5C:5800)</option>
+        <option>OBS Virtual Camera</option>
+      </select>
+    </div>
+    <!-- End Select -->
+  </div>
+  <!-- End Camera -->
+
+  <!-- Speaker -->
+  <div>
+    <label
+      class="block mb-1 font-medium text-sm text-gray-800 dark:text-neutral-200"
+    >
+      Speaker
+    </label>
+
+    <!-- Select -->
+    <div class="relative inline-block w-full">
+      <select
+        id="hs-pro-select-speaker"
+        data-hs-select='{
+        "placeholder": "Select speaker",
+        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><div data-icon></div></button>",
+        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 px-9 flex gap-x-2 text-nowrap w-full cursor-pointer border border-gray-200 rounded-lg text-start text-sm text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+        "dropdownClasses": "end-0 w-full min-w-45 max-h-60 p-1 space-y-0.5 z-80 w-full overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+        "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+        "optionTemplate": "<div><div class=\"flex items-center gap-x-2\"><div data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div><span class=\"hidden hs-selected:block ms-auto\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div></div>",
+        "extraMarkup": "<div><div class=\"absolute top-1/2 start-3 z-1 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\"/><path d=\"M16 9a5 5 0 0 1 0 6\"/><path d=\"M19.364 18.364a9 9 0 0 0 0-12.728\"/></svg></div><div class=\"absolute top-1/2 end-2 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div></div>",
+        "dropdownScope": "window",
+        "viewport": "#hs-modal-settings-body"
+      }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>Default - MacBook Pro Microphone (Built-in)</option>
+        <option>MacBook Pro Microphone (Built-in) Default</option>
+      </select>
+    </div>
+    <!-- End Select -->
+
+    <div class="mt-3 flex flex-wrap justify-between items-center gap-2">
+      <button
+        type="button"
+        class="py-2 px-3 text-nowrap inline-flex justify-center items-center gap-x-2 text-start whitespace-nowrap bg-gray-100 text-gray-800 text-sm rounded-lg hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
+      >
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"
+          />
+        </svg>
+        Test speaker
+      </button>
+
+      <div class="flex gap-x-1 h-3.5">
+        <div
+          class="w-2.5 h-5 rounded-sm bg-blue-600 dark:bg-blue-500"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-blue-600 dark:bg-blue-500"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-blue-600 dark:bg-blue-500"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-blue-600 dark:bg-blue-500"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <!-- End Speaker -->
+
+  <!-- Microphone -->
+  <div>
+    <label
+      class="block mb-1 font-medium text-sm text-gray-800 dark:text-neutral-200"
+    >
+      Microphone
+    </label>
+
+    <!-- Select -->
+    <div class="relative inline-block w-full">
+      <select
+        id="hs-pro-select-microphone"
+        data-hs-select='{
+        "placeholder": "Select microphone",
+        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><div data-icon></div></button>",
+        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 px-9 flex gap-x-2 text-nowrap w-full cursor-pointer border border-gray-200 rounded-lg text-start text-sm text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+        "dropdownClasses": "end-0 w-full min-w-45 max-h-60 p-1 space-y-0.5 z-80 w-full overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900",
+        "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+        "optionTemplate": "<div><div class=\"flex items-center gap-x-2\"><div data-icon></div><div class=\"text-gray-800 dark:text-neutral-200 \" data-title></div><span class=\"hidden hs-selected:block ms-auto\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div></div>",
+        "extraMarkup": "<div class=\"absolute top-1/2 end-2 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>",
+        "dropdownScope": "window",
+        "viewport": "#hs-modal-settings-body",
+        "extraMarkup": "<div><div class=\"absolute top-1/2 start-3 z-1 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4.5 text-gray-800 dark:text-neutral-200 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 19v3\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><rect x=\"9\" y=\"2\" width=\"6\" height=\"13\" rx=\"3\"/></svg></div><div class=\"absolute top-1/2 end-2 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div></div>"
+      }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>MacBook Pro Microphone (Built-in) Default</option>
+        <option>Default - MacBook Pro Microphone (Built-in)</option>
+      </select>
+    </div>
+    <!-- End Select -->
+
+    <div class="mt-3 flex flex-wrap justify-between items-center gap-2">
+      <button
+        type="button"
+        class="py-2 px-3 text-nowrap inline-flex justify-center items-center gap-x-2 text-start whitespace-nowrap bg-gray-100 text-gray-800 text-sm rounded-lg hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
+      >
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 12h.01" />
+        </svg>
+        Test microphone
+      </button>
+
+      <div class="flex gap-x-1 h-3.5">
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="w-2.5 h-5 rounded-sm bg-gray-300 dark:bg-neutral-600"
+          role="progressbar"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <!-- End Microphone -->
+</div>

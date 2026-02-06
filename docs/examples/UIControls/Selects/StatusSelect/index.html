@@ -1,0 +1,70 @@
+<div class="relative w-full">
+  <select
+    id="hs-pro-select-status"
+    data-hs-select='{
+      "placeholder": "Status",
+      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 dark:text-neutral-200\" data-title></span></button>",
+      "toggleClasses": "hs-select-active:border-transparent hs-select-active:bg-gray-100 py-[3px] px-2 rounded-md flex items-center flex-wrap text-nowrap text-start text-sm border border-transparent bg-gray-100 after:absolute after:-inset-1 after:border after:border-transparent after:rounded-lg hover:after:border-gray-200 focus:outline-hidden dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:hover:border-neutral-700 dark:focus:bg-neutral-700 hs-select-active:dark:bg-neutral-700 dark:hover:after:border-neutral-700",
+      "dropdownClasses": "mt-2 z-50 w-full p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-900",
+      "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-1 px-2 w-full text-sm text-gray-800 flex grow items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+      "optionTemplate": "<div class=\"flex grow items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"text-sm text-gray-800 dark:text-neutral-200\" data-title></div><div class=\"text-xs text-gray-500 dark:text-neutral-500\" data-description></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>"
+    }'
+    class="hidden"
+  >
+    <option value="">Choose</option>
+    <option
+      value="status1"
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-gray-400 dark:bg-neutral-500\"></span>"
+    }'
+    >
+      No status
+    </option>
+
+    <option
+      value="status2"
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-sky-500\"></span>"
+    }'
+    >
+      To do
+    </option>
+
+    <option
+      value="status3"
+      selected
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-orange-500\"></span>"
+    }'
+    >
+      In progress
+    </option>
+
+    <option
+      value="status4"
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-indigo-500\"></span>"
+    }'
+    >
+      Review
+    </option>
+
+    <option
+      value="status5"
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-green-500\"></span>"
+    }'
+    >
+      Completed 👏
+    </option>
+
+    <option
+      value="status6"
+      data-hs-select-option='{
+      "icon": "<span class=\"block w-1 h-3 rounded-full bg-gray-400 dark:bg-neutral-500\"></span>"
+    }'
+    >
+      Product Launch
+    </option>
+  </select>
+</div>

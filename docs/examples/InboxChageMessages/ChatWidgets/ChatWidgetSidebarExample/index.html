@@ -1,0 +1,753 @@
+<div
+  id="hs-pro-chwwd"
+  class="hs-overlay hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 end-0 transition-all duration-300 transform size-full sm:w-100 z-80 flex flex-col bg-white border-s border-gray-200 hidden dark:bg-neutral-800 dark:border-neutral-700"
+  role="dialog"
+  tabindex="-1"
+  aria-label="Sidebar"
+>
+  <div class="flex flex-col h-full">
+    <!-- Header -->
+    <div
+      class="py-3 px-4 flex justify-between items-center border-b border-gray-200 dark:border-neutral-700"
+    >
+      <!-- Avatar -->
+      <div class="w-full">
+        <div class="truncate flex items-center gap-x-2">
+          <span class="relative shrink-0">
+            <img
+              class="shrink-0 size-8 rounded-full"
+              src="https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+              alt="Avatar"
+            />
+            <span
+              class="absolute -bottom-0 -end-0 block size-2 rounded-full ring-2 ring-white bg-green-500 dark:ring-neutral-900"
+            ></span>
+          </span>
+          <span class="grow truncate">
+            <span
+              class="truncate block font-semibold text-sm leading-4 text-gray-800 dark:text-neutral-200"
+            >
+              Costa Quinn
+            </span>
+            <span
+              class="truncate block text-xs text-blue-600 dark:text-blue-500 leading-4"
+            >
+              Online
+            </span>
+          </span>
+        </div>
+      </div>
+      <!-- End Avatar -->
+
+      <button
+        type="button"
+        class="size-8 shrink-0 flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+        aria-label="Close"
+        data-hs-overlay="#hs-pro-chwwd"
+      >
+        <span class="sr-only">Close</span>
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+    <!-- End Header -->
+
+    <!-- Body -->
+    <div
+      class="h-full overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+    >
+      <div class="pt-2 pb-5 px-4">
+        <div class="relative">
+          <!-- Time -->
+          <div class="sticky top-0 inset-x-0 z-8 max-w-lg mx-auto text-center">
+            <span
+              class="py-0.5 px-1.5 bg-gray-100 text-xs text-gray-500 rounded-full dark:bg-neutral-900 dark:text-neutral-500"
+              >Today</span
+            >
+          </div>
+          <!-- End Time -->
+
+          <!-- List -->
+          <div class="w-full space-y-5">
+            <!-- Item -->
+            <div class="max-w-md ms-auto text-end flex justify-end gap-x-2">
+              <!-- Chat Bubble -->
+              <div>
+                <p
+                  class="mb-1.5 pe-2.5 text-xs text-gray-400 dark:text-neutral-500"
+                >
+                  James
+                </p>
+
+                <div class="space-y-1">
+                  <!-- Message -->
+                  <div
+                    class="group flex justify-end gap-x-2"
+                    style="word-break: break-word"
+                  >
+                    <div
+                      class="order-2 text-start bg-blue-100 dark:bg-blue-500/20 inline-block rounded-xl pt-2 pb-1.5 px-2.5"
+                    >
+                      <div class="text-sm text-gray-800 dark:text-neutral-200">
+                        Hi there,
+
+                        <span>
+                          <span
+                            class="text-[11px] text-end text-gray-400 dark:text-neutral-600 italic"
+                            >12:44</span
+                          >
+                          <svg
+                            class="inline-block shrink-0 size-4 text-gray-400 dark:text-neutral-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M18 6 7 17l-5-5" />
+                            <path d="m22 10-7.5 7.5L13 16" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- More Dropdown -->
+                    <div
+                      class="order-1 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      <div
+                        class="hs-dropdown --exclude-from-auto-opening [--strategy:absolute] [--auto-close:inside] [--placement:bottom-right] relative inline-flex"
+                      >
+                        <button
+                          id="hs-pro-cht1cmd_2"
+                          type="button"
+                          class="flex justify-center items-center gap-x-3 size-8 text-sm text-gray-600 hover:bg-gray-200 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+                          aria-haspopup="menu"
+                          aria-expanded="false"
+                          aria-label="Dropdown"
+                        >
+                          <svg
+                            class="shrink-0 size-4 rounded-full"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="1" />
+                            <circle cx="12" cy="5" r="1" />
+                            <circle cx="12" cy="19" r="1" />
+                          </svg>
+                        </button>
+
+                        <!-- More Dropdown -->
+                        <div
+                          class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-32 transition-[opacity,margin] duration opacity-0 hidden z-8 bg-white rounded-xl shadow-lg dark:bg-neutral-800 before:h-4 before:absolute before:-top-4 before:start-0 before:w-full after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full"
+                          role="menu"
+                          aria-orientation="vertical"
+                          aria-labelledby="hs-pro-cht1cmd_2"
+                        >
+                          <div class="p-1">
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                                />
+                                <path d="m15 5 4 4" />
+                              </svg>
+                              Edit
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                                />
+                                <path d="m10 7-3 3 3 3" />
+                                <path d="M17 13v-1a2 2 0 0 0-2-2H7" />
+                              </svg>
+                              Reply
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M3 6h18" />
+                                <path
+                                  d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                                />
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                <line x1="10" x2="10" y1="11" y2="17" />
+                                <line x1="14" x2="14" y1="11" y2="17" />
+                              </svg>
+                              Delete
+                            </a>
+                          </div>
+                        </div>
+                        <!-- End More Dropdown -->
+                      </div>
+                    </div>
+                    <!-- End More Dropdown -->
+                  </div>
+                  <!-- End Message -->
+
+                  <!-- Message -->
+                  <div
+                    class="group flex justify-end gap-x-2"
+                    style="word-break: break-word"
+                  >
+                    <div
+                      class="order-2 text-start bg-blue-100 dark:bg-blue-500/20 inline-block rounded-xl pt-2 pb-1.5 px-2.5"
+                    >
+                      <div class="text-sm text-gray-800 dark:text-neutral-200">
+                        Hi, I'd like to ask some questions. Can I use Preline UI
+                        on a client project?
+
+                        <span>
+                          <span
+                            class="text-[11px] text-end text-gray-400 dark:text-neutral-600 italic"
+                            >11:27</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- More Dropdown -->
+                    <div
+                      class="order-1 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      <div
+                        class="hs-dropdown --exclude-from-auto-opening [--strategy:absolute] [--auto-close:inside] [--placement:bottom-right] relative inline-flex"
+                      >
+                        <button
+                          id="hs-pro-cht1cmd_1"
+                          type="button"
+                          class="flex justify-center items-center gap-x-3 size-8 text-sm text-gray-600 hover:bg-gray-200 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+                          aria-haspopup="menu"
+                          aria-expanded="false"
+                          aria-label="Dropdown"
+                        >
+                          <svg
+                            class="shrink-0 size-4 rounded-full"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="1" />
+                            <circle cx="12" cy="5" r="1" />
+                            <circle cx="12" cy="19" r="1" />
+                          </svg>
+                        </button>
+
+                        <!-- More Dropdown -->
+                        <div
+                          class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-32 transition-[opacity,margin] duration opacity-0 hidden z-8 bg-white rounded-xl shadow-lg dark:bg-neutral-800 before:h-4 before:absolute before:-top-4 before:start-0 before:w-full after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full"
+                          role="menu"
+                          aria-orientation="vertical"
+                          aria-labelledby="hs-pro-cht1cmd_1"
+                        >
+                          <div class="p-1">
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                                />
+                                <path d="m15 5 4 4" />
+                              </svg>
+                              Edit
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                                />
+                                <path d="m10 7-3 3 3 3" />
+                                <path d="M17 13v-1a2 2 0 0 0-2-2H7" />
+                              </svg>
+                              Reply
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M3 6h18" />
+                                <path
+                                  d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                                />
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                <line x1="10" x2="10" y1="11" y2="17" />
+                                <line x1="14" x2="14" y1="11" y2="17" />
+                              </svg>
+                              Delete
+                            </a>
+                          </div>
+                        </div>
+                        <!-- End More Dropdown -->
+                      </div>
+                    </div>
+                    <!-- End More Dropdown -->
+                  </div>
+                  <!-- End Message -->
+                </div>
+              </div>
+              <!-- End Chat Bubble -->
+
+              <div class="shrink-0 mt-auto">
+                <img
+                  class="shrink-0 size-8 rounded-full"
+                  src="https://images.unsplash.com/photo-1659482633369-9fe69af50bfb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+            <!-- End Item -->
+
+            <!-- Item -->
+            <div class="max-w-md flex gap-x-2">
+              <div class="shrink-0 mt-auto">
+                <img
+                  class="shrink-0 size-8 rounded-full"
+                  src="https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                  alt="Avatar"
+                />
+              </div>
+
+              <!-- Chat Bubble -->
+              <div>
+                <p
+                  class="mb-1.5 ps-2.5 text-xs text-gray-400 dark:text-neutral-500"
+                >
+                  Costa
+                </p>
+
+                <div class="space-y-1">
+                  <!-- Message -->
+                  <div
+                    class="group flex justify-start gap-x-2"
+                    style="word-break: break-word"
+                  >
+                    <div
+                      class="order-1 bg-blue-100 dark:bg-blue-500/20 inline-block rounded-xl pt-2 pb-1.5 px-2.5"
+                    >
+                      <div class="text-sm text-gray-800 dark:text-neutral-200">
+                        <div
+                          class="mb-2 py-1 ps-2.5 pe-1.5 relative cursor-default bg-gray-50 before:bg-gray-600 dark:bg-neutral-500/10 dark:before:bg-neutral-500 rounded-lg overflow-hidden group-focus:scale-[.98] transition before:absolute before:inset-y-0 before:start-0 before:w-[3px] before:h-full"
+                        >
+                          <blockquote>
+                            <p
+                              class="font-medium text-[13px] text-blue-600 dark:text-blue-500"
+                            >
+                              James Collins
+                            </p>
+                            <p
+                              class="text-[13px] text-gray-800 dark:text-neutral-200"
+                            >
+                              Hi, I'd like to ask some questions. Can I use
+                              Preline UI on a client project?
+                            </p>
+                          </blockquote>
+                        </div>
+                        Yes, you can!
+
+                        <span>
+                          <span
+                            class="text-[11px] text-gray-400 dark:text-neutral-600 italic"
+                            >12:44</span
+                          >
+                          <svg
+                            class="inline-block shrink-0 size-4 text-gray-400 dark:text-neutral-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M18 6 7 17l-5-5" />
+                            <path d="m22 10-7.5 7.5L13 16" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- More Dropdown -->
+                    <div
+                      class="order-2 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      <div
+                        class="hs-dropdown --exclude-from-auto-opening [--strategy:absolute] [--auto-close:inside] relative inline-flex"
+                      >
+                        <button
+                          id="hs-pro-cht1cmd_3"
+                          type="button"
+                          class="flex justify-center items-center gap-x-3 size-8 text-sm text-gray-600 hover:bg-gray-200 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-200 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+                          aria-haspopup="menu"
+                          aria-expanded="false"
+                          aria-label="Dropdown"
+                        >
+                          <svg
+                            class="shrink-0 size-4 rounded-full"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="1" />
+                            <circle cx="12" cy="5" r="1" />
+                            <circle cx="12" cy="19" r="1" />
+                          </svg>
+                        </button>
+
+                        <!-- More Dropdown -->
+                        <div
+                          class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-32 transition-[opacity,margin] duration opacity-0 hidden z-8 bg-white rounded-xl shadow-lg dark:bg-neutral-800 before:h-4 before:absolute before:-top-4 before:start-0 before:w-full after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full"
+                          role="menu"
+                          aria-orientation="vertical"
+                          aria-labelledby="hs-pro-cht1cmd_3"
+                        >
+                          <div class="p-1">
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                                />
+                                <path d="m15 5 4 4" />
+                              </svg>
+                              Edit
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                                />
+                                <path d="m10 7-3 3 3 3" />
+                                <path d="M17 13v-1a2 2 0 0 0-2-2H7" />
+                              </svg>
+                              Reply
+                            </a>
+                            <a
+                              class="flex items-center gap-x-3 py-1.5 px-2 rounded-lg text-xs text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                              href="#"
+                            >
+                              <svg
+                                class="shrink-0 size-3.5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M3 6h18" />
+                                <path
+                                  d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                                />
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                <line x1="10" x2="10" y1="11" y2="17" />
+                                <line x1="14" x2="14" y1="11" y2="17" />
+                              </svg>
+                              Delete
+                            </a>
+                          </div>
+                        </div>
+                        <!-- End More Dropdown -->
+                      </div>
+                    </div>
+                    <!-- End More Dropdown -->
+                  </div>
+                  <!-- End Message -->
+                </div>
+              </div>
+              <!-- End Chat Bubble -->
+            </div>
+            <!-- End Item -->
+          </div>
+          <!-- End List -->
+        </div>
+      </div>
+    </div>
+    <!-- End Body -->
+
+    <!-- Textarea -->
+    <footer
+      class="bg-white border-t border-gray-200 dark:bg-neutral-800 dark:border-neutral-700"
+    >
+      <label
+        for="hs-chat-widgets-sidebar-example-autoheight-textarea"
+        class="sr-only"
+        >Message</label
+      >
+
+      <div class="pb-2 ps-2">
+        <textarea
+          id="hs-chat-widgets-sidebar-example-autoheight-textarea"
+          class="max-h-36 pt-4 pb-2 ps-2 pe-4 block w-full border-transparent rounded-0 md:text-sm leading-4 resize-none focus:outline-hidden focus:border-transparent focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+          placeholder="Message Costa"
+          rows="1"
+          data-hs-textarea-auto-height='{"defaultHeight": 48}'
+          data-hs-textarea-auto-height
+        ></textarea>
+
+        <div class="pe-4 flex justify-between items-center gap-x-1">
+          <!-- Button Group -->
+          <div class="flex items-center gap-x-1">
+            <!-- Button -->
+            <button
+              type="button"
+              class="flex justify-center items-center gap-x-1.5 size-8 text-sm text-gray-600 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                />
+              </svg>
+              <span class="sr-only">Attach file</span>
+            </button>
+            <!-- End Button -->
+
+            <!-- Button -->
+            <button
+              type="button"
+              class="flex justify-center items-center gap-x-1.5 size-8 text-sm text-gray-600 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 11v1a10 10 0 1 1-9-10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" x2="9.01" y1="9" y2="9" />
+                <line x1="15" x2="15.01" y1="9" y2="9" />
+                <path d="M16 5h6" />
+                <path d="M19 2v6" />
+              </svg>
+              <span class="sr-only">Add emoji</span>
+            </button>
+            <!-- End Button -->
+          </div>
+          <!-- End Button Group -->
+
+          <!-- Button Group -->
+          <div class="flex items-center gap-x-1">
+            <!-- Button -->
+            <button
+              type="button"
+              class="flex justify-center items-center gap-x-1.5 size-8 text-sm text-gray-600 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" x2="12" y1="19" y2="22" />
+              </svg>
+              <span class="sr-only">Send voice message</span>
+            </button>
+            <!-- End Button -->
+
+            <!-- Send Button -->
+            <button
+              type="button"
+              class="inline-flex shrink-0 justify-center items-center size-8 text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:bg-blue-600"
+            >
+              <span class="sr-only">Send</span>
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m5 12 7-7 7 7" />
+                <path d="M12 19V5" />
+              </svg>
+            </button>
+            <!-- End Send Button -->
+          </div>
+          <!-- End Button Group -->
+        </div>
+      </div>
+    </footer>
+    <!-- End Textarea -->
+  </div>
+</div>

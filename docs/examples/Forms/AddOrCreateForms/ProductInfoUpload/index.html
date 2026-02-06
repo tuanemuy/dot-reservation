@@ -1,0 +1,577 @@
+<div
+  class="flex flex-col bg-white border border-stone-200 overflow-hidden rounded-xl shadow-2xs dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div
+    class="py-3 px-5 flex justify-between items-center gap-x-5 border-b border-stone-200 dark:border-neutral-700"
+  >
+    <h2 class="inline-block font-semibold text-stone-800 dark:text-neutral-200">
+      Product info
+    </h2>
+  </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="p-5 space-y-4">
+    <div>
+      <label
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Thumbnail
+      </label>
+
+      <!-- Logo Upload Group -->
+      <div class="flex flex-wrap items-center gap-3 sm:gap-5">
+        <span
+          class="flex justify-center items-center size-20 border-2 border-dotted border-stone-300 text-stone-400 rounded-full dark:border-neutral-700 dark:text-neutral-600"
+        >
+          <svg
+            class="shrink-0 size-7"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+            <circle cx="9" cy="9" r="2" />
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+          </svg>
+        </span>
+
+        <div class="grow">
+          <div class="flex items-center gap-x-2">
+            <button
+              type="button"
+              class="py-2 px-3 inline-flex items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-2 focus:ring-green-500"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" x2="12" y1="3" y2="15" />
+              </svg>
+              Upload photo</button
+            ><button
+              type="button"
+              class="py-2 px-3 inline-flex items-center gap-x-2 text-xs font-medium rounded-lg border border-stone-200 bg-white text-red-500 shadow-2xs hover:bg-stone-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-red-500 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              disabled
+            >
+              Delete
+            </button>
+          </div>
+          <p class="mt-2 text-xs text-stone-500 dark:text-neutral-500">
+            Your image should be square, at least 100x100px, and JPG or PNG.
+          </p>
+        </div>
+      </div>
+      <!-- End Logo Upload Group -->
+    </div>
+
+    <!-- Input -->
+    <div>
+      <label
+        for="hs-pro-eapnm"
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Name
+        <span class="hs-tooltip inline-block align-middle">
+          <svg
+            class="shrink-0 size-4 text-stone-500 dark:text-neutral-400"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+          <span
+            class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity hidden invisible z-60 max-w-60 py-1 px-2 bg-stone-900 text-xs font-normal text-white rounded-lg shadow-2xs dark:bg-neutral-700"
+            role="tooltip"
+          >
+            Give your product a short and clear name.
+          </span>
+        </span>
+      </label>
+      <input
+        id="hs-pro-eapnm"
+        type="text"
+        class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+        placeholder="Shirt, t-shirts, etc."
+        value=""
+      />
+    </div>
+    <!-- End Input -->
+
+    <!-- Input Grid -->
+    <div class="grid sm:grid-cols-2 gap-3 sm:gap-5">
+      <!-- Input -->
+      <div>
+        <label
+          for="hs-pro-eapsku"
+          class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+        >
+          SKU
+        </label>
+        <input
+          id="hs-pro-eapsku"
+          type="text"
+          class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+          placeholder="eg. 348121032"
+          value=""
+        />
+      </div>
+      <!-- End Input -->
+
+      <!-- Input -->
+      <div>
+        <label
+          for="hs-pro-eapwe"
+          class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+        >
+          Weight
+        </label>
+        <div class="relative w-full">
+          <input
+            id="hs-pro-eapwe"
+            type="text"
+            class="py-1.5 sm:py-2 px-3 block w-full border-stone-200 rounded-lg sm:text-sm text-stone-800 placeholder:text-stone-500 focus:z-10 focus:border-green-600 focus:ring-green-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600"
+            placeholder="0.0"
+            value=""
+          />
+          <div
+            class="absolute inset-y-0 end-0 flex items-center z-20 pe-[5px] text-stone-400"
+          >
+            <!-- Select -->
+            <div class="relative">
+              <select
+                data-hs-select='{
+                  "placeholder": "Select option...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1.5 ps-2.5 pe-6 inline-flex shrink-0 justify-center items-center gap-x-1.5 text-xs text-stone-800 rounded-lg hover:bg-stone-100 focus:outline-hidden focus:bg-stone-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+                  "dropdownClasses": "end-0 mt-2 p-1 z-50 w-20 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-950",
+                  "optionClasses": "hs-selected:bg-stone-100 dark:hs-selected:bg-neutral-800 py-1.5 px-2 w-full text-xs text-stone-800 rounded-lg cursor-pointer hover:bg-stone-100 rounded-lg focus:outline-hidden focus:bg-stone-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-stone-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }'
+                class="hidden"
+              >
+                <option value="">Choose</option>
+                <option>lb</option>
+                <option>oz</option>
+                <option selected>kg</option>
+                <option>g</option>
+              </select>
+
+              <div class="absolute top-1/2 end-1.5 -translate-y-1/2">
+                <svg
+                  class="shrink-0 size-3.5 text-stone-600 dark:text-neutral-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </div>
+            </div>
+            <!-- End Select -->
+          </div>
+        </div>
+
+        <p class="mt-1.5 text-xs text-stone-500 dark:text-neutral-500">
+          Used to calculate shipping rates at checkout and label prices during
+          fulfillment.
+        </p>
+      </div>
+      <!-- End Input -->
+    </div>
+    <!-- End Input Grid -->
+
+    <!-- Textarea Input -->
+    <div>
+      <label
+        class="block mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Description
+      </label>
+
+      <!-- Tiptap -->
+      <div
+        class="bg-white border border-stone-200 rounded-xl overflow-hidden dark:bg-neutral-800 dark:border-neutral-700"
+      >
+        <div id="hs-editor-tiptap">
+          <div
+            class="sticky top-0 bg-white flex align-middle gap-x-0.5 border-b border-stone-200 p-2 dark:bg-neutral-800 dark:border-neutral-700"
+          >
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-bold
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M14 12a4 4 0 0 0 0-8H6v8" />
+                <path d="M15 20a4 4 0 0 0 0-8H6v8Z" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-italic
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="19" x2="10" y1="4" y2="4" />
+                <line x1="14" x2="5" y1="20" y2="20" />
+                <line x1="15" x2="9" y1="4" y2="20" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-underline
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 4v6a6 6 0 0 0 12 0V4" />
+                <line x1="4" x2="20" y1="20" y2="20" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-strike
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 4H9a3 3 0 0 0-2.83 4" />
+                <path d="M14 12a4 4 0 0 1 0 8H6" />
+                <line x1="4" x2="20" y1="12" y2="12" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-link
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                />
+                <path
+                  d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-ol
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="10" x2="21" y1="6" y2="6" />
+                <line x1="10" x2="21" y1="12" y2="12" />
+                <line x1="10" x2="21" y1="18" y2="18" />
+                <path d="M4 6h1v4" />
+                <path d="M4 10h2" />
+                <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-ul
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="8" x2="21" y1="6" y2="6" />
+                <line x1="8" x2="21" y1="12" y2="12" />
+                <line x1="8" x2="21" y1="18" y2="18" />
+                <line x1="3" x2="3.01" y1="6" y2="6" />
+                <line x1="3" x2="3.01" y1="12" y2="12" />
+                <line x1="3" x2="3.01" y1="18" y2="18" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-blockquote
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 6H3" />
+                <path d="M21 12H8" />
+                <path d="M21 18H8" />
+                <path d="M3 12v6" />
+              </svg>
+            </button>
+            <button
+              class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-stone-800 hover:bg-stone-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              type="button"
+              data-hs-editor-code
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m18 16 4-4-4-4" />
+                <path d="m6 8-4 4 4 4" />
+                <path d="m14.5 4-5 16" />
+              </svg>
+            </button>
+          </div>
+          <div class="h-40 overflow-auto" data-hs-editor-field></div>
+        </div>
+      </div>
+      <!-- End Tiptap -->
+    </div>
+    <!-- End Textarea Input -->
+  </div>
+  <!-- End Body -->
+</div>
+<!-- End Products Card -->
+
+<script type="module">
+  import { Editor } from "https://esm.sh/@tiptap/core@2.11.0";
+  import Blockquote from "https://esm.sh/@tiptap/extension-blockquote@2.11.0";
+  import Bold from "https://esm.sh/@tiptap/extension-bold@2.11.0";
+  import BulletList from "https://esm.sh/@tiptap/extension-bullet-list@2.11.0";
+  import Link from "https://esm.sh/@tiptap/extension-link@2.11.0";
+  import ListItem from "https://esm.sh/@tiptap/extension-list-item@2.11.0";
+  import OrderedList from "https://esm.sh/@tiptap/extension-ordered-list@2.11.0";
+  import Paragraph from "https://esm.sh/@tiptap/extension-paragraph@2.11.0";
+  import Placeholder from "https://esm.sh/@tiptap/extension-placeholder@2.11.0";
+  import Underline from "https://esm.sh/@tiptap/extension-underline@2.11.0";
+  import StarterKit from "https://esm.sh/@tiptap/starter-kit@2.11.0";
+
+  const ids = "#hs-editor-tiptap";
+  const editors = ids.split(" ");
+
+  editors.forEach((id) => {
+    const editor = new Editor({
+      element: document.querySelector(`${id} [data-hs-editor-field]`),
+      editorProps: {
+        attributes: {
+          class: "relative min-h-40 p-3",
+        },
+      },
+      extensions: [
+        StarterKit.configure({
+          history: false,
+        }),
+        Placeholder.configure({
+          placeholder: "Add a message, if you'd like.",
+          emptyNodeClass: "before:text-stone-400",
+        }),
+        Paragraph.configure({
+          HTMLAttributes: {
+            class: "text-sm text-stone-800 dark:text-stone-200",
+          },
+        }),
+        Bold.configure({
+          HTMLAttributes: {
+            class: "font-bold",
+          },
+        }),
+        Underline,
+        Link.configure({
+          HTMLAttributes: {
+            class:
+              "inline-flex items-center gap-x-1 text-green-600 decoration-2 hover:underline font-medium dark:text-white",
+          },
+        }),
+        BulletList.configure({
+          HTMLAttributes: {
+            class: "list-disc list-inside text-stone-800 dark:text-white",
+          },
+        }),
+        OrderedList.configure({
+          HTMLAttributes: {
+            class: "list-decimal list-inside text-stone-800 dark:text-white",
+          },
+        }),
+        ListItem.configure({
+          HTMLAttributes: {
+            class: "marker:text-sm",
+          },
+        }),
+        Blockquote.configure({
+          HTMLAttributes: {
+            class:
+              "relative border-s-4 ps-4 sm:ps-6 dark:border-neutral-700 sm:[&>p]:text-lg",
+          },
+        }),
+      ],
+    });
+    const actions = [
+      {
+        id: `${id} [data-hs-editor-bold]`,
+        fn: () => editor.chain().focus().toggleBold().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-italic]`,
+        fn: () => editor.chain().focus().toggleItalic().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-underline]`,
+        fn: () => editor.chain().focus().toggleUnderline().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-strike]`,
+        fn: () => editor.chain().focus().toggleStrike().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-link]`,
+        fn: () => {
+          const url = window.prompt("URL");
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run();
+        },
+      },
+      {
+        id: `${id} [data-hs-editor-ol]`,
+        fn: () => editor.chain().focus().toggleOrderedList().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-ul]`,
+        fn: () => editor.chain().focus().toggleBulletList().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-blockquote]`,
+        fn: () => editor.chain().focus().toggleBlockquote().run(),
+      },
+      {
+        id: `${id} [data-hs-editor-code]`,
+        fn: () => editor.chain().focus().toggleCode().run(),
+      },
+    ];
+
+    actions.forEach(({ id, fn }) => {
+      const action = document.querySelector(id);
+
+      if (action === null) return;
+
+      action.addEventListener("click", fn);
+    });
+  });
+</script>

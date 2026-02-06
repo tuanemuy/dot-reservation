@@ -1,0 +1,121 @@
+{
+  "name": "SearchAndCommandPalettes",
+  "description": "検索・コマンドパレット",
+  "componentCount": 16,
+  "subcategories": [
+    {
+      "name": "CommandPaletteModals",
+      "path": "SearchAndCommandPalettes/CommandPaletteModals/",
+      "components": [
+        {
+          "name": "GroupedModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/GroupedModal/",
+          "description": "フィルタータブとカテゴリ別グループ化機能を備えた検索モーダル。ヘッダーに「All」「Tags」「Article」などのフィルターボタンを配置。検索結果をTags、Coursesなどのカテゴリごとにグループ化して表示。コース項目にはサムネイル画像付き。",
+          "useCases": "教育プラットフォームのコース検索、ドキュメントサイトの検索、ブログの記事検索など、コンテンツを種類別にフィルタリング・グループ化して表示したい場合に使用。"
+        },
+        {
+          "name": "ListingModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/ListingModal/",
+          "description": "アイコン付きのカード形式で検索結果を表示するコマンドパレットモーダル。各結果にはアイコン、タイトル、パンくずリスト（カテゴリ階層）、説明文を表示。「More results」リンクで追加結果への導線を提供。",
+          "useCases": "ブログ記事検索、ヘルプセンターの検索、ナレッジベース検索など、コンテンツの種類と階層構造を示しながら検索結果を表示したい場合に使用。"
+        },
+        {
+          "name": "SearchWithBrandingIconsModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/SearchWithBrandingIconsModal/",
+          "description": "外部サービス連携機能を備えた多機能コマンドパレット。Gmail、Slack、Notionなどのブランドアイコンとキーボードショートカットを表示。Topics（タグ）、Recent（最近のアクション）、Users（ユーザー一覧）、Events（イベント）、Files（ファイル）など複数のセクションで構成。",
+          "useCases": "複数の外部サービスと連携するダッシュボード、プロジェクト管理ツール、生産性アプリなど、様々なアクションやリソースへの統合的なアクセスを提供したい場合に使用。"
+        },
+        {
+          "name": "SearchWithIconsModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/SearchWithIconsModal/",
+          "description": "アイコン付きのカテゴリ別検索モーダル。Topics（タグ）、Recent（最近の操作）、Categories（カテゴリ）、Resources（リソース）などのセクションで構成。各アクションにキーボードショートカットを表示し、キーボード操作に対応。",
+          "useCases": "管理画面のクイックアクション、ストア管理ダッシュボードの検索、SaaSアプリケーションのコマンドパレットなど、様々な操作やリソースへの素早いアクセスを提供したい場合に使用。"
+        },
+        {
+          "name": "ShopSearchModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/ShopSearchModal/",
+          "description": "ECサイト向けの商品検索モーダル。検索サジェストをカテゴリ別に結果件数とともに表示し、トレンド商品のカルーセルスライダーを含む。商品カードには画像、商品名、カテゴリ、価格（セール価格対応）を表示。",
+          "useCases": "ECサイトの商品検索、オンラインショップの検索機能など、商品をビジュアルに検索・ブラウズさせたい場合に使用。"
+        },
+        {
+          "name": "SimpleListingWithHighlightModal",
+          "path": "SearchAndCommandPalettes/CommandPaletteModals/SimpleListingWithHighlightModal/",
+          "description": "検索キーワードをハイライト表示するシンプルなリスト形式のコマンドパレットモーダル。検索結果のタイトルと説明文の中で、マッチしたキーワードが黄色で強調表示される。フッターにはキーボードショートカットのヒントを表示。",
+          "useCases": "ドキュメント検索、ヘルプ記事検索、FAQ検索など、検索キーワードがどこにマッチしたかをユーザーに視覚的に示したい場合に使用。"
+        }
+      ]
+    },
+    {
+      "name": "SearchResults",
+      "path": "SearchAndCommandPalettes/SearchResults/",
+      "components": [
+        {
+          "name": "BrandingIconsAndAvatarsSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/BrandingIconsAndAvatarsSearchResult/",
+          "description": "外部サービスのブランドアイコン（Gmail、Slack、Notion）とユーザーアバターを組み合わせた検索結果。Recent（最近のアクション）、Users（ユーザー一覧）、Files（ファイル一覧）などのセクション構成。",
+          "useCases": "複数の外部サービスと連携するアプリ、統合ワークスペース、ファイル・ユーザー・連携サービスを横断検索したい場合に使用。"
+        },
+        {
+          "name": "E-CommerceSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/E-CommerceSearchResult/",
+          "description": "ECサイト向けのタブ切り替え式検索結果ページ。All、Settings、Articles、Ordersなどのタブで検索結果をフィルタリング。商品にはサムネイル画像、在庫数、バリアント数、価格を表示。ページネーション付き。",
+          "useCases": "ECサイト管理画面の商品・注文・設定検索、オンラインストアの統合検索機能など、複数種類のコンテンツを一括検索・フィルタリングしたい場合に使用。"
+        },
+        {
+          "name": "EventsSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/EventsSearchResult/",
+          "description": "カレンダーイベント形式の検索結果表示。各イベントにはカラーバー（カテゴリ識別用）、イベント名、開催時間、参加者アバターグループ、ビデオ会議アイコン（Google Meet等）を表示。",
+          "useCases": "カレンダーアプリのイベント検索、スケジュール管理システムの予定検索、会議検索機能など、日時と参加者情報を含むイベントを検索・表示したい場合に使用。"
+        },
+        {
+          "name": "GrayBackgroundOnHoverSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/GrayBackgroundOnHoverSearchResult/",
+          "description": "ホバー時にグレー背景が表示されるシンプルなリスト形式の検索結果。各項目はタイトルのみで、右側に矢印アイコン付き。",
+          "useCases": "FAQページの検索、ヘルプトピック一覧、シンプルな質問リストの表示など、簡潔な項目リストを表示したい場合に使用。"
+        },
+        {
+          "name": "IconsWithSubcontentsSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/IconsWithSubcontentsSearchResult/",
+          "description": "アイコンとサブコンテンツ（カテゴリ情報）を持つ検索結果リスト。Recent（最近の操作）、Categories（カテゴリ一覧）、Resources（リソース）などのセクションに分類。キーボードショートカット表示付き。",
+          "useCases": "管理画面のクイックアクション検索、ストア管理ダッシュボードの操作検索など、アクションとその所属カテゴリを明示したい場合に使用。"
+        },
+        {
+          "name": "ListingSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/ListingSearchResult/",
+          "description": "フルページ型のタブ切り替え式検索結果ページ。All、Posts、Projects、Reviewsなどのタブで検索結果をフィルタリング。各結果にはアイコン、パンくずリスト、タイトル、説明文、更新日時、タグ、アバターグループを表示。ローディングインジケーター付き。",
+          "useCases": "プロジェクト管理ツールの検索、社内ポータルの統合検索、コミュニティサイトの投稿検索など、多様なコンテンツタイプを横断検索する機能に使用。"
+        },
+        {
+          "name": "ListingSearchResultWithHighlight",
+          "path": "SearchAndCommandPalettes/SearchResults/ListingSearchResultWithHighlight/",
+          "description": "検索キーワードをハイライト表示するリスト形式の検索結果。マッチした部分が黄色背景で強調表示される。結果件数をヘッダーに表示。",
+          "useCases": "ドキュメント検索、ヘルプ記事検索、FAQ検索など、検索キーワードがどこにマッチしたかをユーザーに視覚的に示したい場合に使用。"
+        },
+        {
+          "name": "SearchListingResult",
+          "path": "SearchAndCommandPalettes/SearchResults/SearchListingResult/",
+          "description": "カテゴリ別にグループ化された検索結果表示。検索サジェスト、Tags（タグ一覧）、Courses（コース一覧）などのセクションで構成。コース項目にはサムネイル画像付き。「more results」リンクで追加結果を表示。",
+          "useCases": "教育プラットフォームのコース検索、ドキュメントサイトの検索、タグとコンテンツを組み合わせた検索機能など、複数種類のコンテンツをグループ化して表示したい場合に使用。"
+        },
+        {
+          "name": "SimpleListingSearchResult",
+          "path": "SearchAndCommandPalettes/SearchResults/SimpleListingSearchResult/",
+          "description": "アイコンとパンくずリスト付きのシンプルな検索結果リスト。各結果にはタイトル、カテゴリ階層（パンくずリスト）、説明文を表示。ホバー時に背景がハイライト。",
+          "useCases": "ブログ記事検索、ヘルプセンター検索、ナレッジベース検索など、コンテンツの階層構造とともに検索結果を表示したい場合に使用。"
+        }
+      ]
+    },
+    {
+      "name": "SidebarSearch",
+      "path": "SearchAndCommandPalettes/SidebarSearch/",
+      "components": [
+        {
+          "name": "ChatUserDetails",
+          "path": "SearchAndCommandPalettes/SidebarSearch/ChatUserDetails/",
+          "description": "サイドバー型の検索コンポーネント。検索ボックスにオートコンプリート機能を備え、Quick Action（Photos、Links、Documents）とContacts（連絡先一覧）のグループで構成。連絡先はアバター画像またはイニシャルで表示。検索結果が無い場合のEmpty State表示にも対応。",
+          "useCases": "チャットアプリのユーザー検索、メッセージアプリの連絡先検索、チームメンバー検索、メディアファイルへのクイックアクセスなど、サイドバーから連絡先やリソースを素早く検索したい場合に使用。"
+        }
+      ]
+    }
+  ]
+}

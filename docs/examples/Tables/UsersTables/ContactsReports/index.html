@@ -1,0 +1,812 @@
+<div
+  class="flex flex-col bg-white border border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Heading -->
+  <div class="p-3 ps-4 border-b border-gray-200 dark:border-neutral-700">
+    <h3 class="font-medium text-gray-800 dark:text-neutral-200">Contacts</h3>
+  </div>
+  <!-- End Heading -->
+
+  <div class="p-3 h-full">
+    <!-- Nav Tab -->
+    <nav
+      class="flex gap-1"
+      aria-label="Tabs"
+      role="tablist"
+      aria-orientation="horizontal"
+    >
+      <button
+        type="button"
+        class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 inline-flex justify-center items-center gap-x-2 py-[9px] px-3 text-xs rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-500 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden active"
+        id="hs-pro-tabs-item-all"
+        aria-selected="true"
+        data-hs-tab="#hs-pro-tabs-all"
+        aria-controls="hs-pro-tabs-all"
+        role="tab"
+      >
+        All (100)
+      </button>
+      <button
+        type="button"
+        class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 inline-flex justify-center items-center gap-x-2 py-[9px] px-3 text-xs rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-500 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden"
+        id="hs-pro-tabs-item-assigned"
+        aria-selected="false"
+        data-hs-tab="#hs-pro-tabs-assigned"
+        aria-controls="hs-pro-tabs-assigned"
+        role="tab"
+      >
+        Assigned (81)
+      </button>
+      <button
+        type="button"
+        class="hs-tab-active:bg-gray-100 hs-tab-active:hover:bg-gray-100 hs-tab-active:focus:bg-gray-100 hs-tab-active:text-gray-800 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:focus:bg-neutral-700 dark:hs-tab-active:hover:bg-neutral-700 dark:hs-tab-active:text-neutral-200 inline-flex justify-center items-center gap-x-2 py-[9px] px-3 text-xs rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-500 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden"
+        id="hs-pro-tabs-item-unassigned"
+        aria-selected="false"
+        data-hs-tab="#hs-pro-tabs-unassigned"
+        aria-controls="hs-pro-tabs-unassigned"
+        role="tab"
+      >
+        Unassigned (19)
+      </button>
+    </nav>
+    <!-- End Nav Tab -->
+
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-all"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-item-all"
+    >
+      <!-- Table Section -->
+      <div
+        class="overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+      >
+        <div class="min-w-full inline-block align-middle">
+          <!-- Table -->
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  class="p-2 text-start whitespace-nowrap min-w-48"
+                >
+                  <span
+                    class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                  >
+                    Message
+                  </span>
+                </th>
+
+                <th
+                  scope="col"
+                  class="p-2 text-start whitespace-nowrap min-w-32"
+                >
+                  <span
+                    class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                  >
+                    Platform
+                  </span>
+                </th>
+
+                <th scope="col" class="p-2 text-start whitespace-nowrap">
+                  <span
+                    class="font-medium text-[13px] text-nowrap text-gray-800 dark:text-neutral-200"
+                  >
+                    Assigned
+                  </span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <img
+                      class="shrink-0 size-7 rounded-full"
+                      src="https://images.unsplash.com/photo-1679412330254-90cb240038c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                      alt="Avatar"
+                    />
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Lewis Clarke
+                      </span>
+                      <div class="flex items-center gap-x-1.5">
+                        <img
+                          class="shrink-0 size-5 rounded-sm object-cover"
+                          src="../../assets/img/mockups/img10.jpg"
+                          alt="Attachment Image"
+                        />
+                        <div class="grow">
+                          <p
+                            class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            2. Using the static method causes an error in the
+                            console.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M17 7 7 17" />
+                      <path d="M17 17H7V7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16 32C24.8365 32 32 24.8365 32 16C32 7.16346 24.8365 0 16 0C7.16346 0 0 7.16346 0 16C0 24.8365 7.16346 32 16 32Z"
+                        fill="#34AADF"
+                      />
+                      <path
+                        d="M6.65901 15.8612C6.65901 15.8612 14.659 12.578 17.4335 11.422C18.4972 10.9596 22.1041 9.47974 22.1041 9.47974C22.1041 9.47974 23.7688 8.83238 23.6301 10.4046C23.5838 11.052 23.2139 13.3179 22.844 15.7688C22.289 19.237 21.6879 23.0289 21.6879 23.0289C21.6879 23.0289 21.5954 24.0925 20.8093 24.2774C20.0232 24.4624 18.7283 23.6301 18.4972 23.4451C18.3121 23.3064 15.0289 21.2254 13.8266 20.2081C13.5029 19.9306 13.133 19.3757 13.8728 18.7283C15.5376 17.2023 17.526 15.3064 18.7283 14.1041C19.2833 13.5491 19.8381 12.2543 17.526 13.8266C14.2428 16.0925 11.0058 18.2196 11.0058 18.2196C11.0058 18.2196 10.2659 18.682 8.87866 18.2659C7.49133 17.8497 5.87283 17.2948 5.87283 17.2948C5.87283 17.2948 4.76307 16.6012 6.65901 15.8612Z"
+                        fill="white"
+                      />
+                    </svg>
+                    Telegram
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-red-500 rounded-full"
+                    ></span>
+                    Unassigned <span class="opacity-60">for</span> 00:00:09
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <span
+                      class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-indigo-500 text-white rounded-full"
+                    >
+                      R
+                    </span>
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Rachel Doe
+                      </span>
+                      <div class="flex items-center gap-x-1.5">
+                        <img
+                          class="shrink-0 size-5 rounded-sm object-cover"
+                          src="../../assets/img/examples/img9.webp"
+                          alt="Attachment Image"
+                        />
+                        <div class="grow">
+                          <p
+                            class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            How's these all free? 🤯
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-emerald-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M7 7h10v10" />
+                      <path d="M7 17 17 7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="33"
+                      viewBox="0 0 32 33"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.42691 28.1051L8.94979 28.3665C11.0818 29.6347 13.5192 30.2975 15.9998 30.2837C23.6364 30.2663 29.9109 23.977 29.9109 16.3404C29.9109 12.6498 28.4451 9.10563 25.8386 6.493C23.2355 3.85337 19.6792 2.3658 15.9728 2.3658C8.37114 2.3658 2.1167 8.62111 2.1167 16.2219C2.1167 16.2821 2.1167 16.3413 2.11757 16.4015C2.14047 18.9857 2.86325 21.5154 4.20907 23.7217L4.55764 24.2445L3.16332 29.3861L8.42691 28.1051Z"
+                        fill="#00E676"
+                      />
+                      <path
+                        d="M27.3898 4.92441C24.4225 1.89695 20.3519 0.198514 16.1132 0.218497H16.0862C7.35684 0.218524 0.173436 7.40196 0.173436 16.1313C0.173436 16.1722 0.17431 16.2124 0.17431 16.2533C0.20719 19.0287 0.925671 21.7529 2.26581 24.1836L0 32.4624L8.44441 30.2837C10.7772 31.5644 13.3998 32.2246 16.0609 32.2009C24.8225 32.153 32.005 24.9286 31.9998 16.1662C32.0207 11.9562 30.3606 7.90739 27.3898 4.92441ZM16.1132 29.4994C13.7543 29.5117 11.4369 28.8789 9.4117 27.6694L8.88883 27.4079L3.86054 28.7151L5.16771 23.7478L4.81915 23.2249C3.52433 21.1342 2.83835 18.7238 2.83832 16.2646C2.83832 9.01241 8.80606 3.04464 16.0583 3.04464C23.3105 3.04464 29.2782 9.01241 29.2782 16.2646C29.2782 20.8311 26.9123 25.0855 23.0325 27.4951C20.9806 28.8095 18.5936 29.5053 16.1568 29.4994M23.8169 19.8263L22.8583 19.3906C22.8583 19.3906 21.4639 18.7805 20.5925 18.3448C20.5053 18.3448 20.4182 18.2577 20.331 18.2577C20.1162 18.263 19.9062 18.3229 19.721 18.4319C19.5354 18.5409 19.6339 18.5191 18.4138 19.9134C18.3311 20.0764 18.1611 20.1784 17.9781 20.1749H17.891C17.76 20.1529 17.6385 20.0922 17.5424 20.0006L17.1067 19.8263C16.1717 19.4305 15.3157 18.8696 14.5794 18.1705C14.4051 17.9962 14.1437 17.8219 13.9694 17.6476C13.3243 17.0296 12.7671 16.3259 12.3137 15.5561L12.2265 15.3819C12.1508 15.2753 12.092 15.1577 12.0522 15.0333C12.0294 14.8823 12.0603 14.7281 12.1394 14.5976C12.2187 14.4668 12.4879 14.1618 12.7494 13.9004C13.0108 13.639 13.0108 13.4647 13.1851 13.2904C13.2747 13.166 13.3366 13.0238 13.3666 12.8735C13.3967 12.7232 13.3942 12.5682 13.3594 12.4189C12.9533 11.2913 12.4878 10.1859 11.9651 9.10738C11.8249 8.88946 11.6066 8.73352 11.3551 8.67165H10.3964C10.2222 8.67165 10.0479 8.75879 9.87357 8.75879L9.78642 8.84593C9.61214 8.93307 9.43786 9.10738 9.26355 9.19452C9.08927 9.28166 9.00212 9.54312 8.82784 9.7174C8.21862 10.4873 7.88153 11.4372 7.86923 12.4189C7.87888 13.1094 8.02705 13.791 8.30494 14.4233L8.39211 14.6847C9.1746 16.3577 10.2689 17.8661 11.6165 19.1291L11.9651 19.4777C12.2187 19.6878 12.4521 19.9212 12.6622 20.1749C14.4679 21.7461 16.6125 22.879 18.928 23.4864C19.1894 23.5735 19.538 23.5735 19.7994 23.6607H20.6709C21.1264 23.6382 21.5719 23.5194 21.9781 23.3121C22.1916 23.2154 22.3955 23.0986 22.5881 22.9635L22.7624 22.7892C22.9367 22.6149 23.111 22.5278 23.2853 22.3535C23.4556 22.2017 23.6024 22.0255 23.721 21.8306C23.8883 21.4402 24.0059 21.0306 24.0696 20.6106V20.0006C23.9913 19.9302 23.9032 19.8715 23.8081 19.8263"
+                        fill="white"
+                      />
+                    </svg>
+                    Whatsapp
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-emerald-500 rounded-full"
+                    ></span>
+                    Rachel Doe <span class="opacity-60">for</span> 00:05:04
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <img
+                      class="shrink-0 size-7 rounded-full"
+                      src="https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                      alt="Avatar"
+                    />
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Costa Quinn
+                      </span>
+                      <p
+                        class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                      >
+                        Yes, you can!
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-emerald-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M7 7h10v10" />
+                      <path d="M7 17 17 7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M15.9999 0C7.04791 0 0.110107 6.55073 0.110107 15.398C0.110107 20.0259 2.00918 24.0247 5.10086 26.7875C5.35986 27.0207 5.51646 27.3433 5.52925 27.6914L5.61561 30.5148C5.64437 31.4155 6.57472 32 7.39964 31.6391L10.552 30.2497C10.8187 30.1317 11.1179 30.1092 11.3993 30.1859C12.8475 30.5851 14.3918 30.7959 15.9999 30.7959C24.9519 30.7959 31.8897 24.2451 31.8897 15.3979C31.8897 6.55073 24.9519 0 15.9999 0Z"
+                        fill="url(#paint0_linear_4340_74022)"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M6.45967 19.9013L11.1275 12.5042C11.8692 11.3289 13.4614 11.035 14.574 11.8687L18.2858 14.6506C18.4516 14.7745 18.6532 14.8412 18.8602 14.8406C19.0673 14.84 19.2685 14.7722 19.4336 14.6474L24.4468 10.8465C25.1149 10.3388 25.991 11.1405 25.5401 11.8495L20.8755 19.2434C20.1338 20.4188 18.5416 20.7127 17.429 19.879L13.7172 17.0971C13.5514 16.9732 13.3498 16.9065 13.1428 16.9071C12.9357 16.9076 12.7345 16.9754 12.5694 17.1003L7.55305 20.9043C6.88488 21.4121 6.0088 20.6104 6.45967 19.9013Z"
+                        fill="white"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="paint0_linear_4340_74022"
+                          x1="6356.03"
+                          y1="0"
+                          x2="6356.03"
+                          y2="12787.1"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stop-color="#00B2FF" />
+                          <stop offset="1" stop-color="#006AFF" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    Facebook Messenger
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-emerald-500 rounded-full"
+                    ></span>
+                    Amanda Harvey <span class="opacity-60">for</span> 00:12:20
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <div class="relative size-7">
+                      <span
+                        class="flex shrink-0 justify-center items-center size-5 text-white text-xs font-medium uppercase bg-orange-500 rounded-full"
+                      >
+                        T
+                      </span>
+                      <img
+                        class="absolute top-3 start-3 shrink-0 size-4 rounded-full ring-2 ring-white dark:ring-neutral-800"
+                        src="https://images.unsplash.com/photo-1659482633369-9fe69af50bfb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80"
+                        alt="Avatar"
+                      />
+                    </div>
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Technical issues
+                      </span>
+                      <p
+                        class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                      >
+                        Great! 👍️
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-emerald-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M7 7h10v10" />
+                      <path d="M7 17 17 7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="33"
+                      viewBox="0 0 32 33"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M11.7326 0C9.96372 0.0013074 8.53212 1.43684 8.53342 3.20575C8.53212 4.97467 9.96503 6.4102 11.7339 6.4115H14.9345V3.20706C14.9358 1.43814 13.5029 0.00261481 11.7326 0V0ZM11.7326 8.55042H3.20053C1.43161 8.55172 -0.00130383 9.98725 3.57297e-06 11.7562C-0.00261123 13.5251 1.4303 14.9606 3.19922 14.9632H11.7326C13.5016 14.9619 14.9345 13.5264 14.9332 11.7575C14.9345 9.98725 13.5016 8.55172 11.7326 8.55042Z"
+                        fill="#36C5F0"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M32 11.7562C32.0013 9.98725 30.5684 8.55172 28.7995 8.55042C27.0306 8.55172 25.5976 9.98725 25.599 11.7562V14.9632H28.7995C30.5684 14.9619 32.0013 13.5264 32 11.7562ZM23.4666 11.7562V3.20575C23.4679 1.43814 22.0363 0.00261481 20.2674 0C18.4984 0.0013074 17.0655 1.43684 17.0668 3.20575V11.7562C17.0642 13.5251 18.4971 14.9606 20.2661 14.9632C22.035 14.9619 23.4679 13.5264 23.4666 11.7562Z"
+                        fill="#2EB67D"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M20.2661 32.0641C22.035 32.0628 23.4679 30.6272 23.4666 28.8583C23.4679 27.0894 22.035 25.6539 20.2661 25.6526H17.0655V28.8583C17.0642 30.6259 18.4971 32.0614 20.2661 32.0641ZM20.2661 23.5123H28.7995C30.5684 23.511 32.0013 22.0755 32 20.3066C32.0026 18.5377 30.5697 17.1021 28.8008 17.0995H20.2674C18.4984 17.1008 17.0655 18.5364 17.0668 20.3053C17.0655 22.0755 18.4971 23.511 20.2661 23.5123Z"
+                        fill="#ECB22E"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M3.57297e-06 20.3066C-0.00130383 22.0755 1.43161 23.511 3.20053 23.5123C4.96944 23.511 6.40236 22.0755 6.40105 20.3066V17.1008H3.20053C1.43161 17.1021 -0.00130383 18.5377 3.57297e-06 20.3066ZM8.53342 20.3066V28.857C8.53081 30.6259 9.96372 32.0614 11.7326 32.0641C13.5016 32.0628 14.9345 30.6272 14.9332 28.8583V20.3092C14.9358 18.5403 13.5029 17.1048 11.7339 17.1021C9.96372 17.1021 8.53212 18.5377 8.53342 20.3066Z"
+                        fill="#E01E5A"
+                      />
+                    </svg>
+                    Slack
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-emerald-500 rounded-full"
+                    ></span>
+                    Finch Hoot <span class="opacity-60">for</span> 00:22:45
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <img
+                      class="shrink-0 size-7 rounded-full"
+                      src="https://images.unsplash.com/photo-1659482634023-2c4fda99ac0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                      alt="Avatar"
+                    />
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Ella Lauda
+                      </span>
+                      <div class="flex items-center gap-x-1.5">
+                        <svg
+                          class="shrink-0 size-3 text-gray-500 dark:text-neutral-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                          ></path>
+                        </svg>
+                        <div class="grow">
+                          <p
+                            class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            site-source.zip
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M17 7 7 17" />
+                      <path d="M17 17H7V7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="33"
+                      viewBox="0 0 32 33"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.42691 28.1051L8.94979 28.3665C11.0818 29.6347 13.5192 30.2975 15.9998 30.2837C23.6364 30.2663 29.9109 23.977 29.9109 16.3404C29.9109 12.6498 28.4451 9.10563 25.8386 6.493C23.2355 3.85337 19.6792 2.3658 15.9728 2.3658C8.37114 2.3658 2.1167 8.62111 2.1167 16.2219C2.1167 16.2821 2.1167 16.3413 2.11757 16.4015C2.14047 18.9857 2.86325 21.5154 4.20907 23.7217L4.55764 24.2445L3.16332 29.3861L8.42691 28.1051Z"
+                        fill="#00E676"
+                      />
+                      <path
+                        d="M27.3898 4.92441C24.4225 1.89695 20.3519 0.198514 16.1132 0.218497H16.0862C7.35684 0.218524 0.173436 7.40196 0.173436 16.1313C0.173436 16.1722 0.17431 16.2124 0.17431 16.2533C0.20719 19.0287 0.925671 21.7529 2.26581 24.1836L0 32.4624L8.44441 30.2837C10.7772 31.5644 13.3998 32.2246 16.0609 32.2009C24.8225 32.153 32.005 24.9286 31.9998 16.1662C32.0207 11.9562 30.3606 7.90739 27.3898 4.92441ZM16.1132 29.4994C13.7543 29.5117 11.4369 28.8789 9.4117 27.6694L8.88883 27.4079L3.86054 28.7151L5.16771 23.7478L4.81915 23.2249C3.52433 21.1342 2.83835 18.7238 2.83832 16.2646C2.83832 9.01241 8.80606 3.04464 16.0583 3.04464C23.3105 3.04464 29.2782 9.01241 29.2782 16.2646C29.2782 20.8311 26.9123 25.0855 23.0325 27.4951C20.9806 28.8095 18.5936 29.5053 16.1568 29.4994M23.8169 19.8263L22.8583 19.3906C22.8583 19.3906 21.4639 18.7805 20.5925 18.3448C20.5053 18.3448 20.4182 18.2577 20.331 18.2577C20.1162 18.263 19.9062 18.3229 19.721 18.4319C19.5354 18.5409 19.6339 18.5191 18.4138 19.9134C18.3311 20.0764 18.1611 20.1784 17.9781 20.1749H17.891C17.76 20.1529 17.6385 20.0922 17.5424 20.0006L17.1067 19.8263C16.1717 19.4305 15.3157 18.8696 14.5794 18.1705C14.4051 17.9962 14.1437 17.8219 13.9694 17.6476C13.3243 17.0296 12.7671 16.3259 12.3137 15.5561L12.2265 15.3819C12.1508 15.2753 12.092 15.1577 12.0522 15.0333C12.0294 14.8823 12.0603 14.7281 12.1394 14.5976C12.2187 14.4668 12.4879 14.1618 12.7494 13.9004C13.0108 13.639 13.0108 13.4647 13.1851 13.2904C13.2747 13.166 13.3366 13.0238 13.3666 12.8735C13.3967 12.7232 13.3942 12.5682 13.3594 12.4189C12.9533 11.2913 12.4878 10.1859 11.9651 9.10738C11.8249 8.88946 11.6066 8.73352 11.3551 8.67165H10.3964C10.2222 8.67165 10.0479 8.75879 9.87357 8.75879L9.78642 8.84593C9.61214 8.93307 9.43786 9.10738 9.26355 9.19452C9.08927 9.28166 9.00212 9.54312 8.82784 9.7174C8.21862 10.4873 7.88153 11.4372 7.86923 12.4189C7.87888 13.1094 8.02705 13.791 8.30494 14.4233L8.39211 14.6847C9.1746 16.3577 10.2689 17.8661 11.6165 19.1291L11.9651 19.4777C12.2187 19.6878 12.4521 19.9212 12.6622 20.1749C14.4679 21.7461 16.6125 22.879 18.928 23.4864C19.1894 23.5735 19.538 23.5735 19.7994 23.6607H20.6709C21.1264 23.6382 21.5719 23.5194 21.9781 23.3121C22.1916 23.2154 22.3955 23.0986 22.5881 22.9635L22.7624 22.7892C22.9367 22.6149 23.111 22.5278 23.2853 22.3535C23.4556 22.2017 23.6024 22.0255 23.721 21.8306C23.8883 21.4402 24.0059 21.0306 24.0696 20.6106V20.0006C23.9913 19.9302 23.9032 19.8715 23.8081 19.8263"
+                        fill="white"
+                      />
+                    </svg>
+                    Whatsapp
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-red-500 rounded-full"
+                    ></span>
+                    Unassigned <span class="opacity-60">for</span> 00:37:44
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <span
+                      class="flex shrink-0 justify-center items-center size-7 text-xs font-medium uppercase bg-teal-500 text-white rounded-full"
+                    >
+                      M
+                    </span>
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Mark Colbert
+                      </span>
+                      <p
+                        class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                      >
+                        Voice message
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-emerald-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M7 7h10v10" />
+                      <path d="M7 17 17 7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16 32C24.8365 32 32 24.8365 32 16C32 7.16346 24.8365 0 16 0C7.16346 0 0 7.16346 0 16C0 24.8365 7.16346 32 16 32Z"
+                        fill="#34AADF"
+                      />
+                      <path
+                        d="M6.65901 15.8612C6.65901 15.8612 14.659 12.578 17.4335 11.422C18.4972 10.9596 22.1041 9.47974 22.1041 9.47974C22.1041 9.47974 23.7688 8.83238 23.6301 10.4046C23.5838 11.052 23.2139 13.3179 22.844 15.7688C22.289 19.237 21.6879 23.0289 21.6879 23.0289C21.6879 23.0289 21.5954 24.0925 20.8093 24.2774C20.0232 24.4624 18.7283 23.6301 18.4972 23.4451C18.3121 23.3064 15.0289 21.2254 13.8266 20.2081C13.5029 19.9306 13.133 19.3757 13.8728 18.7283C15.5376 17.2023 17.526 15.3064 18.7283 14.1041C19.2833 13.5491 19.8381 12.2543 17.526 13.8266C14.2428 16.0925 11.0058 18.2196 11.0058 18.2196C11.0058 18.2196 10.2659 18.682 8.87866 18.2659C7.49133 17.8497 5.87283 17.2948 5.87283 17.2948C5.87283 17.2948 4.76307 16.6012 6.65901 15.8612Z"
+                        fill="white"
+                      />
+                    </svg>
+                    Telegram
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-emerald-500 rounded-full"
+                    ></span>
+                    Emma Watson <span class="opacity-60">for</span> 01:01:59
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                <td class="size-px p-2">
+                  <div class="w-full flex items-center gap-x-3">
+                    <div class="shrink-0">
+                      <div class="relative size-7">
+                        <span
+                          class="flex shrink-0 justify-center items-center size-5 text-white text-xs font-medium uppercase bg-purple-500 rounded-full"
+                        >
+                          B
+                        </span>
+                        <img
+                          class="absolute top-3 start-3 shrink-0 size-4 rounded-full ring-2 ring-white dark:ring-neutral-800"
+                          src="https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+                          alt="Avatar"
+                        />
+                      </div>
+                    </div>
+                    <div class="grow">
+                      <span
+                        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Bugs/Improvements
+                      </span>
+                      <p
+                        class="truncate max-w-28 text-xs text-gray-500 dark:text-neutral-500"
+                      >
+                        I found a bug: Combobox selection of ahref items using
+                        keyboard #353
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-2 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <svg
+                      class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M17 7 7 17" />
+                      <path d="M17 17H7V7" />
+                    </svg>
+                    <svg
+                      class="shrink-0 size-4"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M15.9999 0C7.04791 0 0.110107 6.55073 0.110107 15.398C0.110107 20.0259 2.00918 24.0247 5.10086 26.7875C5.35986 27.0207 5.51646 27.3433 5.52925 27.6914L5.61561 30.5148C5.64437 31.4155 6.57472 32 7.39964 31.6391L10.552 30.2497C10.8187 30.1317 11.1179 30.1092 11.3993 30.1859C12.8475 30.5851 14.3918 30.7959 15.9999 30.7959C24.9519 30.7959 31.8897 24.2451 31.8897 15.3979C31.8897 6.55073 24.9519 0 15.9999 0Z"
+                        fill="url(#paint0_linear_4340_740)"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M6.45967 19.9013L11.1275 12.5042C11.8692 11.3289 13.4614 11.035 14.574 11.8687L18.2858 14.6506C18.4516 14.7745 18.6532 14.8412 18.8602 14.8406C19.0673 14.84 19.2685 14.7722 19.4336 14.6474L24.4468 10.8465C25.1149 10.3388 25.991 11.1405 25.5401 11.8495L20.8755 19.2434C20.1338 20.4188 18.5416 20.7127 17.429 19.879L13.7172 17.0971C13.5514 16.9732 13.3498 16.9065 13.1428 16.9071C12.9357 16.9076 12.7345 16.9754 12.5694 17.1003L7.55305 20.9043C6.88488 21.4121 6.0088 20.6104 6.45967 19.9013Z"
+                        fill="white"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="paint0_linear_4340_740"
+                          x1="6356.03"
+                          y1="0"
+                          x2="6356.03"
+                          y2="12787.1"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stop-color="#00B2FF" />
+                          <stop offset="1" stop-color="#006AFF" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    Facebook Messenger
+                  </span>
+                </td>
+                <td class="size-px whitespace-nowrap p-2">
+                  <span
+                    class="inline-flex items-center gap-x-1.5 text-xs text-gray-600 dark:text-neutral-400"
+                  >
+                    <span
+                      class="inline-block size-2 bg-emerald-500 rounded-full"
+                    ></span>
+                    Emma Watson <span class="opacity-60">for</span> 01:04:01
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Table -->
+        </div>
+      </div>
+      <!-- End Table Section -->
+    </div>
+    <!-- End Tab Content -->
+
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-assigned"
+      class="hidden h-full"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-item-assigned"
+    >
+      <!-- Loading Indicator -->
+      <div
+        class="py-10 h-full min-h-[419px] flex flex-col justify-center items-center text-center"
+      >
+        <span class="py-1.5 inline-flex gap-x-1">
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite] dark:bg-neutral-200"
+          ></span>
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite_0.2s] dark:bg-neutral-200"
+          ></span>
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite_0.4s] dark:bg-neutral-200"
+          ></span>
+        </span>
+        <p class="mt-3 text-sm text-gray-500 dark:text-neutral-500">
+          This is a placeholder loader.<br />This conent is empty.
+        </p>
+      </div>
+      <!-- End Loading Indicator -->
+    </div>
+    <!-- End Tab Content -->
+
+    <!-- Tab Content -->
+    <div
+      id="hs-pro-tabs-unassigned"
+      class="hidden h-full"
+      role="tabpanel"
+      aria-labelledby="hs-pro-tabs-item-unassigned"
+    >
+      <!-- Loading Indicator -->
+      <div
+        class="py-10 h-full min-h-[419px] flex flex-col justify-center items-center text-center"
+      >
+        <span class="py-1.5 inline-flex gap-x-1">
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite] dark:bg-neutral-200"
+          ></span>
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite_0.2s] dark:bg-neutral-200"
+          ></span>
+          <span
+            class="size-2.5 bg-gray-800 rounded-full animate-[typing_1s_ease-in-out_infinite_0.4s] dark:bg-neutral-200"
+          ></span>
+        </span>
+        <p class="mt-3 text-sm text-gray-500 dark:text-neutral-500">
+          This is a placeholder loader.<br />This conent is empty.
+        </p>
+      </div>
+      <!-- End Loading Indicator -->
+    </div>
+    <!-- End Tab Content -->
+  </div>
+
+  <div class="p-3 pt-0 text-center">
+    <a
+      class="p-2 inline-flex justify-center items-center gap-x-1 text-xs rounded-lg bg-white text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      href="#"
+    >
+      View all messages
+      <svg
+        class="shrink-0 size-3.5"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </a>
+  </div>
+</div>

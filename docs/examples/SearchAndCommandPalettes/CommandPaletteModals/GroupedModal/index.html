@@ -1,0 +1,775 @@
+<div
+  id="hs-pro-dnsm"
+  class="hs-overlay hs-overlay-backdrop-open:backdrop-blur-md hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none"
+  role="dialog"
+  tabindex="-1"
+  aria-label="Search"
+>
+  <div
+    class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 opacity-0 ease-out transition-all sm:max-w-2xl sm:w-full m-3 sm:mx-auto h-[calc(100%-56px)] min-h-[calc(100%-56px)] flex items-center"
+  >
+    <div
+      class="pb-2 max-h-full relative w-full flex flex-col bg-white rounded-xl pointer-events-auto shadow-xl dark:bg-neutral-800"
+    >
+      <!-- Header -->
+      <div class="p-4 border-b border-gray-200 dark:border-neutral-700">
+        <!-- Input -->
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5"
+          >
+            <svg
+              class="shrink-0 size-4 text-gray-800 dark:text-neutral-200"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
+          <div class="flex items-center gap-x-2">
+            <div class="grow relative">
+              <input
+                type="text"
+                class="py-1.5 sm:py-2 ps-10 pe-8 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-500 focus:border-gray-300 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:border-neutral-600"
+                placeholder="Search or type a command"
+                autofocus
+              />
+
+              <div class="absolute inset-y-0 end-0 flex items-center z-20 pe-2">
+                <div class="flex items-center">
+                  <button
+                    type="button"
+                    class="hidden flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-cyan-600 focus:outline-hidden focus:text-cyan-600 dark:text-neutral-500 dark:hover:text-cyan-500 dark:focus:text-cyan-500"
+                    aria-label="Close"
+                  >
+                    <span class="sr-only">Close</span>
+                    <svg
+                      class="shrink-0 size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="inline-flex shrink-0 justify-center items-center size-6 text-sm font-medium rounded-full text-white bg-cyan-700 hover:bg-cyan-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-cyan-600"
+                  >
+                    <svg
+                      class="shrink-0 size-3.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                    <span class="sr-only">Search</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Input -->
+
+        <!-- Button Group -->
+        <div
+          class="mt-3 flex flex-wrap justify-between items-center gap-1 sm:gap-2"
+        >
+          <!-- Tag Group -->
+          <div class="flex flex-wrap gap-1 sm:gap-2">
+            <button
+              type="button"
+              class="py-1.5 px-2.5 inline-flex items-center gap-x-1.5 text-xs text-gray-800 bg-gray-100 hover:text-cyan-700 rounded-lg focus:outline-hidden focus:text-cyan-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 7h-3a2 2 0 0 1-2-2V2" />
+                <path
+                  d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"
+                />
+                <path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8" />
+              </svg>
+              All 16
+            </button>
+            <button
+              type="button"
+              class="py-1.5 px-2.5 inline-flex items-center gap-x-1.5 text-xs text-gray-800 bg-gray-100 hover:text-cyan-700 rounded-lg focus:outline-hidden focus:text-cyan-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"
+                />
+                <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+              </svg>
+              Tags 2
+            </button>
+            <button
+              type="button"
+              class="py-1.5 px-2.5 inline-flex items-center gap-x-1.5 text-xs text-gray-800 bg-gray-100 hover:text-cyan-700 rounded-lg focus:outline-hidden focus:text-cyan-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"
+                />
+                <path d="M18 14h-8" />
+                <path d="M15 18h-5" />
+                <path d="M10 6h8v4h-8V6Z" />
+              </svg>
+              Article 8
+            </button>
+          </div>
+          <!-- End Tag Group -->
+        </div>
+        <!-- End Button Group -->
+      </div>
+      <!-- End Header -->
+
+      <!-- Body -->
+      <div
+        class="h-125 py-1.5 px-4 overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+      >
+        <!-- List Group -->
+        <div class="space-y-4">
+          <div>
+            <!-- List Group -->
+            <ul class="-mx-2.5 space-y-0.5">
+              <!-- List Item -->
+              <li>
+                <a
+                  class="py-2 px-3 flex items-center gap-x-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <svg
+                    class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                  <div class="grow">
+                    <span
+                      class="text-[13px] text-gray-800 dark:text-neutral-200"
+                    >
+                      React
+                    </span>
+                  </div>
+                  <div class="ms-auto">
+                    <svg
+                      class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <!-- End List Item -->
+
+              <!-- List Item -->
+              <li>
+                <a
+                  class="py-2 px-3 flex items-center gap-x-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <svg
+                    class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                  <div class="grow">
+                    <span
+                      class="text-[13px] text-gray-800 dark:text-neutral-200"
+                    >
+                      React Template
+                    </span>
+                  </div>
+                  <div class="ms-auto">
+                    <svg
+                      class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <!-- End List Item -->
+
+              <!-- List Item -->
+              <li>
+                <a
+                  class="py-2 px-3 flex items-center gap-x-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <svg
+                    class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                  <div class="grow">
+                    <span
+                      class="text-[13px] text-gray-800 dark:text-neutral-200"
+                    >
+                      Installation Guide: React
+                    </span>
+                  </div>
+                  <div class="ms-auto">
+                    <svg
+                      class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <!-- End List Item -->
+            </ul>
+            <!-- End List Group -->
+
+            <p class="mt-1 -ms-1.5">
+              <a
+                class="py-1 px-2 inline-flex items-center gap-x-1 text-xs text-cyan-600 decoration-2 hover:underline focus:outline-hidden focus:underline dark:text-cyan-500"
+                href="#"
+              >
+                3 more results
+                <svg
+                  class="shrink-0 size-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </a>
+            </p>
+          </div>
+
+          <div>
+            <h4
+              class="mb-1 text-[11px] uppercase text-gray-500 dark:text-neutral-500"
+            >
+              Tags
+            </h4>
+
+            <!-- List Group -->
+            <ul class="-mx-2.5 space-y-0.5">
+              <!-- List Item -->
+              <li>
+                <a
+                  class="py-2 px-3 flex items-center gap-x-3 text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <svg
+                    class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="4" x2="20" y1="9" y2="9" />
+                    <line x1="4" x2="20" y1="15" y2="15" />
+                    <line x1="10" x2="8" y1="3" y2="21" />
+                    <line x1="16" x2="14" y1="3" y2="21" />
+                  </svg>
+                  <div class="grow">
+                    React
+                    <span
+                      class="py-0.5 px-2 inline-flex items-center gap-x-1.5 text-xs bg-green-100 text-green-800 rounded-full dark:bg-green-500/10 dark:text-green-500"
+                      >Trending</span
+                    >
+                  </div>
+                  <div class="ms-auto">
+                    <svg
+                      class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <!-- End Item -->
+
+              <!-- Item -->
+              <li>
+                <a
+                  class="py-2 px-3 flex items-center gap-x-3 text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <svg
+                    class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="4" x2="20" y1="9" y2="9" />
+                    <line x1="4" x2="20" y1="15" y2="15" />
+                    <line x1="10" x2="8" y1="3" y2="21" />
+                    <line x1="16" x2="14" y1="3" y2="21" />
+                  </svg>
+                  <div class="grow">Getting Started with React</div>
+                  <div class="ms-auto">
+                    <svg
+                      class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <!-- End Item -->
+            </ul>
+            <!-- End List Group -->
+          </div>
+
+          <div>
+            <h4
+              class="mb-1 text-[11px] uppercase text-gray-500 dark:text-neutral-500"
+            >
+              Courses
+            </h4>
+
+            <!-- List Group -->
+            <ul class="-mx-2.5 space-y-0.5">
+              <!-- List Item -->
+              <li>
+                <!-- Card -->
+                <a
+                  class="block p-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <div class="flex items-center gap-x-4">
+                    <div class="grow truncate">
+                      <h5
+                        class="truncate text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Which one is better React or Vue?
+                      </h5>
+
+                      <ol class="mt-1.5 flex flex-wrap items-center">
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <rect width="7" height="7" x="14" y="3" rx="1" />
+                              <path
+                                d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"
+                              />
+                            </svg>
+                            Course
+                          </span>
+                        </li>
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+                              />
+                            </svg>
+                            React
+                          </span>
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div class="shrink-0">
+                      <img
+                        class="w-20 h-14 object-cover bg-gray-100 rounded-md dark:bg-neutral-800"
+                        src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        alt="Search Result Image"
+                      />
+                    </div>
+                  </div>
+                </a>
+                <!-- End Card -->
+              </li>
+              <!-- End List Item -->
+
+              <!-- List Item -->
+              <li>
+                <!-- Card -->
+                <a
+                  class="block p-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <div class="flex items-center gap-x-4">
+                    <div class="grow truncate">
+                      <h5
+                        class="truncate text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        Advanced React Patterns: Best Practices and Techniques
+                      </h5>
+
+                      <ol class="mt-1.5 flex flex-wrap items-center">
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <rect width="7" height="7" x="14" y="3" rx="1" />
+                              <path
+                                d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"
+                              />
+                            </svg>
+                            Course
+                          </span>
+                        </li>
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+                              />
+                            </svg>
+                            React
+                          </span>
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div class="shrink-0">
+                      <img
+                        class="w-20 h-14 object-cover bg-gray-100 rounded-md dark:bg-neutral-800"
+                        src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        alt="Search Result Image"
+                      />
+                    </div>
+                  </div>
+                </a>
+                <!-- End Card -->
+              </li>
+              <!-- End List Item -->
+
+              <!-- List Item -->
+              <li>
+                <!-- Card -->
+                <a
+                  class="block p-3 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  href="#"
+                >
+                  <div class="flex items-center gap-x-4">
+                    <div class="grow truncate">
+                      <h5
+                        class="truncate text-sm text-gray-800 dark:text-neutral-200"
+                      >
+                        State Management in React
+                      </h5>
+
+                      <ol class="mt-1.5 flex flex-wrap items-center">
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <rect width="7" height="7" x="14" y="3" rx="1" />
+                              <path
+                                d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"
+                              />
+                            </svg>
+                            Article
+                          </span>
+                        </li>
+                        <li
+                          class="relative pe-5 text-xs last:pe-0 last:after:hidden after:absolute after:top-1/2 after:end-2 after:inline-block after:size-[3px] after:bg-gray-300 after:rounded-full after:-translate-y-1/2 dark:after:bg-neutral-600"
+                        >
+                          <span
+                            class="inline-flex items-center gap-x-1 text-xs text-gray-500 dark:text-neutral-500"
+                          >
+                            <svg
+                              class="shrink-0 size-3"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+                              />
+                            </svg>
+                            React
+                          </span>
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div class="shrink-0">
+                      <span
+                        class="flex justify-center items-center w-20 h-14 bg-gray-200 text-gray-500 rounded-md dark:bg-neutral-600 dark:text-neutral-500"
+                      >
+                        <svg
+                          class="shrink-0 size-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+                          />
+                          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                          <path d="M10 9H8" />
+                          <path d="M16 13H8" />
+                          <path d="M16 17H8" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+                <!-- End Card -->
+              </li>
+              <!-- End List Item -->
+            </ul>
+            <!-- End List Group -->
+
+            <p class="mt-1 -ms-1.5">
+              <a
+                class="py-1 px-2 inline-flex items-center gap-x-1 text-xs text-cyan-600 decoration-2 hover:underline focus:outline-hidden focus:underline dark:text-cyan-500"
+                href="#"
+              >
+                5 more results
+                <svg
+                  class="shrink-0 size-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </a>
+            </p>
+          </div>
+        </div>
+        <!-- End List Group -->
+      </div>
+      <!-- End Body -->
+    </div>
+  </div>
+</div>

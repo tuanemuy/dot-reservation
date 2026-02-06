@@ -1,0 +1,193 @@
+<div class="flex flex-wrap justify-between items-center gap-1 sm:gap-5">
+  <!-- Select -->
+  <div class="relative inline-flex items-center">
+    <span class="me-1 text-xs sm:text-sm text-gray-500 dark:text-neutral-500"
+      >Filter:</span
+    >
+    <select
+      data-hs-select='{
+        "placeholder": "Filter",
+        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1 ps-1.5 pe-7 inline-flex shrink-0 justify-center items-center gap-x-1.5 border border-transparent text-sm text-gray-800 rounded-lg hover:bg-gray-100 hover:text-gray-800 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:bg-neutral-900 dark:hover:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+        "dropdownClasses": "start-0 mt-2 p-1 z-50 w-40 sm:w-44 bg-white rounded-xl shadow-xl dark:bg-neutral-800",
+        "optionClasses": "flex items-center gap-x-3 py-2 px-3 text-xs sm:text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+        "optionTemplate": "<div class=\"flex items-center w-full\"><div class=\"me-2 sm:me-3\" data-icon></div><span data-title></span><span class=\"hidden hs-selected:block ms-auto\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+      }'
+      class="hidden"
+    >
+      <option value="">Choose</option>
+      <option
+        selected
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 2h10\"/><path d=\"M5 6h14\"/><rect width=\"18\" height=\"12\" x=\"3\" y=\"10\" rx=\"2\"/></svg>"}'
+      >
+        All files
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" x2=\"8\" y1=\"13\" y2=\"13\"/><line x1=\"16\" x2=\"8\" y1=\"17\" y2=\"17\"/><line x1=\"10\" x2=\"8\" y1=\"9\" y2=\"9\"/></svg>"}'
+      >
+        Documents
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/></svg>"}'
+      >
+        Images
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"16 18 22 12 16 6\"/><polyline points=\"8 6 2 12 8 18\"/></svg>"}'
+      >
+        Snippets
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z\"/><polyline points=\"14 2 14 8 20 8\"/><path d=\"M8 13h2\"/><path d=\"M8 17h2\"/><path d=\"M14 13h2\"/><path d=\"M14 17h2\"/></svg>"}'
+      >
+        Spreadsheets
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"11 5 6 9 2 9 2 15 6 15 11 19 11 5\"/><path d=\"M15.54 8.46a5 5 0 0 1 0 7.07\"/><path d=\"M19.07 4.93a10 10 0 0 1 0 14.14\"/></svg>"}'
+      >
+        Audio
+      </option>
+      <option
+        data-hs-select-option='{
+        "icon": "<svg class=\"shrink-0 size-3 sm:size-3.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m22 8-6 4 6 4V8Z\"/><rect width=\"14\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\" ry=\"2\"/></svg>"}'
+      >
+        Videos
+      </option>
+    </select>
+
+    <div class="absolute top-1/2 end-2 sm:end-1.5 -translate-y-1/2">
+      <svg
+        class="shrink-0 size-3 sm:size-4 text-gray-700 dark:text-neutral-300"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </div>
+  </div>
+  <!-- End Select -->
+
+  <!-- Form Group -->
+  <div class="flex justify-end items-center gap-x-2">
+    <!-- Select -->
+    <div class="relative inline-flex items-center">
+      <span class="me-1 text-xs sm:text-sm text-gray-500 dark:text-neutral-500"
+        >Sort:</span
+      >
+      <select
+        data-hs-select='{
+          "placeholder": "Sort",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1 ps-1.5 pe-7 inline-flex shrink-0 justify-center items-center gap-x-1.5 border border-transparent text-sm text-gray-800 rounded-lg hover:bg-gray-100 hover:text-gray-800 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:bg-neutral-900 dark:hover:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+          "dropdownClasses": "end-0 mt-2 p-1 z-50 w-32 bg-white rounded-xl shadow-xl dark:bg-neutral-800",
+          "optionClasses": "flex items-center gap-x-3 py-2 px-3 text-xs sm:text-[13px] text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+        }'
+        class="hidden"
+      >
+        <option value="">Choose</option>
+        <option selected>Newest file</option>
+        <option>Oldest file</option>
+        <option>A to Z</option>
+        <option>Z to A</option>
+      </select>
+
+      <div class="absolute top-1/2 end-2 sm:end-1.5 -translate-y-1/2">
+        <svg
+          class="shrink-0 size-3 sm:size-4 text-gray-700 dark:text-neutral-300"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </div>
+    </div>
+    <!-- End Select -->
+
+    <!-- Button Group -->
+    <nav
+      class="flex items-center"
+      aria-label="Tabs"
+      role="tablist"
+      aria-orientation="horizontal"
+    >
+      <button
+        type="button"
+        class="hs-tab-active:bg-gray-200 hs-tab-active:focus:bg-gray-200 hs-tab-active:focus:text-gray-800 flex shrink-0 justify-center items-center size-7.5 border-md text-gray-800 rounded-md disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:text-gray-500 dark:text-neutral-200 dark:focus:text-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:focus:hs-tab-active:text-neutral-200 dark:focus:hs-tab-active:bg-neutral-600 active"
+        id="hs-pro-tabs-fdflt-item-grid"
+        aria-selected="true"
+        data-hs-tab="#hs-pro-tabs-fdflt-grid"
+        aria-controls="hs-pro-tabs-fdflt-grid"
+        role="tab"
+      >
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect width="7" height="7" x="3" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="14" rx="1" />
+          <rect width="7" height="7" x="3" y="14" rx="1" />
+        </svg>
+        <span class="sr-only">Grid</span>
+      </button>
+      <button
+        type="button"
+        class="hs-tab-active:bg-gray-200 hs-tab-active:focus:bg-gray-200 hs-tab-active:focus:text-gray-800 flex shrink-0 justify-center items-center size-7.5 border-md text-gray-800 rounded-md disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:text-gray-500 dark:text-neutral-200 dark:focus:text-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:focus:hs-tab-active:text-neutral-200 dark:focus:hs-tab-active:bg-neutral-600"
+        id="hs-pro-tabs-fdflt-item-listing"
+        aria-selected="false"
+        data-hs-tab="#hs-pro-tabs-fdflt-listing"
+        aria-controls="hs-pro-tabs-fdflt-listing"
+        role="tab"
+      >
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" x2="21" y1="6" y2="6" />
+          <line x1="3" x2="21" y1="12" y2="12" />
+          <line x1="3" x2="21" y1="18" y2="18" />
+        </svg>
+        <span class="sr-only">List</span>
+      </button>
+    </nav>
+    <!-- End Button Group -->
+  </div>
+  <!-- End Form Group -->
+</div>

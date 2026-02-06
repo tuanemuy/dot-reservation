@@ -1,0 +1,686 @@
+<div class="flex flex-col gap-y-8">
+  <!-- Search Input -->
+  <div class="relative">
+    <div
+      class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3"
+    >
+      <svg
+        class="shrink-0 size-5 text-gray-500 dark:text-neutral-400"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    </div>
+    <input
+      type="text"
+      class="py-3 ps-10 pe-4 block w-full bg-white border-gray-400 rounded-xl hover:border-gray-500 focus:border-purple-500 focus:ring-purple-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-600 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:hover:border-neutral-500 dark:focus:bg-neutral-900 dark:focus:ring-neutral-600"
+      placeholder="Search a currency / country"
+    />
+    <div class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1">
+      <button
+        type="button"
+        class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+        aria-label="Close"
+      >
+        <span class="sr-only">Close</span>
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="m15 9-6 6" />
+          <path d="m9 9 6 6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <!-- End Search Input -->
+
+  <div>
+    <h4 class="mb-2 text-sm text-gray-500 dark:text-neutral-500">
+      Available in 20+ currencies
+    </h4>
+
+    <!-- Button Group -->
+    <div class="flex flex-col gap-y-3">
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbaud"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/au.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">AUD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Australian Dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbaud"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbgbp"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/gb.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">GBP</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              British Pound
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbgbp"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbcad"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/ca.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">CAD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Canadian Dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbcad"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbcny"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/cn.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">CNY</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Chinese yuan
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbcny"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbczk"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/cz.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">CZK</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Czech koruna
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbczk"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbdkk"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/dk.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">DKK</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Danish krone
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbdkk"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbeuro"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/eu.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">EURO</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              EUR
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbeuro"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbhkd"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/hk.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">HKD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Hong Kong dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbhkd"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbhuf"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/hu.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">HUF</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Hungarian forint
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbhuf"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbils"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/il.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">ILS</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Israeli shekel
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbils"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbjpy"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/jp.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">JPY</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Japanese yen
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbjpy"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbnzd"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/nz.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">NZD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              New Zealand dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbnzd"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbnok"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/no.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">NOK</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Norwegian krone
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbnok"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbpln"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/pl.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">PLN</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Polish ztoty
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbpln"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbsgd"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/sg.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">SGD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Singapore dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbsgd"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbzar"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/za.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">ZAR</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              South African rand
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbzar"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbsek"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/se.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">SEK</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Swedish krona
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbsek"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbchf"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/ch.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">CHF</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Swiss franc
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbchf"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbtry"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/tr.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">TRY</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              Turkish lira
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbtry"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbaed"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/ae.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">AED</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              UAE dirham
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbaed"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+
+      <!-- Checkbox -->
+      <label
+        for="hs-pro-pynbusd"
+        class="p-3 flex items-center gap-x-3 text-sm bg-white border border-gray-200 text-gray-800 ring-1 ring-transparent cursor-pointer rounded-xl hover:border-purple-600 hover:ring-purple-600 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200 dark:hover:ring-neutral-600 dark:hover:ring-neutral-600"
+      >
+        <img
+          class="shrink-0 object-cover size-8 rounded-full"
+          src="../../assets/vendor/svg-country-flags/png250px/us.png"
+          alt="Avatar"
+        />
+        <span class="grow">
+          <span class="block">
+            <span class="font-semibold me-2">USD</span>
+            <span class="text-sm text-gray-500 dark:text-neutral-500">
+              United States Dollar
+            </span>
+          </span>
+        </span>
+
+        <input
+          type="radio"
+          id="hs-pro-pynbusd"
+          class="shrink-0 size-5 border-gray-200 rounded-full text-purple-600 checked:border-purple-600 focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:checked:bg-purple-500 dark:checked:border-purple-500 dark:focus:ring-offset-neutral-800"
+          name="hs-pro-pynb"
+        />
+      </label>
+      <!-- End Checkbox -->
+    </div>
+    <!-- End Button Group -->
+  </div>
+
+  <!-- Button Group -->
+  <div class="flex flex-col gap-y-2">
+    <a
+      class="py-3 px-3 w-full inline-flex justify-center items-center gap-x-1.5 font-medium rounded-xl border border-transparent bg-purple-500 text-white hover:bg-purple-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-purple-600"
+      href="../../pro/payment/balances-empty-content.html"
+    >
+      Continue
+    </a>
+
+    <a
+      class="py-3 px-3 w-full inline-flex justify-center items-center gap-x-1.5 font-medium rounded-xl border border-transparent text-purple-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-purple-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      href="../../pro/payment/index.html"
+    >
+      <svg
+        class="shrink-0 size-4"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+      Cancel
+    </a>
+  </div>
+  <!-- End Button Group -->
+</div>

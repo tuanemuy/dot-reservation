@@ -1,0 +1,48 @@
+<div class="relative inline-block">
+  <select
+    id="hs-pro-select-currency"
+    data-hs-select='{
+      "placeholder": "Choose a currency",
+      "hasSearch": true,
+      "searchPlaceholder": "Type a currency",
+      "searchClasses": "block py-1.5 sm:py-2 px-3 w-full sm:text-sm border-gray-200 rounded-lg focus:border-purple-500 focus:ring-purple-500 dark:bg-neutral-950 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400",
+      "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-950",
+      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"flex\" data-icon></span><span class=\"text-sm text-gray-800 dark:text-neutral-200\" data-title></span></button>",
+      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-1 ps-1.5 pe-7 flex items-center gap-x-1.5 text-nowrap cursor-pointer bg-white border border-gray-200 rounded-full text-start text-sm sm:text-base hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+
+      "dropdownClasses": "z-80 end-0 w-72 max-h-72 p-1 pt-0 space-y-0.5 z-50 overflow-hidden overflow-y-auto bg-white rounded-xl shadow-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-950",
+      "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",
+      "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"shrink-0 me-2\" data-icon></div><div class=\"grow\"><div class=\"flex justify-between items-center gap-x-3\"><div class=\"text-gray-800 dark:text-neutral-200\" data-title></div><div class=\"text-gray-500 dark:text-neutral-500\" data-description></div></div></div></div></div>",
+      "extraMarkup": "<div class=\"absolute top-1/2 end-2 cursor-pointer -translate-y-1/2\"><svg class=\"shrink-0 size-4 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>",
+      "preventSearchFocus": false
+    }'
+    class="hidden"
+  >
+    <option value="">Choose</option>
+    <option
+      selected
+      value="USD"
+      data-hs-select-option='{
+      "description": "United States Dollar",
+      "icon": "<img class=\"inline-block shrink-0 size-4 rounded-full\" src=\"../../assets/vendor/svg-country-flags/png100px/us.png\" alt=\"United States Dollar\" />"}'
+    >
+      USD
+    </option>
+    <option
+      value="GBP"
+      data-hs-select-option='{
+      "description": "British Pound",
+      "icon": "<img class=\"inline-block shrink-0 size-4 rounded-full\" src=\"../../assets/vendor/svg-country-flags/png100px/gb.png\" alt=\"British Pound\" />"}'
+    >
+      GBP
+    </option>
+    <option
+      value="EURO"
+      data-hs-select-option='{
+      "description": "EUR",
+      "icon": "<img class=\"inline-block shrink-0 size-4 rounded-full\" src=\"../../assets/vendor/svg-country-flags/png100px/eu.png\" alt=\"EUR\" />"}'
+    >
+      EURO
+    </option>
+  </select>
+</div>

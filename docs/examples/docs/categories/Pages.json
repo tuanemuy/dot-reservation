@@ -1,0 +1,157 @@
+{
+  "name": "Pages",
+  "description": "ページテンプレート",
+  "componentCount": 22,
+  "subcategories": [
+    {
+      "name": "ArticlePages",
+      "path": "Pages/ArticlePages/",
+      "components": [
+        {
+          "name": "AgencyCareersDetails",
+          "path": "Pages/ArticlePages/AgencyCareersDetails/",
+          "description": "ダークテーマの求人詳細ページ。職種タイトル、業務内容、応募要件、福利厚生などを詳細に記載し、右サイドバーに応募情報（締め切り、部署、雇用形態、勤務地、報酬）と応募ボタンを配置。バックリンク付き。",
+          "useCases": "採用サイトの求人詳細ページ、キャリアページの個別職種紹介、求人募集の詳細情報表示"
+        },
+        {
+          "name": "AgencyCaseStudyDetails",
+          "path": "Pages/ArticlePages/AgencyCaseStudyDetails/",
+          "description": "ダークテーマのケーススタディ（事例紹介）ページ。ヒーロー画像を上部に配置し、課題・解決策・効果のセクション構成でプロジェクト成果を紹介。右サイドバーに企業情報（業界、設立年、資金調達、CEO）を表示。",
+          "useCases": "クライアント事例紹介、プロジェクト成功事例の詳細ページ、導入事例・ケーススタディの掲載"
+        },
+        {
+          "name": "StartupCustomersArticle",
+          "path": "Pages/ArticlePages/StartupCustomersArticle/",
+          "description": "ライト/ダークモード対応の顧客事例記事ページ。左サイドバーに戻るリンク、中央に主要成果指標のハイライト表示と対談者アバター、課題・解決策・効果のセクション構成。下部に「More stories」として関連事例カードを配置。右サイドバーに企業情報（会社名、業界、設立年、資金調達、CEO）をスティッキー表示。",
+          "useCases": "顧客成功事例の詳細記事、インタビュー形式のケーススタディ、導入企業の声・効果を紹介するページ"
+        }
+      ]
+    },
+    {
+      "name": "AuthenticationPages",
+      "path": "Pages/AuthenticationPages/",
+      "components": [
+        {
+          "name": "CheckOrderPage",
+          "path": "Pages/AuthenticationPages/CheckOrderPage/",
+          "description": "センター配置の注文追跡フォーム。電話番号または注文番号での検索切り替え、メール、郵便番号入力。ツールチップで注文番号の確認方法を案内。",
+          "useCases": "非会員向け注文追跡、配送状況確認フォーム"
+        },
+        {
+          "name": "CheckboxNotLoggedInCenteredPage",
+          "path": "Pages/AuthenticationPages/CheckboxNotLoggedInCenteredPage/",
+          "description": "センター配置のゲストチェックアウト/ログイン選択ページ。ゲストとして続行ボタン、ログインフォーム、アカウント作成リンクを配置。未ログインユーザー向け。",
+          "useCases": "ECサイトのチェックアウト前認証、会員/非会員の購入フロー分岐"
+        },
+        {
+          "name": "CreateAccountCenteredPage",
+          "path": "Pages/AuthenticationPages/CreateAccountCenteredPage/",
+          "description": "センター配置のアカウント作成ページ（ECサイト向け）。メール・パスワード入力（強度インジケーター付き）、生年月日、性別選択、メールマガジン購読、利用規約同意チェックを配置。",
+          "useCases": "ECサイトの会員登録ページ、顧客情報収集を含む詳細なサインアップ"
+        },
+        {
+          "name": "EmailVerificationPage",
+          "path": "Pages/AuthenticationPages/EmailVerificationPage/",
+          "description": "サイドバー付きメール認証確認ページ。認証メール送信完了メッセージ、送信先メールアドレス表示、再送信リンク、確認ボタンを配置。",
+          "useCases": "メールアドレス確認の待機画面、認証メール送信後の案内ページ、アカウント有効化の確認"
+        },
+        {
+          "name": "ForgotPasswordCenteredPage",
+          "path": "Pages/AuthenticationPages/ForgotPasswordCenteredPage/",
+          "description": "センター配置のパスワードリセットページ（ECサイト向け）。メールアドレス入力フォーム、送信ボタン、ログインページへの戻りリンクを配置。",
+          "useCases": "ECサイトのパスワード再設定、顧客向けパスワードリセット"
+        },
+        {
+          "name": "LockScreenPage",
+          "path": "Pages/AuthenticationPages/LockScreenPage/",
+          "description": "グラデーション背景のセンター配置ロック画面。ユーザーアバターと名前表示、パスワード入力フォーム、ログアウトリンクを配置。一時的に離席したユーザーの再認証用。",
+          "useCases": "セッションタイムアウト後の再認証、離席後のロック解除、既存ログインユーザーの本人確認"
+        },
+        {
+          "name": "LoginCenteredPage",
+          "path": "Pages/AuthenticationPages/LoginCenteredPage/",
+          "description": "センター配置のログインページ（ECサイト向け）。ゲストチェックアウトオプション、メール・パスワードログインフォーム、アカウント作成リンクを配置。シンプルなヘッダー・フッター付き。",
+          "useCases": "ECサイトのログインページ、ゲスト購入とログイン購入の選択画面"
+        },
+        {
+          "name": "LoginPage",
+          "path": "Pages/AuthenticationPages/LoginPage/",
+          "description": "サイドバー付きログインページ。メール・パスワード入力、Google/Apple/Facebookなどのソーシャルログインボタン、「ログイン状態を保持」チェックボックス、パスワード忘れリンクを配置。パスワード表示/非表示トグル付き。",
+          "useCases": "SaaSアプリケーションのログインページ、管理画面へのログイン、ダッシュボードアクセス"
+        },
+        {
+          "name": "OnboardingCreateYourProjectPage",
+          "path": "Pages/AuthenticationPages/OnboardingCreateYourProjectPage/",
+          "description": "サイドバー付きプロジェクト作成ページ。プロジェクト名入力、チームメンバー招待、ファイルアップロードなどの初期設定フォームを配置。",
+          "useCases": "初回ログイン時のワークスペース作成、チーム/プロジェクトの初期セットアップ"
+        },
+        {
+          "name": "OnboardingPlansPage",
+          "path": "Pages/AuthenticationPages/OnboardingPlansPage/",
+          "description": "サイドバー付き料金プラン選択ページ。Free/Startup/Enterpriseなど複数プランをカード形式で表示。各プランの特徴、価格、機能比較を含む。スキップボタン付き。",
+          "useCases": "サービス登録時のプラン選択、フリーミアムモデルのアップグレード誘導、サブスクリプション選択"
+        },
+        {
+          "name": "OnboardingSyncYourContactsPage",
+          "path": "Pages/AuthenticationPages/OnboardingSyncYourContactsPage/",
+          "description": "サイドバー付き連絡先同期ページ。Google/Outlook/iCloud/CSVなど複数の連絡先ソースからのインポートオプションを表示。",
+          "useCases": "連絡先データのインポート設定、外部サービス連携の初期設定、アドレス帳同期"
+        },
+        {
+          "name": "OnboardingWhatIsYourNamePage",
+          "path": "Pages/AuthenticationPages/OnboardingWhatIsYourNamePage/",
+          "description": "サイドバー付き職種選択ページ。Design/Product Management/Sales/User Researchなど複数の役割をチップ形式で選択。パーソナライズ体験の設定用。スキップボタン付き。",
+          "useCases": "オンボーディング時のユーザー属性収集、カスタマイズ体験の初期設定、ユーザーセグメント分類"
+        },
+        {
+          "name": "OrderCheckupCenteredPage",
+          "path": "Pages/AuthenticationPages/OrderCheckupCenteredPage/",
+          "description": "センター配置の注文確認ページ。タブ切り替えで「既存顧客ログイン」と「注文追跡」を表示。注文追跡は電話番号/注文番号での検索、メール、郵便番号入力に対応。",
+          "useCases": "ECサイトの注文履歴・追跡ページ、会員/非会員向け注文状況確認"
+        },
+        {
+          "name": "ResetPasswordPage",
+          "path": "Pages/AuthenticationPages/ResetPasswordPage/",
+          "description": "サイドバー付きパスワードリセットページ。メールアドレス入力フォームとリセットリンク送信ボタン、ログインページへの戻りリンクを配置。",
+          "useCases": "パスワードを忘れたユーザーへのリセットメール送信ページ、セキュリティ上のパスワード再設定"
+        },
+        {
+          "name": "SignupPage",
+          "path": "Pages/AuthenticationPages/SignupPage/",
+          "description": "サイドバー付きサインアップページ。メール・パスワード入力フォーム、ソーシャルアカウントでの登録オプション、利用規約への同意チェック、既存アカウントへのログインリンクを配置。",
+          "useCases": "新規ユーザー登録ページ、SaaSアプリのアカウント作成、サービス新規申込"
+        },
+        {
+          "name": "TwoStepVerificationPage",
+          "path": "Pages/AuthenticationPages/TwoStepVerificationPage/",
+          "description": "サイドバー付き二段階認証ページ。6桁のPINコード入力欄（個別入力フィールド）、再送信リンク、確認ボタンを配置。入力フィールド間の自動フォーカス移動対応。",
+          "useCases": "SMS/メール認証コード入力、二要素認証の確認画面、セキュリティコード入力"
+        }
+      ]
+    },
+    {
+      "name": "BlankPages",
+      "path": "Pages/BlankPages/",
+      "components": [
+        {
+          "name": "NotfoundErrorPage",
+          "path": "Pages/BlankPages/NotfoundErrorPage/",
+          "description": "404ページ未検出エラーページ。大きな「404」エラーコード、「Page not found」見出し、ページが見つからない旨のメッセージ、「Back to home」ボタンを配置。",
+          "useCases": "存在しないURLへのアクセス時の表示、削除されたコンテンツへのアクセス時、無効なリンクのフォールバック"
+        },
+        {
+          "name": "ServerErrorPage",
+          "path": "Pages/BlankPages/ServerErrorPage/",
+          "description": "500サーバーエラーページ。大きな「500」エラーコード、「Page not found」見出し、サーバー内部エラーの説明メッセージ、「Reload page」ボタンを配置。",
+          "useCases": "サーバー内部エラー発生時の表示、システム障害時のユーザー案内、API通信エラー時のフォールバック"
+        },
+        {
+          "name": "UpgradeBlankPage",
+          "path": "Pages/BlankPages/UpgradeBlankPage/",
+          "description": "機能アップグレード促進ページ。分析チャートのモックアップ画像、「Available with growth」バッジ、機能説明テキスト、アップグレードボタンと詳細リンクを配置。プレミアム機能へのアクセスを促すデザイン。",
+          "useCases": "フリーミアムモデルでの有料プラン誘導、機能制限時のアップグレード案内、プレミアム機能のプレビュー表示"
+        }
+      ]
+    }
+  ]
+}

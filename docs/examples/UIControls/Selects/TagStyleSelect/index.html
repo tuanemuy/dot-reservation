@@ -1,0 +1,27 @@
+<div class="relative w-full">
+  <select
+    id="hs-pro-select-tag-style"
+    multiple
+    data-hs-select='{
+      "placeholder": "Issue type",
+      "wrapperClasses": "hs-select-active:border-transparent hs-select-active:bg-gray-100 rounded-md flex items-center flex-wrap text-nowrap w-full text-start text-sm border border-transparent hover:border-gray-200 dark:bg-neutral-800 dark:border-transparent dark:text-neutral-400 dark:hover:border-neutral-700 dark:focus:bg-neutral-700 hs-select-active:dark:bg-neutral-700",
+      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:bg-gray-100 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+      "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white rounded-lg overflow-hidden overflow-y-auto shadow-xl dark:bg-neutral-900",
+      "optionClasses": "py-1 px-2 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+      "mode": "tags",
+      "tagsClasses": "relative ps-0.5 pe-9 min-h-9.5 flex items-center flex-wrap text-nowrap w-full border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:text-neutral-400",
+      "tagsItemTemplate": "<div class=\"flex flex-nowrap items-center relative z-10 bg-gray-100 rounded-md py-1 px-2 focus:outline-hidden m-0.5 dark:bg-neutral-700 dark:text-neutral-200\"><div class=\"size-5 me-1\" data-icon></div><div class=\"whitespace-nowrap text-[13px]\" data-title></div><div class=\"inline-flex shrink-0 justify-center items-center size-5 ms-1 rounded-full text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:ring-2 focus:ring-neutral-400 text-sm dark:hover:bg-neutral-600 dark:text-neutral-400 cursor-pointer\" data-remove><svg class=\"shrink-0 size-3\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></div></div>",
+      "tagsInputClasses": "py-1 sm:py-1.5 px-2 grow order-1 sm:text-sm bg-transparent border-transparent rounded-md focus:ring-0 focus-visible:outline-hidden dark:text-neutral-400 dark:placeholder:text-neutral-400",
+      "optionTemplate": "<div class=\"flex items-center\"><div class=\"size-5 me-2\" data-icon></div><div><div class=\"text-sm text-gray-800 dark:text-neutral-200\" data-title></div><div class=\"text-xs text-gray-500 dark:text-neutral-500\" data-description></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>"
+    }'
+    class="hidden"
+  >
+    <option value="">Choose</option>
+    <option value="issueType1">Bug 🐞</option>
+    <option value="issueType2">Support 🙏</option>
+    <option value="issueType3">Feature ⚡️</option>
+    <option value="issueType4" selected>Docs 📄</option>
+    <option value="issueType5" selected>Improvement 📈</option>
+  </select>
+</div>

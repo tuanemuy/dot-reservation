@@ -1,0 +1,222 @@
+<div
+  class="hs-dropdown [--strategy:absolute] [--auto-close:inside] relative inline-flex"
+>
+  <button
+    id="hs-pro-inthasdid1"
+    type="button"
+    class="py-[3px] ps-1 pe-2 gap-x-1 flex justify-center items-center text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:text-neutral-400 dark:border-neutral-700 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label="Dropdown"
+  >
+    <span class="shrink-0 flex items-center -space-x-2">
+      <span
+        class="flex shrink-0 justify-center items-center size-6 text-sm font-medium uppercase bg-purple-500 text-white rounded-full"
+        >S</span
+      >
+      <img
+        class="shrink-0 size-6 rounded-full"
+        src="https://images.unsplash.com/photo-1679412330254-90cb240038c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+        alt="Avatar"
+      />
+    </span>
+
+    <svg
+      class="shrink-0 size-4"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+
+  <!-- Assign Dropdown -->
+  <div
+    class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-64 transition-[opacity,margin] duration opacity-0 hidden z-10 bg-white rounded-xl shadow-lg dark:bg-neutral-900"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="hs-pro-inthasdid1"
+  >
+    <!-- Heading -->
+    <div class="py-2 px-4">
+      <span
+        class="block font-medium text-sm text-gray-800 dark:text-neutral-200"
+      >
+        <span class="truncate">Assign</span>
+      </span>
+    </div>
+    <!-- End Heading -->
+
+    <!-- Input -->
+    <div class="p-1 relative border-y border-gray-200 dark:border-neutral-800">
+      <input
+        type="text"
+        class="py-1.5 px-3 block w-full border-transparent rounded-lg sm:text-sm text-base placeholder:text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:border-transparent focus:ring-0 focus:bg-gray-100 disabled:opacity-100 disabled:pointer-events-none dark:bg-transparent dark:border-transparent dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:ring-neutral-600 dark:focus:bg-neutral-800"
+        placeholder="Search teammates"
+      />
+      <div class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1">
+        <button
+          type="button"
+          class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+          aria-label="Close"
+        >
+          <span class="sr-only">Close</span>
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m15 9-6 6" />
+            <path d="m9 9 6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- End Input -->
+
+    <!-- Body -->
+    <div
+      class="p-1 space-y-0.5 max-h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+    >
+      <!-- Item -->
+      <label
+        for="hs-pro-inithargna"
+        class="py-1.5 px-3 group flex items-center gap-x-2.5 py-1.5 px-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      >
+        <input
+          type="checkbox"
+          class="hidden"
+          id="hs-pro-inithargna"
+          name="hs-pro-initharg"
+        />
+        <span class="shrink-0 size-5 flex justify-center items-center">
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="10" r="3" />
+            <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+          </svg>
+        </span>
+        No assignee
+        <svg
+          class="shrink-0 size-4 ms-auto opacity-0 group-has-checked:opacity-100"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </label>
+      <!-- End Item -->
+
+      <!-- Item -->
+      <label
+        for="hs-pro-initharga1"
+        class="py-1.5 px-3 group flex items-center gap-x-2.5 py-1.5 px-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      >
+        <input
+          type="checkbox"
+          class="hidden"
+          id="hs-pro-initharga1"
+          name="hs-pro-initharg"
+          checked
+        />
+        <span class="relative size-5">
+          <span
+            class="flex shrink-0 justify-center items-center size-5 text-xs font-medium uppercase bg-purple-500 text-white rounded-full"
+            >I</span
+          >
+          <span
+            class="absolute -bottom-0 -end-0 block size-1.5 rounded-full ring-2 ring-white bg-green-500 dark:ring-neutral-800"
+          ></span>
+        </span>
+        isabella@site.com
+        <svg
+          class="shrink-0 size-4 ms-auto opacity-0 group-has-checked:opacity-100"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </label>
+      <!-- End Item -->
+
+      <!-- Item -->
+      <label
+        for="hs-pro-initharga2"
+        class="py-1.5 px-3 group flex items-center gap-x-2.5 py-1.5 px-3 rounded-lg cursor-pointer text-[13px] text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+      >
+        <input
+          type="checkbox"
+          class="hidden"
+          id="hs-pro-initharga2"
+          name="hs-pro-initharg"
+          checked
+        />
+        <span class="relative size-5">
+          <img
+            class="shrink-0 size-5 rounded-full"
+            src="https://images.unsplash.com/photo-1679412330254-90cb240038c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80"
+            alt="Avatar"
+          />
+        </span>
+        Lewis Clarke
+        <svg
+          class="shrink-0 size-4 ms-auto opacity-0 group-has-checked:opacity-100"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </label>
+      <!-- End Item -->
+    </div>
+    <!-- End Body -->
+  </div>
+  <!-- End Assign Dropdown -->
+</div>

@@ -1,0 +1,134 @@
+<div
+  class="flex flex-col bg-white border border-stone-200 overflow-hidden rounded-xl shadow-2xs dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div
+    class="py-3 px-5 flex justify-between items-center gap-x-5 border-b border-stone-200 dark:border-neutral-700"
+  >
+    <h2 class="inline-block font-semibold text-stone-800 dark:text-neutral-200">
+      Media
+    </h2>
+
+    <div class="flex justify-end items-center gap-x-2">
+      <button
+        type="button"
+        class="py-2 px-2.5 inline-flex items-center gap-x-1.5 text-xs font-medium rounded-lg border border-stone-200 bg-white text-stone-800 shadow-2xs hover:bg-stone-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-stone-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      >
+        <svg
+          class="shrink-0 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+          <path d="M12 12v9" />
+          <path d="m16 16-4-4-4 4" />
+        </svg>
+        Upload from URL
+      </button>
+    </div>
+  </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="p-5 space-y-4">
+    <!-- Drag 'n Drop -->
+    <div class="space-y-2">
+      <label
+        class="hidden mb-2 text-sm font-medium text-stone-800 dark:text-neutral-200"
+      >
+        Upload images
+      </label>
+      <div
+        class="p-12 h-56 flex justify-center bg-white border border-dashed border-stone-300 rounded-xl dark:bg-neutral-800 dark:border-neutral-600"
+      >
+        <div class="text-center">
+          <svg
+            class="w-16 text-stone-400 mx-auto dark:text-neutral-400"
+            width="70"
+            height="46"
+            viewBox="0 0 70 46"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.05172 9.36853L17.2131 7.5083V41.3608L12.3018 42.3947C9.01306 43.0871 5.79705 40.9434 5.17081 37.6414L1.14319 16.4049C0.515988 13.0978 2.73148 9.92191 6.05172 9.36853Z"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              class="fill-white stroke-stone-400 dark:fill-neutral-800 dark:stroke-neutral-500"
+            />
+            <path
+              d="M63.9483 9.36853L52.7869 7.5083V41.3608L57.6982 42.3947C60.9869 43.0871 64.203 40.9434 64.8292 37.6414L68.8568 16.4049C69.484 13.0978 67.2685 9.92191 63.9483 9.36853Z"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              class="fill-white stroke-stone-400 dark:fill-neutral-800 dark:stroke-neutral-500"
+            />
+            <rect
+              x="17.0656"
+              y="1.62305"
+              width="35.8689"
+              height="42.7541"
+              rx="5"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              class="fill-white stroke-stone-400 dark:fill-neutral-800 dark:stroke-neutral-500"
+            />
+            <path
+              d="M47.9344 44.3772H22.0655C19.3041 44.3772 17.0656 42.1386 17.0656 39.3772L17.0656 35.9161L29.4724 22.7682L38.9825 33.7121C39.7832 34.6335 41.2154 34.629 42.0102 33.7025L47.2456 27.5996L52.9344 33.7209V39.3772C52.9344 42.1386 50.6958 44.3772 47.9344 44.3772Z"
+              stroke="currentColor"
+              stroke-width="2"
+              class="stroke-stone-400 dark:stroke-neutral-500"
+            />
+            <circle
+              cx="39.5902"
+              cy="14.9672"
+              r="4.16393"
+              stroke="currentColor"
+              stroke-width="2"
+              class="stroke-stone-400 dark:stroke-neutral-500"
+            />
+          </svg>
+
+          <div
+            class="mt-4 flex flex-wrap justify-center text-sm/6 text-stone-600"
+          >
+            <span class="pe-1 font-medium text-stone-800 dark:text-neutral-200">
+              Drop your files here or
+            </span>
+            <label
+              for="hs-pro-epdupb"
+              class="relative cursor-pointer bg-white font-semibold text-green-600 hover:text-green-700 rounded-lg decoration-2 hover:underline focus-within:outline-hidden focus-within:ring-2 focus-within:ring-green-600 focus-within:ring-offset-2 dark:bg-neutral-800 dark:text-green-500 dark:hover:text-green-600"
+            >
+              <span>browse</span>
+              <input
+                id="hs-pro-epdupb"
+                type="file"
+                class="sr-only"
+                name="hs-pro-deuuf"
+              />
+            </label>
+          </div>
+
+          <p class="mt-1 text-xs text-stone-400 dark:text-neutral-400">
+            CSV, XLS, DOCX
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- End Drag 'n Drop -->
+
+    <p class="text-sm text-stone-500 dark:text-neutral-500">
+      Add up to 10 images to your product.
+    </p>
+  </div>
+  <!-- End Body -->
+</div>

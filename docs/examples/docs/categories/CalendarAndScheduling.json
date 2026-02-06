@@ -1,0 +1,97 @@
+{
+  "name": "CalendarAndScheduling",
+  "description": "カレンダー・スケジュール管理",
+  "componentCount": 11,
+  "subcategories": [
+    {
+      "name": "CalendarMonths",
+      "path": "CalendarAndScheduling/CalendarMonths/",
+      "components": [
+        {
+          "name": "SingleCalendarMonth",
+          "path": "CalendarAndScheduling/CalendarMonths/SingleCalendarMonth/",
+          "description": "コンパクトな単月カレンダーコンポーネント。月名表示、前後月へのナビゲーションボタン、曜日ヘッダー、日付選択ボタンを備える。選択中の日付は青色でハイライト表示され、イベントがある日にはドットマーカーが表示される。前月・次月の日付はグレーアウトで区別される。",
+          "useCases": "日付ピッカーのドロップダウン内カレンダー、フォームの日付入力補助、サイドバーやウィジェットでのミニカレンダー表示、予約システムでの日付選択UI"
+        },
+        {
+          "name": "YearlyCalendarMonth",
+          "path": "CalendarAndScheduling/CalendarMonths/YearlyCalendarMonth/",
+          "description": "12ヶ月分のカレンダーをグリッドレイアウトで一覧表示するコンポーネント。各月は月名ヘッダーと日付ボタンで構成され、イベントドットマーカーも表示可能。スクロール可能なコンテナ内で全月を俯瞰できる。",
+          "useCases": "年間スケジュールの俯瞰表示、長期プロジェクトの計画立案、年間の予定確認ビュー、ダッシュボードでの年間カレンダーウィジェット"
+        }
+      ]
+    },
+    {
+      "name": "CalendarSidebars",
+      "path": "CalendarAndScheduling/CalendarSidebars/",
+      "components": [
+        {
+          "name": "CalendarCreateEventSidebar",
+          "path": "CalendarAndScheduling/CalendarSidebars/CalendarCreateEventSidebar/",
+          "description": "カレンダーイベント新規作成用のオーバーレイサイドバーコンポーネント。画面右側からスライドインする形式で、イベントタイトル、開始・終了時刻の15分刻みセレクト、日付ピッカー、終日イベントトグル、繰り返し設定、参加者追加、場所入力、説明・URL・添付ファイルの追加フィールドを備える。ダークモード対応。",
+          "useCases": "カレンダーアプリでの新規イベント作成画面、会議やタスクのスケジュール登録フォーム、Google Calendar風のイベント作成UI"
+        },
+        {
+          "name": "CalendarEditEventSidebar",
+          "path": "CalendarAndScheduling/CalendarSidebars/CalendarEditEventSidebar/",
+          "description": "既存カレンダーイベントを編集するためのオーバーレイサイドバーコンポーネント。CalendarCreateEventSidebarと同様のフィールド構成で、既存データがプリセットされた状態で表示される。「Save changes」ボタンで変更を保存できる。",
+          "useCases": "カレンダーイベントの詳細変更、会議時間の調整、参加者の追加・削除、既存予定の修正UI"
+        }
+      ]
+    },
+    {
+      "name": "Calendars",
+      "path": "CalendarAndScheduling/Calendars/",
+      "components": [
+        {
+          "name": "DayViewFullCalendar",
+          "path": "CalendarAndScheduling/Calendars/DayViewFullCalendar/",
+          "description": "1日の時間軸を縦にスクロール表示するフルカレンダーレイアウト。左サイドバーにミニカレンダーとカレンダー種類フィルター（アカウント別、タスク種類別）を配置。ヘッダーにはDay/Week/Month/Year切り替えボタン、今日ボタン、前日・翌日移動ボタン、イベント追加ボタンを備える。メインエリアはタイムスロットグリッドで時間ごとにイベントを配置可能。ダークモード対応。",
+          "useCases": "1日のスケジュール詳細表示、会議室予約システムの日別ビュー、タスク管理アプリの日表示、Googleカレンダー風の日表示UI"
+        },
+        {
+          "name": "MonthViewFullCalendar",
+          "path": "CalendarAndScheduling/Calendars/MonthViewFullCalendar/",
+          "description": "月全体を曜日×週のグリッドで表示するフルカレンダーレイアウト。各日のセルにイベントを表示可能。サイドバー、ヘッダー構成はDayView/WeekViewと同様で、Day/Week/Month/Year間をシームレスに切り替え可能。",
+          "useCases": "月間スケジュール一覧、イベントカレンダーの月表示、プロジェクトマイルストーン管理、予約状況の月間俯瞰"
+        },
+        {
+          "name": "WeekViewFullCalendar",
+          "path": "CalendarAndScheduling/Calendars/WeekViewFullCalendar/",
+          "description": "週間の時間軸を7列グリッドで表示するフルカレンダーレイアウト。曜日ヘッダーに日付表示、現在日はハイライト表示。左側に時間軸、All-day（終日）イベント行を備える。サイドバー、ヘッダー構成はDayViewと同様。",
+          "useCases": "週間スケジュール管理、チームの週間予定確認、会議スケジュールの週間表示、勤怠管理カレンダー"
+        },
+        {
+          "name": "YearViewFullCalendar",
+          "path": "CalendarAndScheduling/Calendars/YearViewFullCalendar/",
+          "description": "12ヶ月分のミニカレンダーをグリッドで一覧表示するフルカレンダーレイアウト。各月のカレンダーは日付ボタンで構成され、イベントドットマーカー表示可能。年間の予定を俯瞰しながら特定の日付に素早くアクセスできる。",
+          "useCases": "年間スケジュール俯瞰、長期プロジェクトの計画確認、休日・祝日カレンダー表示、年間イベント計画"
+        }
+      ]
+    },
+    {
+      "name": "UserSchedule",
+      "path": "CalendarAndScheduling/UserSchedule/",
+      "components": [
+        {
+          "name": "CalendarWithListGroupAndModals",
+          "path": "CalendarAndScheduling/UserSchedule/CalendarWithListGroupAndModals/",
+          "description": "週間カレンダーとイベントリストを組み合わせたスケジュール管理コンポーネント。ヘッダーに日付表示とイベント追加ボタン、横並びの週日ボタン（選択日はハイライト）、時間帯別にグループ化されたイベントリストを配置。各イベントはクリックで詳細確認可能。イベント追加・編集用のモーダルを含む。ダークモード対応。",
+          "useCases": "ダッシュボードのスケジュールウィジェット、1日の予定確認画面、タスク管理アプリのイベント表示、サイドパネル型のスケジュール管理"
+        },
+        {
+          "name": "ListingBooking",
+          "path": "CalendarAndScheduling/UserSchedule/ListingBooking/",
+          "description": "単一の予約情報をカード形式で表示するコンポーネント。左側に日付（曜日・日・月）を大きく表示し、右側に予約タイトル、詳細説明（折りたたみ可能）、時間、参加者アバターグループを配置。参加者アバターはホバーでツールチップ表示（名前、メール、参加ステータス）。",
+          "useCases": "予約確認カード、ミーティング詳細表示、カレンダーアプリのイベントプレビュー、スケジュール通知カード"
+        },
+        {
+          "name": "VideoCallUserSchedule",
+          "path": "CalendarAndScheduling/UserSchedule/VideoCallUserSchedule/",
+          "description": "ビデオ会議スケジュールに特化した予定表示コンポーネント。デートピッカー、今日ボタン、前後日移動ボタンを備えたヘッダーと、カルーセルで複数の会議カードを横スクロール表示。各カードにはタイトル、時間、主催者、参加者アバター、ライブインジケーター、Joinボタン、アクションドロップダウン（会議開始、招待コピー、編集、削除）を配置。",
+          "useCases": "ビデオ会議アプリのスケジュール画面、Zoom/Google Meet連携のダッシュボード、チームミーティング一覧表示、オンライン会議の参加管理UI"
+        }
+      ]
+    }
+  ]
+}

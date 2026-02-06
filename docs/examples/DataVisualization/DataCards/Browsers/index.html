@@ -1,0 +1,164 @@
+<div
+  class="h-full flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div class="p-5 pb-3 flex justify-between items-center">
+    <h2
+      class="ms-1 inline-block text-lg font-semibold text-gray-800 dark:text-neutral-200"
+    >
+      Browsers
+    </h2>
+
+    <span
+      class="py-1 ps-1.5 pe-2 inline-flex items-center gap-x-1 text-xs font-medium rounded-full bg-white border border-gray-200 text-gray-800 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200"
+    >
+      <svg
+        class="shrink-0 size-3"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+        />
+      </svg>
+      Good
+    </span>
+  </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="flex flex-col justify-between h-full pb-5 px-5">
+    <div>
+      <h4
+        class="text-5xl md:text-6xl font-medium text-blue-600 dark:text-blue-500"
+      >
+        <span
+          class="bg-clip-text bg-linear-to-tl from-blue-500 to-violet-500 text-transparent"
+        >
+          85%
+        </span>
+      </h4>
+
+      <p class="mt-5 text-gray-500 dark:text-neutral-500">
+        Visitors are viewing website from the desktop device. 57% of all users
+        are using MacOS
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="mt-5">
+      <!-- Grid -->
+      <div class="grid grid-cols-3 gap-3">
+        <!-- Card -->
+        <div class="p-3 bg-gray-100 dark:bg-neutral-700 rounded-lg">
+          <img
+            class="shrink-0 size-6 mb-4"
+            src="../../assets/svg/brands/chrome.svg"
+            alt="Chrome Logo"
+          />
+          <p class="text-sm text-gray-800 dark:text-neutral-200">Chrome</p>
+          <p class="font-semibold text-lg text-gray-800 dark:text-neutral-200">
+            56%
+          </p>
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div class="p-3 bg-gray-100 dark:bg-neutral-700 rounded-lg">
+          <img
+            class="shrink-0 size-6 mb-4"
+            src="../../assets/svg/brands/firefox.svg"
+            alt="Firefox Logo"
+          />
+          <p class="text-sm text-gray-800 dark:text-neutral-200">Firefox</p>
+          <p class="font-semibold text-lg text-gray-800 dark:text-neutral-200">
+            24%
+          </p>
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div class="p-3 bg-gray-100 dark:bg-neutral-700 rounded-lg">
+          <img
+            class="shrink-0 size-6 mb-4"
+            src="../../assets/svg/brands/safari.svg"
+            alt="Safari Logo"
+          />
+          <p class="text-sm text-gray-800 dark:text-neutral-200">Safari</p>
+          <p class="font-semibold text-lg text-gray-800 dark:text-neutral-200">
+            17%
+          </p>
+        </div>
+        <!-- End Card -->
+      </div>
+      <!-- End Grid -->
+    </div>
+    <!-- End Stats -->
+
+    <div class="mt-5">
+      <!-- Alert -->
+      <div
+        class="bg-white border border-gray-200 rounded-xl shadow-xs py-2 px-3 dark:bg-neutral-800 dark:border-neutral-700"
+        role="alert"
+        tabindex="-1"
+        aria-labelledby="hs-pro-dpna-label"
+      >
+        <div class="flex items-center gap-x-3">
+          <svg
+            class="shrink-0 size-5 text-gray-800 dark:text-neutral-200"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+          </svg>
+          <div class="grow">
+            <h3
+              id="hs-pro-dpna-label"
+              class="text-sm text-gray-800 font-semibold dark:text-white"
+            >
+              Push notifications
+            </h3>
+            <p class="text-sm text-gray-700 dark:text-neutral-400">
+              Automatically send me notifications
+            </p>
+          </div>
+
+          <div class="flex items-center self-stretch">
+            <!-- Switch/Toggle -->
+            <label
+              for="hs-pro-dbcpns"
+              class="relative inline-block w-11 h-6 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                id="hs-pro-dbcpns"
+                class="peer sr-only"
+                checked
+              />
+              <span
+                class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
+              ></span>
+              <span
+                class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"
+              ></span>
+            </label>
+            <!-- End Switch/Toggle -->
+          </div>
+        </div>
+      </div>
+      <!-- End Alert -->
+    </div>
+  </div>
+  <!-- End Body -->
+</div>

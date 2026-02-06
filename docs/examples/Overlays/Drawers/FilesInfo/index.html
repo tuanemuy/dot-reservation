@@ -1,0 +1,596 @@
+<div
+  id="hs-pro-dfo"
+  class="hs-overlay [--body-scroll:true] 2xl:[--overlay-backdrop:false] [--is-layout-affect:true] [--auto-close:2xl] hs-overlay-open:translate-x-0 translate-x-full transition-all duration-300 transform size-full sm:w-120 2xl:h-[calc(100%-59px)] hidden fixed top-0 2xl:top-15 end-0 z-89 2xl:z-49 2xl:-mt-px flex-1 flex flex-col bg-white border-s border-gray-200 2xl:translate-x-full dark:bg-neutral-800 dark:border-neutral-700"
+  role="dialog"
+  tabindex="-1"
+  aria-labelledby="hs-pro-dfo-label"
+>
+  <!-- Header -->
+  <div
+    class="py-2 px-4 flex justify-between items-center border-b border-gray-200 dark:border-neutral-700"
+  >
+    <h3
+      id="hs-pro-dfo-label"
+      class="font-semibold text-sm text-gray-800 dark:text-neutral-200"
+    >
+      File info
+    </h3>
+
+    <!-- Button Group -->
+    <div class="flex items-center gap-x-2">
+      <button
+        type="button"
+        class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+        aria-label="Close"
+        data-hs-overlay="#hs-pro-dfo"
+      >
+        <span class="sr-only">Close</span>
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+    <!-- End Button Group -->
+  </div>
+  <!-- End Header -->
+
+  <!-- Button Group -->
+  <div class="py-2 px-4 border-b border-gray-200 dark:border-neutral-700">
+    <div class="-ms-1 flex items-center gap-1">
+      <button
+        type="button"
+        class="flex gap-x-2 py-1.5 px-2 rounded-lg whitespace-nowrap text-[13px] text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      >
+        <svg
+          class="shrink-0 mt-0.5 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 20h9" />
+          <path
+            d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
+          />
+          <path d="m15 5 3 3" />
+        </svg>
+        Edit PDF
+      </button>
+      <button
+        type="button"
+        class="flex gap-x-2 py-1.5 px-2 rounded-lg whitespace-nowrap text-[13px] text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      >
+        <svg
+          class="shrink-0 mt-0.5 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 17V3" />
+          <path d="m6 11 6 6 6-6" />
+          <path d="M19 21H5" />
+        </svg>
+        Download
+      </button>
+      <button
+        type="button"
+        class="flex gap-x-2 py-1.5 px-2 rounded-lg whitespace-nowrap text-[13px] text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+      >
+        <svg
+          class="shrink-0 mt-0.5 size-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+          <polyline points="16 6 12 2 8 6" />
+          <line x1="12" x2="12" y1="2" y2="15" />
+        </svg>
+        Share
+      </button>
+
+      <!-- More Dropdown -->
+      <div
+        class="hs-dropdown [--auto-close:inside] [--placement:bottom-right] relative inline-flex ms-auto"
+      >
+        <button
+          id="hs-pro-fomd"
+          type="button"
+          class="size-8 inline-flex justify-center items-center gap-x-2 rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          aria-label="Dropdown"
+        >
+          <svg
+            class="shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="12" cy="5" r="1" />
+            <circle cx="12" cy="19" r="1" />
+          </svg>
+          <span class="sr-only">More</span>
+        </button>
+
+        <!-- More Dropdown -->
+        <div
+          class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-40 transition-[opacity,margin] duration opacity-0 hidden z-20 bg-white rounded-xl shadow-xl divide-y divide-gray-200 dark:bg-neutral-900 dark:divide-neutral-700"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="hs-pro-fomd"
+        >
+          <div class="p-1 space-y-0.5">
+            <div
+              class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] md:[--trigger:hover] relative"
+            >
+              <button
+                id="hs-pro-fomdsd"
+                type="button"
+                class="hs-dropdown-toggle w-full flex items-center gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-label="Dropdown"
+              >
+                <svg
+                  class="shrink-0 size-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"
+                  />
+                  <path d="m14 19 3 3v-5.5" />
+                  <path d="m17 22 3-3" />
+                  <circle cx="9" cy="9" r="2" />
+                </svg>
+                Save as
+                <svg
+                  class="shrink-0 size-3.5 ms-auto"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+
+              <div
+                class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 w-40 hidden z-10 top-0 end-full md:me-3! md:mt-1 md:p-1 bg-white md:shadow-xl md:rounded-lg before:absolute before:-end-5 before:top-0 before:h-full before:w-5 dark:bg-neutral-900"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="hs-pro-fomdsd"
+              >
+                <button
+                  type="button"
+                  class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                >
+                  <svg
+                    class="shrink-0 mt-0.5 size-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
+                  JPG
+                </button>
+                <button
+                  type="button"
+                  class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                >
+                  <svg
+                    class="shrink-0 mt-0.5 size-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
+                  PNG
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-1 space-y-0.5">
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1" />
+                <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5" />
+                <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1" />
+                <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7" />
+                <path d="M9 7v10" />
+              </svg>
+              Rename
+            </button>
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                <path
+                  d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                />
+              </svg>
+              Duplicate
+            </button>
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="15 14 20 9 15 4" />
+                <path d="M4 20v-7a4 4 0 0 1 4-4h12" />
+              </svg>
+              Move to
+            </button>
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                <line x1="10" x2="10" y1="11" y2="17" />
+                <line x1="14" x2="14" y1="11" y2="17" />
+              </svg>
+              Delete
+            </button>
+          </div>
+
+          <div class="p-1 space-y-0.5">
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+                />
+              </svg>
+              Star
+            </button>
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 17v5" />
+                <path
+                  d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+                />
+              </svg>
+              Pin to
+            </button>
+          </div>
+
+          <div class="p-1 space-y-0.5">
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 22h2a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <circle cx="8" cy="16" r="6" />
+                <path d="M9.5 17.5 8 16.25V14" />
+              </svg>
+              Version history
+            </button>
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+                />
+              </svg>
+              File activity
+            </button>
+          </div>
+
+          <div class="p-1 space-y-0.5">
+            <button
+              type="button"
+              class="w-full flex gap-x-3 py-1.5 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            >
+              <svg
+                class="shrink-0 mt-0.5 size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+                />
+                <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+                <rect x="6" y="14" width="12" height="8" rx="1" />
+              </svg>
+              Print
+            </button>
+          </div>
+        </div>
+        <!-- End More Dropdown -->
+      </div>
+      <!-- End More Dropdown -->
+    </div>
+  </div>
+  <!-- End Button Group -->
+
+  <!-- Body -->
+  <div
+    class="p-5 pb-10 h-full overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+  >
+    <div class="bg-gray-100 dark:bg-neutral-800">
+      <img
+        class="size-full object-cover object-center"
+        src="https://images.unsplash.com/photo-1531489956451-20957fab52f2?q=80&w=480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Analytics Image"
+      />
+    </div>
+
+    <div class="mt-5">
+      <h4 class="font-semibold text-gray-800 dark:text-neutral-200">
+        For prints and original paintings
+      </h4>
+
+      <ul class="mt-1 text-sm truncate text-gray-500 dark:text-neutral-500">
+        <li
+          class="relative inline-block pe-3 last:pe-0 first-of-type:before:hidden before:absolute before:top-1/2 before:-start-2.5 before:-translate-y-1/2 before:size-1 before:bg-gray-400 before:rounded-full dark:before:bg-neutral-600"
+        >
+          <span class="truncate">PDF</span>
+        </li>
+        <li
+          class="relative inline-block pe-3 last:pe-0 first-of-type:before:hidden before:absolute before:top-1/2 before:-start-2.5 before:-translate-y-1/2 before:size-1 before:bg-gray-400 before:rounded-full dark:before:bg-neutral-600"
+        >
+          <span class="truncate">1 MB</span>
+        </li>
+      </ul>
+
+      <!-- Tags Group -->
+      <div class="mt-5 flex flex-wrap gap-1">
+        <span
+          class="py-1 px-2.5 inline-flex items-center gap-x-1 text-[13px] rounded-md bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-neutral-200"
+        >
+          Patterns
+        </span>
+        <span
+          class="py-1 px-2.5 inline-flex items-center gap-x-1 text-[13px] rounded-md bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-neutral-200"
+        >
+          Work
+        </span>
+        <span
+          class="py-1 px-2.5 inline-flex items-center gap-x-1 text-[13px] rounded-md bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-neutral-200"
+        >
+          Photo
+        </span>
+        <span
+          class="py-1 px-2.5 inline-flex items-center gap-x-1 text-[13px] rounded-md bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-neutral-200"
+        >
+          Tool
+        </span>
+      </div>
+      <!-- End Tags Group -->
+
+      <div class="mt-5 pt-5 border-t border-gray-200 dark:border-neutral-700">
+        <h5
+          class="mb-2 font-semibold text-sm text-gray-800 dark:text-neutral-200"
+        >
+          Properties
+        </h5>
+
+        <!-- List -->
+        <dl class="grid grid-cols-2 gap-x-2">
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Modified:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            11/2/2025 09:55
+          </dd>
+
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Type:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            Image
+          </dd>
+
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Uploaded by:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            James Collins
+          </dd>
+
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Date uploaded:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            11/02/2025, 09:55
+          </dd>
+
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Pages:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            1
+          </dd>
+
+          <dt class="py-[3px] text-sm text-gray-500 dark:text-neutral-500">
+            Dimensions:
+          </dt>
+          <dd class="py-[3px] text-sm text-gray-800 dark:text-neutral-200">
+            612 x 792
+          </dd>
+        </dl>
+        <!-- End List -->
+      </div>
+    </div>
+  </div>
+  <!-- End Body -->
+</div>

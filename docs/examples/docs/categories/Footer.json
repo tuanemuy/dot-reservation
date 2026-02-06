@@ -1,0 +1,61 @@
+{
+  "name": "Footer",
+  "description": "フッターレイアウト",
+  "componentCount": 6,
+  "subcategories": [
+    {
+      "name": "DashboardFooterLayouts",
+      "path": "Footer/DashboardFooterLayouts/",
+      "components": [
+        {
+          "name": "SimpleWithLinksAndModalDashboardFooterLayout",
+          "path": "Footer/DashboardFooterLayouts/SimpleWithLinksAndModalDashboardFooterLayout/",
+          "description": "サイドバー付きダッシュボード用のシンプルなフッター。コピーライト表示、リンクリスト（FAQ、License等）、キーボードショートカットモーダルを開くボタンを含む。サイドバーの幅を考慮した左マージン設定により、メインコンテンツエリアの下部に固定配置される。",
+          "useCases": "管理画面やダッシュボードのフッター。利用規約・FAQ・ライセンス情報へのリンクを配置したい場合。アプリケーション全体のキーボードショートカット一覧をモーダルで表示したい場合。"
+        }
+      ]
+    },
+    {
+      "name": "Footers",
+      "path": "Footer/Footers/",
+      "components": [
+        {
+          "name": "MarketplaceFooter",
+          "path": "Footer/Footers/MarketplaceFooter/",
+          "description": "マーケットプレイス向けの包括的なフッター。4カラムのナビゲーションリンク（Company、Customer service、Help）、アプリダウンロードボタン（App Store、Google Play）、SNSアイコン（Instagram、X、YouTube）、決済方法アイコン表示（Visa、Mastercard、JCB、Discover）、利用規約・プライバシーポリシー・コピーライトを含む。",
+          "useCases": "マーケットプレイスやCtoCプラットフォームのフッター。利用可能な決済方法を明示したい場合。カスタマーサポート・返品ポリシー・知的財産ポリシー等のリンクを充実させたい場合。"
+        },
+        {
+          "name": "ShopFooter",
+          "path": "Footer/Footers/ShopFooter/",
+          "description": "ECサイト向けの多機能フッター。ニュースレター購読フォーム、4カラムのナビゲーションリンク（Help、Resources、Company）、ロケーション・地域選択・フィードバック送信のモーダル呼び出し、SNSアイコン（Instagram、X、YouTube）、利用規約・プライバシーポリシーリンク、ダークモード切り替えボタンを含む。",
+          "useCases": "オンラインショップやECサイトのフッター。ニュースレター購読機能を設置したい場合。店舗検索や地域設定機能を提供したい場合。"
+        },
+        {
+          "name": "StartupFooter",
+          "path": "Footer/Footers/StartupFooter/",
+          "description": "スタートアップやSaaS向けのフッター。ロゴ表示、SNSアイコン（X、Instagram）、複数カラムのナビゲーションリンク（Company、Resources、Help）、アプリダウンロードリンク（MacOS、App Store、Google Play）、利用規約・プライバシーポリシー・コピーライトを含む。",
+          "useCases": "スタートアップ企業やSaaSプロダクトのランディングページ。モバイルアプリのダウンロードリンクを目立たせたい場合。シンプルながら必要な情報を網羅したフッターが必要な場合。"
+        }
+      ]
+    },
+    {
+      "name": "StackedFooterLayouts",
+      "path": "Footer/StackedFooterLayouts/",
+      "components": [
+        {
+          "name": "MiniStackedFooterWithLinks",
+          "path": "Footer/StackedFooterLayouts/MiniStackedFooterWithLinks/",
+          "description": "ミニマルな1行フッター。コピーライト表示、リンクリスト（Terms、Privacy、Your Privacy Choices）、ダークモード切り替えボタンを中央揃えで配置。ボーダー付きの背景とコンパクトな高さが特徴。",
+          "useCases": "ランディングページやシンプルなWebサイトのフッター。フッターに多くの情報を載せず、必要最低限のリンクとダークモード切り替えだけを表示したい場合。"
+        },
+        {
+          "name": "SimpleStackedFooterWithLinksAndModal",
+          "path": "Footer/StackedFooterLayouts/SimpleStackedFooterWithLinksAndModal/",
+          "description": "シンプルなレイアウトのフッター。左側にコピーライト、右側にFAQ・Licenseリンクとキーボードショートカットモーダル呼び出しボタンを配置。ページ下部に固定配置され、サイドバーなしのレイアウトに最適化されている。",
+          "useCases": "SaaSアプリケーションやツール系Webサービスのフッター。キーボードショートカット一覧をモーダルで表示したい場合。シンプルながらも機能的なフッターが必要な場合。"
+        }
+      ]
+    }
+  ]
+}

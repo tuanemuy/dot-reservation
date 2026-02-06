@@ -1,0 +1,49 @@
+<button
+  type="button"
+  class="hs-collapse-toggle hs-collapse-open:hidden py-1.5 px-2.5 inline-flex items-center gap-x-1 text-[13px] rounded-xl border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+  id="hs-pro-pytdanc"
+  aria-expanded="false"
+  aria-controls="hs-pro-pytdanc-heading"
+  data-hs-collapse="#hs-pro-pytdanc-heading"
+>
+  <svg
+    class="shrink-0 size-3.5"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M5 12h14" />
+    <path d="M12 5v14" />
+  </svg>
+  Add a note
+</button>
+
+<!-- Collapse -->
+<div
+  id="hs-pro-pytdanc-heading"
+  class="hs-collapse hidden w-full overflow-hidden"
+  aria-labelledby="hs-pro-pytdanc"
+>
+  <!-- Input -->
+  <div class="p-0.5">
+    <label
+      for="hs-pro-pytdnt"
+      class="block mb-2 font-medium text-sm text-gray-800 dark:text-neutral-200"
+    >
+      Note
+    </label>
+    <textarea
+      id="hs-pro-pytdnt"
+      class="p-3 sm:p-4 block w-full border-gray-200 rounded-2xl sm:text-sm focus:border-purple-500 focus:ring-purple-500 resize-none disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+      placeholder="Add a few notes to help you later"
+      data-hs-textarea-auto-height
+    ></textarea>
+  </div>
+  <!-- End Input -->
+</div>

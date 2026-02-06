@@ -1,0 +1,211 @@
+{
+  "name": "Headers",
+  "description": "ヘッダー・ナビゲーション",
+  "componentCount": 29,
+  "subcategories": [
+    {
+      "name": "ApplicationNavbars",
+      "path": "Headers/ApplicationNavbars/",
+      "components": [
+        {
+          "name": "CRMApplicationNavbar",
+          "path": "Headers/ApplicationNavbars/CRMApplicationNavbar/",
+          "description": "グレー/ダーク背景を持つCRM向けの多機能ナビゲーションバー。ロゴ、中央配置の検索入力フィールド（キーボードショートカット表示付き）、ヘルプドロップダウン（Help Centre、Community、What's New、Documentation、Contact Us等）、通知ドロップダウン（バッジ付き、All/Archivedタブ）、アカウント機能を含む。",
+          "useCases": "CRM（顧客管理）システムや営業支援ツールのナビゲーション。グローバル検索機能を中心に据えたいデータ量の多いアプリケーション、ヘルプ・サポート機能を充実させたい業務システムに適している。"
+        },
+        {
+          "name": "ProjectApplicationNavbar",
+          "path": "Headers/ApplicationNavbars/ProjectApplicationNavbar/",
+          "description": "インディゴ色の背景を持つプロジェクト管理向けナビゲーションバー。ロゴ、プロジェクト切り替えドロップダウン、ナビゲーションリンク（Home、Details、Setup、Empty Contents）、アカウントドロップダウン（Billing、Settings、My account、ダークモード切り替え、チーム管理、サインアウト）を含む。レスポンシブ対応でモバイル用のコラップスメニューあり。",
+          "useCases": "プロジェクト管理ツールやタスク管理アプリケーションのメインナビゲーション。複数プロジェクトを切り替えながら作業するダッシュボードに適している。"
+        },
+        {
+          "name": "WorkspaceApplicationNavbar",
+          "path": "Headers/ApplicationNavbars/WorkspaceApplicationNavbar/",
+          "description": "グレー背景を持つワークスペース/チームコラボレーション向けナビゲーションバー。ロゴ、通知ドロップダウン（バッジ付き、All/Archivedタブ、アバター・時刻・ユーザー名・アクション説明を含む通知リスト）、各通知のクイックアクションボタン（チェック、アーカイブ等）を備える。",
+          "useCases": "チームコラボレーションツールやプロジェクト管理ダッシュボードのナビゲーション。チームメンバーの活動やタスクの状態変更をリアルタイムで通知したいアプリケーションに適している。"
+        }
+      ]
+    },
+    {
+      "name": "ApplicationToolbars",
+      "path": "Headers/ApplicationToolbars/",
+      "components": [
+        {
+          "name": "ChatActivityApplicationToolbar",
+          "path": "Headers/ApplicationToolbars/ChatActivityApplicationToolbar/",
+          "description": "チャットアクティビティ監視向けの固定位置ツールバー。中央配置・最大幅制限付きレイアウトで、サイドバートグルボタン（モバイル用）、ピル型タブナビゲーション（Activity、Mentions、Assigned）、カレンダードロップダウン（日付範囲選択）を備える。モバイルではアイコンのみ表示に切り替わるレスポンシブ対応。",
+          "useCases": "チャット・メッセージングアプリのアクティビティ一覧画面、チームコミュニケーションツールの通知センター。複数のビュー（全アクティビティ、メンション、割り当て済み）を切り替えながら確認したい場合に適している。"
+        },
+        {
+          "name": "ChatReportsApplicationToolbar",
+          "path": "Headers/ApplicationToolbars/ChatReportsApplicationToolbar/",
+          "description": "チャット/レポート分析ツール向けの固定位置ツールバー。サイドバーを考慮した左オフセット配置で、サイドバートグルボタン（モバイル用）、リフレッシュボタン、最終更新時刻・タイムゾーン表示、カレンダードロップダウン（日付範囲選択、月/年のセレクトボックス付きカレンダーUI）を備える。",
+          "useCases": "チャットサポートシステムのレポート画面、顧客対応の分析ダッシュボード。サイドバーと組み合わせて使うレポート閲覧画面で、期間を指定してデータを絞り込みたい場合に適している。"
+        }
+      ]
+    },
+    {
+      "name": "DashboardHeaderLayouts",
+      "path": "Headers/DashboardHeaderLayouts/",
+      "components": [
+        {
+          "name": "ClassicDashboardHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/ClassicDashboardHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。検索入力フィールド（キーボードショートカット付き）、通知ドロップダウン（タブ付き）、アカウントドロップダウンを備える標準的なダッシュボードヘッダー。",
+          "useCases": "一般的な管理画面やSaaSダッシュボードのベースレイアウト。検索、通知、アカウント管理といった基本機能を網羅したい場合に適している。"
+        },
+        {
+          "name": "GraySearchNavbarWithAccountDropdownHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/GraySearchNavbarWithAccountDropdownHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置のヘッダー（非固定、relative配置）。グレー背景の検索入力フィールド（ピンク系のフォーカスカラー）、通知ドロップダウン、アカウントドロップダウンを備える。",
+          "useCases": "固定ヘッダーではなくコンテンツと一体化したレイアウトを求めるダッシュボード。検索バーを目立たせつつ、スクロール時にはヘッダーが隠れるデザインにしたい場合に適している。"
+        },
+        {
+          "name": "LanguageHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/LanguageHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。検索入力フィールド、通知ドロップダウン、言語選択ドロップダウン（English等の言語切り替え）、アカウントドロップダウンを備える。",
+          "useCases": "多言語対応が必要なダッシュボードや管理画面。ユーザーがUIの言語を動的に切り替えられる機能を提供したい場合に適している。"
+        },
+        {
+          "name": "LogoHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/LogoHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。ロゴ（デスクトップでは完全版、モバイルではアイコンのみ）、サイドバートグルボタン、通知・アカウントドロップダウンを備える。",
+          "useCases": "ブランドロゴを常時表示したいダッシュボード。サイドバーにロゴがない、またはヘッダーにもブランディングを表示したい場合に適している。"
+        },
+        {
+          "name": "NavLinksHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/NavLinksHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。サイドバートグルボタン、コラップスメニュー（モバイル用）、通知ドロップダウン、アカウントドロップダウン、ナビゲーションリンクを備える。",
+          "useCases": "ヘッダー内にセカンダリナビゲーションリンクを配置したいダッシュボード。サイドバーとは別にヘッダーでもページ遷移できるようにしたい場合に適している。"
+        },
+        {
+          "name": "OverlayHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/OverlayHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。サイドバートグルボタン、検索入力フィールド（キーボードショートカット付き）、通知ドロップダウン、アカウントドロップダウンを備える3カラムグリッドレイアウト。",
+          "useCases": "検索機能を重視する管理画面やダッシュボード。コマンドパレット的な検索UIを組み込みたい場合に適している。"
+        },
+        {
+          "name": "ProjectHeaderLayout",
+          "path": "Headers/DashboardHeaderLayouts/ProjectHeaderLayout/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。プロジェクト切り替えドロップダウン（ドラッグハンドル付きリスト、複数プロジェクト対応）、3カラムグリッドレイアウトを備える。",
+          "useCases": "複数のプロジェクトやワークスペースを切り替えながら作業するダッシュボード。Notionのようなプロジェクト管理ツールで、現在のプロジェクトを表示・切り替えしたい場合に適している。"
+        },
+        {
+          "name": "SimpleHeaderLayoutWithButton",
+          "path": "Headers/DashboardHeaderLayouts/SimpleHeaderLayoutWithButton/",
+          "description": "サイドバーを考慮した左オフセット配置の固定ヘッダー。サイドバートグルボタン、テンプレートドロップダウン（通知バッジ付き）、通知ドロップダウン、アカウントドロップダウンを備えるシンプルなレイアウト。",
+          "useCases": "テンプレートやプリセットの選択機能を提供するダッシュボード。新規作成時のテンプレート選択など、クイックアクションを提供したい場合に適している。"
+        }
+      ]
+    },
+    {
+      "name": "Navbars",
+      "path": "Headers/Navbars/",
+      "components": [
+        {
+          "name": "E-CommerceNavbar",
+          "path": "Headers/Navbars/E-CommerceNavbar/",
+          "description": "ECサイト向けのナビゲーションバー。ロゴ（レスポンシブ対応）、中央に検索入力フィールド、カートアイコン、メニューリンクを備える。グリーン系カラーテーマ。",
+          "useCases": "汎用的なECサイトのヘッダー。商品検索を中央に配置し、検索性を重視したオンラインストアに適している。"
+        },
+        {
+          "name": "MarketplaceNavbar",
+          "path": "Headers/Navbars/MarketplaceNavbar/",
+          "description": "マーケットプレイス向けの2段構成ナビゲーションバー。トップバー（配送先住所指定、言語/通貨選択、ヘルプリンク、モバイルアプリリンク、ダークモードトグル）とメインナビゲーションを持つ。",
+          "useCases": "グローバル展開するマーケットプレイス、多言語・多通貨対応が必要なECサイト。配送先や言語設定など、購入前に確認すべき情報を常時表示したい場合に適している。"
+        },
+        {
+          "name": "PaymentWithStepsNavbar",
+          "path": "Headers/Navbars/PaymentWithStepsNavbar/",
+          "description": "支払い/チェックアウトプロセス向けのナビゲーションバー。ロゴ、アバター付きアカウントドロップダウン、4ステップのプログレスインジケーター（グラデーション表示）を備える。パープル系カラーテーマ。",
+          "useCases": "ECサイトのチェックアウトフロー、サブスクリプション申し込みプロセス。複数ステップの決済フローで進捗状況を視覚的に表示したい場合に適している。"
+        },
+        {
+          "name": "ShopLoggedInNavbar",
+          "path": "Headers/Navbars/ShopLoggedInNavbar/",
+          "description": "ショップ/EC向けのstickyナビゲーションバー（ログイン状態用）。ロゴ、検索ボタン、お気に入りボタン、カートアイコン、アカウントドロップダウン、ナビゲーションリンクを備える。インディゴ系カラーテーマ。",
+          "useCases": "ECサイトのログインユーザー向けヘッダー。お気に入り商品やアカウント管理機能へのアクセスを提供したい場合に適している。"
+        },
+        {
+          "name": "ShopNotLoggedInNavbar",
+          "path": "Headers/Navbars/ShopNotLoggedInNavbar/",
+          "description": "ショップ/EC向けのstickyナビゲーションバー（未ログイン状態用）。ロゴ、検索ボタン、ログインリンク、カートアイコン、ナビゲーションリンクを備える。インディゴ系カラーテーマ。",
+          "useCases": "ECサイトのゲストユーザー向けヘッダー。ログインを促しつつ、商品検索やカート確認ができるようにしたい場合に適している。"
+        },
+        {
+          "name": "SmartHomeNavbar",
+          "path": "Headers/Navbars/SmartHomeNavbar/",
+          "description": "スマートホーム/IoT向けのナビゲーションバー。白色ロゴ（ダーク背景用）、シンプルなレイアウト、レスポンシブ対応を備える。ダークテーマに最適化されたデザイン。",
+          "useCases": "スマートホーム管理アプリやIoTダッシュボードのヘッダー。ダークテーマを基本としたインターフェースに適している。"
+        },
+        {
+          "name": "StartupNavbar",
+          "path": "Headers/Navbars/StartupNavbar/",
+          "description": "スタートアップ/SaaS向けのstickyナビゲーションバー。ロゴ、Get a demo・Log in・Try it freeボタン、コラップスメニュー（モバイル用）を備える。青色のCTAボタンとシンプルなレイアウト。",
+          "useCases": "SaaSプロダクトやスタートアップのランディングページ、製品紹介サイト。無料トライアルやデモ申し込みへの導線を重視したい場合に適している。"
+        },
+        {
+          "name": "VideoCallNavbar",
+          "path": "Headers/Navbars/VideoCallNavbar/",
+          "description": "ビデオ通話アプリ向けの固定ナビゲーションバー。ロゴアイコン、通知ボタン、AIボタン、参加者管理、設定ボタンを備える12カラムグリッドレイアウト。コンパクトなアイコン中心のデザイン。",
+          "useCases": "ビデオ会議アプリやオンラインミーティングツールのヘッダー。画面スペースを最小限に抑えつつ、必要な操作ボタンを配置したい場合に適している。"
+        }
+      ]
+    },
+    {
+      "name": "StackedHeaderLayouts",
+      "path": "Headers/StackedHeaderLayouts/",
+      "components": [
+        {
+          "name": "CenteredNavLinksStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/CenteredNavLinksStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。ロゴ（レスポンシブ対応）、中央配置のナビゲーションリンク、通知・アカウントドロップダウン、コラップスメニュー（モバイル用）を備える3カラムグリッドレイアウト。",
+          "useCases": "サイドバーを使わないシンプルな管理画面やダッシュボード。ナビゲーションを中央に目立たせたいランディングページ風のアプリケーションに適している。"
+        },
+        {
+          "name": "ClassicStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/ClassicStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。ロゴ（レスポンシブ対応）、検索入力フィールド、通知ドロップダウン、アカウントドロップダウンを備える標準的な3カラムグリッドレイアウト。",
+          "useCases": "汎用的なスタック型ダッシュボードのベースレイアウト。サイドバーなしで基本機能（検索、通知、アカウント）を提供したい場合に適している。"
+        },
+        {
+          "name": "DoubleLineStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/DoubleLineStackedHeaderLayout/",
+          "description": "2行構成のスタック型ヘッダー。上部にダーク背景（blue-950）のプライマリナビゲーション（ロゴ、検索、通知、アカウント）、下部にセカンダリナビゲーションを配置。",
+          "useCases": "情報量の多いダッシュボードやポータルサイト。プライマリ機能とセカンダリ機能を視覚的に分離したい場合に適している。"
+        },
+        {
+          "name": "InvertedStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/InvertedStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー（ダーク背景: blue-950）。白色ロゴ、ナビゲーションリンク、検索ボタン、通知ドロップダウン、アカウントドロップダウンを備える反転カラースキーム。",
+          "useCases": "ダークテーマやブランドカラーを強調したいダッシュボード。コントラストの高いヘッダーデザインで視認性を高めたい場合に適している。"
+        },
+        {
+          "name": "LanguageStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/LanguageStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。ロゴ（レスポンシブ対応）、検索入力フィールド、通知ドロップダウン、言語選択ドロップダウン、アカウントドロップダウンを備える3カラムグリッドレイアウト。",
+          "useCases": "多言語対応が必要なスタック型ダッシュボード。サイドバーなしで言語切り替え機能を提供したい場合に適している。"
+        },
+        {
+          "name": "NavLinksStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/NavLinksStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。アイコンロゴ、ナビゲーションリンク、検索ボタン、通知ドロップダウン、アカウントドロップダウン、コラップスメニュー（モバイル用）を備える。",
+          "useCases": "コンパクトなロゴと複数のナビゲーションリンクを配置したいダッシュボード。ページ間の移動が多いアプリケーションに適している。"
+        },
+        {
+          "name": "OverlayStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/OverlayStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。ロゴ（レスポンシブ対応）、検索入力フィールド（オーバーレイ型）、通知ドロップダウン、アカウントドロップダウンを備える3カラムグリッドレイアウト。",
+          "useCases": "検索機能を重視するスタック型レイアウトのダッシュボード。コマンドパレット的な検索UIを組み込みたい場合に適している。"
+        },
+        {
+          "name": "ProjectStackedHeaderLayout",
+          "path": "Headers/StackedHeaderLayouts/ProjectStackedHeaderLayout/",
+          "description": "固定位置のスタック型ヘッダー。アイコンロゴ、プロジェクト切り替えドロップダウン（ドラッグハンドル付きリスト）、通知ドロップダウン、アカウントドロップダウンを備える3カラムグリッドレイアウト。",
+          "useCases": "複数プロジェクトを切り替えながら作業するアプリケーション。サイドバーを使わずにプロジェクト切り替え機能を提供したい場合に適している。"
+        }
+      ]
+    }
+  ]
+}

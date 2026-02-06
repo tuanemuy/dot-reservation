@@ -1,0 +1,199 @@
+<div
+  class="p-5 flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl overflow-hidden dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <!-- Header -->
+  <div class="pb-5 flex flex-wrap justify-between items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
+      <h2 class="font-medium text-gray-800 dark:text-neutral-200">
+        Incident by severity
+      </h2>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <a
+        class="group inline-flex items-center gap-x-1.5 text-start whitespace-nowrap text-[13px] text-gray-600 rounded-full underline-offset-2 hover:underline focus:outline-hidden focus:underline dark:text-neutral-400"
+        href="#"
+      >
+        Analyze SOC efficiency
+        <svg
+          class="shrink-0 size-3.5 group-hover:opacity-100 group-focus:opacity-100 transition duration-300"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            class="lg:opacity-0 lg:-translate-x-1 lg:group-hover:opacity-100 lg:group-hover:translate-x-0 lg:transition"
+            d="M5 12h14"
+          />
+          <path
+            class="lg:-translate-x-1.5 lg:group-hover:translate-x-0 lg:transition"
+            d="m12 5 7 7-7 7"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+  <!-- End Header -->
+
+  <!-- Multiple Progress Bars -->
+  <div class="flex gap-1.5 w-full h-2.5">
+    <div
+      class="overflow-hidden bg-red-500 rounded-full"
+      role="progressbar"
+      aria-valuenow="23"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 23%"
+    ></div>
+
+    <div
+      class="overflow-hidden bg-orange-400 rounded-full"
+      role="progressbar"
+      aria-valuenow="25"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 25%"
+    ></div>
+
+    <div
+      class="overflow-hidden bg-yellow-400 rounded-full"
+      role="progressbar"
+      aria-valuenow="62"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 62%"
+    ></div>
+
+    <div
+      class="overflow-hidden bg-gray-100 bg-[linear-gradient(135deg,var(--color-gray-400)_25%,transparent_25%,transparent_50%,var(--color-gray-400)_50%,var(--color-gray-400)_75%,transparent_75%,transparent)] bg-[length:7px_7px] rounded-full dark:bg-[linear-gradient(135deg,var(--color-neutral-600)_25%,transparent_25%,transparent_50%,var(--color-neutral-600)_50%,var(--color-neutral-600)_75%,transparent_75%,transparent)] dark:bg-neutral-800"
+      role="progressbar"
+      aria-valuenow="15"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 15%"
+    ></div>
+  </div>
+  <!-- End Multiple Progress Bars -->
+
+  <!-- Grid -->
+  <div class="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div>
+      <span class="block text-2xl text-gray-800 dark:text-neutral-200">
+        163
+      </span>
+
+      <!-- Legend Indicator -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-0.5">
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-red-500 rounded-full"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-red-500 rounded-full"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-red-500 rounded-full"
+          ></span>
+        </div>
+        <div class="grow">
+          <span class="block text-sm text-gray-500 dark:text-neutral-500">
+            High
+          </span>
+        </div>
+      </div>
+      <!-- End Legend Indicator -->
+    </div>
+    <!-- End Col -->
+
+    <div>
+      <span class="block text-2xl text-gray-800 dark:text-neutral-200">
+        168
+      </span>
+
+      <!-- Legend Indicator -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-0.5">
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-orange-400 rounded-full"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-orange-400 rounded-full"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+        </div>
+        <div class="grow">
+          <span class="block text-sm text-gray-500 dark:text-neutral-500">
+            Medium
+          </span>
+        </div>
+      </div>
+      <!-- End Legend Indicator -->
+    </div>
+    <!-- End Col -->
+
+    <div>
+      <span class="block text-2xl text-gray-800 dark:text-neutral-200">
+        382
+      </span>
+
+      <!-- Legend Indicator -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-0.5">
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-yellow-400 rounded-full"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+        </div>
+        <div class="grow">
+          <span class="block text-sm text-gray-500 dark:text-neutral-500">
+            Low
+          </span>
+        </div>
+      </div>
+      <!-- End Legend Indicator -->
+    </div>
+    <!-- End Col -->
+
+    <div>
+      <span class="block text-2xl text-gray-800 dark:text-neutral-200">
+        66
+      </span>
+
+      <!-- Legend Indicator -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-0.5">
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+          <span
+            class="shrink-0 w-1 h-3.5 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"
+          ></span>
+        </div>
+        <div class="grow">
+          <span class="block text-sm text-gray-500 dark:text-neutral-500">
+            Informational
+          </span>
+        </div>
+      </div>
+      <!-- End Legend Indicator -->
+    </div>
+    <!-- End Col -->
+  </div>
+  <!-- End Grid -->
+</div>

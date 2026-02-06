@@ -1,0 +1,894 @@
+{
+  "name": "Forms",
+  "description": "フォーム",
+  "componentCount": 108,
+  "subcategories": [
+    {
+      "name": "AddOrCreateForms",
+      "path": "Forms/AddOrCreateForms/",
+      "components": [
+        {
+          "name": "AddDiscount",
+          "path": "Forms/AddOrCreateForms/AddDiscount/",
+          "description": "クーポンやプロモーションコードを作成するためのフォーム。割引名、割引コード、割引額（パーセントまたは固定金額）、開始日・終了日、利用回数制限の設定が可能。",
+          "useCases": [
+            "ECサイト",
+            "SaaSの料金管理",
+            "マーケティングキャンペーン管理"
+          ]
+        },
+        {
+          "name": "AddProject",
+          "path": "Forms/AddOrCreateForms/AddProject/",
+          "description": "新規プロジェクトを素早く作成するためのミニマルなフォーム。プロジェクトロゴのアップロード、プロジェクト名、サブドメインの設定が可能。",
+          "useCases": [
+            "プロジェクト管理ツール",
+            "ワークスペース作成",
+            "SaaSのテナント作成"
+          ]
+        },
+        {
+          "name": "AvatarUploadWithSwitchesAndInlineInputs",
+          "path": "Forms/AddOrCreateForms/AvatarUploadWithSwitchesAndInlineInputs/",
+          "description": "ECストアやショップの基本情報を設定する包括的なフォーム。アバター/ロゴのアップロード、ストア名、URL、連絡先、通貨選択などが含まれる。",
+          "useCases": [
+            "ECプラットフォーム",
+            "マルチテナントSaaS",
+            "店舗管理システム"
+          ]
+        },
+        {
+          "name": "CalendarCreateEvent",
+          "path": "Forms/AddOrCreateForms/CalendarCreateEvent/",
+          "description": "カレンダーアプリでイベントを素早く作成するためのインライン形式のフォーム。タイトル入力、開始時刻・終了時刻の選択が可能。",
+          "useCases": [
+            "カレンダーアプリ",
+            "スケジュール管理",
+            "会議予約システム"
+          ]
+        },
+        {
+          "name": "CalendarEditEvent",
+          "path": "Forms/AddOrCreateForms/CalendarEditEvent/",
+          "description": "既存のカレンダーイベントを編集するためのフォーム。既存のイベントタイトル、開始時刻・終了時刻が設定済みの状態で表示される。",
+          "useCases": ["カレンダーイベントの詳細編集", "予定の変更"]
+        },
+        {
+          "name": "CreateNewUser",
+          "path": "Forms/AddOrCreateForms/CreateNewUser/",
+          "description": "システムに新しいユーザーを追加するための包括的なフォーム。アバター、名前、メール、電話番号、住所、国の選択が可能。",
+          "useCases": ["管理者向けユーザー管理", "CRM", "従業員登録システム"]
+        },
+        {
+          "name": "CreateTeam",
+          "path": "Forms/AddOrCreateForms/CreateTeam/",
+          "description": "コラボレーション機能を持つアプリでチームを作成するためのフォーム。チームタイトル、業種、説明文、メンバー追加、カバー画像のアップロードが可能。",
+          "useCases": [
+            "チームコラボレーションツール",
+            "プロジェクト管理",
+            "組織管理"
+          ]
+        },
+        {
+          "name": "CustomRecurrenceEvent",
+          "path": "Forms/AddOrCreateForms/CustomRecurrenceEvent/",
+          "description": "定期的なイベントの繰り返しルールを設定するためのフォーム。繰り返し間隔、曜日選択、終了条件の設定が可能。",
+          "useCases": [
+            "カレンダーの繰り返しイベント",
+            "定期タスク",
+            "サブスクリプション設定"
+          ]
+        },
+        {
+          "name": "ProductInfoUpload",
+          "path": "Forms/AddOrCreateForms/ProductInfoUpload/",
+          "description": "ECサイトの商品を登録・編集するためのフォーム。サムネイル画像、商品名、SKU、重量、商品説明（リッチテキストエディター）の入力が可能。",
+          "useCases": ["ECサイトの商品管理", "在庫管理システム", "カタログ作成"]
+        },
+        {
+          "name": "UserProfileCreateEvent",
+          "path": "Forms/AddOrCreateForms/UserProfileCreateEvent/",
+          "description": "ユーザーが自分のカレンダーにイベントを追加するためのフォーム。イベントタイトル、日時の選択が可能。",
+          "useCases": ["個人用カレンダー", "予定追加", "リマインダー設定"]
+        }
+      ]
+    },
+    {
+      "name": "BillingAndPaymentModals",
+      "path": "Forms/BillingAndPaymentModals/",
+      "components": [
+        {
+          "name": "AddCardForm",
+          "path": "Forms/BillingAndPaymentModals/AddCardForm/",
+          "description": "クレジットカード情報を登録するための包括的なフォーム。カード番号、有効期限、CVCの入力に加え、請求先住所の入力欄も含む。",
+          "useCases": [
+            "ECサイトのチェックアウト",
+            "SaaSの支払い設定",
+            "サブスクリプション登録"
+          ]
+        },
+        {
+          "name": "AddPayment",
+          "path": "Forms/BillingAndPaymentModals/AddPayment/",
+          "description": "Card/PayPal/Klarnaの3つの支払い方法から選択できるフォーム。カード番号入力欄には対応ブランドのアイコンが表示され、デフォルト支払い方法として設定するチェックボックス付き。",
+          "useCases": [
+            "複数の決済方法に対応したECサイト",
+            "サブスクリプションサービスの支払い設定"
+          ]
+        },
+        {
+          "name": "AddPaymentWithTabs",
+          "path": "Forms/BillingAndPaymentModals/AddPaymentWithTabs/",
+          "description": "「保存済みカード」と「新規カード」をタブで切り替えられる支払いフォーム。将来の支払い用にカードを保存するスイッチも含まれる。",
+          "useCases": [
+            "リピート購入が多いECサイト",
+            "定期課金サービスのカード管理"
+          ]
+        },
+        {
+          "name": "GiftPro",
+          "path": "Forms/BillingAndPaymentModals/GiftPro/",
+          "description": "有料プランを他者にギフトとして贈るためのフォーム。受取人のメールアドレス入力、期間選択、プラン選択が可能で、年額プランには割引バッジが表示される。",
+          "useCases": [
+            "SaaSのギフト機能",
+            "法人向けライセンス購入",
+            "プレゼント用サブスクリプション"
+          ]
+        },
+        {
+          "name": "PaymentCardsGridView",
+          "path": "Forms/BillingAndPaymentModals/PaymentCardsGridView/",
+          "description": "登録済みの支払いカードをグリッド形式で表示するコンポーネント。編集・削除・デフォルト設定のアクションボタン付き。期限切れカードには警告アイコンが表示される。",
+          "useCases": [
+            "アカウント設定の支払い方法管理",
+            "複数カード登録が必要なサービス"
+          ]
+        },
+        {
+          "name": "PaymentMethodForm",
+          "path": "Forms/BillingAndPaymentModals/PaymentMethodForm/",
+          "description": "「Pay by Card」と「Pay with PayPal」をトグルで切り替えられる支払い方法フォーム。カード番号、有効期限、CVV、プライマリカード設定、保存オプションを備える。",
+          "useCases": ["チェックアウト画面", "アカウント設定の支払い方法追加"]
+        },
+        {
+          "name": "RadioCheckboxGroupWithInputs",
+          "path": "Forms/BillingAndPaymentModals/RadioCheckboxGroupWithInputs/",
+          "description": "銀行口座情報を登録するためのフォーム。アカウントタイプをラジオカード形式で選択し、口座名義人名、ルーティングナンバー、口座番号を入力する。",
+          "useCases": ["ペイアウト設定", "売上振込先の登録", "ACH送金の設定"]
+        },
+        {
+          "name": "UpgradeForm",
+          "path": "Forms/BillingAndPaymentModals/UpgradeForm/",
+          "description": "無料プランから有料プランへアップグレードするためのフォーム。カード/PayPalの支払い方法切り替え、カード情報入力、プラン詳細の表示が含まれる。",
+          "useCases": [
+            "SaaSのプランアップグレード",
+            "フリーミアムモデルの有料化誘導"
+          ]
+        },
+        {
+          "name": "WithinInputSelectSortingWithSwitchesAndLikes",
+          "path": "Forms/BillingAndPaymentModals/WithinInputSelectSortingWithSwitchesAndLikes/",
+          "description": "商品の価格設定を行うコンパクトなフォーム。価格入力欄の右側に通貨選択のドロップダウンがあり、在庫の有効/無効を切り替えるスイッチを含む。",
+          "useCases": [
+            "ECサイトの商品価格設定",
+            "在庫管理",
+            "販売管理ダッシュボード"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FileUploads",
+      "path": "Forms/FileUploads/",
+      "components": [
+        {
+          "name": "FileUploadWithCheckbox",
+          "path": "Forms/FileUploads/FileUploadWithCheckbox/",
+          "description": "CSVファイルをインポートしてプロジェクトを追加するためのフォーム。ドラッグ&ドロップエリアとファイルブラウズ機能、サンプルCSVテンプレートのダウンロードリンク、既存データの上書きオプション用チェックボックスを備える。",
+          "useCases": [
+            "商品一括登録",
+            "データインポート",
+            "バルクアップロード機能"
+          ]
+        },
+        {
+          "name": "FrontAndBackUploadGroup",
+          "path": "Forms/FileUploads/FrontAndBackUploadGroup/",
+          "description": "書類の表面と裏面を別々にアップロードするための2カラムレイアウトフォーム。本人確認書類などの両面撮影が必要なケースに最適。",
+          "useCases": [
+            "本人確認書類のアップロード",
+            "運転免許証・パスポートの提出",
+            "KYC（本人確認）フロー"
+          ]
+        },
+        {
+          "name": "HorizontalFileUploadInCard",
+          "path": "Forms/FileUploads/HorizontalFileUploadInCard/",
+          "description": "バナー画像をアップロードするための横長カード形式のコンポーネント。アップロード中はファイル名、拡張子、サイズ、プログレスバーを表示し、削除ボタンでアップロード済みファイルを取り消せる。",
+          "useCases": [
+            "ブログ記事のカバー画像",
+            "OGP画像のアップロード",
+            "バナー画像の設定"
+          ]
+        },
+        {
+          "name": "ImageUpload",
+          "path": "Forms/FileUploads/ImageUpload/",
+          "description": "商品やコンテンツの画像をアップロードするためのカード形式コンポーネント。ヘッダーに「Upload from URL」ボタンがあり、ドラッグ&ドロップまたはファイルブラウズでアップロード可能。",
+          "useCases": [
+            "商品画像のアップロード",
+            "コンテンツ管理",
+            "メディアライブラリへの追加"
+          ]
+        },
+        {
+          "name": "ImageUploadWithRemovableMedia",
+          "path": "Forms/FileUploads/ImageUploadWithRemovableMedia/",
+          "description": "アップロード済みの画像をグリッド形式でプレビュー表示し、各画像に削除ボタンが付いたコンポーネント。追加のドラッグ&ドロップエリアとURLからのアップロードボタンも備える。",
+          "useCases": [
+            "商品の複数画像管理",
+            "ギャラリー編集",
+            "メディア管理画面"
+          ]
+        },
+        {
+          "name": "SimpleUploadForm",
+          "path": "Forms/FileUploads/SimpleUploadForm/",
+          "description": "ドラッグ&ドロップとファイルブラウズのみを備えたシンプルなアップロードフォーム。対応ファイル形式（CSV、XLS、DOCX）が表示されるミニマルなデザイン。",
+          "useCases": [
+            "シンプルなファイル添付",
+            "フォームへのファイル追加",
+            "汎用的なアップロード機能"
+          ]
+        },
+        {
+          "name": "UploadForm",
+          "path": "Forms/FileUploads/UploadForm/",
+          "description": "ファイルアップロード、フォルダアップロード、ドラッグ&ドロップの3つの方法をアイコンカードで選択できるフォーム。テキストリンクとアイコンカードの両方からアップロードを開始できる柔軟なUI。",
+          "useCases": [
+            "クラウドストレージ",
+            "ファイル管理システム",
+            "複数ファイルの一括アップロード"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FilterForms",
+      "path": "Forms/FilterForms/",
+      "components": [
+        {
+          "name": "PaymentTransactions",
+          "path": "Forms/FilterForms/PaymentTransactions/",
+          "description": "支払い取引データを絞り込むための包括的なフィルタフォーム。価格範囲をレンジスライダーで設定でき、Min/Maxの数値入力も可能。スライダーは背景チャートと連動し、データ分布を視覚的に確認しながらフィルタリングできる。",
+          "useCases": [
+            "決済履歴の検索",
+            "取引金額でのフィルタリング",
+            "財務ダッシュボードのデータ絞り込み"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FormLayouts",
+      "path": "Forms/FormLayouts/",
+      "components": [
+        {
+          "name": "AccountPreferencesLayout",
+          "path": "Forms/FormLayouts/AccountPreferencesLayout/",
+          "description": "ワークスペースの個人設定をカスタマイズするためのフォームレイアウト。言語選択、タイムゾーン、日付形式などの環境設定項目が、ラベル左・入力欄右のグリッド形式で整理されている。",
+          "useCases": [
+            "アプリケーションの個人設定",
+            "言語・地域設定",
+            "表示オプションの変更"
+          ]
+        },
+        {
+          "name": "AccountProfileLayout",
+          "path": "Forms/FormLayouts/AccountProfileLayout/",
+          "description": "ユーザーの名前、パスワード、アカウント設定を管理するためのフォームレイアウト。アバター画像のアップロード/削除、名前・メールアドレスの編集、パスワード変更などの機能が含まれる。",
+          "useCases": [
+            "マイページのプロフィール編集",
+            "アカウント情報の更新",
+            "セキュリティ設定"
+          ]
+        },
+        {
+          "name": "AccountWorkspaceLayout",
+          "path": "Forms/FormLayouts/AccountWorkspaceLayout/",
+          "description": "現在のワークスペース設定を変更するためのフォームレイアウト。ワークスペース名、ワークスペースロゴのアップロードなど、チームやプロジェクト単位の設定項目が含まれる。",
+          "useCases": [
+            "チームワークスペースの管理",
+            "組織設定",
+            "プロジェクト設定"
+          ]
+        },
+        {
+          "name": "ApplyFromLayout",
+          "path": "Forms/FormLayouts/ApplyFromLayout/",
+          "description": "求人に応募するためのステップ形式フォームレイアウト。タイムライン風のステップインジケーター付きで、個人情報入力、書類アップロードなどのステップを順番に進めていく構成。",
+          "useCases": [
+            "採用サイトの応募フォーム",
+            "申請フォーム",
+            "マルチステップフォーム"
+          ]
+        },
+        {
+          "name": "PersonalInfoLayout",
+          "path": "Forms/FormLayouts/PersonalInfoLayout/",
+          "description": "ユーザーの個人情報を表示し、必要に応じて編集できるレイアウト。アバター画像と「Upload photo」ボタン、各項目に編集ボタンが付いており、読み取り専用モードと編集モードを切り替えられる設計。",
+          "useCases": [
+            "ユーザープロフィール表示",
+            "個人情報確認画面",
+            "アカウント詳細ページ"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GeneralForms",
+      "path": "Forms/GeneralForms/",
+      "components": [
+        {
+          "name": "AddMoreInputFieldWithSwitches",
+          "path": "Forms/GeneralForms/AddMoreInputFieldWithSwitches/",
+          "description": "配送先情報を入力するためのフォーム。名前、住所、電話番号などの基本フィールドに加え、配送オプションをスイッチで切り替えられる。2カラムグリッドレイアウトで整理されている。",
+          "useCases": [
+            "ECサイトのチェックアウト",
+            "配送先登録",
+            "住所入力フォーム"
+          ]
+        },
+        {
+          "name": "GridInputs",
+          "path": "Forms/GeneralForms/GridInputs/",
+          "description": "住所情報を入力するためのグリッドレイアウトフォーム。通り、アパートメント番号、郵便番号、都市、国がレスポンシブな2〜3カラムグリッドで配置されている。",
+          "useCases": ["請求先住所入力", "配送先住所入力", "住所情報の収集"]
+        },
+        {
+          "name": "InlineRemovableInputs",
+          "path": "Forms/GeneralForms/InlineRemovableInputs/",
+          "description": "商品バリエーション（サイズ、色、価格、数量）を入力するためのフォーム。各行に削除ボタンがあり、「Add variant」ボタンで新しい行を追加できる動的なフォーム。",
+          "useCases": ["商品バリエーション登録", "SKU管理", "在庫管理"]
+        },
+        {
+          "name": "MoneyTransferCardGroupInput",
+          "path": "Forms/GeneralForms/MoneyTransferCardGroupInput/",
+          "description": "送金額と通貨を入力するためのカード型フォーム。「You pay」と「They receive」の2つのカードが縦に並び、送金元と送金先の金額・通貨をそれぞれ入力できる。通貨選択には国旗アイコンと検索機能付きドロップダウンがある。",
+          "useCases": ["国際送金", "外貨両替", "金融アプリの送金画面"]
+        },
+        {
+          "name": "MoneyTransferCardInput",
+          "path": "Forms/GeneralForms/MoneyTransferCardInput/",
+          "description": "送金額と通貨を入力するためのシンプルなカード型コンポーネント。大きなフォントの金額入力欄と、国旗アイコン付きの通貨選択ドロップダウンが特徴。",
+          "useCases": ["送金額入力", "通貨選択", "金融アプリの金額入力"]
+        },
+        {
+          "name": "RecipientBandDetailsForm",
+          "path": "Forms/GeneralForms/RecipientBandDetailsForm/",
+          "description": "送金先の銀行口座情報を入力するためのフォーム。「Add myself」と「Add someone else」のタブで自分の口座か他人の口座かを切り替えられる。",
+          "useCases": ["送金先登録", "振込先口座の追加", "ペイアウト設定"]
+        },
+        {
+          "name": "SimpleWithInputsAndSelects",
+          "path": "Forms/GeneralForms/SimpleWithInputsAndSelects/",
+          "description": "商品の組織情報（ベンダー、カテゴリー、タグなど）を入力するためのフォーム。テキスト入力とセレクトボックスが混在し、カテゴリーやタグはドロップダウンから選択する。",
+          "useCases": ["商品管理", "コンテンツ分類", "メタデータ入力"]
+        },
+        {
+          "name": "StatusForm",
+          "path": "Forms/GeneralForms/StatusForm/",
+          "description": "ユーザーのステータスメッセージを設定するためのフォーム。絵文字アイコン付きの入力欄と、「在宅勤務」「会議中」などの提案ステータスがグリッド表示される。",
+          "useCases": [
+            "チャットアプリのステータス設定",
+            "プレゼンス表示",
+            "アクティビティ状態の設定"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GiftCards",
+      "path": "Forms/GiftCards/",
+      "components": [
+        {
+          "name": "GiftCards",
+          "path": "Forms/GiftCards/GiftCards/",
+          "description": "デジタルギフトカードを購入・送信するためのフォーム。グラデーション背景と絵文字アイコンのカードデザインを複数から選択でき、金額、受取人のメールアドレス、メッセージを入力できる。",
+          "useCases": [
+            "ECサイトのギフトカード購入",
+            "デジタルギフト送信",
+            "プレゼント用カード作成"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RadioAndCheckbox",
+      "path": "Forms/RadioAndCheckbox/",
+      "components": [
+        {
+          "name": "BadgeStyleButtonWithIconCheckbox",
+          "path": "Forms/RadioAndCheckbox/BadgeStyleButtonWithIconCheckbox/",
+          "description": "バッジ/ボタン形式でアイコンとテキストを表示するチェックボックス。選択状態が視覚的にわかりやすいスタイル。",
+          "useCases": ["タグ選択", "カテゴリーフィルター", "機能選択"]
+        },
+        {
+          "name": "ButtonWithSelectOptions",
+          "path": "Forms/RadioAndCheckbox/ButtonWithSelectOptions/",
+          "description": "ボタンスタイルで表示される選択オプション。クリックで選択状態が切り替わる。",
+          "useCases": ["オプション選択", "設定切り替え", "フィルター選択"]
+        },
+        {
+          "name": "CardMediaWithFlagsCheckbox",
+          "path": "Forms/RadioAndCheckbox/CardMediaWithFlagsCheckbox/",
+          "description": "国旗アイコンを含むカード形式のチェックボックス。国や地域の複数選択に使用。",
+          "useCases": ["国・地域選択", "言語選択", "配送先選択"]
+        },
+        {
+          "name": "CardMediaWithIconsRadio",
+          "path": "Forms/RadioAndCheckbox/CardMediaWithIconsRadio/",
+          "description": "アイコンを含むカード形式のラジオボタン。各オプションがカードとして表示され、選択時にハイライトされる。",
+          "useCases": ["サービス選択", "プラン選択", "機能選択"]
+        },
+        {
+          "name": "CenterAlignedEmojisRadio",
+          "path": "Forms/RadioAndCheckbox/CenterAlignedEmojisRadio/",
+          "description": "絵文字が中央に配置されたラジオボタン。感情や反応を選択する際に使用。",
+          "useCases": ["フィードバック評価", "感情選択", "リアクション選択"]
+        },
+        {
+          "name": "CenterAlignedIconsCheckbox",
+          "path": "Forms/RadioAndCheckbox/CenterAlignedIconsCheckbox/",
+          "description": "アイコンが中央に配置されたチェックボックス。複数選択可能な機能やオプションの選択に使用。",
+          "useCases": ["機能選択", "オプション選択", "設定項目の切り替え"]
+        },
+        {
+          "name": "CenterAlignedIconsRadio",
+          "path": "Forms/RadioAndCheckbox/CenterAlignedIconsRadio/",
+          "description": "アイコンが中央に配置されたラジオボタン。単一選択の機能やオプションの選択に使用。",
+          "useCases": ["表示モード切り替え", "オプション選択", "設定選択"]
+        },
+        {
+          "name": "CheckboxListView",
+          "path": "Forms/RadioAndCheckbox/CheckboxListView/",
+          "description": "チェックボックスをリスト形式で表示するコンポーネント。各項目にラベルと説明が付いている。",
+          "useCases": ["設定項目の一括選択", "通知設定", "権限設定"]
+        },
+        {
+          "name": "CheckboxListingWithSearch",
+          "path": "Forms/RadioAndCheckbox/CheckboxListingWithSearch/",
+          "description": "検索フィールド付きのチェックボックスリスト。多数の項目から検索して選択できる。",
+          "useCases": ["タグ選択", "カテゴリー選択", "ユーザー選択"]
+        },
+        {
+          "name": "ColorsRadio",
+          "path": "Forms/RadioAndCheckbox/ColorsRadio/",
+          "description": "色見本形式で表示されるラジオボタン。各色が小さな正方形で表示され、選択時にリング状のハイライトが表示される。",
+          "useCases": [
+            "商品カラー選択",
+            "テーマカラー設定",
+            "デザインカスタマイズ"
+          ]
+        },
+        {
+          "name": "EmojiSkinTone",
+          "path": "Forms/RadioAndCheckbox/EmojiSkinTone/",
+          "description": "絵文字のスキントーン（肌の色）を選択するためのラジオボタン。肌の色のバリエーションが横並びで表示される。",
+          "useCases": ["絵文字カスタマイズ", "ユーザー設定", "プロフィール設定"]
+        },
+        {
+          "name": "EmojisRadio",
+          "path": "Forms/RadioAndCheckbox/EmojisRadio/",
+          "description": "絵文字を選択肢として使用するラジオボタン。感情や反応を直感的に選択できる。",
+          "useCases": ["フィードバック", "気分選択", "リアクション選択"]
+        },
+        {
+          "name": "GradientColorWithEmojisRadio",
+          "path": "Forms/RadioAndCheckbox/GradientColorWithEmojisRadio/",
+          "description": "グラデーション背景と絵文字を組み合わせたラジオボタン。視覚的に魅力的なデザイン。",
+          "useCases": ["ギフトカードデザイン選択", "テーマ選択", "ムード選択"]
+        },
+        {
+          "name": "GradientPaymentCardsRadio",
+          "path": "Forms/RadioAndCheckbox/GradientPaymentCardsRadio/",
+          "description": "クレジットカードのデザインをグラデーションで表現したラジオボタン。カードデザインの選択に使用。",
+          "useCases": ["カードデザイン選択", "支払い方法選択"]
+        },
+        {
+          "name": "GridCheckboxCardWithDescription",
+          "path": "Forms/RadioAndCheckbox/GridCheckboxCardWithDescription/",
+          "description": "説明文付きのカード形式チェックボックスがグリッドレイアウトで並んだコンポーネント。",
+          "useCases": ["機能選択", "サービス選択", "オプション選択"]
+        },
+        {
+          "name": "GridRadioCard",
+          "path": "Forms/RadioAndCheckbox/GridRadioCard/",
+          "description": "カード形式のラジオボタンがグリッドレイアウトで並んだコンポーネント。",
+          "useCases": ["プラン選択", "オプション選択", "カテゴリー選択"]
+        },
+        {
+          "name": "GridRadioGroupWithEmojis",
+          "path": "Forms/RadioAndCheckbox/GridRadioGroupWithEmojis/",
+          "description": "絵文字とテキストを含むラジオボタンがグリッドレイアウトで並んだコンポーネント。",
+          "useCases": ["気分選択", "フィードバック", "カテゴリー選択"]
+        },
+        {
+          "name": "ImageCardSelectableCheckbox",
+          "path": "Forms/RadioAndCheckbox/ImageCardSelectableCheckbox/",
+          "description": "画像を含むカード形式のチェックボックス。画像コンテンツの複数選択に使用。",
+          "useCases": ["画像選択", "ギャラリー選択", "商品選択"]
+        },
+        {
+          "name": "ImageInCardWithTitleAndDescriptionRadio",
+          "path": "Forms/RadioAndCheckbox/ImageInCardWithTitleAndDescriptionRadio/",
+          "description": "画像、タイトル、説明文を含むカード形式のラジオボタン。詳細情報を表示しながら選択できる。",
+          "useCases": ["テンプレート選択", "プラン選択", "商品選択"]
+        },
+        {
+          "name": "InlineCheckboxWithButtons",
+          "path": "Forms/RadioAndCheckbox/InlineCheckboxWithButtons/",
+          "description": "チェックボックスとボタンが横並びになったコンポーネント。選択と操作を同時に行える。",
+          "useCases": ["項目選択と操作", "リスト管理"]
+        },
+        {
+          "name": "InputStyleInlineCheckbox",
+          "path": "Forms/RadioAndCheckbox/InputStyleInlineCheckbox/",
+          "description": "入力フィールドのようなスタイルのインラインチェックボックス。フォーム内で自然に配置できる。",
+          "useCases": ["フォーム内のオプション選択", "同意チェック"]
+        },
+        {
+          "name": "IntegrationWithBrandingLogo",
+          "path": "Forms/RadioAndCheckbox/IntegrationWithBrandingLogo/",
+          "description": "サービスやアプリのブランドロゴを表示するラジオ/チェックボックス。外部サービスとの連携選択に使用。",
+          "useCases": [
+            "SNS連携選択",
+            "外部サービス連携",
+            "インテグレーション設定"
+          ]
+        },
+        {
+          "name": "ListingCardMediaWithSearchRadio",
+          "path": "Forms/RadioAndCheckbox/ListingCardMediaWithSearchRadio/",
+          "description": "検索機能付きのメディアカードリスト形式ラジオボタン。多数の項目から検索して選択できる。",
+          "useCases": ["ユーザー選択", "コンテンツ選択", "項目選択"]
+        },
+        {
+          "name": "ListingColorCheckboxWithNumbers",
+          "path": "Forms/RadioAndCheckbox/ListingColorCheckboxWithNumbers/",
+          "description": "色と数値（件数など）を表示するチェックボックスリスト。フィルタリング時に件数を確認しながら選択できる。",
+          "useCases": ["カラーフィルター", "ファセット検索", "商品絞り込み"]
+        },
+        {
+          "name": "NavigationBarAppearance",
+          "path": "Forms/RadioAndCheckbox/NavigationBarAppearance/",
+          "description": "ナビゲーションバーの外観スタイルを選択するためのラジオボタン。プレビュー画像付き。",
+          "useCases": ["UI設定", "レイアウト選択", "外観カスタマイズ"]
+        },
+        {
+          "name": "PricingRadioGroup",
+          "path": "Forms/RadioAndCheckbox/PricingRadioGroup/",
+          "description": "料金プラン（Startup/Pro/Enterprise）を選択するためのカード形式ラジオグループ。プラン名、月額料金、年額合計が表示される。",
+          "useCases": [
+            "サブスクリプションプラン選択",
+            "料金プラン選択",
+            "サービスティア選択"
+          ]
+        },
+        {
+          "name": "ProductDetailsRadio",
+          "path": "Forms/RadioAndCheckbox/ProductDetailsRadio/",
+          "description": "商品のバリエーション（サイズ、色など）を選択するためのラジオボタン。商品詳細ページで使用。",
+          "useCases": ["商品オプション選択", "サイズ選択", "バリエーション選択"]
+        },
+        {
+          "name": "RefundOptionsRadio",
+          "path": "Forms/RadioAndCheckbox/RefundOptionsRadio/",
+          "description": "返金方法のオプションを選択するためのラジオボタン。各オプションに説明が付いている。",
+          "useCases": ["返金方法選択", "払い戻し設定", "カスタマーサポート"]
+        },
+        {
+          "name": "SimpleCheckboxWithMoreContent",
+          "path": "Forms/RadioAndCheckbox/SimpleCheckboxWithMoreContent/",
+          "description": "展開可能な追加コンテンツを含むチェックボックス。選択時に詳細情報を表示できる。",
+          "useCases": ["同意チェック", "詳細オプション", "条件確認"]
+        },
+        {
+          "name": "SimpleRadioWithDescriptionListView",
+          "path": "Forms/RadioAndCheckbox/SimpleRadioWithDescriptionListView/",
+          "description": "各オプションに説明文が付いたシンプルなラジオボタンリスト。縦並びで整理されている。",
+          "useCases": ["設定選択", "オプション選択", "モード選択"]
+        },
+        {
+          "name": "SizeRadio",
+          "path": "Forms/RadioAndCheckbox/SizeRadio/",
+          "description": "商品サイズ（S/M/L/XLなど）を選択するためのコンパクトなラジオボタン。",
+          "useCases": ["衣類サイズ選択", "商品サイズ選択", "オプション選択"]
+        },
+        {
+          "name": "StarRatingRadio",
+          "path": "Forms/RadioAndCheckbox/StarRatingRadio/",
+          "description": "星アイコンを使用した評価選択ラジオボタン。1〜5つ星などの評価を選択できる。",
+          "useCases": ["レビュー評価", "満足度調査", "フィードバック"]
+        },
+        {
+          "name": "ThemeAppearance",
+          "path": "Forms/RadioAndCheckbox/ThemeAppearance/",
+          "description": "ライト/ダーク/システムのテーマ外観を選択するためのラジオボタン。各テーマのプレビューが表示される。",
+          "useCases": ["ダークモード設定", "テーマ設定", "外観カスタマイズ"]
+        },
+        {
+          "name": "TimelineRadio",
+          "path": "Forms/RadioAndCheckbox/TimelineRadio/",
+          "description": "タイムライン形式で表示されるラジオボタン。ステップや工程の選択に使用。",
+          "useCases": ["ステップ選択", "進捗選択", "工程管理"]
+        },
+        {
+          "name": "TransparentBackgroundInputNumberAndSwitches",
+          "path": "Forms/RadioAndCheckbox/TransparentBackgroundInputNumberAndSwitches/",
+          "description": "透明な背景に数値入力フィールドとスイッチを組み合わせたコンポーネント。",
+          "useCases": ["設定調整", "数値設定", "オプション切り替え"]
+        },
+        {
+          "name": "TransparentBackgroundWithLockerSwitcher",
+          "path": "Forms/RadioAndCheckbox/TransparentBackgroundWithLockerSwitcher/",
+          "description": "項目のロック/アンロック状態を切り替えるスイッチ。透明背景でオーバーレイ使用に適している。",
+          "useCases": ["編集ロック", "項目固定", "権限設定"]
+        },
+        {
+          "name": "TransparentBackgroundWithRangeSliders",
+          "path": "Forms/RadioAndCheckbox/TransparentBackgroundWithRangeSliders/",
+          "description": "透明背景上で範囲を選択するスライダーコンポーネント。",
+          "useCases": ["フィルター範囲設定", "価格範囲選択", "数値範囲指定"]
+        },
+        {
+          "name": "VideoButton",
+          "path": "Forms/RadioAndCheckbox/VideoButton/",
+          "description": "ビデオサムネイルをボタン形式で表示するコンポーネント。クリックで選択または再生を開始できる。",
+          "useCases": ["ビデオ選択", "メディア選択", "コンテンツ選択"]
+        }
+      ]
+    },
+    {
+      "name": "RangeFilterWithCharts",
+      "path": "Forms/RangeFilterWithCharts/",
+      "components": [
+        {
+          "name": "CenterAlignedRangeSliderWithIconInSlider",
+          "path": "Forms/RangeFilterWithCharts/CenterAlignedRangeSliderWithIconInSlider/",
+          "description": "カルーセル内に配置された照明調整用のレンジスライダー。中央にアイコンと現在値（パーセンテージ）が大きく表示され、下部のスライダーで値を調整する。スマートホームアプリのような洗練されたUI。",
+          "useCases": [
+            "スマートホーム照明制御",
+            "IoTデバイス設定",
+            "明るさ調整"
+          ]
+        },
+        {
+          "name": "PaymentTransactionsPriceRange",
+          "path": "Forms/RangeFilterWithCharts/PaymentTransactionsPriceRange/",
+          "description": "価格範囲を設定するデュアルハンドルのレンジスライダー。背景にデータ分布を示すチャートが表示され、Min/Maxの数値入力欄も備えている。",
+          "useCases": [
+            "ECサイトの価格フィルター",
+            "取引金額の絞り込み",
+            "データ分析ダッシュボード"
+          ]
+        },
+        {
+          "name": "TransparentRangeWithIcons",
+          "path": "Forms/RangeFilterWithCharts/TransparentRangeWithIcons/",
+          "description": "透明な背景に配置されたアイコン付きレンジスライダー。左側にアイコンとラベル、右側にスライダーが配置され、現在値がパーセンテージで表示される。ダーク系UIに適したデザイン。",
+          "useCases": [
+            "照明・音量調整",
+            "設定パネル",
+            "コントロールダッシュボード"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ReviewsForms",
+      "path": "Forms/ReviewsForms/",
+      "components": [
+        {
+          "name": "WriteAClothingProductReview",
+          "path": "Forms/ReviewsForms/WriteAClothingProductReview/",
+          "description": "衣類商品のレビューを投稿するためのフォーム。商品画像と名前が表示され、「おすすめしますか？」（絵文字付きYes/No）、総合評価（星評価）、フィット感、タイトル、レビュー本文を入力できる。",
+          "useCases": [
+            "ECサイトの商品レビュー",
+            "アパレル商品のフィードバック",
+            "カスタマーレビュー収集"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SectionFilterBars",
+      "path": "Forms/SectionFilterBars/",
+      "components": [
+        {
+          "name": "CompareProductsSection",
+          "path": "Forms/SectionFilterBars/CompareProductsSection/",
+          "description": "複数の商品を並べて比較するためのセクション。選択された商品が横並びで表示され、比較対象の追加・削除が可能。",
+          "useCases": ["ECサイトの商品比較", "スペック比較", "プラン比較"]
+        },
+        {
+          "name": "ListingSortingWithDropdown",
+          "path": "Forms/SectionFilterBars/ListingSortingWithDropdown/",
+          "description": "リスト表示のソート順をドロップダウンで選択できるコンポーネント。人気順、新着順、価格順などの並び替えオプションを提供。",
+          "useCases": ["商品一覧のソート", "検索結果の並び替え"]
+        },
+        {
+          "name": "ProjectsFilterBar",
+          "path": "Forms/SectionFilterBars/ProjectsFilterBar/",
+          "description": "プロジェクト一覧をフィルタリングするためのバー。ステータス、担当者、期間などでの絞り込みが可能。",
+          "useCases": ["プロジェクト管理", "タスク管理", "ダッシュボード"]
+        },
+        {
+          "name": "SearchAndDatePickerAndSelects",
+          "path": "Forms/SectionFilterBars/SearchAndDatePickerAndSelects/",
+          "description": "検索フィールド、日付ピッカー、セレクトボックスを組み合わせた複合フィルターバー。複数の条件で同時にフィルタリングできる。",
+          "useCases": ["レポート検索", "履歴検索", "詳細フィルタリング"]
+        },
+        {
+          "name": "SearchAndFilterDropdowns",
+          "path": "Forms/SectionFilterBars/SearchAndFilterDropdowns/",
+          "description": "検索フィールドと複数のフィルタードロップダウンを組み合わせたコンポーネント。カテゴリーやステータスなど複数の条件で絞り込める。",
+          "useCases": ["データテーブルのフィルタリング", "一覧検索"]
+        },
+        {
+          "name": "SearchFilterBar",
+          "path": "Forms/SectionFilterBars/SearchFilterBar/",
+          "description": "アイコン付きの検索入力フィールドを中心としたシンプルなフィルターバー。コマンドパレット的な使用も想定。",
+          "useCases": ["グローバル検索", "コマンドパレット", "クイック検索"]
+        },
+        {
+          "name": "SelectSortingWithViewActionButtonsFilterBar",
+          "path": "Forms/SectionFilterBars/SelectSortingWithViewActionButtonsFilterBar/",
+          "description": "ソート用セレクトボックスと、グリッド/リスト表示切り替えボタンを含むフィルターバー。表示形式とソート順を同時に制御できる。",
+          "useCases": ["ギャラリー表示", "商品一覧", "ファイル一覧"]
+        },
+        {
+          "name": "SortingWithDropdown",
+          "path": "Forms/SectionFilterBars/SortingWithDropdown/",
+          "description": "ソート順を選択するシンプルなドロップダウンコンポーネント。",
+          "useCases": ["リストのソート", "検索結果の並び替え"]
+        },
+        {
+          "name": "SortingsFilterBar",
+          "path": "Forms/SectionFilterBars/SortingsFilterBar/",
+          "description": "複数のソート基準をボタンやタブ形式で切り替えられるフィルターバー。",
+          "useCases": ["データ一覧のソート切り替え", "マルチソート"]
+        },
+        {
+          "name": "TitleWithSelectSortingFilterBar",
+          "path": "Forms/SectionFilterBars/TitleWithSelectSortingFilterBar/",
+          "description": "セクションタイトルとソート選択ドロップダウンを含むフィルターバー。見出しとソート機能を一体化したデザイン。",
+          "useCases": ["セクションヘッダー", "コンテンツ一覧のヘッダー"]
+        }
+      ]
+    },
+    {
+      "name": "SidebarFilters",
+      "path": "Forms/SidebarFilters/",
+      "components": [
+        {
+          "name": "ShopMarketplaceSidebarFilter",
+          "path": "Forms/SidebarFilters/ShopMarketplaceSidebarFilter/",
+          "description": "マーケットプレイス向けの包括的なサイドバーフィルター。カテゴリー選択、価格範囲スライダー、ブランドチェックボックス、カラー選択、レーティングフィルターなど、ECサイトに必要なフィルタリング機能を網羅。",
+          "useCases": [
+            "ECサイトの商品絞り込み",
+            "マーケットプレイスのフィルタリング"
+          ]
+        },
+        {
+          "name": "ShopSidebarFilter",
+          "path": "Forms/SidebarFilters/ShopSidebarFilter/",
+          "description": "モバイル対応のオーバーレイ式サイドバーフィルター。ボタンクリックで開閉し、各種フィルターオプションを表示。レスポンシブ対応で、デスクトップでは常時表示、モバイルではオーバーレイ表示。",
+          "useCases": ["ECサイトの商品フィルター", "検索結果の絞り込み"]
+        }
+      ]
+    },
+    {
+      "name": "Switches",
+      "path": "Forms/Switches/",
+      "components": [
+        {
+          "name": "AlertNotificationWithSwitch",
+          "path": "Forms/Switches/AlertNotificationWithSwitch/",
+          "description": "アラート通知の有効/無効をスイッチで切り替えるコンポーネント。アラートの説明文とスイッチが横並びになっている。",
+          "useCases": ["通知設定", "アラート管理", "警告表示の切り替え"]
+        },
+        {
+          "name": "GridSwitchesListing",
+          "path": "Forms/Switches/GridSwitchesListing/",
+          "description": "複数のスイッチ項目をグリッドレイアウトで表示するコンポーネント。各項目にアイコン、ラベル、スイッチが含まれる。",
+          "useCases": [
+            "機能のオン/オフ一括設定",
+            "権限設定",
+            "モジュール有効化"
+          ]
+        },
+        {
+          "name": "ListGroupWithSwitchesAndSelectSorting",
+          "path": "Forms/Switches/ListGroupWithSwitchesAndSelectSorting/",
+          "description": "各項目にスイッチが付いたリストグループと、ソート用のセレクトボックスを組み合わせたコンポーネント。",
+          "useCases": ["項目の並び替えと有効化", "設定管理"]
+        },
+        {
+          "name": "ListSwitchWithGrayBackgroundIcon",
+          "path": "Forms/Switches/ListSwitchWithGrayBackgroundIcon/",
+          "description": "グレー背景のアイコン、ラベル、スイッチを含むリスト項目。各項目が視覚的に区別しやすいデザイン。",
+          "useCases": ["設定項目一覧", "機能切り替え", "通知設定"]
+        },
+        {
+          "name": "NewsLetterSwitches",
+          "path": "Forms/Switches/NewsLetterSwitches/",
+          "description": "ニュースレターや通知の購読設定を管理するスイッチグループ。カテゴリー別の購読設定を個別に切り替えられる。",
+          "useCases": [
+            "メール配信設定",
+            "ニュースレター購読管理",
+            "通知カテゴリー設定"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TextareaInput",
+      "path": "Forms/TextareaInput/",
+      "components": [
+        {
+          "name": "CommentTextarea",
+          "path": "Forms/TextareaInput/CommentTextarea/",
+          "description": "コメントを投稿するためのシンプルなテキストエリア。ラベル、テキストエリア、投稿ボタンが含まれる。",
+          "useCases": ["コメント投稿", "フィードバック入力", "ディスカッション"]
+        },
+        {
+          "name": "InputSizeTextarea",
+          "path": "Forms/TextareaInput/InputSizeTextarea/",
+          "description": "入力内容に応じてサイズが自動調整されるテキストエリア。コンパクトな初期表示から入力に合わせて拡張する。",
+          "useCases": ["チャット入力", "クイックメモ", "コンパクトなコメント欄"]
+        },
+        {
+          "name": "InputSizeTextareaWithButtonGroup",
+          "path": "Forms/TextareaInput/InputSizeTextareaWithButtonGroup/",
+          "description": "自動サイズ調整機能と、書式設定ボタングループ（太字、斜体、リンクなど）を備えたテキストエリア。",
+          "useCases": [
+            "リッチテキスト入力",
+            "書式付きコメント",
+            "メッセージ作成"
+          ]
+        },
+        {
+          "name": "MainTextarea",
+          "path": "Forms/TextareaInput/MainTextarea/",
+          "description": "標準的なサイズのテキストエリアコンポーネント。ラベルとプレースホルダー付きの基本的なデザイン。",
+          "useCases": ["本文入力", "説明文入力", "詳細記入"]
+        },
+        {
+          "name": "ReplyWithRoundedButtons",
+          "path": "Forms/TextareaInput/ReplyWithRoundedButtons/",
+          "description": "返信入力用のテキストエリアと、丸みを帯びたアクションボタン（添付、絵文字など）を組み合わせたコンポーネント。",
+          "useCases": ["返信投稿", "メッセージ返信", "スレッド返信"]
+        },
+        {
+          "name": "TextareaInHiddenContent",
+          "path": "Forms/TextareaInput/TextareaInHiddenContent/",
+          "description": "初期状態では非表示で、ボタンクリックなどで展開されるテキストエリア。スペースを節約しながら必要時に入力欄を表示できる。",
+          "useCases": ["追加コメント入力", "詳細入力の展開", "オプショナル入力"]
+        },
+        {
+          "name": "TextareaWithRoundedButtons",
+          "path": "Forms/TextareaInput/TextareaWithRoundedButtons/",
+          "description": "テキストエリアの下部に丸ボタン（添付、絵文字、メンションなど）が配置されたコンポーネント。",
+          "useCases": ["チャット入力", "メッセージ作成", "SNS投稿"]
+        },
+        {
+          "name": "TextareaWithRoundedButtonsTogglesAndMagicAIButtons",
+          "path": "Forms/TextareaInput/TextareaWithRoundedButtonsTogglesAndMagicAIButtons/",
+          "description": "丸ボタン、トグルスイッチ、AI生成ボタン（Magic AI）を備えた高機能テキストエリア。AIによるテキスト生成や補完機能との連携を想定したデザイン。",
+          "useCases": ["AI支援ライティング", "スマート入力", "コンテンツ生成"]
+        }
+      ]
+    }
+  ]
+}
