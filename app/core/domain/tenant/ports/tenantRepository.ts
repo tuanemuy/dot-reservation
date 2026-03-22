@@ -11,6 +11,7 @@ import type {
 } from "@/core/domain/tenant/valueObject";
 
 export type TenantFilter = {
+  readonly keyword?: string;
   readonly status?: TenantStatus;
   readonly category?: TenantCategory;
 };

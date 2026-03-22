@@ -1,5 +1,5 @@
 import type { InferSelectModel } from "drizzle-orm";
-import { and, eq, like, or, sql } from "drizzle-orm";
+import { and, eq, inArray, like, or, sql } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
 import {
   invitations,
@@ -282,16 +282,17 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
       const tenantIds = items.map((item) => item.id);
       const allHolidays =
         tenantIds.length > 0
-          ? await this.executor.select().from(temporaryHolidays)
+          ? await this.executor
+              .select()
+              .from(temporaryHolidays)
+              .where(inArray(temporaryHolidays.tenantId, tenantIds))
           : [];
 
       const holidaysByTenantId = new Map<string, TemporaryHolidayDataModel[]>();
       for (const h of allHolidays) {
-        if (tenantIds.includes(h.tenantId)) {
-          const existing = holidaysByTenantId.get(h.tenantId) || [];
-          existing.push(h);
-          holidaysByTenantId.set(h.tenantId, existing);
-        }
+        const existing = holidaysByTenantId.get(h.tenantId) || [];
+        existing.push(h);
+        holidaysByTenantId.set(h.tenantId, existing);
       }
 
       return {

@@ -41,9 +41,13 @@ export async function resendInvitation({
     const newExpiresAt = new Date();
     newExpiresAt.setDate(newExpiresAt.getDate() + INVITATION_EXPIRY_DAYS);
 
-    const updatedInvitation = Invitation.resend(invitation, newExpiresAt);
+    const { entity: updatedInvitation, events } = Invitation.resend(
+      invitation,
+      newExpiresAt,
+    );
 
     await repositories.invitationRepository.save(updatedInvitation);
+    await repositories.outboxRepository.saveEvents(events);
 
     // Get tenant name for the email
     const tenant = await repositories.tenantRepository.findById(

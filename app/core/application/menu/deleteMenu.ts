@@ -13,14 +13,14 @@ export async function deleteMenu({
 }: ServiceArgs<DeleteMenuInput>): Promise<void> {
   const menuId = MenuId.create(input.menuId);
 
-  const existing = await container.menuRepository.findById(menuId);
-  if (!existing) {
-    throw new NotFoundError(NotFoundErrorCode.NotFound, "Menu not found");
-  }
-
-  const events = [MenuEvents.deleted(existing.id, existing.tenantId)];
-
   await container.unitOfWorkProvider.transaction(async (repositories) => {
+    const existing = await repositories.menuRepository.findById(menuId);
+    if (!existing) {
+      throw new NotFoundError(NotFoundErrorCode.NotFound, "Menu not found");
+    }
+
+    const events = [MenuEvents.deleted(existing.id, existing.tenantId)];
+
     await repositories.menuRepository.delete(menuId);
     await repositories.outboxRepository.saveEvents(events);
   });

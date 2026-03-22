@@ -1,5 +1,5 @@
 import type { InferSelectModel } from "drizzle-orm";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import {
   staffAssignedMenus,
   staffProfiles,
@@ -160,15 +160,14 @@ export class DrizzleSqliteStaffProfileRepository
       const profileIds = rows.map((row) => row.id);
       const allAssignedMenus = await this.executor
         .select()
-        .from(staffAssignedMenus);
+        .from(staffAssignedMenus)
+        .where(inArray(staffAssignedMenus.staffProfileId, profileIds));
 
       const menusByProfileId = new Map<string, StaffAssignedMenuDataModel[]>();
       for (const menu of allAssignedMenus) {
-        if (profileIds.includes(menu.staffProfileId)) {
-          const existing = menusByProfileId.get(menu.staffProfileId) || [];
-          existing.push(menu);
-          menusByProfileId.set(menu.staffProfileId, existing);
-        }
+        const existing = menusByProfileId.get(menu.staffProfileId) || [];
+        existing.push(menu);
+        menusByProfileId.set(menu.staffProfileId, existing);
       }
 
       return rows.map((row) =>
@@ -213,18 +212,17 @@ export class DrizzleSqliteStaffProfileRepository
       }
 
       // Get all assigned menus for the filtered profiles
+      const filteredProfileIds = filteredRows.map((row) => row.id);
       const allAssignedMenus = await this.executor
         .select()
-        .from(staffAssignedMenus);
+        .from(staffAssignedMenus)
+        .where(inArray(staffAssignedMenus.staffProfileId, filteredProfileIds));
 
-      const filteredProfileIds = filteredRows.map((row) => row.id);
       const menusByProfileId = new Map<string, StaffAssignedMenuDataModel[]>();
       for (const menu of allAssignedMenus) {
-        if (filteredProfileIds.includes(menu.staffProfileId)) {
-          const existing = menusByProfileId.get(menu.staffProfileId) || [];
-          existing.push(menu);
-          menusByProfileId.set(menu.staffProfileId, existing);
-        }
+        const existing = menusByProfileId.get(menu.staffProfileId) || [];
+        existing.push(menu);
+        menusByProfileId.set(menu.staffProfileId, existing);
       }
 
       return filteredRows.map((row) =>

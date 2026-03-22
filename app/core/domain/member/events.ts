@@ -38,13 +38,19 @@ export type InvitationDeclinedEvent = DomainEventBase<
   { invitationId: InvitationId; tenantId: TenantId }
 >;
 
+export type InvitationResentEvent = DomainEventBase<
+  "invitation.resent",
+  { invitationId: InvitationId; tenantId: TenantId; email: Email }
+>;
+
 export type MemberEvent =
   | MemberJoinedEvent
   | MemberRemovedEvent
   | MemberRoleChangedEvent
   | InvitationCreatedEvent
   | InvitationAcceptedEvent
-  | InvitationDeclinedEvent;
+  | InvitationDeclinedEvent
+  | InvitationResentEvent;
 
 export const MemberEvents = {
   joined: (
@@ -99,6 +105,16 @@ export const MemberEvents = {
   ): InvitationDeclinedEvent => ({
     type: "invitation.declined",
     payload: { invitationId, tenantId },
+    occurredAt: new Date(),
+  }),
+
+  invitationResent: (
+    invitationId: InvitationId,
+    tenantId: TenantId,
+    email: Email,
+  ): InvitationResentEvent => ({
+    type: "invitation.resent",
+    payload: { invitationId, tenantId, email },
     occurredAt: new Date(),
   }),
 };

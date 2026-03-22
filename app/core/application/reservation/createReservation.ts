@@ -4,6 +4,7 @@ import { MenuId } from "@/core/domain/menu/valueObject";
 import { Reservation } from "@/core/domain/reservation/entity";
 import { AvailabilityService } from "@/core/domain/reservation/services/availabilityService";
 import { StaffAssignmentService } from "@/core/domain/reservation/services/staffAssignmentService";
+import { StaffProfile } from "@/core/domain/staff/entity";
 import { StaffProfileId } from "@/core/domain/staff/valueObject";
 import { TenantId } from "@/core/domain/tenant/valueObject";
 import {
@@ -155,12 +156,24 @@ export async function createReservation({
           );
         }
 
-        // Get staff name
+        // Get staff profile and verify menu assignment
         const staffProfile =
           await repositories.staffProfileRepository.findById(staffProfileId);
-        if (staffProfile) {
-          staffName = staffProfile.displayName;
+        if (!staffProfile) {
+          throw new NotFoundError(
+            NotFoundErrorCode.NotFound,
+            "Staff profile not found",
+          );
         }
+
+        if (!StaffProfile.canHandleMenu(staffProfile, menuId)) {
+          throw new ValidationError(
+            ValidationErrorCode.InvalidInput,
+            "Staff is not assigned to handle this menu",
+          );
+        }
+
+        staffName = staffProfile.displayName;
       } else {
         // Auto-assign staff
         const staffProfiles =
@@ -196,9 +209,15 @@ export async function createReservation({
       // Get customer info
       const customer =
         await repositories.customerRepository.findById(customerId);
-      const customerName = customer?.displayName ?? null;
-      const customerEmail = customer?.email ?? null;
-      const customerPhoneNumber = customer?.phoneNumber ?? null;
+      if (!customer) {
+        throw new NotFoundError(
+          NotFoundErrorCode.NotFound,
+          "Customer not found",
+        );
+      }
+      const customerName = customer.displayName ?? null;
+      const customerEmail = customer.email ?? null;
+      const customerPhoneNumber = customer.phoneNumber ?? null;
 
       // Create reservation with menu snapshot
       const { entity: reservation, events } = Reservation.create({

@@ -218,7 +218,10 @@ const Invitation = {
     };
   },
 
-  resend: (invitation: Invitation, newExpiresAt: Date): Invitation => {
+  resend: (
+    invitation: Invitation,
+    newExpiresAt: Date,
+  ): WithEvents<Invitation, MemberEvent> => {
     if (invitation.status !== "pending") {
       throw new BusinessRuleError(
         MemberErrorCode.InvitationNotResendable,
@@ -227,10 +230,19 @@ const Invitation = {
     }
 
     return {
-      ...invitation,
-      status: "pending",
-      expiresAt: newExpiresAt,
-      updatedAt: new Date(),
+      entity: {
+        ...invitation,
+        status: "pending",
+        expiresAt: newExpiresAt,
+        updatedAt: new Date(),
+      },
+      events: [
+        MemberEvents.invitationResent(
+          invitation.id,
+          invitation.tenantId,
+          invitation.email,
+        ),
+      ],
     };
   },
 
