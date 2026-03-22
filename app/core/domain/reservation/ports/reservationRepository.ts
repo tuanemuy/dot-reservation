@@ -56,4 +56,5 @@ export interface ReservationRepository {
     year: number,
     month: number,
   ): Promise<number>;
+  findConfirmedEndedBefore(before: Date): Promise<Reservation[]>;
 }

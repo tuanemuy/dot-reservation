@@ -3,10 +3,15 @@ import type {
   PaginationResult,
 } from "@/core/domain/common/pagination";
 import type { Notification } from "@/core/domain/notification/entity";
-import type { RecipientType } from "@/core/domain/notification/valueObject";
+import type {
+  NotificationId,
+  NotificationType,
+  RecipientType,
+} from "@/core/domain/notification/valueObject";
 
 export interface NotificationRepository {
   save(notification: Notification): Promise<void>;
+  findById(id: NotificationId): Promise<Notification | null>;
   findByRecipient(
     recipientType: RecipientType,
     recipientId: string,
@@ -25,4 +30,5 @@ export interface NotificationRepository {
 
 export type NotificationFilter = {
   readonly isRead?: boolean;
+  readonly type?: NotificationType;
 };

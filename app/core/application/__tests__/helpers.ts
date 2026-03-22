@@ -9,9 +9,22 @@ import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { afterEach, beforeEach } from "vitest";
+import { DrizzleSqliteCustomerRepository } from "@/core/adapters/drizzleSqlite/repositories/customerRepository";
+import { DrizzleSqliteInvitationRepository } from "@/core/adapters/drizzleSqlite/repositories/invitationRepository";
+import { DrizzleSqliteMemberRepository } from "@/core/adapters/drizzleSqlite/repositories/memberRepository";
+import { DrizzleSqliteMenuRepository } from "@/core/adapters/drizzleSqlite/repositories/menuRepository";
+import { DrizzleSqliteNotificationPreferenceRepository } from "@/core/adapters/drizzleSqlite/repositories/notificationPreferenceRepository";
+import { DrizzleSqliteNotificationRepository } from "@/core/adapters/drizzleSqlite/repositories/notificationRepository";
+import { DrizzleSqliteReservationRepository } from "@/core/adapters/drizzleSqlite/repositories/reservationRepository";
+import { DrizzleSqliteShiftRepository } from "@/core/adapters/drizzleSqlite/repositories/shiftRepository";
+import { DrizzleSqliteShiftRequestRepository } from "@/core/adapters/drizzleSqlite/repositories/shiftRequestRepository";
+import { DrizzleSqliteStaffProfileRepository } from "@/core/adapters/drizzleSqlite/repositories/staffProfileRepository";
+import { DrizzleSqliteTenantRepository } from "@/core/adapters/drizzleSqlite/repositories/tenantRepository";
 import * as schema from "@/core/adapters/drizzleSqlite/schema";
 import { DrizzleSqliteUnitOfWorkProvider } from "@/core/adapters/drizzleSqlite/unitOfWork";
 import type { Container } from "@/core/application/container/server";
+import type { EmailSender as MemberEmailSender } from "@/core/domain/member/ports/emailSender";
+import type { EmailSender as NotificationEmailSender } from "@/core/domain/notification/ports/emailSender";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -119,7 +132,34 @@ export async function createTestContainer(
       ...options.config,
     },
     unitOfWorkProvider: new DrizzleSqliteUnitOfWorkProvider(dbWithCleanup.db),
-    // ... other adapters and services would be initialized here
+    customerRepository: new DrizzleSqliteCustomerRepository(dbWithCleanup.db),
+    tenantRepository: new DrizzleSqliteTenantRepository(dbWithCleanup.db),
+    memberRepository: new DrizzleSqliteMemberRepository(dbWithCleanup.db),
+    invitationRepository: new DrizzleSqliteInvitationRepository(
+      dbWithCleanup.db,
+    ),
+    menuRepository: new DrizzleSqliteMenuRepository(dbWithCleanup.db),
+    staffProfileRepository: new DrizzleSqliteStaffProfileRepository(
+      dbWithCleanup.db,
+    ),
+    shiftRepository: new DrizzleSqliteShiftRepository(dbWithCleanup.db),
+    shiftRequestRepository: new DrizzleSqliteShiftRequestRepository(
+      dbWithCleanup.db,
+    ),
+    reservationRepository: new DrizzleSqliteReservationRepository(
+      dbWithCleanup.db,
+    ),
+    notificationRepository: new DrizzleSqliteNotificationRepository(
+      dbWithCleanup.db,
+    ),
+    notificationPreferenceRepository:
+      new DrizzleSqliteNotificationPreferenceRepository(dbWithCleanup.db),
+    memberEmailSender: {
+      sendInvitationEmail: async () => {},
+    } as MemberEmailSender,
+    notificationEmailSender: {
+      sendNotificationEmail: async () => {},
+    } as NotificationEmailSender,
     // Test utilities
     db: dbWithCleanup.db,
     cleanup: async () => {

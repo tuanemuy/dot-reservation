@@ -19,5 +19,6 @@ export interface CustomerRepository {
 }
 
 export type CustomerFilter = {
+  readonly keyword?: string;
   readonly status?: "active" | "suspended";
 };

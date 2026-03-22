@@ -379,6 +379,35 @@ export class DrizzleSqliteReservationRepository
     }
   }
 
+  async findConfirmedEndedBefore(before: Date): Promise<ReservationType[]> {
+    try {
+      const beforeDateStr = this.formatDate(before);
+      const beforeHours = String(before.getHours()).padStart(2, "0");
+      const beforeMinutes = String(before.getMinutes()).padStart(2, "0");
+      const beforeTimeStr = `${beforeHours}:${beforeMinutes}`;
+
+      // Find confirmed reservations where date < before date,
+      // OR date = before date AND endTime <= before time
+      const rows = await this.executor
+        .select()
+        .from(reservations)
+        .where(
+          and(
+            eq(reservations.status, "confirmed"),
+            sql`(${reservations.date} < ${beforeDateStr} OR (${reservations.date} = ${beforeDateStr} AND ${reservations.endTime} <= ${beforeTimeStr}))`,
+          ),
+        );
+
+      return rows.map((row) => this.into(row));
+    } catch (error) {
+      throw new SystemError(
+        SystemErrorCode.DatabaseError,
+        "Failed to find confirmed reservations ended before date",
+        error,
+      );
+    }
+  }
+
   async countByTenantIdAndMonth(
     tenantId: TenantIdType,
     year: number,

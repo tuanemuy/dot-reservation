@@ -40,6 +40,28 @@ export class DrizzleSqliteNotificationRepository
     };
   }
 
+  async findById(id: NotificationIdType): Promise<NotificationType | null> {
+    try {
+      const rows = await this.executor
+        .select()
+        .from(notifications)
+        .where(eq(notifications.id, id))
+        .limit(1);
+
+      if (rows.length === 0) {
+        return null;
+      }
+
+      return this.into(rows[0]);
+    } catch (error) {
+      throw new SystemError(
+        SystemErrorCode.DatabaseError,
+        "Failed to find notification by id",
+        error,
+      );
+    }
+  }
+
   async save(notification: NotificationType): Promise<void> {
     try {
       await this.executor
@@ -95,6 +117,10 @@ export class DrizzleSqliteNotificationRepository
 
       if (filter.isRead !== undefined) {
         conditions.push(eq(notifications.isRead, filter.isRead ? 1 : 0));
+      }
+
+      if (filter.type !== undefined) {
+        conditions.push(eq(notifications.type, filter.type));
       }
 
       const whereClause = and(...conditions);
