@@ -5,4 +5,4 @@ import {
   route,
 } from "@react-router/dev/routes";
 
-export default [index("routes/ndex.tsx")] satisfies RouteConfig;
+export default [index("routes/index.tsx")] satisfies RouteConfig;
