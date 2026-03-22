@@ -56,6 +56,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "14:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 
@@ -100,6 +101,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "14:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 
@@ -144,6 +146,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "10:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 
@@ -204,6 +207,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "10:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 
@@ -245,6 +249,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "10:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 
@@ -287,6 +292,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "10:00",
         note: "New note",
+        modifiedBy: "admin",
       },
     });
 
@@ -333,6 +339,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "14:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(ConflictError);
@@ -369,6 +376,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "14:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(ConflictError);
@@ -405,6 +413,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "14:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(ConflictError);
@@ -459,6 +468,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "14:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(ConflictError);
@@ -479,6 +489,7 @@ describe("updateReservation", () => {
           date: formatDate(scenario.reservationDate),
           startTime: "10:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(NotFoundError);
@@ -515,6 +526,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "10:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(NotFoundError);
@@ -554,6 +566,7 @@ describe("updateReservation", () => {
           date: dateStr,
           startTime: "14:00",
           note: null,
+          modifiedBy: "admin",
         },
       }),
     ).rejects.toThrow(ConflictError);
@@ -593,6 +606,7 @@ describe("updateReservation", () => {
         date: dateStr,
         startTime: "10:00",
         note: null,
+        modifiedBy: "admin",
       },
     });
 

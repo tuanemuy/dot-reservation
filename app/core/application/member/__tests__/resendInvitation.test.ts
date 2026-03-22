@@ -235,7 +235,7 @@ describe("resendInvitation", () => {
       },
     });
 
-    // Cancel sets status to declined
+    // Cancel the invitation via the use case
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
         invResult.id as any,
@@ -243,7 +243,7 @@ describe("resendInvitation", () => {
       if (inv) {
         await repos.invitationRepository.save({
           ...inv,
-          status: "declined" as const,
+          status: "cancelled" as const,
           updatedAt: new Date(),
         });
       }

@@ -34,13 +34,13 @@ describe("cancelInvitation", () => {
       input: { invitationId: invResult.id },
     });
 
-    // Verify status changed (cancel sets to declined in current impl)
+    // Verify status changed to cancelled
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.invitationRepository.findById(invResult.id as any);
       },
     );
-    expect(invitation!.status).not.toBe("pending");
+    expect(invitation!.status).toBe("cancelled");
   });
 
   it("should throw when invitation is already accepted", async () => {
@@ -141,7 +141,7 @@ describe("cancelInvitation", () => {
     ).rejects.toThrow();
   });
 
-  it("should throw when invitation is expired", async () => {
+  it("should cancel an expired invitation", async () => {
     const container = getContainer();
     const { tenantId, adminMemberId } = await createTestTenant(container);
 
@@ -170,13 +170,19 @@ describe("cancelInvitation", () => {
       }
     });
 
-    await expect(
-      cancelInvitation({
-        container,
-        headers: createMockHeaders(),
-        input: { invitationId: invResult.id },
-      }),
-    ).rejects.toThrow();
+    await cancelInvitation({
+      container,
+      headers: createMockHeaders(),
+      input: { invitationId: invResult.id },
+    });
+
+    // Verify status changed to cancelled
+    const invitation = await container.unitOfWorkProvider.transaction(
+      async (repos) => {
+        return repos.invitationRepository.findById(invResult.id as any);
+      },
+    );
+    expect(invitation!.status).toBe("cancelled");
   });
 
   it("should throw NotFoundError for non-existent invitationId", async () => {

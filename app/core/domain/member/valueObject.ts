@@ -76,7 +76,12 @@ export const InvitationId = {
 };
 
 // InvitationStatus
-type InvitationStatus = "pending" | "accepted" | "declined" | "expired";
+type InvitationStatus =
+  | "pending"
+  | "accepted"
+  | "declined"
+  | "expired"
+  | "cancelled";
 
 export type { InvitationStatus };
 
@@ -86,7 +91,8 @@ export const InvitationStatus = {
       value !== "pending" &&
       value !== "accepted" &&
       value !== "declined" &&
-      value !== "expired"
+      value !== "expired" &&
+      value !== "cancelled"
     ) {
       throw new BusinessRuleError(
         MemberErrorCode.InvalidInvitationStatus,
@@ -103,4 +109,6 @@ export const InvitationStatus = {
     status === "declined",
   isExpired: (status: InvitationStatus): status is "expired" =>
     status === "expired",
+  isCancelled: (status: InvitationStatus): status is "cancelled" =>
+    status === "cancelled",
 };

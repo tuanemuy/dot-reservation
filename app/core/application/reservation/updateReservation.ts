@@ -8,6 +8,8 @@ import { StaffProfileId } from "@/core/domain/staff/valueObject";
 import {
   ConflictError,
   ConflictErrorCode,
+  ForbiddenError,
+  ForbiddenErrorCode,
   NotFoundError,
   NotFoundErrorCode,
 } from "../error";
@@ -20,6 +22,7 @@ export type UpdateReservationInput = {
   date: string;
   startTime: string;
   note: string | null;
+  modifiedBy: "customer" | "admin" | "staff";
 };
 
 export type UpdateReservationOutput = {
@@ -71,6 +74,33 @@ export async function updateReservation({
           ConflictErrorCode.Conflict,
           "Only confirmed or pending reservations can be modified",
         );
+      }
+
+      // Customer modification: check deadline
+      if (input.modifiedBy === "customer") {
+        const tenantForCheck = await repositories.tenantRepository.findById(
+          reservation.tenantId,
+        );
+        if (!tenantForCheck) {
+          throw new NotFoundError(
+            NotFoundErrorCode.NotFound,
+            "Tenant not found",
+          );
+        }
+
+        const now = new Date();
+        const canModify = Reservation.canModify(
+          reservation,
+          tenantForCheck.reservationSettings,
+          now,
+        );
+
+        if (!canModify) {
+          throw new ForbiddenError(
+            ForbiddenErrorCode.InsufficientPermissions,
+            "Modification deadline has passed",
+          );
+        }
       }
 
       // Fetch menu for snapshot update

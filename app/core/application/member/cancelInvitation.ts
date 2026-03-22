@@ -1,11 +1,6 @@
 import { Invitation } from "@/core/domain/member/entity";
 import { InvitationId } from "@/core/domain/member/valueObject";
-import {
-  ConflictError,
-  ConflictErrorCode,
-  NotFoundError,
-  NotFoundErrorCode,
-} from "../error";
+import { NotFoundError, NotFoundErrorCode } from "../error";
 import type { ServiceArgs } from "../types";
 
 export type CancelInvitationInput = {
@@ -25,14 +20,6 @@ export async function cancelInvitation({
       throw new NotFoundError(
         NotFoundErrorCode.NotFound,
         "Invitation not found",
-      );
-    }
-
-    // Expired invitations cannot be cancelled
-    if (Invitation.isExpired(invitation)) {
-      throw new ConflictError(
-        ConflictErrorCode.Conflict,
-        "Expired invitations cannot be cancelled",
       );
     }
 

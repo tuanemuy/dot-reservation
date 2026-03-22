@@ -7,7 +7,7 @@
 | テナントメンバー（Member） | テナントに所属するユーザー。管理者またはスタッフロールを持つ |
 | メンバーロール（MemberRole） | テナント内での権限（管理者 / スタッフ） |
 | 招待（Invitation） | テナントへの参加招待 |
-| 招待ステータス（InvitationStatus） | 招待の状態（承認待ち / 承認済み / 辞退 / 期限切れ） |
+| 招待ステータス（InvitationStatus） | 招待の状態（承認待ち / 承認済み / 辞退 / 期限切れ / 取り消し） |
 
 ## エンティティ
 
@@ -65,7 +65,7 @@
 | MemberName | string (branded) | 1〜50文字 |
 | MemberRole | "admin" \| "staff" | — |
 | InvitationId | string (branded) | UUID形式 |
-| InvitationStatus | "pending" \| "accepted" \| "declined" \| "expired" | — |
+| InvitationStatus | "pending" \| "accepted" \| "declined" \| "expired" \| "cancelled" | — |
 
 ## ドメインサービス
 
@@ -106,6 +106,7 @@
 - `findById(id: InvitationId): Promise<Invitation | null>`
 - `findByTenantId(tenantId: TenantId): Promise<Invitation[]>`
 - `findPendingByEmail(email: Email): Promise<Invitation[]>`
+- `findByInvitedBy(memberId: MemberId): Promise<Invitation[]>`
 - `delete(id: InvitationId): Promise<void>`
 
 ### EmailSender

@@ -97,6 +97,7 @@
 - `countByCustomerIdAndStatusAndDateAfter(customerId: CustomerId, status: ReservationStatus, date: Date): Promise<number>`
 - `countByTenantId(tenantId: TenantId): Promise<number>`
 - `countByTenantIdAndMonth(tenantId: TenantId, year: number, month: number): Promise<number>`
+- `findConfirmedEndedBefore(before: Date): Promise<Reservation[]>`
 
 ## ユースケース（概要）
 

@@ -1,4 +1,3 @@
-import { Invitation } from "@/core/domain/member/entity";
 import { InvitationId } from "@/core/domain/member/valueObject";
 import {
   ConflictError,
@@ -32,18 +31,14 @@ export async function resendInvitation({
 
     // Only pending or expired invitations can be resent
     if (
-      invitation.status !== "pending" ||
-      (!Invitation.isPending(invitation) && !Invitation.isExpired(invitation))
+      invitation.status === "accepted" ||
+      invitation.status === "declined" ||
+      invitation.status === "cancelled"
     ) {
-      if (
-        invitation.status === "accepted" ||
-        invitation.status === "declined"
-      ) {
-        throw new ConflictError(
-          ConflictErrorCode.Conflict,
-          "Only pending or expired invitations can be resent",
-        );
-      }
+      throw new ConflictError(
+        ConflictErrorCode.Conflict,
+        "Only pending or expired invitations can be resent",
+      );
     }
 
     // Reset expiry date

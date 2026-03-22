@@ -211,7 +211,7 @@ export const Invitation = {
     return {
       entity: {
         ...invitation,
-        status: "declined",
+        status: "cancelled",
         updatedAt: new Date(),
       },
       events: [],
