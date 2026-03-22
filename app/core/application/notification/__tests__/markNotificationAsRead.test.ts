@@ -116,9 +116,7 @@ describe("markNotificationAsRead", () => {
 
     // Count before
     const before = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -136,9 +134,7 @@ describe("markNotificationAsRead", () => {
 
     // Count after
     const after = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -165,9 +161,7 @@ describe("markNotificationAsRead", () => {
 
     // Count before
     const before = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -185,9 +179,7 @@ describe("markNotificationAsRead", () => {
 
     // Count should not change
     const after = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",

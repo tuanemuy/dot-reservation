@@ -30,6 +30,7 @@ export async function listTenants({
   input,
 }: ServiceArgs<ListTenantsInput>): Promise<ListTenantsOutput> {
   const filter: TenantFilter = {
+    ...(input.keyword ? { keyword: input.keyword } : {}),
     ...(input.status ? { status: TenantStatus.create(input.status) } : {}),
     ...(input.category
       ? { category: TenantCategory.create(input.category) }
@@ -47,7 +48,7 @@ export async function listTenants({
     },
   );
 
-  let items = result.items.map((tenant) => ({
+  const items = result.items.map((tenant) => ({
     id: tenant.id as string,
     name: tenant.name as string,
     category: tenant.category as string,
@@ -55,13 +56,6 @@ export async function listTenants({
     status: tenant.status,
     createdAt: tenant.createdAt.toISOString(),
   }));
-
-  // Client-side keyword filtering
-  // In a production system, this would be handled at the repository level
-  if (input.keyword) {
-    const keyword = input.keyword.toLowerCase();
-    items = items.filter((item) => item.name.toLowerCase().includes(keyword));
-  }
 
   return {
     items,

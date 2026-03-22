@@ -218,6 +218,22 @@ const Invitation = {
     };
   },
 
+  resend: (invitation: Invitation, newExpiresAt: Date): Invitation => {
+    if (invitation.status !== "pending") {
+      throw new BusinessRuleError(
+        MemberErrorCode.InvitationNotResendable,
+        "Only pending or expired invitations can be resent",
+      );
+    }
+
+    return {
+      ...invitation,
+      status: "pending",
+      expiresAt: newExpiresAt,
+      updatedAt: new Date(),
+    };
+  },
+
   isExpired: (invitation: Invitation): boolean => {
     return new Date() > invitation.expiresAt;
   },

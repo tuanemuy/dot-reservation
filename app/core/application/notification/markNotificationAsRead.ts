@@ -1,5 +1,4 @@
 import { isBusinessRuleError } from "@/core/domain/error";
-import type { Notification as DomainNotification } from "@/core/domain/notification/entity";
 import { Notification as NotificationEntity } from "@/core/domain/notification/entity";
 import { NotificationErrorCode } from "@/core/domain/notification/errorCode";
 import { NotificationId } from "@/core/domain/notification/valueObject";
@@ -19,11 +18,8 @@ export async function markNotificationAsRead({
   const notificationId = NotificationId.create(input.notificationId);
 
   await container.unitOfWorkProvider.transaction(async (repositories) => {
-    // findById returns the domain Notification type, but due to global DOM
-    // Notification type collision, we cast to the domain type explicitly
-    const notification = (await repositories.notificationRepository.findById(
-      notificationId,
-    )) as DomainNotification | null;
+    const notification =
+      await repositories.notificationRepository.findById(notificationId);
     if (!notification) {
       throw new NotFoundError(
         NotFoundErrorCode.NotFound,
@@ -33,9 +29,7 @@ export async function markNotificationAsRead({
 
     try {
       const updatedNotification = NotificationEntity.markAsRead(notification);
-      await repositories.notificationRepository.save(
-        updatedNotification as never,
-      );
+      await repositories.notificationRepository.save(updatedNotification);
     } catch (error: unknown) {
       // If already read, treat as success per specification
       if (

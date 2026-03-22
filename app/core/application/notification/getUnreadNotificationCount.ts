@@ -1,5 +1,5 @@
-import type { NotificationRepository } from "@/core/domain/notification/ports/notificationRepository";
 import type { RecipientType } from "@/core/domain/notification/valueObject";
+import type { ServiceArgs } from "../types";
 
 export type GetUnreadNotificationCountInput = {
   recipientType: string;
@@ -10,18 +10,10 @@ export type GetUnreadNotificationCountOutput = {
   count: number;
 };
 
-type GetUnreadNotificationCountArgs = {
-  container: {
-    notificationRepository: NotificationRepository;
-  };
-  headers: Headers;
-  input: GetUnreadNotificationCountInput;
-};
-
 export async function getUnreadNotificationCount({
   container,
   input,
-}: GetUnreadNotificationCountArgs): Promise<GetUnreadNotificationCountOutput> {
+}: ServiceArgs<GetUnreadNotificationCountInput>): Promise<GetUnreadNotificationCountOutput> {
   const recipientType = input.recipientType as RecipientType;
 
   const count = await container.notificationRepository.countUnreadByRecipient(

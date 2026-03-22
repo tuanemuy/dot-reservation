@@ -40,14 +40,7 @@ describe("getUnreadNotificationCount", () => {
     type = "reservation_reminder",
   ) {
     return createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType,
@@ -102,9 +95,7 @@ describe("getUnreadNotificationCount", () => {
     }
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -126,9 +117,7 @@ describe("getUnreadNotificationCount", () => {
     });
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -155,9 +144,7 @@ describe("getUnreadNotificationCount", () => {
     });
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -173,9 +160,7 @@ describe("getUnreadNotificationCount", () => {
     const customerId = await insertCustomer(container.db);
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -209,9 +194,7 @@ describe("getUnreadNotificationCount", () => {
     });
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -228,9 +211,7 @@ describe("getUnreadNotificationCount", () => {
 
     // Count before
     const before = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -244,9 +225,7 @@ describe("getUnreadNotificationCount", () => {
 
     // Count after
     const after = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -281,9 +260,7 @@ describe("getUnreadNotificationCount", () => {
     });
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -314,9 +291,7 @@ describe("getUnreadNotificationCount", () => {
     });
 
     const result = await getUnreadNotificationCount({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "member",

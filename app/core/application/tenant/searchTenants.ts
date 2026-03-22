@@ -31,6 +31,7 @@ export async function searchTenants({
 }: ServiceArgs<SearchTenantsInput>): Promise<SearchTenantsOutput> {
   const filter: TenantFilter = {
     status: "active",
+    ...(input.keyword ? { keyword: input.keyword } : {}),
     ...(input.category
       ? { category: TenantCategory.create(input.category) }
       : {}),
@@ -47,7 +48,7 @@ export async function searchTenants({
     },
   );
 
-  let items = result.items.map((tenant) => ({
+  const items = result.items.map((tenant) => ({
     id: tenant.id as string,
     name: tenant.name as string,
     category: tenant.category as string,
@@ -55,22 +56,6 @@ export async function searchTenants({
     imageUrls: [...tenant.imageUrls],
     description: tenant.description as string | null,
   }));
-
-  // Client-side filtering for keyword and area
-  // In a production system, these would be handled at the repository level
-  if (input.keyword) {
-    const keyword = input.keyword.toLowerCase();
-    items = items.filter(
-      (item) =>
-        item.name.toLowerCase().includes(keyword) ||
-        (item.description?.toLowerCase().includes(keyword) ?? false),
-    );
-  }
-
-  if (input.area) {
-    // Area filtering would ideally be done at the repository level
-    // This is a placeholder for when area-based search is implemented
-  }
 
   return {
     items,

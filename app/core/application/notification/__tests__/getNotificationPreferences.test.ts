@@ -51,10 +51,7 @@ describe("getNotificationPreferences", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -74,10 +71,7 @@ describe("getNotificationPreferences", () => {
     const recipientId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -111,10 +105,7 @@ describe("getNotificationPreferences", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -142,10 +133,7 @@ describe("getNotificationPreferences", () => {
     const customerId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -161,10 +149,7 @@ describe("getNotificationPreferences", () => {
     const memberId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "member",
@@ -182,10 +167,7 @@ describe("getNotificationPreferences", () => {
     const recipientId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -202,10 +184,7 @@ describe("getNotificationPreferences", () => {
     const recipientId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -222,10 +201,7 @@ describe("getNotificationPreferences", () => {
     const recipientId = uuidv7();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",

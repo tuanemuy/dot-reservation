@@ -1,5 +1,5 @@
-import type { StaffProfileRepository } from "@/core/domain/staff/ports/staffProfileRepository";
 import { TenantId } from "@/core/domain/tenant/valueObject";
+import type { ServiceArgs } from "../types";
 
 export type ListStaffProfilesInput = {
   tenantId: string;
@@ -15,18 +15,10 @@ export type ListStaffProfilesOutput = {
   items: StaffProfileSummary[];
 };
 
-type ListStaffProfilesArgs = {
-  container: {
-    staffProfileRepository: StaffProfileRepository;
-  };
-  headers: Headers;
-  input: ListStaffProfilesInput;
-};
-
 export async function listStaffProfiles({
   container,
   input,
-}: ListStaffProfilesArgs): Promise<ListStaffProfilesOutput> {
+}: ServiceArgs<ListStaffProfilesInput>): Promise<ListStaffProfilesOutput> {
   const tenantId = TenantId.create(input.tenantId);
 
   const staffProfiles =

@@ -1,15 +1,11 @@
-import type { CustomerRepository } from "@/core/domain/customer/ports/customerRepository";
 import { CustomerId } from "@/core/domain/customer/valueObject";
-import type { MemberRepository } from "@/core/domain/member/ports/memberRepository";
 import { MemberId } from "@/core/domain/member/valueObject";
-import type { Notification as DomainNotification } from "@/core/domain/notification/entity";
 import { Notification as NotificationEntity } from "@/core/domain/notification/entity";
-import type { EmailSender } from "@/core/domain/notification/ports/emailSender";
-import type { NotificationPreferenceRepository } from "@/core/domain/notification/ports/notificationPreferenceRepository";
 import type {
   NotificationType as NotificationTypeVO,
   RecipientType,
 } from "@/core/domain/notification/valueObject";
+import type { Container } from "../container/server";
 import type { ServiceArgs } from "../types";
 
 /**
@@ -37,22 +33,10 @@ export type CreateNotificationOutput = {
   id: string;
 };
 
-type CreateNotificationArgs = {
-  container: {
-    unitOfWorkProvider: ServiceArgs["container"]["unitOfWorkProvider"];
-    notificationPreferenceRepository: NotificationPreferenceRepository;
-    emailSender: EmailSender;
-    customerRepository: CustomerRepository;
-    memberRepository: MemberRepository;
-  };
-  headers: Headers;
-  input: CreateNotificationInput;
-};
-
 export async function createNotification({
   container,
   input,
-}: CreateNotificationArgs): Promise<CreateNotificationOutput> {
+}: ServiceArgs<CreateNotificationInput>): Promise<CreateNotificationOutput> {
   const recipientType = input.recipientType as RecipientType;
   const notificationType = input.type as NotificationTypeVO;
 
@@ -89,7 +73,7 @@ export async function createNotification({
     return { id: "" };
   }
 
-  const notification: DomainNotification = NotificationEntity.create({
+  const notification = NotificationEntity.create({
     recipientType,
     recipientId: input.recipientId,
     type: notificationType,
@@ -101,11 +85,7 @@ export async function createNotification({
 
   if (shouldCreateInApp) {
     await container.unitOfWorkProvider.transaction(async (repositories) => {
-      await repositories.notificationRepository.save(
-        // Domain Notification type collision with global DOM Notification type
-        // The structural types are compatible at runtime
-        notification as never,
-      );
+      await repositories.notificationRepository.save(notification);
     });
   }
 
@@ -116,10 +96,9 @@ export async function createNotification({
       input.recipientId,
     );
     if (email) {
-      await container.emailSender.sendNotificationEmail(
+      await container.notificationEmailSender.sendNotificationEmail(
         email,
-        // Domain Notification type collision with global DOM Notification type
-        notification as never,
+        notification,
       );
     }
   }
@@ -130,7 +109,7 @@ export async function createNotification({
 }
 
 async function resolveRecipientEmail(
-  container: CreateNotificationArgs["container"],
+  container: Container,
   recipientType: RecipientType,
   recipientId: string,
 ): Promise<string | null> {

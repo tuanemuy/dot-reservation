@@ -76,22 +76,20 @@ export async function updateReservation({
         );
       }
 
+      // Get tenant for reservation settings and deadline check
+      const tenant = await repositories.tenantRepository.findById(
+        reservation.tenantId,
+      );
+      if (!tenant) {
+        throw new NotFoundError(NotFoundErrorCode.NotFound, "Tenant not found");
+      }
+
       // Customer modification: check deadline
       if (input.modifiedBy === "customer") {
-        const tenantForCheck = await repositories.tenantRepository.findById(
-          reservation.tenantId,
-        );
-        if (!tenantForCheck) {
-          throw new NotFoundError(
-            NotFoundErrorCode.NotFound,
-            "Tenant not found",
-          );
-        }
-
         const now = new Date();
         const canModify = Reservation.canModify(
           reservation,
-          tenantForCheck.reservationSettings,
+          tenant.reservationSettings,
           now,
         );
 
@@ -114,14 +112,6 @@ export async function updateReservation({
       const endMinutes = startMinutes + menu.duration;
       const endTimeStr = minutesToTimeOfDay(endMinutes);
       const endTime = TimeOfDay.create(endTimeStr);
-
-      // Get tenant for reservation settings
-      const tenant = await repositories.tenantRepository.findById(
-        reservation.tenantId,
-      );
-      if (!tenant) {
-        throw new NotFoundError(NotFoundErrorCode.NotFound, "Tenant not found");
-      }
 
       // Get shifts and reservations for availability check
       const shifts =

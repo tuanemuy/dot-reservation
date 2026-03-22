@@ -53,10 +53,7 @@ describe("updateNotificationPreference", () => {
     });
 
     await updateNotificationPreference({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -68,10 +65,7 @@ describe("updateNotificationPreference", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -98,10 +92,7 @@ describe("updateNotificationPreference", () => {
     });
 
     await updateNotificationPreference({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -113,10 +104,7 @@ describe("updateNotificationPreference", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -143,10 +131,7 @@ describe("updateNotificationPreference", () => {
     });
 
     await updateNotificationPreference({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -158,10 +143,7 @@ describe("updateNotificationPreference", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -188,10 +170,7 @@ describe("updateNotificationPreference", () => {
     });
 
     await updateNotificationPreference({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -203,10 +182,7 @@ describe("updateNotificationPreference", () => {
     });
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -243,10 +219,7 @@ describe("updateNotificationPreference", () => {
 
     for (const type of allTypes) {
       await updateNotificationPreference({
-        container: {
-          notificationPreferenceRepository:
-            container.notificationPreferenceRepository,
-        },
+        container,
         headers: createMockHeaders(),
         input: {
           recipientType: "customer",
@@ -259,10 +232,7 @@ describe("updateNotificationPreference", () => {
     }
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -292,10 +262,7 @@ describe("updateNotificationPreference", () => {
     for (const type of importantTypes) {
       await expect(
         updateNotificationPreference({
-          container: {
-            notificationPreferenceRepository:
-              container.notificationPreferenceRepository,
-          },
+          container,
           headers: createMockHeaders(),
           input: {
             recipientType: "customer",
@@ -316,10 +283,7 @@ describe("updateNotificationPreference", () => {
     // No existing preference - should create a new one
     await expect(
       updateNotificationPreference({
-        container: {
-          notificationPreferenceRepository:
-            container.notificationPreferenceRepository,
-        },
+        container,
         headers: createMockHeaders(),
         input: {
           recipientType: "customer",
@@ -332,10 +296,7 @@ describe("updateNotificationPreference", () => {
     ).resolves.toBeUndefined();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -358,10 +319,7 @@ describe("updateNotificationPreference", () => {
     // Email can be disabled for important types (only in_app is protected)
     await expect(
       updateNotificationPreference({
-        container: {
-          notificationPreferenceRepository:
-            container.notificationPreferenceRepository,
-        },
+        container,
         headers: createMockHeaders(),
         input: {
           recipientType: "customer",
@@ -374,10 +332,7 @@ describe("updateNotificationPreference", () => {
     ).resolves.toBeUndefined();
 
     const result = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -406,10 +361,7 @@ describe("updateNotificationPreference", () => {
     // Update to same value
     await expect(
       updateNotificationPreference({
-        container: {
-          notificationPreferenceRepository:
-            container.notificationPreferenceRepository,
-        },
+        container,
         headers: createMockHeaders(),
         input: {
           recipientType: "customer",
@@ -428,10 +380,7 @@ describe("updateNotificationPreference", () => {
 
     // Get initial preferences (all defaults)
     const before = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -446,10 +395,7 @@ describe("updateNotificationPreference", () => {
 
     // Update
     await updateNotificationPreference({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -462,10 +408,7 @@ describe("updateNotificationPreference", () => {
 
     // Verify update is reflected
     const after = await getNotificationPreferences({
-      container: {
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",

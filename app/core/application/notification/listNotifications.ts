@@ -1,9 +1,8 @@
-import type { Notification as DomainNotification } from "@/core/domain/notification/entity";
-import type { NotificationRepository } from "@/core/domain/notification/ports/notificationRepository";
 import type {
   NotificationType as NotificationTypeVO,
   RecipientType,
 } from "@/core/domain/notification/valueObject";
+import type { ServiceArgs } from "../types";
 
 export type ListNotificationsInput = {
   recipientType: string;
@@ -29,18 +28,10 @@ export type ListNotificationsOutput = {
   totalCount: number;
 };
 
-type ListNotificationsArgs = {
-  container: {
-    notificationRepository: NotificationRepository;
-  };
-  headers: Headers;
-  input: ListNotificationsInput;
-};
-
 export async function listNotifications({
   container,
   input,
-}: ListNotificationsArgs): Promise<ListNotificationsOutput> {
+}: ServiceArgs<ListNotificationsInput>): Promise<ListNotificationsOutput> {
   const recipientType = input.recipientType as RecipientType;
 
   const result = await container.notificationRepository.findByRecipient(
@@ -57,11 +48,8 @@ export async function listNotifications({
     },
   );
 
-  // Cast items due to global DOM Notification type collision
-  const items = result.items as readonly DomainNotification[];
-
   return {
-    items: items.map((notification) => ({
+    items: result.items.map((notification) => ({
       id: notification.id,
       type: notification.type,
       title: notification.title,

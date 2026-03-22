@@ -122,14 +122,7 @@ describe("createNotification", () => {
     });
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -175,12 +168,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -208,12 +197,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -244,14 +229,7 @@ describe("createNotification", () => {
     const customerId = await insertCustomer(container.db);
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -277,14 +255,7 @@ describe("createNotification", () => {
     const memberId = await insertMember(container.db);
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "member",
@@ -310,14 +281,7 @@ describe("createNotification", () => {
     const customerId = await insertCustomer(container.db);
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -344,14 +308,7 @@ describe("createNotification", () => {
     const customerId = await insertCustomer(container.db);
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -394,14 +351,7 @@ describe("createNotification", () => {
     });
 
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -445,12 +395,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -476,12 +422,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -528,12 +470,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -574,12 +512,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -627,12 +561,8 @@ describe("createNotification", () => {
     const sendSpy = vi.fn();
     const result = await createNotification({
       container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: { sendNotificationEmail: sendSpy },
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
+        ...container,
+        notificationEmailSender: { sendNotificationEmail: sendSpy },
       },
       headers: createMockHeaders(),
       input: {
@@ -664,14 +594,7 @@ describe("createNotification", () => {
 
     const longTitle = "A".repeat(1000);
     const result = await createNotification({
-      container: {
-        unitOfWorkProvider: container.unitOfWorkProvider,
-        notificationPreferenceRepository:
-          container.notificationPreferenceRepository,
-        emailSender: container.notificationEmailSender,
-        customerRepository: container.customerRepository,
-        memberRepository: container.memberRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",

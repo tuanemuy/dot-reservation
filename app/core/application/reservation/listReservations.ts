@@ -98,47 +98,41 @@ export async function listReservations({
     limit: input.limit,
   };
 
-  if (input.customerId) {
-    const customerId = CustomerId.create(input.customerId);
-    const result = await container.reservationRepository.findByCustomerId(
-      customerId,
-      filter,
-      pagination,
-    );
-    return {
-      items: result.items.map(toReservationSummary),
-      totalCount: result.total,
-    };
-  }
+  const result = await container.unitOfWorkProvider.transaction(
+    async (repositories) => {
+      if (input.customerId) {
+        const customerId = CustomerId.create(input.customerId);
+        return repositories.reservationRepository.findByCustomerId(
+          customerId,
+          filter,
+          pagination,
+        );
+      }
 
-  if (input.staffProfileId) {
-    const staffProfileId = StaffProfileId.create(input.staffProfileId);
-    const result = await container.reservationRepository.findByStaffProfileId(
-      staffProfileId,
-      filter,
-      pagination,
-    );
-    return {
-      items: result.items.map(toReservationSummary),
-      totalCount: result.total,
-    };
-  }
+      if (input.staffProfileId) {
+        const staffProfileId = StaffProfileId.create(input.staffProfileId);
+        return repositories.reservationRepository.findByStaffProfileId(
+          staffProfileId,
+          filter,
+          pagination,
+        );
+      }
 
-  if (input.tenantId) {
-    const tenantId = TenantId.create(input.tenantId);
-    const result = await container.reservationRepository.findByTenantId(
-      tenantId,
-      filter,
-      pagination,
-    );
-    return {
-      items: result.items.map(toReservationSummary),
-      totalCount: result.total,
-    };
-  }
+      if (input.tenantId) {
+        const tenantId = TenantId.create(input.tenantId);
+        return repositories.reservationRepository.findByTenantId(
+          tenantId,
+          filter,
+          pagination,
+        );
+      }
+
+      return { items: [] as const, total: 0 };
+    },
+  );
 
   return {
-    items: [],
-    totalCount: 0,
+    items: result.items.map(toReservationSummary),
+    totalCount: result.total,
   };
 }

@@ -41,8 +41,12 @@ export async function getReservation({
 }: ServiceArgs<GetReservationInput>): Promise<GetReservationOutput> {
   const reservationId = ReservationId.create(input.reservationId);
 
-  const reservation =
-    await container.reservationRepository.findById(reservationId);
+  const reservation = await container.unitOfWorkProvider.transaction(
+    async (repositories) => {
+      return repositories.reservationRepository.findById(reservationId);
+    },
+  );
+
   if (!reservation) {
     throw new NotFoundError(
       NotFoundErrorCode.NotFound,

@@ -21,17 +21,6 @@ export async function createCustomer({
 }: ServiceArgs<CreateCustomerInput>): Promise<CreateCustomerOutput> {
   const email = Email.create(input.email);
 
-  // Check for duplicate authUserId
-  const existing = await container.customerRepository.findByAuthUserId(
-    input.authUserId,
-  );
-  if (existing) {
-    throw new ConflictError(
-      ConflictErrorCode.Conflict,
-      "Customer with this authUserId already exists",
-    );
-  }
-
   const { entity: customer, events } = Customer.create({
     authUserId: input.authUserId,
     displayName: input.displayName,
@@ -40,6 +29,17 @@ export async function createCustomer({
   });
 
   await container.unitOfWorkProvider.transaction(async (repositories) => {
+    // Check for duplicate authUserId within the transaction
+    const existing = await repositories.customerRepository.findByAuthUserId(
+      input.authUserId,
+    );
+    if (existing) {
+      throw new ConflictError(
+        ConflictErrorCode.Conflict,
+        "Customer with this authUserId already exists",
+      );
+    }
+
     await repositories.customerRepository.save(customer);
     await repositories.outboxRepository.saveEvents(events);
   });

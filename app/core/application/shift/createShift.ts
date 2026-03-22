@@ -61,17 +61,6 @@ export async function createShift({
   const timeRange = TimeRange.create({ start: startTime, end: endTime });
   const baseDate = parseDate(input.date);
 
-  // Validate tenant exists and get business hours
-  const tenant = await container.unitOfWorkProvider.transaction(
-    async (repositories) => {
-      const t = await repositories.tenantRepository.findById(tenantId);
-      if (!t) {
-        throw new NotFoundError(NotFoundErrorCode.NotFound, "Tenant not found");
-      }
-      return t;
-    },
-  );
-
   // Build list of dates for shift creation
   const dates: Date[] = [baseDate];
 
@@ -90,78 +79,80 @@ export async function createShift({
     }
   }
 
-  // Validate business hours for all dates
-  for (const date of dates) {
-    const dailyHours =
-      tenant.businessHours[date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6];
-    if (dailyHours === null) {
-      throw new ValidationError(
-        ValidationErrorCode.InvalidInput,
-        `Shift date ${date.toISOString().split("T")[0]} is not a business day`,
-      );
-    }
-
-    // Check that shift time is within business hours
-    if (
-      TimeOfDay.compare(startTime, dailyHours.open) < 0 ||
-      TimeOfDay.compare(endTime, dailyHours.close) > 0
-    ) {
-      throw new ValidationError(
-        ValidationErrorCode.InvalidInput,
-        `Shift time is outside business hours on ${date.toISOString().split("T")[0]}`,
-      );
-    }
-  }
-
   const recurringGroupId = input.recurring ? RecurringGroupId.generate() : null;
 
-  // Get existing shifts for conflict checking
-  const minDate = dates[0];
-  const maxDate = dates[dates.length - 1];
-  const existingShifts = await container.unitOfWorkProvider.transaction(
+  // Execute all reads and writes in a single transaction for consistency
+  const shiftIds = await container.unitOfWorkProvider.transaction(
     async (repositories) => {
-      return repositories.shiftRepository.findByStaffProfileIdAndDateRange(
-        staffProfileId,
-        minDate,
-        maxDate,
-      );
+      // Validate tenant exists and get business hours
+      const tenant = await repositories.tenantRepository.findById(tenantId);
+      if (!tenant) {
+        throw new NotFoundError(NotFoundErrorCode.NotFound, "Tenant not found");
+      }
+
+      // Validate business hours for all dates
+      for (const date of dates) {
+        const dailyHours =
+          tenant.businessHours[date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6];
+        if (dailyHours === null) {
+          throw new ValidationError(
+            ValidationErrorCode.InvalidInput,
+            `Shift date ${date.toISOString().split("T")[0]} is not a business day`,
+          );
+        }
+
+        if (
+          TimeOfDay.compare(startTime, dailyHours.open) < 0 ||
+          TimeOfDay.compare(endTime, dailyHours.close) > 0
+        ) {
+          throw new ValidationError(
+            ValidationErrorCode.InvalidInput,
+            `Shift time is outside business hours on ${date.toISOString().split("T")[0]}`,
+          );
+        }
+      }
+
+      // Get existing shifts for conflict checking
+      const minDate = dates[0];
+      const maxDate = dates[dates.length - 1];
+      const existingShifts =
+        await repositories.shiftRepository.findByStaffProfileIdAndDateRange(
+          staffProfileId,
+          minDate,
+          maxDate,
+        );
+
+      // Check conflicts for all dates
+      for (const date of dates) {
+        if (ShiftConflictChecker.hasConflict(existingShifts, date, timeRange)) {
+          throw new ConflictError(
+            ConflictErrorCode.Conflict,
+            `Shift conflicts with existing shift on ${date.toISOString().split("T")[0]}`,
+          );
+        }
+      }
+
+      // Create and save shifts
+      const allEvents: DomainEvent[] = [];
+      const ids: string[] = [];
+
+      for (const date of dates) {
+        const { entity, events } = Shift.create({
+          tenantId,
+          staffProfileId,
+          date,
+          timeRange,
+          recurringGroupId,
+        });
+        await repositories.shiftRepository.save(entity);
+        allEvents.push(...events);
+        ids.push(entity.id);
+      }
+
+      await repositories.outboxRepository.saveEvents(allEvents);
+      return ids;
     },
   );
 
-  // Check conflicts for all dates
-  for (const date of dates) {
-    if (ShiftConflictChecker.hasConflict(existingShifts, date, timeRange)) {
-      throw new ConflictError(
-        ConflictErrorCode.Conflict,
-        `Shift conflicts with existing shift on ${date.toISOString().split("T")[0]}`,
-      );
-    }
-  }
-
-  // Create shifts
-  const shifts: ReturnType<typeof Shift.create>[] = [];
-  for (const date of dates) {
-    const result = Shift.create({
-      tenantId,
-      staffProfileId,
-      date,
-      timeRange,
-      recurringGroupId,
-    });
-    shifts.push({ entity: result.entity, events: result.events });
-  }
-
-  // Save all shifts in a single transaction
-  await container.unitOfWorkProvider.transaction(async (repositories) => {
-    const allEvents: DomainEvent[] = [];
-    for (const { entity, events } of shifts) {
-      await repositories.shiftRepository.save(entity);
-      allEvents.push(...events);
-    }
-    await repositories.outboxRepository.saveEvents(allEvents);
-  });
-
-  return {
-    shiftIds: shifts.map((s) => s.entity.id),
-  };
+  return { shiftIds };
 }

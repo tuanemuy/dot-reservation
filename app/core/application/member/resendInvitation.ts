@@ -1,3 +1,4 @@
+import { Invitation } from "@/core/domain/member/entity";
 import { InvitationId } from "@/core/domain/member/valueObject";
 import {
   ConflictError,
@@ -30,27 +31,17 @@ export async function resendInvitation({
     }
 
     // Only pending or expired invitations can be resent
-    if (
-      invitation.status === "accepted" ||
-      invitation.status === "declined" ||
-      invitation.status === "cancelled"
-    ) {
+    if (invitation.status !== "pending") {
       throw new ConflictError(
         ConflictErrorCode.Conflict,
         "Only pending or expired invitations can be resent",
       );
     }
 
-    // Reset expiry date
     const newExpiresAt = new Date();
     newExpiresAt.setDate(newExpiresAt.getDate() + INVITATION_EXPIRY_DAYS);
 
-    const updatedInvitation: typeof invitation = {
-      ...invitation,
-      status: "pending",
-      expiresAt: newExpiresAt,
-      updatedAt: new Date(),
-    };
+    const updatedInvitation = Invitation.resend(invitation, newExpiresAt);
 
     await repositories.invitationRepository.save(updatedInvitation);
 

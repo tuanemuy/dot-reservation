@@ -58,9 +58,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -96,9 +94,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -132,9 +128,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -161,9 +155,7 @@ describe("listNotifications", () => {
     }
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -190,9 +182,7 @@ describe("listNotifications", () => {
     }
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -223,9 +213,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -249,9 +237,7 @@ describe("listNotifications", () => {
     const recipientId = uuidv7();
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -280,9 +266,7 @@ describe("listNotifications", () => {
     }
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -309,9 +293,7 @@ describe("listNotifications", () => {
     }
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -337,9 +319,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",
@@ -379,9 +359,7 @@ describe("listNotifications", () => {
     });
 
     const result = await listNotifications({
-      container: {
-        notificationRepository: container.notificationRepository,
-      },
+      container,
       headers: createMockHeaders(),
       input: {
         recipientType: "customer",

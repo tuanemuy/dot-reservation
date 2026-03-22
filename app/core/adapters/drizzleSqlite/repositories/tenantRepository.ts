@@ -1,5 +1,5 @@
 import type { InferSelectModel } from "drizzle-orm";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, like, or, sql } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
 import {
   invitations,
@@ -250,6 +250,12 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
 
     try {
       const conditions = [];
+      if (filter.keyword) {
+        const pattern = `%${filter.keyword}%`;
+        conditions.push(
+          or(like(tenants.name, pattern), like(tenants.description, pattern)),
+        );
+      }
       if (filter.status) {
         conditions.push(eq(tenants.status, filter.status));
       }

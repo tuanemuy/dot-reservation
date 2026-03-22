@@ -18,21 +18,21 @@ export async function suspendCustomer({
 }: ServiceArgs<SuspendCustomerInput>): Promise<void> {
   const customerId = CustomerId.create(input.customerId);
 
-  const customer = await container.customerRepository.findById(customerId);
-  if (!customer) {
-    throw new NotFoundError(NotFoundErrorCode.NotFound, "Customer not found");
-  }
-
-  if (!Customer.isActive(customer)) {
-    throw new ConflictError(
-      ConflictErrorCode.Conflict,
-      "Customer is already suspended",
-    );
-  }
-
-  const { entity: suspended, events } = Customer.suspend(customer);
-
   await container.unitOfWorkProvider.transaction(async (repositories) => {
+    const customer = await repositories.customerRepository.findById(customerId);
+    if (!customer) {
+      throw new NotFoundError(NotFoundErrorCode.NotFound, "Customer not found");
+    }
+
+    if (!Customer.isActive(customer)) {
+      throw new ConflictError(
+        ConflictErrorCode.Conflict,
+        "Customer is already suspended",
+      );
+    }
+
+    const { entity: suspended, events } = Customer.suspend(customer);
+
     await repositories.customerRepository.save(suspended);
     await repositories.outboxRepository.saveEvents(events);
   });

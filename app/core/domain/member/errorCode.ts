@@ -4,6 +4,7 @@ const MemberErrorCode = {
   InvalidRole: "MEMBER_INVALID_ROLE",
   InvalidInvitationStatus: "MEMBER_INVALID_INVITATION_STATUS",
   InvitationNotPending: "MEMBER_INVITATION_NOT_PENDING",
+  InvitationNotResendable: "MEMBER_INVITATION_NOT_RESENDABLE",
   InvitationExpired: "MEMBER_INVITATION_EXPIRED",
   LastAdminCannotBeRemoved: "MEMBER_LAST_ADMIN_CANNOT_BE_REMOVED",
   LastAdminCannotChangeRole: "MEMBER_LAST_ADMIN_CANNOT_CHANGE_ROLE",

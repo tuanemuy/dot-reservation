@@ -1,5 +1,5 @@
-import type { NotificationPreferenceRepository } from "@/core/domain/notification/ports/notificationPreferenceRepository";
 import type { RecipientType } from "@/core/domain/notification/valueObject";
+import type { ServiceArgs } from "../types";
 
 export type GetNotificationPreferencesInput = {
   recipientType: string;
@@ -14,14 +14,6 @@ export type NotificationPreferenceItem = {
 
 export type GetNotificationPreferencesOutput = {
   preferences: NotificationPreferenceItem[];
-};
-
-type GetNotificationPreferencesArgs = {
-  container: {
-    notificationPreferenceRepository: NotificationPreferenceRepository;
-  };
-  headers: Headers;
-  input: GetNotificationPreferencesInput;
 };
 
 /**
@@ -74,7 +66,7 @@ const DEFAULT_PREFERENCES: ReadonlyArray<{
 export async function getNotificationPreferences({
   container,
   input,
-}: GetNotificationPreferencesArgs): Promise<GetNotificationPreferencesOutput> {
+}: ServiceArgs<GetNotificationPreferencesInput>): Promise<GetNotificationPreferencesOutput> {
   const recipientType = input.recipientType as RecipientType;
 
   const savedPreferences =

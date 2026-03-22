@@ -24,24 +24,32 @@ export async function updateCustomerProfile({
   const phoneNumber =
     input.phoneNumber !== null ? PhoneNumber.create(input.phoneNumber) : null;
 
-  const existing = await container.customerRepository.findById(customerId);
-  if (!existing) {
-    throw new NotFoundError(NotFoundErrorCode.NotFound, "Customer not found");
-  }
+  const result = await container.unitOfWorkProvider.transaction(
+    async (repositories) => {
+      const existing =
+        await repositories.customerRepository.findById(customerId);
+      if (!existing) {
+        throw new NotFoundError(
+          NotFoundErrorCode.NotFound,
+          "Customer not found",
+        );
+      }
 
-  const { entity: updated, events } = Customer.updateProfile(existing, {
-    displayName: input.displayName,
-    phoneNumber,
-  });
+      const { entity: updated, events } = Customer.updateProfile(existing, {
+        displayName: input.displayName,
+        phoneNumber,
+      });
 
-  await container.unitOfWorkProvider.transaction(async (repositories) => {
-    await repositories.customerRepository.save(updated);
-    await repositories.outboxRepository.saveEvents(events);
-  });
+      await repositories.customerRepository.save(updated);
+      await repositories.outboxRepository.saveEvents(events);
+
+      return updated;
+    },
+  );
 
   return {
-    id: updated.id,
-    displayName: updated.displayName,
-    phoneNumber: updated.phoneNumber,
+    id: result.id,
+    displayName: result.displayName,
+    phoneNumber: result.phoneNumber,
   };
 }

@@ -15,14 +15,14 @@
 - [x] drizzleSqlite (スキーマ + リポジトリ)
 
 ## ユースケース
-- [ ] customer
-- [ ] tenant
-- [ ] member
-- [ ] menu
-- [ ] staff
-- [ ] shift
-- [ ] reservation
-- [ ] notification
+- [x] customer
+- [x] tenant
+- [x] member
+- [x] menu
+- [x] staff
+- [x] shift
+- [x] reservation
+- [x] notification
 
 ## テスト
 - [ ] customer

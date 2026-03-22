@@ -1,11 +1,11 @@
 import { NotificationPreference } from "@/core/domain/notification/entity";
-import type { NotificationPreferenceRepository } from "@/core/domain/notification/ports/notificationPreferenceRepository";
 import type {
   NotificationChannel,
   NotificationType,
   RecipientType,
 } from "@/core/domain/notification/valueObject";
 import { ConflictError, ConflictErrorCode } from "../error";
+import type { ServiceArgs } from "../types";
 
 export type UpdateNotificationPreferenceInput = {
   recipientType: string;
@@ -27,18 +27,10 @@ const IMPORTANT_NOTIFICATION_TYPES: ReadonlySet<string> = new Set([
   "reservation_rejected",
 ]);
 
-type UpdateNotificationPreferenceArgs = {
-  container: {
-    notificationPreferenceRepository: NotificationPreferenceRepository;
-  };
-  headers: Headers;
-  input: UpdateNotificationPreferenceInput;
-};
-
 export async function updateNotificationPreference({
   container,
   input,
-}: UpdateNotificationPreferenceArgs): Promise<UpdateNotificationPreferenceOutput> {
+}: ServiceArgs<UpdateNotificationPreferenceInput>): Promise<UpdateNotificationPreferenceOutput> {
   const recipientType = input.recipientType as RecipientType;
   const channel = input.channel as NotificationChannel;
   const notificationType = input.type as NotificationType;

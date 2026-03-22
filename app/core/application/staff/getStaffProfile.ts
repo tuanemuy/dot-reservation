@@ -1,7 +1,6 @@
-import type { MenuRepository } from "@/core/domain/menu/ports/menuRepository";
-import type { StaffProfileRepository } from "@/core/domain/staff/ports/staffProfileRepository";
 import { StaffProfileId } from "@/core/domain/staff/valueObject";
 import { NotFoundError, NotFoundErrorCode } from "../error";
+import type { ServiceArgs } from "../types";
 
 export type GetStaffProfileInput = {
   staffProfileId: string;
@@ -20,19 +19,10 @@ export type GetStaffProfileOutput = {
   assignedMenus: MenuSummary[];
 };
 
-type GetStaffProfileArgs = {
-  container: {
-    staffProfileRepository: StaffProfileRepository;
-    menuRepository: MenuRepository;
-  };
-  headers: Headers;
-  input: GetStaffProfileInput;
-};
-
 export async function getStaffProfile({
   container,
   input,
-}: GetStaffProfileArgs): Promise<GetStaffProfileOutput> {
+}: ServiceArgs<GetStaffProfileInput>): Promise<GetStaffProfileOutput> {
   const staffProfileId = StaffProfileId.create(input.staffProfileId);
 
   const staffProfile =
