@@ -4,6 +4,7 @@ import type {
   UnitOfWorkProvider,
 } from "@/core/application/unitOfWork";
 import type { Database, Executor } from "./client";
+
 // import { DrizzleSqliteOutboxRepository } from "./repositories/outboxRepository";
 // import { DrizzleSqlite${Entity}Repository } from "./repositories/${entity}Repository";
 
@@ -114,9 +115,10 @@ export class DrizzleSqliteUnitOfWorkProvider implements UnitOfWorkProvider {
 /**
  * Create all repositories with the given database executor
  */
-function createRepositories(db: Executor): Repositories {
+function createRepositories(_db: Executor): Repositories {
+  // TODO: Uncomment when adapter implementations are available
   return {
-    // outboxRepository: new DrizzleSqliteOutboxRepository(db),
-    // ${entity}Repository: new DrizzleSqlite${Entity}Repository(db),
-  };
+    // outboxRepository: new DrizzleSqliteOutboxRepository(_db),
+    // ${entity}Repository: new DrizzleSqlite${Entity}Repository(_db),
+  } as Repositories;
 }

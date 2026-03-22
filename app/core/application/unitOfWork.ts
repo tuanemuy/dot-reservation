@@ -1,8 +1,8 @@
-// import type { OutboxRepository } from "@/core/domain/outbox/ports/outboxRepository";
+import type { OutboxRepository } from "@/core/domain/common/ports/outboxRepository";
 // import type { ${Entity}Repository } from "@/core/domain/${entity}/ports/${entity}Repository";
 
 export type Repositories = {
-  // outboxRepository: OutboxRepository;
+  outboxRepository: OutboxRepository;
   // ${entity}Repository: ${Entity}Repository;
 };
 

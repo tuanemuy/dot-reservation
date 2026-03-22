@@ -1,9 +1,24 @@
-// import { ${Domain}ErrorCode } from "./${domain}/errorCode";
-
 import { AnyError } from "@/lib/error";
+import { CommonErrorCode } from "./common/errorCode";
+import { CustomerErrorCode } from "./customer/errorCode";
+import { MemberErrorCode } from "./member/errorCode";
+import { MenuErrorCode } from "./menu/errorCode";
+import { NotificationErrorCode } from "./notification/errorCode";
+import { ReservationErrorCode } from "./reservation/errorCode";
+import { ShiftErrorCode } from "./shift/errorCode";
+import { StaffErrorCode } from "./staff/errorCode";
+import { TenantErrorCode } from "./tenant/errorCode";
 
 export const BusinessRuleErrorCode = {
-  // ...${Domain}ErrorCode,
+  ...CommonErrorCode,
+  ...CustomerErrorCode,
+  ...MemberErrorCode,
+  ...MenuErrorCode,
+  ...NotificationErrorCode,
+  ...ReservationErrorCode,
+  ...ShiftErrorCode,
+  ...StaffErrorCode,
+  ...TenantErrorCode,
 };
 
 export type BusinessRuleErrorCode =
