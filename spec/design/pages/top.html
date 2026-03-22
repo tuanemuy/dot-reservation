@@ -111,10 +111,11 @@
 
     body {
       font-family: var(--font-body);
-      color: var(--color-neutral-800);
+      color: var(--color-neutral-700);
       background-color: var(--color-bg-page);
       line-height: var(--leading-normal);
       font-weight: var(--weight-normal);
+      font-size: var(--text-base);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -172,7 +173,7 @@
     }
 
     .header-icon-btn:hover {
-      background: var(--color-neutral-100);
+      background: var(--color-neutral-200);
       color: var(--color-neutral-800);
     }
 
@@ -248,8 +249,9 @@
     }
 
     .search-bar:focus-within {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px oklch(0.52 0.08 155 / 0.1);
     }
 
     .search-icon {
@@ -257,7 +259,7 @@
       align-items: center;
       justify-content: center;
       padding: 0 var(--space-md);
-      color: var(--color-neutral-400);
+      color: var(--color-neutral-500);
       flex-shrink: 0;
     }
 
@@ -278,7 +280,7 @@
     }
 
     .search-input::placeholder {
-      color: var(--color-neutral-400);
+      color: var(--color-neutral-500);
     }
 
     .search-btn {
@@ -360,7 +362,7 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: var(--color-neutral-400);
+      color: var(--color-neutral-500);
     }
 
     .search-select-icon svg {
@@ -533,7 +535,7 @@
     .featured-img-text {
       font-size: var(--text-sm);
       font-weight: var(--weight-medium);
-      color: var(--color-neutral-400);
+      color: var(--color-neutral-500);
       letter-spacing: var(--tracking-wide);
       text-transform: uppercase;
     }
@@ -658,7 +660,7 @@
 
     .footer-copy {
       font-size: var(--text-xs);
-      color: var(--color-neutral-400);
+      color: var(--color-neutral-500);
     }
   </style>
 </head>
@@ -682,6 +684,8 @@
       </div>
     </div>
   </header>
+
+  <main>
 
   <!-- Hero -->
   <section class="hero">
@@ -845,6 +849,8 @@
       サロンを検索する
     </a>
   </section>
+
+  </main>
 
   <!-- Footer -->
   <footer class="footer">

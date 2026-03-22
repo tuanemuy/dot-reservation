@@ -103,8 +103,9 @@
     .header-icon-btn svg { width: 20px; height: 20px; }
     .user-menu-btn { display: flex; align-items: center; gap: var(--space-sm); height: 40px; padding: 0 var(--space-md); border-radius: var(--radius-md); border: none; background: transparent; cursor: pointer; color: var(--color-neutral-700); font-family: var(--font-body); font-size: var(--text-sm); font-weight: var(--weight-medium); transition: background var(--transition-default); }
     .user-menu-btn:hover { background: var(--color-neutral-200); }
+    .user-menu-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
     .user-avatar { width: 28px; height: 28px; border-radius: var(--radius-full); background: linear-gradient(135deg, var(--color-secondary-lighter), var(--color-secondary-light)); display: flex; align-items: center; justify-content: center; font-size: var(--text-xs); font-weight: var(--weight-medium); color: var(--color-secondary); }
-    .user-menu-chevron svg { width: 14px; height: 14px; color: var(--color-neutral-400); }
+    .user-menu-chevron svg { width: 14px; height: 14px; color: var(--color-neutral-500); }
 
     .sidebar { width: 260px; background: var(--color-bg-page); border-right: 1px solid var(--color-neutral-300); padding: var(--space-lg) 0; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 64px); position: sticky; top: 64px; }
     .sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 var(--space-sm); }
@@ -120,7 +121,7 @@
     .breadcrumb { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: var(--text-sm); }
     .breadcrumb a { color: var(--color-neutral-500); font-weight: var(--weight-medium); }
     .breadcrumb a:hover { color: var(--color-primary); }
-    .breadcrumb-separator { color: var(--color-neutral-400); }
+    .breadcrumb-separator { color: var(--color-neutral-500); }
     .breadcrumb-current { color: var(--color-neutral-800); font-weight: var(--weight-medium); }
 
     .page-header { margin-bottom: var(--space-xl); display: flex; align-items: center; gap: var(--space-md); }
@@ -206,9 +207,9 @@
 
     .footer { border-top: 1px solid var(--color-neutral-300); background: var(--color-bg-page); margin-top: auto; }
     .footer-inner { padding: var(--space-lg) var(--space-2xl); display: flex; align-items: center; justify-content: space-between; margin-left: 260px; }
-    .footer-logo { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-neutral-400); text-decoration: none; }
+    .footer-logo { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-neutral-500); text-decoration: none; }
     .footer-logo span { color: var(--color-primary); }
-    .footer-copy { font-size: var(--text-xs); color: var(--color-neutral-400); }
+    .footer-copy { font-size: var(--text-xs); color: var(--color-neutral-500); }
   </style>
 </head>
 <body>

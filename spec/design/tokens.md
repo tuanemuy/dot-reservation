@@ -64,6 +64,20 @@
 | `--color-error` | `oklch(0.55 0.16 25)` | #C53030 | エラー、キャンセル |
 | `--color-info` | `oklch(0.55 0.10 240)` | #2B6CB0 | 情報、ヒント |
 
+### Semantic Backgrounds
+
+| Token | OKLCH | 用途 |
+|-------|-------|------|
+| `--color-success-bg` | `oklch(0.55 0.12 145 / 0.06)` | 成功メッセージ背景 |
+| `--color-success-border` | `oklch(0.55 0.12 145 / 0.2)` | 成功メッセージボーダー |
+| `--color-warning-bg` | `oklch(0.72 0.14 70 / 0.06)` | 警告メッセージ背景 |
+| `--color-warning-border` | `oklch(0.72 0.14 70 / 0.2)` | 警告メッセージボーダー |
+| `--color-error-bg` | `oklch(0.55 0.16 25 / 0.06)` | エラーメッセージ背景 |
+| `--color-error-border` | `oklch(0.55 0.16 25 / 0.2)` | エラーメッセージボーダー |
+| `--color-info-bg` | `oklch(0.55 0.10 240 / 0.06)` | 情報メッセージ背景 |
+| `--color-info-border` | `oklch(0.55 0.10 240 / 0.2)` | 情報メッセージボーダー |
+| `--color-overlay` | `oklch(0 0 0 / 0.4)` | オーバーレイ背景 |
+
 ### Background
 
 | Token | 参照先 | 用途 |
@@ -207,6 +221,17 @@ Base unit: `4px`
   --color-warning: oklch(0.72 0.14 70);
   --color-error: oklch(0.55 0.16 25);
   --color-info: oklch(0.55 0.10 240);
+
+  /* Semantic Backgrounds */
+  --color-success-bg: oklch(0.55 0.12 145 / 0.06);
+  --color-success-border: oklch(0.55 0.12 145 / 0.2);
+  --color-warning-bg: oklch(0.72 0.14 70 / 0.06);
+  --color-warning-border: oklch(0.72 0.14 70 / 0.2);
+  --color-error-bg: oklch(0.55 0.16 25 / 0.06);
+  --color-error-border: oklch(0.55 0.16 25 / 0.2);
+  --color-info-bg: oklch(0.55 0.10 240 / 0.06);
+  --color-info-border: oklch(0.55 0.10 240 / 0.2);
+  --color-overlay: oklch(0 0 0 / 0.4);
 
   /* Background */
   --color-bg-page: #FFFFFF;
