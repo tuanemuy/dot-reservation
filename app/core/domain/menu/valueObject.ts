@@ -10,9 +10,7 @@ const MENU_DURATION_MIN = 15;
 // MenuId
 type MenuId = string & { readonly brand: "MenuId" };
 
-export type { MenuId };
-
-export const MenuId = {
+const MenuId = {
   create: (id: string): MenuId => {
     return id as MenuId;
   },
@@ -21,12 +19,12 @@ export const MenuId = {
   },
 };
 
+export { MenuId };
+
 // MenuName
 type MenuName = string & { readonly brand: "MenuName" };
 
-export type { MenuName };
-
-export const MenuName = {
+const MenuName = {
   create: (value: string): MenuName => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -45,12 +43,12 @@ export const MenuName = {
   maxLength: MENU_NAME_MAX_LENGTH,
 };
 
+export { MenuName };
+
 // MenuCategory
 type MenuCategory = string & { readonly brand: "MenuCategory" };
 
-export type { MenuCategory };
-
-export const MenuCategory = {
+const MenuCategory = {
   create: (value: string): MenuCategory => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -69,12 +67,12 @@ export const MenuCategory = {
   maxLength: MENU_CATEGORY_MAX_LENGTH,
 };
 
+export { MenuCategory };
+
 // MenuDescription
 type MenuDescription = string & { readonly brand: "MenuDescription" };
 
-export type { MenuDescription };
-
-export const MenuDescription = {
+const MenuDescription = {
   create: (value: string): MenuDescription => {
     if (value.length > MENU_DESCRIPTION_MAX_LENGTH) {
       throw new BusinessRuleError(
@@ -87,12 +85,12 @@ export const MenuDescription = {
   maxLength: MENU_DESCRIPTION_MAX_LENGTH,
 };
 
+export { MenuDescription };
+
 // MenuDuration
 type MenuDuration = number & { readonly brand: "MenuDuration" };
 
-export type { MenuDuration };
-
-export const MenuDuration = {
+const MenuDuration = {
   create: (value: number): MenuDuration => {
     if (value < MENU_DURATION_MIN) {
       throw new BusinessRuleError(
@@ -111,12 +109,12 @@ export const MenuDuration = {
   minValue: MENU_DURATION_MIN,
 };
 
+export { MenuDuration };
+
 // MenuPrice
 type MenuPrice = number & { readonly brand: "MenuPrice" };
 
-export type { MenuPrice };
-
-export const MenuPrice = {
+const MenuPrice = {
   create: (value: number): MenuPrice => {
     if (value < 0) {
       throw new BusinessRuleError(
@@ -133,3 +131,5 @@ export const MenuPrice = {
     return value as MenuPrice;
   },
 };
+
+export { MenuPrice };

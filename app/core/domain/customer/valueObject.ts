@@ -7,9 +7,7 @@ const CUSTOMER_DISPLAY_NAME_MAX_LENGTH = 50;
 // CustomerId
 type CustomerId = string & { readonly brand: "CustomerId" };
 
-export type { CustomerId };
-
-export const CustomerId = {
+const CustomerId = {
   create: (id: string): CustomerId => {
     return id as CustomerId;
   },
@@ -18,14 +16,14 @@ export const CustomerId = {
   },
 };
 
+export { CustomerId };
+
 // CustomerDisplayName
 type CustomerDisplayName = string & {
   readonly brand: "CustomerDisplayName";
 };
 
-export type { CustomerDisplayName };
-
-export const CustomerDisplayName = {
+const CustomerDisplayName = {
   create: (value: string): CustomerDisplayName => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -44,12 +42,12 @@ export const CustomerDisplayName = {
   maxLength: CUSTOMER_DISPLAY_NAME_MAX_LENGTH,
 };
 
+export { CustomerDisplayName };
+
 // CustomerStatus
 type CustomerStatus = "active" | "suspended";
 
-export type { CustomerStatus };
-
-export const CustomerStatus = {
+const CustomerStatus = {
   create: (status: string): CustomerStatus => {
     if (status !== "active" && status !== "suspended") {
       throw new BusinessRuleError(
@@ -63,3 +61,5 @@ export const CustomerStatus = {
   isSuspended: (status: CustomerStatus): status is "suspended" =>
     status === "suspended",
 };
+
+export { CustomerStatus };

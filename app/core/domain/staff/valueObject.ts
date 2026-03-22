@@ -8,9 +8,7 @@ const STAFF_BIO_MAX_LENGTH = 1000;
 // StaffProfileId
 type StaffProfileId = string & { readonly brand: "StaffProfileId" };
 
-export type { StaffProfileId };
-
-export const StaffProfileId = {
+const StaffProfileId = {
   create: (id: string): StaffProfileId => {
     return id as StaffProfileId;
   },
@@ -19,12 +17,12 @@ export const StaffProfileId = {
   },
 };
 
+export { StaffProfileId };
+
 // StaffDisplayName
 type StaffDisplayName = string & { readonly brand: "StaffDisplayName" };
 
-export type { StaffDisplayName };
-
-export const StaffDisplayName = {
+const StaffDisplayName = {
   create: (value: string): StaffDisplayName => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -43,12 +41,12 @@ export const StaffDisplayName = {
   maxLength: STAFF_DISPLAY_NAME_MAX_LENGTH,
 };
 
+export { StaffDisplayName };
+
 // StaffBio
 type StaffBio = string & { readonly brand: "StaffBio" };
 
-export type { StaffBio };
-
-export const StaffBio = {
+const StaffBio = {
   create: (value: string): StaffBio => {
     if (value.length > STAFF_BIO_MAX_LENGTH) {
       throw new BusinessRuleError(
@@ -60,3 +58,5 @@ export const StaffBio = {
   },
   maxLength: STAFF_BIO_MAX_LENGTH,
 };
+
+export { StaffBio };

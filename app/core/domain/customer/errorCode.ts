@@ -1,4 +1,4 @@
-export const CustomerErrorCode = {
+const CustomerErrorCode = {
   DisplayNameEmpty: "CUSTOMER_DISPLAY_NAME_EMPTY",
   DisplayNameTooLong: "CUSTOMER_DISPLAY_NAME_TOO_LONG",
   InvalidStatus: "CUSTOMER_INVALID_STATUS",
@@ -6,5 +6,7 @@ export const CustomerErrorCode = {
   AlreadyActive: "CUSTOMER_ALREADY_ACTIVE",
 } as const;
 
-export type CustomerErrorCode =
+type CustomerErrorCode =
   (typeof CustomerErrorCode)[keyof typeof CustomerErrorCode];
+
+export { CustomerErrorCode };

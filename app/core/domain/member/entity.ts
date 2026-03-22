@@ -4,14 +4,16 @@ import { BusinessRuleError } from "@/core/domain/error";
 import type { TenantId } from "@/core/domain/tenant/valueObject";
 import { MemberErrorCode } from "./errorCode";
 import { type MemberEvent, MemberEvents } from "./events";
-import type {
-  InvitationId as InvitationIdType,
-  InvitationStatus as InvitationStatusType,
-  MemberId as MemberIdType,
-  MemberName as MemberNameType,
-  MemberRole as MemberRoleType,
+import {
+  InvitationId,
+  type InvitationId as InvitationIdType,
+  type InvitationStatus as InvitationStatusType,
+  MemberId,
+  type MemberId as MemberIdType,
+  MemberName,
+  type MemberName as MemberNameType,
+  type MemberRole as MemberRoleType,
 } from "./valueObject";
-import { InvitationId, MemberId, MemberName } from "./valueObject";
 
 // Member型定義
 type Member = Readonly<{
@@ -27,9 +29,7 @@ type Member = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { Member };
-
-export const Member = {
+const Member = {
   create: (params: {
     tenantId: TenantId;
     authUserId: string;
@@ -106,6 +106,8 @@ export const Member = {
   isStaff: (member: Member): boolean => member.role === "staff",
 };
 
+export { Member };
+
 // Invitation型定義
 type Invitation = Readonly<{
   id: InvitationIdType;
@@ -119,9 +121,7 @@ type Invitation = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { Invitation };
-
-export const Invitation = {
+const Invitation = {
   create: (params: {
     tenantId: TenantId;
     email: Email;
@@ -226,3 +226,5 @@ export const Invitation = {
     return invitation.status === "pending" && !Invitation.isExpired(invitation);
   },
 };
+
+export { Invitation };

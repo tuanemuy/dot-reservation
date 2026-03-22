@@ -43,9 +43,7 @@ type Reservation = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { Reservation };
-
-export const Reservation = {
+const Reservation = {
   create: (params: {
     tenantId: TenantId;
     customerId: CustomerId | null;
@@ -336,3 +334,5 @@ export const Reservation = {
     return now <= deadline;
   },
 };
+
+export { Reservation };

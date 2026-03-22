@@ -9,7 +9,7 @@ import { ShiftErrorCode } from "./shift/errorCode";
 import { StaffErrorCode } from "./staff/errorCode";
 import { TenantErrorCode } from "./tenant/errorCode";
 
-export const BusinessRuleErrorCode = {
+const BusinessRuleErrorCode = {
   ...CommonErrorCode,
   ...CustomerErrorCode,
   ...MemberErrorCode,
@@ -19,10 +19,20 @@ export const BusinessRuleErrorCode = {
   ...ShiftErrorCode,
   ...StaffErrorCode,
   ...TenantErrorCode,
-};
+} as const;
 
-export type BusinessRuleErrorCode =
-  (typeof BusinessRuleErrorCode)[keyof typeof BusinessRuleErrorCode];
+type BusinessRuleErrorCode =
+  | CommonErrorCode
+  | CustomerErrorCode
+  | MemberErrorCode
+  | MenuErrorCode
+  | NotificationErrorCode
+  | ReservationErrorCode
+  | ShiftErrorCode
+  | StaffErrorCode
+  | TenantErrorCode;
+
+export { BusinessRuleErrorCode };
 
 /**
  * Domain Layer - Business Rule Error

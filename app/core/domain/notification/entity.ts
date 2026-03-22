@@ -1,22 +1,21 @@
 import { BusinessRuleError } from "@/core/domain/error";
 import { NotificationErrorCode } from "./errorCode";
-import {
-  type NotificationChannel,
-  NotificationId,
-  type NotificationId as NotificationIdType,
-  NotificationPreferenceId,
-  type NotificationPreferenceId as NotificationPreferenceIdType,
-  type NotificationType,
-  type RecipientType,
+import type {
+  NotificationChannel as NotificationChannelType,
+  NotificationId as NotificationIdType,
+  NotificationPreferenceId as NotificationPreferenceIdType,
+  NotificationType as NotificationTypeType,
+  RecipientType as RecipientTypeType,
 } from "./valueObject";
+import { NotificationId, NotificationPreferenceId } from "./valueObject";
 
 // Notification
 
 type Notification = Readonly<{
   id: NotificationIdType;
-  recipientType: RecipientType;
+  recipientType: RecipientTypeType;
   recipientId: string;
-  type: NotificationType;
+  type: NotificationTypeType;
   title: string;
   message: string;
   referenceType: string | null;
@@ -25,13 +24,11 @@ type Notification = Readonly<{
   createdAt: Date;
 }>;
 
-export type { Notification };
-
-export const Notification = {
+const Notification = {
   create: (params: {
-    recipientType: RecipientType;
+    recipientType: RecipientTypeType;
     recipientId: string;
-    type: NotificationType;
+    type: NotificationTypeType;
     title: string;
     message: string;
     referenceType: string | null;
@@ -66,26 +63,26 @@ export const Notification = {
   },
 };
 
+export { Notification };
+
 // NotificationPreference
 
 type NotificationPreference = Readonly<{
   id: NotificationPreferenceIdType;
-  recipientType: RecipientType;
+  recipientType: RecipientTypeType;
   recipientId: string;
-  channel: NotificationChannel;
-  type: NotificationType;
+  channel: NotificationChannelType;
+  type: NotificationTypeType;
   enabled: boolean;
   updatedAt: Date;
 }>;
 
-export type { NotificationPreference };
-
-export const NotificationPreference = {
+const NotificationPreference = {
   create: (params: {
-    recipientType: RecipientType;
+    recipientType: RecipientTypeType;
     recipientId: string;
-    channel: NotificationChannel;
-    type: NotificationType;
+    channel: NotificationChannelType;
+    type: NotificationTypeType;
     enabled: boolean;
   }): NotificationPreference => {
     return {
@@ -110,3 +107,5 @@ export const NotificationPreference = {
     };
   },
 };
+
+export { NotificationPreference };

@@ -25,9 +25,7 @@ type Shift = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { Shift };
-
-export const Shift = {
+const Shift = {
   create: (params: {
     tenantId: TenantId;
     staffProfileId: StaffProfileId;
@@ -86,6 +84,8 @@ export const Shift = {
   },
 };
 
+export { Shift };
+
 // ShiftRequest
 type ShiftRequest = Readonly<{
   id: ShiftRequestIdType;
@@ -99,9 +99,7 @@ type ShiftRequest = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { ShiftRequest };
-
-export const ShiftRequest = {
+const ShiftRequest = {
   create: (params: {
     tenantId: TenantId;
     staffProfileId: StaffProfileId;
@@ -152,3 +150,5 @@ export const ShiftRequest = {
     };
   },
 };
+
+export { ShiftRequest };

@@ -1,4 +1,4 @@
-export const MemberErrorCode = {
+const MemberErrorCode = {
   NameEmpty: "MEMBER_NAME_EMPTY",
   NameTooLong: "MEMBER_NAME_TOO_LONG",
   InvalidRole: "MEMBER_INVALID_ROLE",
@@ -10,5 +10,6 @@ export const MemberErrorCode = {
   LastAdminCannotDeleteAccount: "MEMBER_LAST_ADMIN_CANNOT_DELETE_ACCOUNT",
 } as const;
 
-export type MemberErrorCode =
-  (typeof MemberErrorCode)[keyof typeof MemberErrorCode];
+type MemberErrorCode = (typeof MemberErrorCode)[keyof typeof MemberErrorCode];
+
+export { MemberErrorCode };

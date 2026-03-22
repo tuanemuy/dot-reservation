@@ -4,11 +4,9 @@ import { CommonErrorCode } from "./errorCode";
 // Email
 type Email = string & { readonly brand: "Email" };
 
-export type { Email };
-
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const Email = {
+const Email = {
   create: (value: string): Email => {
     if (!EMAIL_PATTERN.test(value)) {
       throw new BusinessRuleError(
@@ -20,14 +18,14 @@ export const Email = {
   },
 };
 
+export { Email };
+
 // PhoneNumber
 type PhoneNumber = string & { readonly brand: "PhoneNumber" };
 
-export type { PhoneNumber };
-
 const PHONE_NUMBER_PATTERN = /^0\d{1,4}-?\d{1,4}-?\d{3,4}$/;
 
-export const PhoneNumber = {
+const PhoneNumber = {
   create: (value: string): PhoneNumber => {
     if (!PHONE_NUMBER_PATTERN.test(value)) {
       throw new BusinessRuleError(
@@ -39,14 +37,14 @@ export const PhoneNumber = {
   },
 };
 
+export { PhoneNumber };
+
 // PostalCode
 type PostalCode = string & { readonly brand: "PostalCode" };
 
-export type { PostalCode };
-
 const POSTAL_CODE_PATTERN = /^\d{3}-\d{4}$/;
 
-export const PostalCode = {
+const PostalCode = {
   create: (value: string): PostalCode => {
     if (!POSTAL_CODE_PATTERN.test(value)) {
       throw new BusinessRuleError(
@@ -58,14 +56,16 @@ export const PostalCode = {
   },
 };
 
+export { PostalCode };
+
 // Address
-export type Address = {
+type Address = {
   readonly prefecture: string;
   readonly city: string;
   readonly street: string;
 };
 
-export const Address = {
+const Address = {
   create: (params: {
     prefecture: string;
     city: string;
@@ -85,14 +85,14 @@ export const Address = {
   },
 };
 
+export { Address };
+
 // TimeOfDay
 type TimeOfDay = string & { readonly brand: "TimeOfDay" };
 
-export type { TimeOfDay };
-
 const TIME_OF_DAY_PATTERN = /^\d{2}:\d{2}$/;
 
-export const TimeOfDay = {
+const TimeOfDay = {
   create: (value: string): TimeOfDay => {
     if (!TIME_OF_DAY_PATTERN.test(value)) {
       throw new BusinessRuleError(
@@ -129,12 +129,14 @@ export const TimeOfDay = {
   },
 };
 
+export { TimeOfDay };
+
 // DayOfWeek
-export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 const VALID_DAYS_OF_WEEK: ReadonlySet<number> = new Set([0, 1, 2, 3, 4, 5, 6]);
 
-export const DayOfWeek = {
+const DayOfWeek = {
   create: (value: number): DayOfWeek => {
     if (!VALID_DAYS_OF_WEEK.has(value)) {
       throw new BusinessRuleError(
@@ -145,3 +147,5 @@ export const DayOfWeek = {
     return value as DayOfWeek;
   },
 };
+
+export { DayOfWeek };

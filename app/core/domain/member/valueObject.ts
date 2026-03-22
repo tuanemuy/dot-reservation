@@ -7,9 +7,7 @@ const MEMBER_NAME_MAX_LENGTH = 50;
 // MemberId
 type MemberId = string & { readonly brand: "MemberId" };
 
-export type { MemberId };
-
-export const MemberId = {
+const MemberId = {
   create: (id: string): MemberId => {
     return id as MemberId;
   },
@@ -18,12 +16,12 @@ export const MemberId = {
   },
 };
 
+export { MemberId };
+
 // MemberName
 type MemberName = string & { readonly brand: "MemberName" };
 
-export type { MemberName };
-
-export const MemberName = {
+const MemberName = {
   create: (value: string): MemberName => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -42,12 +40,12 @@ export const MemberName = {
   maxLength: MEMBER_NAME_MAX_LENGTH,
 };
 
+export { MemberName };
+
 // MemberRole
 type MemberRole = "admin" | "staff";
 
-export type { MemberRole };
-
-export const MemberRole = {
+const MemberRole = {
   create: (value: string): MemberRole => {
     if (value !== "admin" && value !== "staff") {
       throw new BusinessRuleError(
@@ -61,12 +59,12 @@ export const MemberRole = {
   isStaff: (role: MemberRole): role is "staff" => role === "staff",
 };
 
+export { MemberRole };
+
 // InvitationId
 type InvitationId = string & { readonly brand: "InvitationId" };
 
-export type { InvitationId };
-
-export const InvitationId = {
+const InvitationId = {
   create: (id: string): InvitationId => {
     return id as InvitationId;
   },
@@ -74,6 +72,8 @@ export const InvitationId = {
     return uuidv7() as InvitationId;
   },
 };
+
+export { InvitationId };
 
 // InvitationStatus
 type InvitationStatus =
@@ -83,9 +83,7 @@ type InvitationStatus =
   | "expired"
   | "cancelled";
 
-export type { InvitationStatus };
-
-export const InvitationStatus = {
+const InvitationStatus = {
   create: (value: string): InvitationStatus => {
     if (
       value !== "pending" &&
@@ -112,3 +110,5 @@ export const InvitationStatus = {
   isCancelled: (status: InvitationStatus): status is "cancelled" =>
     status === "cancelled",
 };
+
+export { InvitationStatus };

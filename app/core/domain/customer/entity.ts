@@ -1,16 +1,12 @@
 import type { WithEvents } from "@/core/domain/common/event";
 import type { Email, PhoneNumber } from "@/core/domain/common/valueObject";
 import { type CustomerEvent, CustomerEvents } from "./events";
-import type {
-  CustomerDisplayName as CustomerDisplayNameType,
-  CustomerId as CustomerIdType,
-} from "./valueObject";
 import { CustomerDisplayName, CustomerId } from "./valueObject";
 
 type CustomerBase = Readonly<{
-  id: CustomerIdType;
+  id: CustomerId;
   authUserId: string;
-  displayName: CustomerDisplayNameType;
+  displayName: CustomerDisplayName;
   email: Email;
   phoneNumber: PhoneNumber | null;
   createdAt: Date;
@@ -27,9 +23,7 @@ type SuspendedCustomer = CustomerBase & {
 
 type Customer = ActiveCustomer | SuspendedCustomer;
 
-export type { Customer, ActiveCustomer, SuspendedCustomer };
-
-export const Customer = {
+const Customer = {
   create: (params: {
     authUserId: string;
     displayName: string;
@@ -109,3 +103,6 @@ export const Customer = {
   isActive: (customer: Customer): customer is ActiveCustomer =>
     customer.status === "active",
 };
+
+export { Customer };
+export type { ActiveCustomer, SuspendedCustomer };

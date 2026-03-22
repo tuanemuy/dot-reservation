@@ -13,9 +13,7 @@ const TENANT_MAX_IMAGES = 10;
 // TenantId
 type TenantId = string & { readonly brand: "TenantId" };
 
-export type { TenantId };
-
-export const TenantId = {
+const TenantId = {
   create: (id: string): TenantId => {
     return id as TenantId;
   },
@@ -24,12 +22,12 @@ export const TenantId = {
   },
 };
 
+export { TenantId };
+
 // TenantName
 type TenantName = string & { readonly brand: "TenantName" };
 
-export type { TenantName };
-
-export const TenantName = {
+const TenantName = {
   create: (value: string): TenantName => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -48,12 +46,12 @@ export const TenantName = {
   maxLength: TENANT_NAME_MAX_LENGTH,
 };
 
+export { TenantName };
+
 // TenantCategory
 type TenantCategory = string & { readonly brand: "TenantCategory" };
 
-export type { TenantCategory };
-
-export const TenantCategory = {
+const TenantCategory = {
   create: (value: string): TenantCategory => {
     if (value.length === 0) {
       throw new BusinessRuleError(
@@ -72,14 +70,14 @@ export const TenantCategory = {
   maxLength: TENANT_CATEGORY_MAX_LENGTH,
 };
 
+export { TenantCategory };
+
 // TenantUrlPath
 type TenantUrlPath = string & { readonly brand: "TenantUrlPath" };
 
-export type { TenantUrlPath };
-
 const URL_PATH_PATTERN = /^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]$/;
 
-export const TenantUrlPath = {
+const TenantUrlPath = {
   create: (value: string): TenantUrlPath => {
     if (value.length < TENANT_URL_PATH_MIN_LENGTH) {
       throw new BusinessRuleError(
@@ -105,12 +103,12 @@ export const TenantUrlPath = {
   maxLength: TENANT_URL_PATH_MAX_LENGTH,
 };
 
+export { TenantUrlPath };
+
 // TenantDescription
 type TenantDescription = string & { readonly brand: "TenantDescription" };
 
-export type { TenantDescription };
-
-export const TenantDescription = {
+const TenantDescription = {
   create: (value: string): TenantDescription => {
     if (value.length > TENANT_DESCRIPTION_MAX_LENGTH) {
       throw new BusinessRuleError(
@@ -123,12 +121,12 @@ export const TenantDescription = {
   maxLength: TENANT_DESCRIPTION_MAX_LENGTH,
 };
 
+export { TenantDescription };
+
 // TenantStatus
 type TenantStatus = "active" | "suspended";
 
-export type { TenantStatus };
-
-export const TenantStatus = {
+const TenantStatus = {
   create: (value: string): TenantStatus => {
     if (value !== "active" && value !== "suspended") {
       throw new BusinessRuleError(
@@ -143,6 +141,8 @@ export const TenantStatus = {
     status === "suspended",
 };
 
+export { TenantStatus };
+
 // DailyHours
 export type DailyHours = {
   readonly open: TimeOfDay;
@@ -150,9 +150,9 @@ export type DailyHours = {
 } | null;
 
 // BusinessHours
-export type BusinessHours = Readonly<Record<DayOfWeek, DailyHours>>;
+type BusinessHours = Readonly<Record<DayOfWeek, DailyHours>>;
 
-export const BusinessHours = {
+const BusinessHours = {
   create: (hours: Record<number, DailyHours>): BusinessHours => {
     for (const key of [0, 1, 2, 3, 4, 5, 6] as const) {
       if (!(key in hours)) {
@@ -166,13 +166,15 @@ export const BusinessHours = {
   },
 };
 
+export { BusinessHours };
+
 // TemporaryHoliday
-export type TemporaryHoliday = {
+type TemporaryHoliday = {
   readonly date: Date;
   readonly reason: string | null;
 };
 
-export const TemporaryHoliday = {
+const TemporaryHoliday = {
   create: (params: { date: Date; reason: string | null }): TemporaryHoliday => {
     return {
       date: params.date,
@@ -181,12 +183,12 @@ export const TemporaryHoliday = {
   },
 };
 
+export { TemporaryHoliday };
+
 // ApprovalMethod
 type ApprovalMethod = "auto" | "manual";
 
-export type { ApprovalMethod };
-
-export const ApprovalMethod = {
+const ApprovalMethod = {
   create: (value: string): ApprovalMethod => {
     if (value !== "auto" && value !== "manual") {
       throw new BusinessRuleError(
@@ -198,8 +200,10 @@ export const ApprovalMethod = {
   },
 };
 
+export { ApprovalMethod };
+
 // ReservationSettings
-export type ReservationSettings = {
+type ReservationSettings = {
   readonly bookingWindowDays: number;
   readonly bookingDeadlineHours: number;
   readonly cancellationDeadlineHours: number;
@@ -208,7 +212,7 @@ export type ReservationSettings = {
   readonly approvalMethod: ApprovalMethod;
 };
 
-export const ReservationSettings = {
+const ReservationSettings = {
   create: (params: {
     bookingWindowDays: number;
     bookingDeadlineHours: number;
@@ -258,6 +262,8 @@ export const ReservationSettings = {
     };
   },
 };
+
+export { ReservationSettings };
 
 // ImageUrls validation
 export const ImageUrls = {

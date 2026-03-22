@@ -20,9 +20,7 @@ type StaffProfile = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { StaffProfile };
-
-export const StaffProfile = {
+const StaffProfile = {
   create: (params: {
     tenantId: TenantId;
     memberId: MemberId;
@@ -83,3 +81,5 @@ export const StaffProfile = {
     return staffProfile.assignedMenuIds.includes(menuId);
   },
 };
+
+export { StaffProfile };

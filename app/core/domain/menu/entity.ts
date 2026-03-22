@@ -1,21 +1,19 @@
 import type { WithEvents } from "@/core/domain/common/event";
 import type { TenantId } from "@/core/domain/tenant/valueObject";
 import { type MenuEvent, MenuEvents } from "./events";
-import type {
-  MenuCategory as MenuCategoryType,
-  MenuDescription as MenuDescriptionType,
-  MenuDuration as MenuDurationType,
-  MenuId as MenuIdType,
-  MenuName as MenuNameType,
-  MenuPrice as MenuPriceType,
-} from "./valueObject";
 import {
   MenuCategory,
+  type MenuCategory as MenuCategoryType,
   MenuDescription,
+  type MenuDescription as MenuDescriptionType,
   MenuDuration,
+  type MenuDuration as MenuDurationType,
   MenuId,
+  type MenuId as MenuIdType,
   MenuName,
+  type MenuName as MenuNameType,
   MenuPrice,
+  type MenuPrice as MenuPriceType,
 } from "./valueObject";
 
 type Menu = Readonly<{
@@ -31,9 +29,7 @@ type Menu = Readonly<{
   updatedAt: Date;
 }>;
 
-export type { Menu };
-
-export const Menu = {
+const Menu = {
   create: (params: {
     tenantId: TenantId;
     name: string;
@@ -108,3 +104,5 @@ export const Menu = {
     };
   },
 };
+
+export { Menu };

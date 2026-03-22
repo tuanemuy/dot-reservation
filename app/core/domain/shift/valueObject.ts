@@ -9,9 +9,7 @@ import { ShiftErrorCode } from "./errorCode";
 // ShiftId
 type ShiftId = string & { readonly brand: "ShiftId" };
 
-export type { ShiftId };
-
-export const ShiftId = {
+const ShiftId = {
   create: (id: string): ShiftId => {
     return id as ShiftId;
   },
@@ -20,12 +18,12 @@ export const ShiftId = {
   },
 };
 
+export { ShiftId };
+
 // ShiftRequestId
 type ShiftRequestId = string & { readonly brand: "ShiftRequestId" };
 
-export type { ShiftRequestId };
-
-export const ShiftRequestId = {
+const ShiftRequestId = {
   create: (id: string): ShiftRequestId => {
     return id as ShiftRequestId;
   },
@@ -34,12 +32,12 @@ export const ShiftRequestId = {
   },
 };
 
+export { ShiftRequestId };
+
 // RecurringGroupId
 type RecurringGroupId = string & { readonly brand: "RecurringGroupId" };
 
-export type { RecurringGroupId };
-
-export const RecurringGroupId = {
+const RecurringGroupId = {
   create: (id: string): RecurringGroupId => {
     return id as RecurringGroupId;
   },
@@ -48,13 +46,15 @@ export const RecurringGroupId = {
   },
 };
 
+export { RecurringGroupId };
+
 // TimeRange
-export type TimeRange = {
+type TimeRange = {
   readonly start: TimeOfDay;
   readonly end: TimeOfDay;
 };
 
-export const TimeRange = {
+const TimeRange = {
   create: (params: { start: TimeOfDay; end: TimeOfDay }): TimeRange => {
     if (TimeOfDayObj.compare(params.start, params.end) >= 0) {
       throw new BusinessRuleError(
@@ -69,12 +69,12 @@ export const TimeRange = {
   },
 };
 
+export { TimeRange };
+
 // ShiftRequestType
 type ShiftRequestType = "work" | "off";
 
-export type { ShiftRequestType };
-
-export const ShiftRequestType = {
+const ShiftRequestType = {
   create: (value: string): ShiftRequestType => {
     if (value !== "work" && value !== "off") {
       throw new BusinessRuleError(
@@ -85,3 +85,5 @@ export const ShiftRequestType = {
     return value as ShiftRequestType;
   },
 };
+
+export { ShiftRequestType };

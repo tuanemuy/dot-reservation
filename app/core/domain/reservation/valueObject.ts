@@ -9,9 +9,7 @@ import { ReservationErrorCode } from "./errorCode";
 // ReservationId
 type ReservationId = string & { readonly brand: "ReservationId" };
 
-export type { ReservationId };
-
-export const ReservationId = {
+const ReservationId = {
   create: (id: string): ReservationId => {
     return id as ReservationId;
   },
@@ -19,6 +17,8 @@ export const ReservationId = {
     return uuidv7() as ReservationId;
   },
 };
+
+export { ReservationId };
 
 // ReservationStatus
 type ReservationStatus =
@@ -28,8 +28,6 @@ type ReservationStatus =
   | "cancelled"
   | "rejected";
 
-export type { ReservationStatus };
-
 const VALID_STATUSES: ReadonlySet<string> = new Set([
   "pending",
   "confirmed",
@@ -38,7 +36,7 @@ const VALID_STATUSES: ReadonlySet<string> = new Set([
   "rejected",
 ]);
 
-export const ReservationStatus = {
+const ReservationStatus = {
   create: (value: string): ReservationStatus => {
     if (!VALID_STATUSES.has(value)) {
       throw new BusinessRuleError(
@@ -50,14 +48,16 @@ export const ReservationStatus = {
   },
 };
 
+export { ReservationStatus };
+
 // TimeSlot
-export type TimeSlot = {
+type TimeSlot = {
   readonly date: Date;
   readonly startTime: TimeOfDay;
   readonly endTime: TimeOfDay;
 };
 
-export const TimeSlot = {
+const TimeSlot = {
   create: (params: {
     date: Date;
     startTime: TimeOfDay;
@@ -76,6 +76,8 @@ export const TimeSlot = {
     };
   },
 };
+
+export { TimeSlot };
 
 // CreatedBy
 export type CreatedBy = "customer" | "admin" | "staff";

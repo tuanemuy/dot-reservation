@@ -58,10 +58,8 @@ type SuspendedTenant = TenantBase & {
 
 type Tenant = ActiveTenant | SuspendedTenant;
 
-export type { Tenant, ActiveTenant, SuspendedTenant };
-
 // Tenantモジュール
-export const Tenant = {
+const Tenant = {
   create: (params: {
     name: string;
     category: string;
@@ -295,3 +293,5 @@ export const Tenant = {
   isSuspended: (tenant: Tenant): tenant is SuspendedTenant =>
     tenant.status === "suspended",
 };
+
+export { type ActiveTenant, type SuspendedTenant, Tenant };

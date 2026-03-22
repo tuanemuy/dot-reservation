@@ -1,4 +1,4 @@
-export const TenantErrorCode = {
+const TenantErrorCode = {
   NameEmpty: "TENANT_NAME_EMPTY",
   NameTooLong: "TENANT_NAME_TOO_LONG",
   CategoryEmpty: "TENANT_CATEGORY_EMPTY",
@@ -19,5 +19,6 @@ export const TenantErrorCode = {
   AlreadySuspended: "TENANT_ALREADY_SUSPENDED",
 } as const;
 
-export type TenantErrorCode =
-  (typeof TenantErrorCode)[keyof typeof TenantErrorCode];
+type TenantErrorCode = (typeof TenantErrorCode)[keyof typeof TenantErrorCode];
+
+export { TenantErrorCode };

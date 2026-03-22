@@ -1,4 +1,4 @@
-export const ReservationErrorCode = {
+const ReservationErrorCode = {
   InvalidStatus: "RESERVATION_INVALID_STATUS",
   CannotCancel: "RESERVATION_CANNOT_CANCEL",
   CannotModify: "RESERVATION_CANNOT_MODIFY",
@@ -10,5 +10,7 @@ export const ReservationErrorCode = {
   InvalidTimeSlot: "RESERVATION_INVALID_TIME_SLOT",
 } as const;
 
-export type ReservationErrorCode =
+type ReservationErrorCode =
   (typeof ReservationErrorCode)[keyof typeof ReservationErrorCode];
+
+export { ReservationErrorCode };

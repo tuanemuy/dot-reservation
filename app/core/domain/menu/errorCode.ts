@@ -1,4 +1,4 @@
-export const MenuErrorCode = {
+const MenuErrorCode = {
   NameEmpty: "MENU_NAME_EMPTY",
   NameTooLong: "MENU_NAME_TOO_LONG",
   CategoryEmpty: "MENU_CATEGORY_EMPTY",
@@ -10,4 +10,6 @@ export const MenuErrorCode = {
   PriceNotInteger: "MENU_PRICE_NOT_INTEGER",
 } as const;
 
-export type MenuErrorCode = (typeof MenuErrorCode)[keyof typeof MenuErrorCode];
+type MenuErrorCode = (typeof MenuErrorCode)[keyof typeof MenuErrorCode];
+
+export { MenuErrorCode };

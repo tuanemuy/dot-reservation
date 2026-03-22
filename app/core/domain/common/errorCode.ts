@@ -1,4 +1,4 @@
-export const CommonErrorCode = {
+const CommonErrorCode = {
   InvalidEmail: "INVALID_EMAIL",
   InvalidPhoneNumber: "INVALID_PHONE_NUMBER",
   InvalidPostalCode: "INVALID_POSTAL_CODE",
@@ -7,5 +7,6 @@ export const CommonErrorCode = {
   InvalidDayOfWeek: "INVALID_DAY_OF_WEEK",
 } as const;
 
-export type CommonErrorCode =
-  (typeof CommonErrorCode)[keyof typeof CommonErrorCode];
+type CommonErrorCode = (typeof CommonErrorCode)[keyof typeof CommonErrorCode];
+
+export { CommonErrorCode };
