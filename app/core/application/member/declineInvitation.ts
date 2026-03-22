@@ -1,8 +1,11 @@
+import { Email } from "@/core/domain/common/valueObject";
 import { Invitation } from "@/core/domain/member/entity";
 import { InvitationId } from "@/core/domain/member/valueObject";
 import {
   ConflictError,
   ConflictErrorCode,
+  ForbiddenError,
+  ForbiddenErrorCode,
   NotFoundError,
   NotFoundErrorCode,
 } from "../error";
@@ -11,6 +14,7 @@ import type { ServiceArgs } from "../types";
 export type DeclineInvitationInput = {
   invitationId: string;
   authUserId: string;
+  email: string;
 };
 
 export async function declineInvitation({
@@ -26,6 +30,15 @@ export async function declineInvitation({
       throw new NotFoundError(
         NotFoundErrorCode.NotFound,
         "Invitation not found",
+      );
+    }
+
+    // Verify the declining user's email matches the invitation email
+    const userEmail = Email.create(input.email);
+    if (userEmail !== invitation.email) {
+      throw new ForbiddenError(
+        ForbiddenErrorCode.InsufficientPermissions,
+        "You are not the intended recipient of this invitation",
       );
     }
 

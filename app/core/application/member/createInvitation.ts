@@ -1,9 +1,7 @@
 import { Email } from "@/core/domain/common/valueObject";
 import { Invitation } from "@/core/domain/member/entity";
-import type { EmailSender } from "@/core/domain/member/ports/emailSender";
 import { MemberId, MemberRole } from "@/core/domain/member/valueObject";
 import { TenantId } from "@/core/domain/tenant/valueObject";
-import type { Container } from "../container/server";
 import {
   ConflictError,
   ConflictErrorCode,
@@ -74,6 +72,16 @@ export async function createInvitation({
       );
     }
 
+    // Check that the inviting member exists
+    const invitingMember =
+      await repositories.memberRepository.findById(invitedByMemberId);
+    if (!invitingMember) {
+      throw new NotFoundError(
+        NotFoundErrorCode.NotFound,
+        "Inviting member not found",
+      );
+    }
+
     // Get tenant name for the email
     const tenant = await repositories.tenantRepository.findById(tenantId);
     if (!tenant) {
@@ -84,9 +92,11 @@ export async function createInvitation({
     await repositories.outboxRepository.saveEvents(events);
 
     // Send invitation email via EmailSender
-    const emailSender = (container as Container & { emailSender: EmailSender })
-      .emailSender;
-    await emailSender.sendInvitationEmail(email, invitation, tenant.name);
+    await container.memberEmailSender.sendInvitationEmail(
+      email,
+      invitation,
+      tenant.name,
+    );
   });
 
   return {

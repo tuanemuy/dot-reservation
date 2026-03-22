@@ -62,6 +62,7 @@ export async function updateTenantProfile({
       const { entity: updatedTenant, events } = Tenant.updateProfile(tenant, {
         name: input.name,
         category: input.category,
+        urlPath: newUrlPath,
         postalCode,
         address,
         phoneNumber,

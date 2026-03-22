@@ -1,3 +1,6 @@
+import { Email } from "@/core/domain/common/valueObject";
+import { MemberName } from "@/core/domain/member/valueObject";
+import { ValidationError, ValidationErrorCode } from "../error";
 import type { ServiceArgs } from "../types";
 
 export type CreateMemberAccountInput = {
@@ -22,6 +25,19 @@ export type CreateMemberAccountOutput = {
 export async function createMemberAccount({
   input,
 }: ServiceArgs<CreateMemberAccountInput>): Promise<CreateMemberAccountOutput> {
+  if (!input.authUserId) {
+    throw new ValidationError(
+      ValidationErrorCode.InvalidInput,
+      "authUserId is required",
+    );
+  }
+
+  // Validate name via MemberName value object (throws BusinessRuleError on empty/too long)
+  MemberName.create(input.name);
+
+  // Validate email via Email value object (throws BusinessRuleError on invalid format)
+  Email.create(input.email);
+
   return {
     authUserId: input.authUserId,
     name: input.name,

@@ -1,7 +1,11 @@
-import type { EmailSender } from "@/core/domain/member/ports/emailSender";
+import { Invitation } from "@/core/domain/member/entity";
 import { InvitationId } from "@/core/domain/member/valueObject";
-import type { Container } from "../container/server";
-import { NotFoundError, NotFoundErrorCode } from "../error";
+import {
+  ConflictError,
+  ConflictErrorCode,
+  NotFoundError,
+  NotFoundErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 const INVITATION_EXPIRY_DAYS = 7;
@@ -26,6 +30,22 @@ export async function resendInvitation({
       );
     }
 
+    // Only pending or expired invitations can be resent
+    if (
+      invitation.status !== "pending" ||
+      (!Invitation.isPending(invitation) && !Invitation.isExpired(invitation))
+    ) {
+      if (
+        invitation.status === "accepted" ||
+        invitation.status === "declined"
+      ) {
+        throw new ConflictError(
+          ConflictErrorCode.Conflict,
+          "Only pending or expired invitations can be resent",
+        );
+      }
+    }
+
     // Reset expiry date
     const newExpiresAt = new Date();
     newExpiresAt.setDate(newExpiresAt.getDate() + INVITATION_EXPIRY_DAYS);
@@ -48,9 +68,7 @@ export async function resendInvitation({
     }
 
     // Resend invitation email via EmailSender
-    const emailSender = (container as Container & { emailSender: EmailSender })
-      .emailSender;
-    await emailSender.sendInvitationEmail(
+    await container.memberEmailSender.sendInvitationEmail(
       invitation.email,
       updatedInvitation,
       tenant.name,

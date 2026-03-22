@@ -45,6 +45,20 @@ export async function deleteMemberAccount({
     // Remove from all tenants
     const events: DomainEvent[] = [];
     for (const member of members) {
+      // Delete StaffProfile if exists (FK constraint: staff_profiles.member_id -> members.id)
+      const staffProfile =
+        await repositories.staffProfileRepository.findByMemberId(member.id);
+      if (staffProfile) {
+        await repositories.staffProfileRepository.delete(staffProfile.id);
+      }
+
+      // Delete invitations created by this member (FK constraint: invitations.invited_by -> members.id)
+      const createdInvitations =
+        await repositories.invitationRepository.findByInvitedBy(member.id);
+      for (const invitation of createdInvitations) {
+        await repositories.invitationRepository.delete(invitation.id);
+      }
+
       await repositories.memberRepository.delete(member.id);
       events.push(MemberEvents.removed(member.id, member.tenantId));
     }

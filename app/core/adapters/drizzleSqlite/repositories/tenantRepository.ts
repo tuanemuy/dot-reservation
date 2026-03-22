@@ -2,6 +2,14 @@ import type { InferSelectModel } from "drizzle-orm";
 import { and, eq, sql } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
 import {
+  invitations,
+  members,
+  menus,
+  reservations,
+  shiftRequests,
+  shifts,
+  staffAssignedMenus,
+  staffProfiles,
   temporaryHolidays,
   tenants,
 } from "@/core/adapters/drizzleSqlite/schema";
@@ -57,7 +65,7 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
       businessHours,
       regularHolidays,
       temporaryHolidays: holidays.map((h) => ({
-        date: new Date(h.date),
+        date: this.parseLocalDate(h.date),
         reason: h.reason,
       })),
       reservationSettings: {
@@ -79,6 +87,11 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
+  }
+
+  private parseLocalDate(dateStr: string): Date {
+    const parts = dateStr.split("-").map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
   }
 
   async save(tenant: TenantType): Promise<void> {
@@ -286,9 +299,55 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
 
   async delete(id: TenantIdType): Promise<void> {
     try {
+      // Delete reservations
+      await this.executor
+        .delete(reservations)
+        .where(eq(reservations.tenantId, id));
+
+      // Get staff profile IDs for this tenant
+      const tenantStaffProfiles = await this.executor
+        .select({ id: staffProfiles.id })
+        .from(staffProfiles)
+        .where(eq(staffProfiles.tenantId, id));
+      const staffProfileIds = tenantStaffProfiles.map((sp) => sp.id);
+
+      // Delete shift requests
+      await this.executor
+        .delete(shiftRequests)
+        .where(eq(shiftRequests.tenantId, id));
+
+      // Delete shifts
+      await this.executor.delete(shifts).where(eq(shifts.tenantId, id));
+
+      // Delete staff assigned menus
+      for (const spId of staffProfileIds) {
+        await this.executor
+          .delete(staffAssignedMenus)
+          .where(eq(staffAssignedMenus.staffProfileId, spId));
+      }
+
+      // Delete staff profiles
+      await this.executor
+        .delete(staffProfiles)
+        .where(eq(staffProfiles.tenantId, id));
+
+      // Delete menus
+      await this.executor.delete(menus).where(eq(menus.tenantId, id));
+
+      // Delete invitations
+      await this.executor
+        .delete(invitations)
+        .where(eq(invitations.tenantId, id));
+
+      // Delete members
+      await this.executor.delete(members).where(eq(members.tenantId, id));
+
+      // Delete temporary holidays
       await this.executor
         .delete(temporaryHolidays)
         .where(eq(temporaryHolidays.tenantId, id));
+
+      // Delete tenant
       await this.executor.delete(tenants).where(eq(tenants.id, id));
     } catch (error) {
       throw new SystemError(

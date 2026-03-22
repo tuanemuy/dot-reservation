@@ -123,6 +123,23 @@ export class DrizzleSqliteInvitationRepository implements InvitationRepository {
     }
   }
 
+  async findByInvitedBy(memberId: MemberIdType): Promise<InvitationType[]> {
+    try {
+      const rows = await this.executor
+        .select()
+        .from(invitations)
+        .where(eq(invitations.invitedBy, memberId));
+
+      return rows.map((row) => this.into(row));
+    } catch (error) {
+      throw new SystemError(
+        SystemErrorCode.DatabaseError,
+        "Failed to find invitations by invited by",
+        error,
+      );
+    }
+  }
+
   async delete(id: InvitationIdType): Promise<void> {
     try {
       await this.executor.delete(invitations).where(eq(invitations.id, id));

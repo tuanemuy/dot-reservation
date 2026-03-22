@@ -18,9 +18,18 @@ export async function removeTemporaryHoliday({
   input,
 }: ServiceArgs<RemoveTemporaryHolidayInput>): Promise<void> {
   const tenantId = TenantId.create(input.tenantId);
-  const date = new Date(input.date);
 
-  if (Number.isNaN(date.getTime())) {
+  // Parse date string as local date (YYYY-MM-DD)
+  const dateParts = input.date.split("-").map(Number);
+  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+  if (
+    Number.isNaN(date.getTime()) ||
+    dateParts.length !== 3 ||
+    date.getFullYear() !== dateParts[0] ||
+    date.getMonth() !== dateParts[1] - 1 ||
+    date.getDate() !== dateParts[2]
+  ) {
     throw new ValidationError(
       ValidationErrorCode.InvalidInput,
       "Invalid date format",

@@ -109,6 +109,7 @@ export const Tenant = {
     params: {
       name: string;
       category: string;
+      urlPath?: TenantUrlPathType;
       postalCode: PostalCode;
       address: Address;
       phoneNumber: PhoneNumber;
@@ -121,6 +122,7 @@ export const Tenant = {
         ...tenant,
         name: TenantName.create(params.name),
         category: TenantCategory.create(params.category),
+        ...(params.urlPath !== undefined ? { urlPath: params.urlPath } : {}),
         postalCode: params.postalCode,
         address: params.address,
         phoneNumber: params.phoneNumber,

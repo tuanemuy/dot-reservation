@@ -3,11 +3,17 @@ import { MemberPolicyService } from "@/core/domain/member/services/memberPolicyS
 import { MemberId, MemberRole } from "@/core/domain/member/valueObject";
 import { StaffProfile } from "@/core/domain/staff/entity";
 import { TenantId } from "@/core/domain/tenant/valueObject";
-import { NotFoundError, NotFoundErrorCode } from "../error";
+import {
+  ForbiddenError,
+  ForbiddenErrorCode,
+  NotFoundError,
+  NotFoundErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 export type ChangeMemberRoleInput = {
   tenantId: string;
+  operatorMemberId: string;
   targetMemberId: string;
   newRole: string;
 };
@@ -17,8 +23,16 @@ export async function changeMemberRole({
   input,
 }: ServiceArgs<ChangeMemberRoleInput>): Promise<void> {
   const tenantId = TenantId.create(input.tenantId);
+  const operatorMemberId = MemberId.create(input.operatorMemberId);
   const targetMemberId = MemberId.create(input.targetMemberId);
   const newRole = MemberRole.create(input.newRole);
+
+  if (operatorMemberId === targetMemberId) {
+    throw new ForbiddenError(
+      ForbiddenErrorCode.InsufficientPermissions,
+      "Cannot change your own role",
+    );
+  }
 
   await container.unitOfWorkProvider.transaction(async (repositories) => {
     const member = await repositories.memberRepository.findById(targetMemberId);
