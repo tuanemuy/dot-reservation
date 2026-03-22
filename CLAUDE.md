@@ -24,7 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Tech Stack
 
 - **Runtime**: Node.js 22.x
-- **Frontend**: React Router v7 Framework mode, Tailwind CSS, shadcn/ui, Conform
+- **Frontend**: React Router v7 Framework mode, Tailwind CSS, Conform
 - **Database**: Turso with Drizzle ORM
 
 ## Core Architecture
@@ -71,7 +71,6 @@ React Router v7 application code using:
 - Conform
 
 - UI Components
-    - `app/components/ui/`: Reusable UI components using shadcn/ui
     - `app/components/${domain}/`: Domain-specific components
     - `app/components/**/*`: Other reusable components
 - Pages and Routes
