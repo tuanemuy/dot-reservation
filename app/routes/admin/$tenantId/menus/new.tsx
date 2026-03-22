@@ -1,11 +1,79 @@
-import { Form, Link, useNavigation, useParams } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { Link, redirect } from "react-router";
+import { z } from "zod";
+import { createMenu } from "@/core/application/menu/createMenu";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/new";
 
-// TODO: action でメニュー登録処理を実装
+const createMenuSchema = z.object({
+  name: z.string().min(1, "メニュー名を入力してください"),
+  category: z.string().optional().default(""),
+  description: z.string().optional().default(""),
+  duration: z.coerce.number().min(1, "所要時間を入力してください"),
+  price: z.coerce.number().min(0, "料金を入力してください"),
+});
 
-export default function TenantMenuNewPage() {
-  const { tenantId } = useParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+export const handlers = {
+  createMenu: defineHandler({
+    schema: createMenuSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        createMenu({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: args.params.tenantId!,
+            name: value.name,
+            category: value.category || null,
+            description: value.description || null,
+            duration: value.duration,
+            price: value.price,
+          },
+        }),
+      ).match(
+        (result) => success({ id: result.id }),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  const result = await createCompositeAction(args, handlers);
+
+  if (result.intent === "createMenu" && result.status === "success") {
+    throw redirect(`/admin/${args.params.tenantId}/menus`);
+  }
+
+  return result;
+}
+
+export default function TenantMenuNewPage({ params }: Route.ComponentProps) {
+  const tenantId = params.tenantId;
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const [form, fields] = useForm({
+    id: "create-menu-form",
+    lastResult:
+      fetcher.data?.intent === "createMenu" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.createMenu.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.createMenu.schema });
+    },
+  });
+
+  const isPending = fetcher.isPending("createMenu");
 
   return (
     <div className="p-8">
@@ -20,39 +88,41 @@ export default function TenantMenuNewPage() {
       </div>
 
       <div className="max-w-2xl">
-        <Form
+        <fetcher.Form
           method="post"
+          {...getFormProps(form)}
           className="rounded-lg border border-gray-200 bg-white p-6"
         >
+          <input type="hidden" name="intent" value="createMenu" />
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="name"
+                htmlFor={fields.name.id}
                 className="block text-sm font-medium text-gray-700"
               >
                 メニュー名
               </label>
               <input
-                id="name"
-                name="name"
-                type="text"
-                required
+                {...getInputProps(fields.name, { type: "text" })}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="例: カット"
               />
+              {fields.name.errors && (
+                <p className="mt-1 text-sm text-red-600">
+                  {fields.name.errors}
+                </p>
+              )}
             </div>
 
             <div>
               <label
-                htmlFor="category"
+                htmlFor={fields.category.id}
                 className="block text-sm font-medium text-gray-700"
               >
                 カテゴリー
               </label>
               <input
-                id="category"
-                name="category"
-                type="text"
+                {...getInputProps(fields.category, { type: "text" })}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="例: カット"
               />
@@ -60,14 +130,14 @@ export default function TenantMenuNewPage() {
 
             <div>
               <label
-                htmlFor="description"
+                htmlFor={fields.description.id}
                 className="block text-sm font-medium text-gray-700"
               >
                 説明文
               </label>
               <textarea
-                id="description"
-                name="description"
+                id={fields.description.id}
+                name={fields.description.name}
                 rows={3}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="メニューの説明を入力..."
@@ -77,38 +147,42 @@ export default function TenantMenuNewPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  htmlFor="duration"
+                  htmlFor={fields.duration.id}
                   className="block text-sm font-medium text-gray-700"
                 >
                   所要時間（分）
                 </label>
                 <input
-                  id="duration"
-                  name="duration"
-                  type="number"
-                  required
+                  {...getInputProps(fields.duration, { type: "number" })}
                   min={1}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="60"
                 />
+                {fields.duration.errors && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {fields.duration.errors}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label
-                  htmlFor="price"
+                  htmlFor={fields.price.id}
                   className="block text-sm font-medium text-gray-700"
                 >
                   料金（円）
                 </label>
                 <input
-                  id="price"
-                  name="price"
-                  type="number"
-                  required
+                  {...getInputProps(fields.price, { type: "number" })}
                   min={0}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="5000"
                 />
+                {fields.price.errors && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {fields.price.errors}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -121,14 +195,14 @@ export default function TenantMenuNewPage() {
               </Link>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
                 className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSubmitting ? "登録中..." : "メニューを登録"}
+                {isPending ? "登録中..." : "メニューを登録"}
               </button>
             </div>
           </div>
-        </Form>
+        </fetcher.Form>
       </div>
     </div>
   );

@@ -1,191 +1,189 @@
-import { useState } from "react";
-import { Form, useNavigation, useSearchParams } from "react-router";
+import { getFormProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useSearchParams } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/Button";
+import { Pagination } from "@/components/ui/Pagination";
+import { Tabs } from "@/components/ui/Tabs";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import type { Route } from "./+types/index";
 
-// TODO: loader で通知一覧を取得
-// TODO: action で既読処理を実装
-
-// 仮データ
-const mockNotifications = [
-  {
-    id: "1",
-    type: "reservation" as const,
-    message: "新しい予約リクエストが届きました",
-    createdAt: "2024-01-15 14:30",
-    isRead: false,
-    link: "/admin/1/reservations/1",
-  },
-  {
-    id: "2",
-    type: "member" as const,
-    message: "田中さんが招待を承認しました",
-    createdAt: "2024-01-14 10:00",
-    isRead: false,
-    link: "/admin/1/members",
-  },
-  {
-    id: "3",
-    type: "info" as const,
-    message: "システムメンテナンスのお知らせ",
-    createdAt: "2024-01-13 09:00",
-    isRead: true,
-    link: null,
-  },
-];
-
-const filterLabels: Record<string, string> = {
-  all: "すべて",
-  reservation: "予約関連",
-  member: "メンバー関連",
-  info: "お知らせ",
+type NotificationItem = {
+  id: string;
+  type: "reservation" | "member" | "announcement";
+  title: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+  referenceUrl: string | null;
 };
 
-export default function AdminNotificationsPage() {
+const notificationTypeLabels: Record<NotificationItem["type"], string> = {
+  reservation: "予約",
+  member: "メンバー",
+  announcement: "お知らせ",
+};
+
+const markAllReadSchema = z.object({});
+
+const handlers = {
+  markAllAsRead: defineHandler({
+    schema: markAllReadSchema,
+    handler: async (_value, _args) => {
+      // TODO: markAllNotificationsAsRead ユースケースを呼び出す
+      // await handleUseCase(() =>
+      //   markAllNotificationsAsRead({
+      //     container,
+      //     headers: args.request.headers,
+      //     input: { recipientType: "member", recipientId },
+      //   }),
+      // );
+      console.log("Mark all as read");
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const filter = url.searchParams.get("filter") ?? "all";
+  const page = Number(url.searchParams.get("page") ?? "1");
+
+  // TODO: 認証ユーザーのIDで管理画面通知一覧を取得
+  const notifications: NotificationItem[] = [];
+
+  return {
+    notifications,
+    filter,
+    page,
+    totalPages: 1,
+    unreadCount: notifications.filter((n) => !n.isRead).length,
+  };
+}
+
+export default function AdminNotificationsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { notifications, filter, page, totalPages, unreadCount } = loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-  const currentFilter = searchParams.get("filter") || "all";
+  const fetcher = useCompositeAction<typeof handlers>();
 
-  const [notifications] = useState(mockNotifications);
+  const [markAllForm] = useForm({
+    id: "admin-mark-all-read-form",
+    lastResult:
+      fetcher.data?.intent === "markAllAsRead" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.markAllAsRead.schema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.markAllAsRead.schema,
+      });
+    },
+  });
 
-  const filteredNotifications =
-    currentFilter === "all"
-      ? notifications
-      : notifications.filter((n) => n.type === currentFilter);
+  fetcher.register("markAllAsRead", {
+    onSuccess: () => {
+      console.log("All marked as read");
+    },
+  });
+
+  const handleFilterChange = (newFilter: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("filter", newFilter);
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const isMarkingAll = fetcher.isPending("markAllAsRead");
+
+  const tabs = [
+    { id: "all", label: "すべて" },
+    { id: "reservation", label: "予約関連" },
+    { id: "member", label: "メンバー関連" },
+    { id: "announcement", label: "お知らせ" },
+  ];
 
   return (
-    <div className="p-8">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">通知</h1>
-        <Form method="post">
-          <input type="hidden" name="intent" value="markAllAsRead" />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-          >
-            すべて既読にする
-          </button>
-        </Form>
-      </div>
-
-      {/* フィルター */}
-      <div className="mb-6 flex gap-2">
-        {Object.entries(filterLabels).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => {
-              if (key === "all") {
-                searchParams.delete("filter");
-              } else {
-                searchParams.set("filter", key);
-              }
-              setSearchParams(searchParams);
-            }}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-              currentFilter === key
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* 通知一覧 */}
-      {filteredNotifications.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-          <p className="text-gray-500">通知はありません</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {filteredNotifications.map((notification) => (
-            <div
-              key={notification.id}
-              className={`flex items-start gap-4 rounded-lg border bg-white p-4 ${
-                notification.isRead
-                  ? "border-gray-200"
-                  : "border-blue-200 bg-blue-50"
-              }`}
+    <div>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-text">通知</h1>
+        {unreadCount > 0 && (
+          <fetcher.Form method="post" {...getFormProps(markAllForm)}>
+            <input type="hidden" name="intent" value="markAllAsRead" />
+            <Button
+              type="submit"
+              variant="ghost"
+              size="sm"
+              disabled={isMarkingAll}
             >
-              <div
-                className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                  notification.type === "reservation"
-                    ? "bg-green-100 text-green-600"
-                    : notification.type === "member"
-                      ? "bg-purple-100 text-purple-600"
-                      : "bg-gray-100 text-gray-600"
-                }`}
+              {isMarkingAll ? "処理中..." : "すべて既読にする"}
+            </Button>
+          </fetcher.Form>
+        )}
+      </div>
+
+      <Tabs tabs={tabs} activeTab={filter} onTabChange={handleFilterChange}>
+        {notifications.length === 0 ? (
+          <p className="py-12 text-center text-sm text-text-muted">
+            通知はありません
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {notifications.map((notification) => (
+              <a
+                key={notification.id}
+                href={notification.referenceUrl ?? "#"}
+                className={`block rounded-lg border p-4 transition-colors ${
+                  notification.isRead
+                    ? "border-border bg-white"
+                    : "border-border bg-surface-secondary"
+                } hover:bg-surface-secondary`}
               >
-                {notification.type === "reservation" ? (
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                ) : notification.type === "member" ? (
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                )}
-              </div>
-              <div className="flex-1">
-                <p
-                  className={`text-sm ${
-                    notification.isRead
-                      ? "text-gray-600"
-                      : "font-medium text-gray-900"
-                  }`}
-                >
-                  {notification.message}
-                </p>
-                <p className="mt-1 text-xs text-gray-400">
-                  {notification.createdAt}
-                </p>
-              </div>
-              {!notification.isRead && (
-                <span className="mt-1 h-2 w-2 rounded-full bg-blue-500" />
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-center gap-2">
+                      {!notification.isRead && (
+                        <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+                      )}
+                      <span className="text-xs text-text-muted">
+                        {notificationTypeLabels[notification.type]}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-sm ${notification.isRead ? "text-text-secondary" : "font-medium text-text"}`}
+                    >
+                      {notification.title}
+                    </p>
+                    <p className="mt-1 text-sm text-text-muted">
+                      {notification.message}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-xs text-text-muted">
+                    {notification.createdAt}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </Tabs>
+
+      <div className="mt-6">
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          baseUrl="/admin/notifications"
+          searchParams={searchParams}
+        />
+      </div>
     </div>
   );
 }

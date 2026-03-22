@@ -1,34 +1,104 @@
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { Form, useActionData, useNavigation } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/Button";
+import { Card, CardBody } from "@/components/ui/Card";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import type { Route } from "./+types/new-tenant";
 
-// TODO: action でテナント登録処理を実装
+const createTenantSchema = z.object({
+  name: z.string().min(1, "テナント名を入力してください"),
+  category: z.string().min(1, "カテゴリーを選択してください"),
+  urlPath: z.string().min(1, "URLパスを入力してください"),
+  postalCode: z.string().min(1, "郵便番号を入力してください"),
+  prefecture: z.string().min(1, "都道府県を入力してください"),
+  city: z.string().min(1, "市区町村を入力してください"),
+  street: z.string().min(1, "番地を入力してください"),
+  phone: z.string().min(1, "電話番号を入力してください"),
+});
 
-export default function AdminNewTenantPage() {
-  const actionData = useActionData<{ error?: string }>();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+const handlers = {
+  createTenant: defineHandler({
+    schema: createTenantSchema,
+    handler: async (value, _args) => {
+      // TODO: 認証ユーザーの情報を取得して createTenant ユースケースを呼び出す
+      // const result = await handleUseCase(() =>
+      //   createTenant({
+      //     container,
+      //     headers: args.request.headers,
+      //     input: {
+      //       authUserId,
+      //       name: value.name,
+      //       category: value.category,
+      //       urlPath: value.urlPath,
+      //       postalCode: value.postalCode,
+      //       address: { prefecture: value.prefecture, city: value.city, street: value.street },
+      //       phoneNumber: value.phone,
+      //       creatorName,
+      //       creatorEmail,
+      //     },
+      //   }),
+      // ).match(
+      //   (result) => result,
+      //   (e) => error({ "": [e.message] }),
+      // );
+      console.log("Create tenant:", value);
+      return success({ tenantId: "new-tenant-id" });
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export default function AdminNewTenantPage(_props: Route.ComponentProps) {
+  const fetcher = useCompositeAction<typeof handlers>();
   const [step, setStep] = useState(1);
 
-  // フォームデータの一時保持
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    urlPath: "",
-    postalCode: "",
-    address: "",
-    phone: "",
+  const [form, fields] = useForm({
+    id: "new-tenant-form",
+    lastResult:
+      fetcher.data?.intent === "createTenant" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.createTenant.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.createTenant.schema,
+      });
+    },
   });
 
-  const updateField = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  fetcher.register("createTenant", {
+    onSuccess: ({ data: result }) => {
+      // TODO: 作成後のテナントダッシュボードへリダイレクト
+      console.log("Tenant created:", result);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Tenant creation failed:", err);
+    },
+  });
+
+  const isPending = fetcher.isPending("createTenant");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-12">
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">テナント新規登録</h1>
-          <p className="mt-2 text-sm text-gray-600">新しい店舗を登録します</p>
+          <h1 className="text-2xl font-bold text-text">テナント新規登録</h1>
+          <p className="mt-2 text-sm text-text-secondary">
+            新しい店舗を登録します
+          </p>
         </div>
 
         {/* ステップインジケーター */}
@@ -38,10 +108,10 @@ export default function AdminNewTenantPage() {
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
                   s === step
-                    ? "bg-blue-600 text-white"
+                    ? "bg-primary text-white"
                     : s < step
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-gray-200 text-gray-500"
+                      ? "bg-primary/20 text-primary"
+                      : "bg-surface-secondary text-text-muted"
                 }`}
               >
                 {s}
@@ -49,7 +119,7 @@ export default function AdminNewTenantPage() {
               {s < 3 && (
                 <div
                   className={`mx-2 h-0.5 w-12 ${
-                    s < step ? "bg-blue-600" : "bg-gray-200"
+                    s < step ? "bg-primary" : "bg-surface-secondary"
                   }`}
                 />
               )}
@@ -57,252 +127,291 @@ export default function AdminNewTenantPage() {
           ))}
         </div>
 
-        {actionData?.error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-700">{actionData.error}</p>
-          </div>
-        )}
-
         {/* ステップ1: 基本情報 */}
         {step === 1 && (
-          <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              基本情報
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  テナント名
-                </label>
-                <input
-                  id="name"
-                  type="text"
+          <Card>
+            <CardBody>
+              <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
+              <div className="space-y-5">
+                <FormField
+                  label="テナント名"
+                  htmlFor={fields.name.id}
+                  error={fields.name.errors}
                   required
-                  value={formData.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="例: ヘアサロン dot"
-                />
-              </div>
+                >
+                  <Input
+                    {...getInputProps(fields.name, { type: "text" })}
+                    placeholder="例: ヘアサロン dot"
+                    error={fields.name.errors?.[0]}
+                  />
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="category"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  カテゴリー
-                </label>
-                <select
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => updateField("category", e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
-                  <option value="">選択してください</option>
-                  <option value="hair">美容室</option>
-                  <option value="nail">ネイルサロン</option>
-                  <option value="esthetic">エステサロン</option>
-                  <option value="clinic">クリニック</option>
-                  <option value="other">その他</option>
-                </select>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="urlPath"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  URLパス
-                </label>
-                <input
-                  id="urlPath"
-                  type="text"
+                <FormField
+                  label="カテゴリー"
+                  htmlFor={fields.category.id}
+                  error={fields.category.errors}
                   required
-                  value={formData.urlPath}
-                  onChange={(e) => updateField("urlPath", e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="例: hair-salon-dot"
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  公開ページのURLに使用されます
-                </p>
-                {/* TODO: リアルタイム使用可否チェック */}
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
-                  次へ
-                </button>
+                  <Select
+                    {...getInputProps(fields.category, { type: "text" })}
+                    error={fields.category.errors?.[0]}
+                  >
+                    <option value="">選択してください</option>
+                    <option value="hair">美容室</option>
+                    <option value="nail">ネイルサロン</option>
+                    <option value="esthetic">エステサロン</option>
+                    <option value="clinic">クリニック</option>
+                    <option value="other">その他</option>
+                  </Select>
+                </FormField>
+
+                <FormField
+                  label="URLパス"
+                  htmlFor={fields.urlPath.id}
+                  error={fields.urlPath.errors}
+                  required
+                >
+                  <Input
+                    {...getInputProps(fields.urlPath, { type: "text" })}
+                    placeholder="例: hair-salon-dot"
+                    error={fields.urlPath.errors?.[0]}
+                  />
+                  <p className="mt-1 text-xs text-text-muted">
+                    公開ページのURLに使用されます
+                  </p>
+                </FormField>
+
+                <div className="flex justify-end">
+                  <Button type="button" onClick={() => setStep(2)}>
+                    次へ
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         )}
 
         {/* ステップ2: 所在地・連絡先 */}
         {step === 2 && (
-          <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              所在地・連絡先
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="postalCode"
-                  className="block text-sm font-medium text-gray-700"
+          <Card>
+            <CardBody>
+              <h2 className="mb-4 text-lg font-semibold text-text">
+                所在地・連絡先
+              </h2>
+              <div className="space-y-5">
+                <FormField
+                  label="郵便番号"
+                  htmlFor={fields.postalCode.id}
+                  error={fields.postalCode.errors}
+                  required
                 >
-                  郵便番号
-                </label>
-                <input
-                  id="postalCode"
-                  type="text"
-                  value={formData.postalCode}
-                  onChange={(e) => updateField("postalCode", e.target.value)}
-                  className="mt-1 block w-48 rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="123-4567"
-                />
-                {/* TODO: 郵便番号による住所自動補完 */}
-              </div>
+                  <Input
+                    {...getInputProps(fields.postalCode, { type: "text" })}
+                    placeholder="123-4567"
+                    className="w-48"
+                    error={fields.postalCode.errors?.[0]}
+                  />
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700"
+                <FormField
+                  label="都道府県"
+                  htmlFor={fields.prefecture.id}
+                  error={fields.prefecture.errors}
+                  required
                 >
-                  住所
-                </label>
-                <input
-                  id="address"
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => updateField("address", e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="東京都渋谷区..."
-                />
-              </div>
+                  <Input
+                    {...getInputProps(fields.prefecture, { type: "text" })}
+                    placeholder="東京都"
+                    error={fields.prefecture.errors?.[0]}
+                  />
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700"
+                <FormField
+                  label="市区町村"
+                  htmlFor={fields.city.id}
+                  error={fields.city.errors}
+                  required
                 >
-                  電話番号
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => updateField("phone", e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="03-1234-5678"
-                />
-              </div>
+                  <Input
+                    {...getInputProps(fields.city, { type: "text" })}
+                    placeholder="渋谷区"
+                    error={fields.city.errors?.[0]}
+                  />
+                </FormField>
 
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                <FormField
+                  label="番地"
+                  htmlFor={fields.street.id}
+                  error={fields.street.errors}
+                  required
                 >
-                  戻る
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStep(3)}
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  <Input
+                    {...getInputProps(fields.street, { type: "text" })}
+                    placeholder="神南1-2-3"
+                    error={fields.street.errors?.[0]}
+                  />
+                </FormField>
+
+                <FormField
+                  label="電話番号"
+                  htmlFor={fields.phone.id}
+                  error={fields.phone.errors}
+                  required
                 >
-                  次へ
-                </button>
+                  <Input
+                    {...getInputProps(fields.phone, { type: "tel" })}
+                    placeholder="03-1234-5678"
+                    error={fields.phone.errors?.[0]}
+                  />
+                </FormField>
+
+                <div className="flex justify-between">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setStep(1)}
+                  >
+                    戻る
+                  </Button>
+                  <Button type="button" onClick={() => setStep(3)}>
+                    次へ
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         )}
 
         {/* ステップ3: 確認 */}
         {step === 3 && (
-          <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              入力内容の確認
-            </h2>
-            <dl className="space-y-3">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">
-                  テナント名
-                </dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.name || "-"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">
-                  カテゴリー
-                </dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.category || "-"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">URLパス</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.urlPath || "-"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">郵便番号</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.postalCode || "-"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">住所</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.address || "-"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">電話番号</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {formData.phone || "-"}
-                </dd>
-              </div>
-            </dl>
+          <Card>
+            <CardBody>
+              <h2 className="mb-4 text-lg font-semibold text-text">
+                入力内容の確認
+              </h2>
+              <dl className="space-y-3">
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    テナント名
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {fields.name.value || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    カテゴリー
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {fields.category.value || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    URLパス
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {fields.urlPath.value || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    郵便番号
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {fields.postalCode.value || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    住所
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {[
+                      fields.prefecture.value,
+                      fields.city.value,
+                      fields.street.value,
+                    ]
+                      .filter(Boolean)
+                      .join("") || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-text-secondary">
+                    電話番号
+                  </dt>
+                  <dd className="mt-1 text-sm text-text">
+                    {fields.phone.value || "-"}
+                  </dd>
+                </div>
+              </dl>
 
-            <Form method="post" className="mt-6">
-              <input type="hidden" name="name" value={formData.name} />
-              <input type="hidden" name="category" value={formData.category} />
-              <input type="hidden" name="urlPath" value={formData.urlPath} />
-              <input
-                type="hidden"
-                name="postalCode"
-                value={formData.postalCode}
-              />
-              <input type="hidden" name="address" value={formData.address} />
-              <input type="hidden" name="phone" value={formData.phone} />
+              {form.errors && (
+                <p className="mt-4 text-xs text-destructive">{form.errors}</p>
+              )}
 
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  戻る
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {isSubmitting ? "登録中..." : "テナントを登録"}
-                </button>
-              </div>
-            </Form>
-          </div>
+              <fetcher.Form
+                method="post"
+                {...getFormProps(form)}
+                className="mt-6"
+              >
+                <input type="hidden" name="intent" value="createTenant" />
+                <input
+                  type="hidden"
+                  name="name"
+                  value={fields.name.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="category"
+                  value={fields.category.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="urlPath"
+                  value={fields.urlPath.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="postalCode"
+                  value={fields.postalCode.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="prefecture"
+                  value={fields.prefecture.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="city"
+                  value={fields.city.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="street"
+                  value={fields.street.value ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="phone"
+                  value={fields.phone.value ?? ""}
+                />
+
+                <div className="flex justify-between">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setStep(2)}
+                  >
+                    戻る
+                  </Button>
+                  <Button type="submit" disabled={isPending}>
+                    {isPending ? "登録中..." : "テナントを登録"}
+                  </Button>
+                </div>
+              </fetcher.Form>
+            </CardBody>
+          </Card>
         )}
       </div>
     </div>

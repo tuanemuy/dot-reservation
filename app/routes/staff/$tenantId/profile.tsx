@@ -1,105 +1,222 @@
-import { Form } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { data } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/Button";
+import { Card, CardBody } from "@/components/ui/Card";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
+import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { updateStaffProfile } from "@/core/application/staff/updateStaffProfile";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/profile";
 
-// TODO: 認証チェック
-export async function loader({ params }: Route.LoaderArgs) {
-  const _tenantId = params.tenantId;
+const updateProfileSchema = z.object({
+  staffProfileId: z.string().min(1),
+  displayName: z.string().min(1, "表示名を入力してください"),
+  bio: z.string().optional(),
+});
 
-  // TODO: スタッフプロフィール取得
+const handlers = {
+  updateProfile: defineHandler({
+    schema: updateProfileSchema,
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      return handleUseCase(() =>
+        updateStaffProfile({
+          container,
+          headers: args.request.headers,
+          input: {
+            staffProfileId: value.staffProfileId,
+            displayName: value.displayName,
+            imageUrl: null,
+            bio: value.bio ?? null,
+          },
+        }),
+      ).match(
+        (result) => success({ displayName: result.displayName }),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+  const tenantId = params.tenantId;
+
+  // Get staff profiles for this tenant to find the current user's profile
+  const profilesResult = await handleUseCase(() =>
+    listStaffProfiles({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  // For now, use the first staff profile
+  // In production, this would be filtered by the authenticated member ID
+  const firstProfile = profilesResult.items[0];
+
+  if (!firstProfile) {
+    return {
+      profile: {
+        id: "",
+        displayName: "",
+        bio: "",
+        profileImageUrl: null as string | null,
+      },
+    };
+  }
+
+  const profileResult = await handleUseCase(() =>
+    getStaffProfile({
+      container,
+      headers: request.headers,
+      input: { staffProfileId: firstProfile.id },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
   return {
     profile: {
-      displayName: "",
-      bio: "",
-      profileImageUrl: null as string | null,
+      id: profileResult.id,
+      displayName: profileResult.displayName,
+      bio: profileResult.bio ?? "",
+      profileImageUrl: profileResult.imageUrl,
     },
   };
 }
 
-// TODO: 認証チェック
-export async function action({ params, request }: Route.ActionArgs) {
-  const _tenantId = params.tenantId;
-  const _formData = await request.formData();
-
-  // TODO: プロフィール更新処理
-  return { success: true };
-}
-
 export default function StaffProfilePage({ loaderData }: Route.ComponentProps) {
   const { profile } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const [profileForm, profileFields] = useForm({
+    id: "profile-form",
+    defaultValue: {
+      staffProfileId: profile.id,
+      displayName: profile.displayName,
+      bio: profile.bio,
+    },
+    lastResult:
+      fetcher.data?.intent === "updateProfile" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.updateProfile.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.updateProfile.schema,
+      });
+    },
+  });
+
+  fetcher.register("updateProfile", {
+    onSuccess: () => {
+      // Profile updated
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Profile update failed:", err);
+    },
+  });
+
+  const isPendingProfile = fetcher.isPending("updateProfile");
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">プロフィール編集</h1>
+      <h1 className="text-xl font-bold text-text">プロフィール編集</h1>
 
-      <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <Form method="post" className="space-y-5">
-          <div>
-            <label
-              htmlFor="displayName"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              スタッフ表示名
-            </label>
-            <input
-              type="text"
-              id="displayName"
-              name="displayName"
-              defaultValue={profile.displayName}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-            />
-          </div>
+      <Card>
+        <CardBody>
+          <fetcher.Form method="post" {...getFormProps(profileForm)}>
+            <input type="hidden" name="intent" value="updateProfile" />
+            <input type="hidden" name="staffProfileId" value={profile.id} />
 
-          <div>
-            <label
-              htmlFor="profileImage"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              プロフィール画像
-            </label>
-            {profile.profileImageUrl && (
-              <div className="mb-2">
-                <img
-                  src={profile.profileImageUrl}
-                  alt="プロフィール画像"
-                  className="h-20 w-20 rounded-full object-cover"
+            <div className="space-y-5">
+              <FormField
+                label="スタッフ表示名"
+                htmlFor={profileFields.displayName.id}
+                error={profileFields.displayName.errors}
+                required
+              >
+                <Input
+                  {...getInputProps(profileFields.displayName, {
+                    type: "text",
+                  })}
+                  error={profileFields.displayName.errors?.[0]}
+                />
+              </FormField>
+
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="profileImage"
+                  className="block text-sm font-medium text-text"
+                >
+                  プロフィール画像
+                </label>
+                {profile.profileImageUrl && (
+                  <div className="mb-2">
+                    <img
+                      src={profile.profileImageUrl}
+                      alt="プロフィール画像"
+                      className="h-20 w-20 rounded-full object-cover"
+                    />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  id="profileImage"
+                  name="profileImage"
+                  accept="image/*"
+                  className="block w-full text-sm text-text-secondary file:mr-3 file:rounded-md file:border-0 file:bg-surface-secondary file:px-3 file:py-2 file:text-sm file:font-medium file:text-text hover:file:bg-border"
                 />
               </div>
-            )}
-            <input
-              type="file"
-              id="profileImage"
-              name="profileImage"
-              accept="image/*"
-              className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-md file:border-0 file:bg-gray-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-200"
-            />
-          </div>
 
-          <div>
-            <label
-              htmlFor="bio"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              自己紹介文
-            </label>
-            <textarea
-              id="bio"
-              name="bio"
-              rows={4}
-              defaultValue={profile.bio}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-            />
-          </div>
+              <FormField label="自己紹介文" htmlFor={profileFields.bio.id}>
+                <textarea
+                  id={profileFields.bio.id}
+                  name={profileFields.bio.name}
+                  rows={4}
+                  defaultValue={profile.bio}
+                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm transition-colors placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </FormField>
 
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
-            >
-              保存
-            </button>
-          </div>
-        </Form>
-      </div>
+              {profileForm.errors && (
+                <p className="text-xs text-destructive">{profileForm.errors}</p>
+              )}
+
+              <div className="flex justify-end">
+                <Button type="submit" disabled={isPendingProfile}>
+                  {isPendingProfile ? "保存中..." : "保存"}
+                </Button>
+              </div>
+            </div>
+          </fetcher.Form>
+        </CardBody>
+      </Card>
     </div>
   );
 }

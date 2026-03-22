@@ -1,21 +1,28 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { data } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { deleteCustomer } from "@/core/application/customer/deleteCustomer";
+import { getCustomer } from "@/core/application/customer/getCustomer";
+import { updateCustomerProfile } from "@/core/application/customer/updateCustomerProfile";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/profile";
 
 const updateProfileSchema = z.object({
+  customerId: z.string().min(1),
   displayName: z.string().min(1, "表示名を入力してください"),
   email: z
     .string()
@@ -38,33 +45,61 @@ const changePasswordSchema = z
   });
 
 const deleteAccountSchema = z.object({
+  customerId: z.string().min(1),
   password: z.string().min(1, "パスワードを入力してください"),
 });
 
 const handlers = {
   updateProfile: defineHandler({
     schema: updateProfileSchema,
-    handler: async (value, _args) => {
-      // TODO: プロフィール更新ユースケースを実装
-      console.log("Update profile:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      return handleUseCase(() =>
+        updateCustomerProfile({
+          container,
+          headers: args.request.headers,
+          input: {
+            customerId: value.customerId,
+            displayName: value.displayName,
+            phoneNumber: value.phoneNumber || null,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   changePassword: defineHandler({
     schema: changePasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワード変更を実装
-      console.log("Change password:", value);
-      return success();
+    handler: async (_value, _args) => {
+      // authProvider 実装後:
+      // 1. authProvider で現在のパスワード検証
+      // 2. パスワード更新
+      return error({
+        "": ["パスワード変更機能は現在準備中です"],
+      });
     },
   }),
   deleteAccount: defineHandler({
     schema: deleteAccountSchema,
-    handler: async (value, _args) => {
-      // TODO: アカウント削除を実装
-      // 未来の予約がある場合は警告を返す
-      console.log("Delete account:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      // authProvider 実装後: パスワード検証を追加する
+      return handleUseCase(() =>
+        deleteCustomer({
+          container,
+          headers: args.request.headers,
+          input: {
+            customerId: value.customerId,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -73,13 +108,42 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader(_args: Route.LoaderArgs) {
-  // TODO: 認証ユーザーのプロフィールを取得
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  // authProvider 実装後: 認証ユーザーの customerId を取得する
+  const customerId = request.headers.get("x-customer-id") ?? "";
+
+  if (!customerId) {
+    return {
+      profile: {
+        id: "",
+        displayName: "",
+        email: "",
+        phoneNumber: null as string | null,
+      },
+    };
+  }
+
+  const customer = await handleUseCase(() =>
+    getCustomer({
+      container,
+      headers: request.headers,
+      input: { customerId },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
   return {
     profile: {
-      displayName: "山田 太郎",
-      email: "yamada@example.com",
-      phoneNumber: "090-1234-5678",
+      id: customer.id,
+      displayName: customer.displayName,
+      email: customer.email,
+      phoneNumber: customer.phoneNumber,
     },
   };
 }
@@ -92,9 +156,10 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   const [profileForm, profileFields] = useForm({
     id: "profile-form",
     defaultValue: {
+      customerId: profile.id,
       displayName: profile.displayName,
       email: profile.email,
-      phoneNumber: profile.phoneNumber,
+      phoneNumber: profile.phoneNumber ?? "",
     },
     lastResult:
       fetcher.data?.intent === "updateProfile" ? fetcher.data : undefined,
@@ -124,6 +189,9 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
 
   const [deleteForm, deleteFields] = useForm({
     id: "delete-form",
+    defaultValue: {
+      customerId: profile.id,
+    },
     lastResult:
       fetcher.data?.intent === "deleteAccount" ? fetcher.data : undefined,
     constraint: getZodConstraint(handlers.deleteAccount.schema),
@@ -135,32 +203,18 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
     },
   });
 
-  fetcher.register("updateProfile", {
-    onSuccess: () => {
-      console.log("Profile updated");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Profile update failed:", err);
-    },
-  });
+  fetcher.register("updateProfile", {});
 
   fetcher.register("changePassword", {
     onSuccess: () => {
       passwordForm.reset();
-      console.log("Password changed");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Password change failed:", err);
     },
   });
 
   fetcher.register("deleteAccount", {
     onSuccess: () => {
-      // TODO: ログアウト＆リダイレクト
-      console.log("Account deleted");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Account deletion failed:", err);
+      // authProvider 実装後: ログアウト処理 & リダイレクト
+      setShowDeleteDialog(false);
     },
   });
 
@@ -178,6 +232,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
             <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
             <fetcher.Form method="post" {...getFormProps(profileForm)}>
               <input type="hidden" name="intent" value="updateProfile" />
+              <input type="hidden" name="customerId" value={profile.id} />
 
               <div className="space-y-5">
                 <FormField
@@ -203,6 +258,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
                   <Input
                     {...getInputProps(profileFields.email, { type: "email" })}
                     error={profileFields.email.errors?.[0]}
+                    disabled
                   />
                 </FormField>
 
@@ -326,6 +382,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         </p>
         <fetcher.Form method="post" {...getFormProps(deleteForm)}>
           <input type="hidden" name="intent" value="deleteAccount" />
+          <input type="hidden" name="customerId" value={profile.id} />
           <div className="mb-4">
             <FormField
               label="パスワード"

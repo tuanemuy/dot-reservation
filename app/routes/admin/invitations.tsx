@@ -1,138 +1,249 @@
+import { getFormProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { Form, useNavigation } from "react-router";
+import { z } from "zod";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card, CardBody } from "@/components/ui/Card";
+import { Modal } from "@/components/ui/Modal";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import type { Route } from "./+types/invitations";
 
-// TODO: loader で招待一覧を取得
-// TODO: action で招待の承認・辞退を実装
+type PendingInvitation = {
+  id: string;
+  tenantName: string;
+  inviterName: string;
+  role: string;
+  invitedAt: string;
+};
 
-// 仮データ
-const mockInvitations = [
-  {
-    id: "1",
-    tenantName: "サロン C",
-    inviterName: "田中 太郎",
-    role: "スタッフ",
-    invitedAt: "2024-01-15",
-  },
-  {
-    id: "2",
-    tenantName: "クリニック D",
-    inviterName: "佐藤 花子",
-    role: "管理者",
-    invitedAt: "2024-01-14",
-  },
-];
+const acceptSchema = z.object({
+  invitationId: z.string().min(1),
+});
 
-export default function AdminInvitationsPage() {
-  const invitations = mockInvitations;
-  const navigation = useNavigation();
+const declineSchema = z.object({
+  invitationId: z.string().min(1),
+});
+
+const handlers = {
+  accept: defineHandler({
+    schema: acceptSchema,
+    handler: async (value, _args) => {
+      // TODO: acceptInvitation ユースケースを呼び出す
+      // await handleUseCase(() =>
+      //   acceptInvitation({
+      //     container,
+      //     headers: args.request.headers,
+      //     input: { invitationId: value.invitationId, authUserId, email },
+      //   }),
+      // );
+      console.log("Accept invitation:", value);
+      return success();
+    },
+  }),
+  decline: defineHandler({
+    schema: declineSchema,
+    handler: async (value, _args) => {
+      // TODO: declineInvitation ユースケースを呼び出す
+      // await handleUseCase(() =>
+      //   declineInvitation({
+      //     container,
+      //     headers: args.request.headers,
+      //     input: { invitationId: value.invitationId, authUserId, email },
+      //   }),
+      // );
+      console.log("Decline invitation:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export async function loader({ request: _request }: Route.LoaderArgs) {
+  // TODO: 認証ユーザーのメールアドレスで listPendingInvitations ユースケースを呼び出す
+  // const result = await handleUseCase(() =>
+  //   listPendingInvitations({
+  //     container,
+  //     headers: request.headers,
+  //     input: { email: currentUser.email },
+  //   }),
+  // );
+  // テナント名・招待者名はそれぞれのリポジトリから取得
+  const invitations: PendingInvitation[] = [];
+
+  return { invitations };
+}
+
+export default function AdminInvitationsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { invitations } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [confirmAction, setConfirmAction] = useState<
     "accept" | "decline" | null
   >(null);
 
-  const isSubmitting = navigation.state === "submitting";
+  const [acceptForm] = useForm({
+    id: "accept-form",
+    lastResult: fetcher.data?.intent === "accept" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.accept.schema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.accept.schema });
+    },
+  });
+
+  const [declineForm] = useForm({
+    id: "decline-form",
+    lastResult: fetcher.data?.intent === "decline" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.decline.schema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.decline.schema });
+    },
+  });
+
+  fetcher.register("accept", {
+    onSuccess: () => {
+      setConfirmingId(null);
+      setConfirmAction(null);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Accept invitation failed:", err);
+    },
+  });
+
+  fetcher.register("decline", {
+    onSuccess: () => {
+      setConfirmingId(null);
+      setConfirmAction(null);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Decline invitation failed:", err);
+    },
+  });
+
+  const isPendingAccept = fetcher.isPending("accept");
+  const isPendingDecline = fetcher.isPending("decline");
+
+  const confirmingInvitation = invitations.find(
+    (inv) => inv.id === confirmingId,
+  );
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">招待一覧</h1>
+    <div>
+      <h1 className="mb-6 text-2xl font-bold text-text">招待一覧</h1>
 
       {invitations.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-          <p className="text-gray-500">未対応の招待はありません</p>
+        <div className="rounded-lg border border-border bg-white p-12 text-center">
+          <p className="text-text-secondary">未対応の招待はありません</p>
         </div>
       ) : (
         <div className="space-y-4">
           {invitations.map((invitation) => (
-            <div
-              key={invitation.id}
-              className="rounded-lg border border-gray-200 bg-white p-6"
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    {invitation.tenantName}
-                  </h2>
-                  <p className="mt-1 text-sm text-gray-500">
-                    招待者: {invitation.inviterName}
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    招待日: {invitation.invitedAt}
-                  </p>
-                  <span className="mt-2 inline-block rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-                    {invitation.role}
-                  </span>
-                </div>
-
-                {confirmingId === invitation.id ? (
-                  <div className="flex items-center gap-3">
-                    <p className="text-sm text-gray-600">
-                      {confirmAction === "accept"
-                        ? "承認しますか？"
-                        : "辞退しますか？"}
+            <Card key={invitation.id}>
+              <CardBody>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-text">
+                      {invitation.tenantName}
+                    </h2>
+                    <p className="mt-1 text-sm text-text-secondary">
+                      招待者: {invitation.inviterName}
                     </p>
-                    <Form method="post">
-                      <input
-                        type="hidden"
-                        name="invitationId"
-                        value={invitation.id}
-                      />
-                      <input
-                        type="hidden"
-                        name="action"
-                        value={confirmAction ?? ""}
-                      />
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`rounded-md px-3 py-1.5 text-sm font-medium text-white ${
-                          confirmAction === "accept"
-                            ? "bg-blue-600 hover:bg-blue-700"
-                            : "bg-red-600 hover:bg-red-700"
-                        } disabled:opacity-50`}
-                      >
-                        {isSubmitting ? "処理中..." : "はい"}
-                      </button>
-                    </Form>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setConfirmingId(null);
-                        setConfirmAction(null);
-                      }}
-                      className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                    >
-                      キャンセル
-                    </button>
+                    <p className="mt-1 text-sm text-text-secondary">
+                      招待日: {invitation.invitedAt}
+                    </p>
+                    <Badge className="mt-2">{invitation.role}</Badge>
                   </div>
-                ) : (
+
                   <div className="flex gap-2">
-                    <button
-                      type="button"
+                    <Button
                       onClick={() => {
                         setConfirmingId(invitation.id);
                         setConfirmAction("accept");
                       }}
-                      className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                     >
                       承認
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
+                      variant="outline"
                       onClick={() => {
                         setConfirmingId(invitation.id);
                         setConfirmAction("decline");
                       }}
-                      className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                       辞退
-                    </button>
+                    </Button>
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+              </CardBody>
+            </Card>
           ))}
         </div>
       )}
+
+      <Modal
+        open={confirmingId !== null}
+        onClose={() => {
+          setConfirmingId(null);
+          setConfirmAction(null);
+        }}
+        title={confirmAction === "accept" ? "招待の承認" : "招待の辞退"}
+      >
+        <p className="mb-4 text-sm text-text-secondary">
+          {confirmAction === "accept"
+            ? `${confirmingInvitation?.tenantName ?? ""}への招待を承認しますか？`
+            : `${confirmingInvitation?.tenantName ?? ""}への招待を辞退しますか？`}
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setConfirmingId(null);
+              setConfirmAction(null);
+            }}
+          >
+            キャンセル
+          </Button>
+          {confirmAction === "accept" ? (
+            <fetcher.Form method="post" {...getFormProps(acceptForm)}>
+              <input type="hidden" name="intent" value="accept" />
+              <input
+                type="hidden"
+                name="invitationId"
+                value={confirmingId ?? ""}
+              />
+              <Button type="submit" disabled={isPendingAccept}>
+                {isPendingAccept ? "処理中..." : "承認する"}
+              </Button>
+            </fetcher.Form>
+          ) : (
+            <fetcher.Form method="post" {...getFormProps(declineForm)}>
+              <input type="hidden" name="intent" value="decline" />
+              <input
+                type="hidden"
+                name="invitationId"
+                value={confirmingId ?? ""}
+              />
+              <Button
+                type="submit"
+                variant="destructive"
+                disabled={isPendingDecline}
+              >
+                {isPendingDecline ? "処理中..." : "辞退する"}
+              </Button>
+            </fetcher.Form>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }

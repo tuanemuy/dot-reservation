@@ -1,24 +1,128 @@
-import { Form, Link, useNavigation, useParams } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { data, Link, redirect } from "react-router";
+import { z } from "zod";
+import { listMenus } from "@/core/application/menu/listMenus";
+import { createProxyReservation } from "@/core/application/reservation/createProxyReservation";
+import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/new";
 
-// TODO: loader でメニュー一覧・スタッフ一覧を取得
-// TODO: action で代理予約登録を実装
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantId = params.tenantId;
 
-// 仮データ
-const mockMenus = [
-  { id: "1", name: "カット", duration: 60, price: 5000 },
-  { id: "2", name: "カラー", duration: 90, price: 8000 },
-  { id: "3", name: "パーマ", duration: 120, price: 10000 },
-];
+  const menusResult = await handleUseCase(() =>
+    listMenus({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
 
-const mockStaff = [
-  { id: "1", name: "佐藤 花子" },
-  { id: "2", name: "田中 次郎" },
-];
+  const staffResult = await handleUseCase(() =>
+    listStaffProfiles({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [] }),
+  );
 
-export default function TenantReservationNewPage() {
-  const { tenantId } = useParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  return {
+    menus: menusResult.items,
+    staff: staffResult.items,
+  };
+}
+
+const createReservationSchema = z.object({
+  customerName: z.string().min(1, "顧客名を入力してください"),
+  customerPhone: z.string().optional().default(""),
+  customerEmail: z.string().optional().default(""),
+  menuId: z.string().min(1, "メニューを選択してください"),
+  staffId: z.string().optional().default(""),
+  date: z.string().min(1, "日付を入力してください"),
+  time: z.string().min(1, "時刻を入力してください"),
+  notes: z.string().optional().default(""),
+});
+
+export const handlers = {
+  createReservation: defineHandler({
+    schema: createReservationSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        createProxyReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: args.params.tenantId!,
+            customerId: null,
+            customerName: value.customerName,
+            customerEmail: value.customerEmail || null,
+            customerPhoneNumber: value.customerPhone || null,
+            menuId: value.menuId,
+            staffProfileId: value.staffId || "",
+            date: value.date,
+            startTime: value.time,
+            note: value.notes || null,
+            createdBy: "admin",
+          },
+        }),
+      ).match(
+        (result) => success({ id: result.id }),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  const result = await createCompositeAction(args, handlers);
+
+  if (result.intent === "createReservation" && result.status === "success") {
+    throw redirect(`/admin/${args.params.tenantId}/reservations`);
+  }
+
+  return result;
+}
+
+export default function TenantReservationNewPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const tenantId = params.tenantId;
+  const { menus, staff } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const [form, fields] = useForm({
+    id: "create-reservation-form",
+    lastResult:
+      fetcher.data?.intent === "createReservation" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.createReservation.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.createReservation.schema,
+      });
+    },
+  });
+
+  const isPending = fetcher.isPending("createReservation");
 
   return (
     <div className="p-8">
@@ -33,60 +137,59 @@ export default function TenantReservationNewPage() {
       </div>
 
       <div className="max-w-2xl">
-        <Form
+        <fetcher.Form
           method="post"
+          {...getFormProps(form)}
           className="rounded-lg border border-gray-200 bg-white p-6"
         >
+          <input type="hidden" name="intent" value="createReservation" />
           <div className="space-y-6">
             {/* 顧客情報 */}
             <section>
               <h2 className="mb-4 text-lg font-semibold text-gray-900">
                 顧客情報
               </h2>
-              {/* TODO: 既存顧客検索 */}
               <div className="space-y-4">
                 <div>
                   <label
-                    htmlFor="customerName"
+                    htmlFor={fields.customerName.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     顧客名
                   </label>
                   <input
-                    id="customerName"
-                    name="customerName"
-                    type="text"
-                    required
+                    {...getInputProps(fields.customerName, { type: "text" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     placeholder="山田 太郎"
                   />
+                  {fields.customerName.errors && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {fields.customerName.errors}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
-                    htmlFor="customerPhone"
+                    htmlFor={fields.customerPhone.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     電話番号
                   </label>
                   <input
-                    id="customerPhone"
-                    name="customerPhone"
-                    type="tel"
+                    {...getInputProps(fields.customerPhone, { type: "tel" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     placeholder="090-1234-5678"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="customerEmail"
+                    htmlFor={fields.customerEmail.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     メールアドレス
                   </label>
                   <input
-                    id="customerEmail"
-                    name="customerEmail"
-                    type="email"
+                    {...getInputProps(fields.customerEmail, { type: "email" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     placeholder="email@example.com"
                   />
@@ -100,18 +203,22 @@ export default function TenantReservationNewPage() {
                 メニュー
               </h2>
               <select
-                name="menuId"
-                required
+                {...getInputProps(fields.menuId, { type: "text" })}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="">メニューを選択</option>
-                {mockMenus.map((menu) => (
+                {menus.map((menu) => (
                   <option key={menu.id} value={menu.id}>
                     {menu.name} ({menu.duration}分 / &yen;
                     {menu.price.toLocaleString()})
                   </option>
                 ))}
               </select>
+              {fields.menuId.errors && (
+                <p className="mt-1 text-sm text-red-600">
+                  {fields.menuId.errors}
+                </p>
+              )}
             </section>
 
             {/* スタッフ選択 */}
@@ -120,13 +227,13 @@ export default function TenantReservationNewPage() {
                 担当スタッフ
               </h2>
               <select
-                name="staffId"
+                {...getInputProps(fields.staffId, { type: "text" })}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="">指名なし</option>
-                {mockStaff.map((staff) => (
-                  <option key={staff.id} value={staff.id}>
-                    {staff.name}
+                {staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.displayName}
                   </option>
                 ))}
               </select>
@@ -138,43 +245,47 @@ export default function TenantReservationNewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="date"
+                    htmlFor={fields.date.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     日付
                   </label>
                   <input
-                    id="date"
-                    name="date"
-                    type="date"
-                    required
+                    {...getInputProps(fields.date, { type: "date" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
+                  {fields.date.errors && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {fields.date.errors}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
-                    htmlFor="time"
+                    htmlFor={fields.time.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     時刻
                   </label>
                   <input
-                    id="time"
-                    name="time"
-                    type="time"
-                    required
+                    {...getInputProps(fields.time, { type: "time" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
+                  {fields.time.errors && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {fields.time.errors}
+                    </p>
+                  )}
                 </div>
               </div>
-              {/* TODO: 空き時間枠から選択する UI */}
             </section>
 
             {/* 備考 */}
             <section>
               <h2 className="mb-4 text-lg font-semibold text-gray-900">備考</h2>
               <textarea
-                name="notes"
+                id={fields.notes.id}
+                name={fields.notes.name}
                 rows={3}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="備考を入力..."
@@ -191,14 +302,14 @@ export default function TenantReservationNewPage() {
               </Link>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
                 className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSubmitting ? "登録中..." : "予約を登録"}
+                {isPending ? "登録中..." : "予約を登録"}
               </button>
             </div>
           </div>
-        </Form>
+        </fetcher.Form>
       </div>
     </div>
   );

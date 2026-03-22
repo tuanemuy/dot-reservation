@@ -7,12 +7,15 @@ import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
+import { createCustomer } from "@/core/application/customer/createCustomer";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/register";
 
 const registerSchema = z
@@ -35,13 +38,30 @@ const registerSchema = z
 const handlers = {
   register: defineHandler({
     schema: registerSchema,
-    handler: async (value, _args) => {
-      // TODO: 認証サービスを使ってアカウント作成を実装
-      // 1. authProvider でユーザー作成
-      // 2. createCustomer ユースケースで顧客エンティティ作成
-      // 3. 確認メール送信
-      console.log("Register:", value);
-      return success({ email: value.email });
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+      // authProvider 実装後:
+      // 1. authProvider でユーザー作成 -> authUserId 取得
+      // 2. 確認メール送信
+      // 現在は authProvider 未実装のため、仮の authUserId で顧客エンティティを作成
+      const authUserId = crypto.randomUUID();
+
+      const result = await handleUseCase(() =>
+        createCustomer({
+          container,
+          headers: args.request.headers,
+          input: {
+            authUserId,
+            displayName: value.displayName,
+            email: value.email,
+          },
+        }),
+      ).match(
+        (r) => success({ email: r.email }),
+        (e) => error({ "": [e.message] }),
+      );
+
+      return result;
     },
   }),
 };
@@ -68,9 +88,6 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
   fetcher.register("register", {
     onSuccess: () => {
       setIsSubmitted(true);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Registration failed:", err);
     },
   });
 

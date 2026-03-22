@@ -1,10 +1,36 @@
-import { Link, NavLink, Outlet, useParams } from "react-router";
+import { data, Link, NavLink, Outlet, useParams } from "react-router";
+import { getTenant } from "@/core/application/tenant/getTenant";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/layout";
 
-// TODO: loader で認証チェック・テナント情報取得
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantId = params.tenantId;
 
-export default function TenantAdminLayout() {
+  const tenantResult = await handleUseCase(() =>
+    getTenant({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  return {
+    tenant: tenantResult,
+  };
+}
+
+export default function TenantAdminLayout({
+  loaderData,
+}: Route.ComponentProps) {
   const { tenantId } = useParams();
   const basePath = `/admin/${tenantId}`;
+  const { tenant } = loaderData;
 
   const navItems = [
     { to: `${basePath}/dashboard`, label: "ダッシュボード" },
@@ -31,8 +57,7 @@ export default function TenantAdminLayout() {
         </div>
 
         <div className="px-4 py-3">
-          {/* TODO: テナント名を表示 */}
-          <h2 className="text-lg font-bold">テナント管理</h2>
+          <h2 className="text-lg font-bold">{tenant.name}</h2>
         </div>
 
         <nav className="space-y-1 px-3">
@@ -76,12 +101,10 @@ export default function TenantAdminLayout() {
               to="/admin/tenants"
               className="text-lg font-bold text-primary"
             >
-              テナント管理
+              {tenant.name}
             </Link>
           </div>
-          <div className="flex items-center gap-4">
-            {/* TODO: ユーザー情報 */}
-          </div>
+          <div className="flex items-center gap-4" />
         </header>
         <main className="flex-1 p-4 md:p-6">
           <Outlet />

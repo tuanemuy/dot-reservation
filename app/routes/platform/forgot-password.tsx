@@ -1,78 +1,131 @@
-import { Form, Link } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
+import { Link } from "react-router";
+import { z } from "zod";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
 import type { Route } from "./+types/forgot-password";
 
-// TODO: 認証チェック
-export async function action({ request }: Route.ActionArgs) {
-  const _formData = await request.formData();
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, "メールアドレスを入力してください")
+    .email("有効なメールアドレスを入力してください"),
+});
 
-  // TODO: パスワードリセットメール送信処理
-  return { sent: true };
+const handlers = {
+  forgotPassword: defineHandler({
+    schema: forgotPasswordSchema,
+    handler: async (value, _args) => {
+      // TODO: プラットフォーム管理者のパスワードリセットメール送信を実装
+      console.log("Platform forgot password:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
 }
 
-export default function PlatformForgotPasswordPage({
-  actionData,
-}: Route.ComponentProps) {
-  const isSent = actionData?.sent === true;
+export default function PlatformForgotPasswordPage(
+  _props: Route.ComponentProps,
+) {
+  const fetcher = useCompositeAction<typeof handlers>();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm space-y-6">
+  const [form, fields] = useForm({
+    id: "platform-forgot-password-form",
+    lastResult:
+      fetcher.data?.intent === "forgotPassword" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.forgotPassword.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.forgotPassword.schema,
+      });
+    },
+  });
+
+  fetcher.register("forgotPassword", {
+    onSuccess: () => {
+      setIsSubmitted(true);
+    },
+  });
+
+  const isPending = fetcher.isPending("forgotPassword");
+
+  if (isSubmitted) {
+    return (
+      <AuthLayout
+        title="リセットメールを送信しました"
+        description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
+      >
         <div className="text-center">
-          <h1 className="text-xl font-bold text-gray-900">
-            パスワードリセット
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            登録済みのメールアドレスを入力してください
+          <p className="mb-6 text-sm text-text-secondary">
+            メールが届かない場合は、迷惑メールフォルダをご確認ください。
           </p>
-        </div>
-
-        {isSent ? (
-          <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-            <p className="text-sm text-gray-700">
-              パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。
-            </p>
-          </div>
-        ) : (
-          <Form
-            method="post"
-            className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200"
-          >
-            <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
-                  メールアドレス
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
-              >
-                リセットメールを送信
-              </button>
-            </div>
-          </Form>
-        )}
-
-        <p className="text-center text-sm text-gray-500">
           <Link
             to="/platform/login"
-            className="font-medium text-gray-700 hover:text-gray-900"
+            className="text-sm font-medium text-primary hover:underline"
           >
             ログインに戻る
           </Link>
-        </p>
-      </div>
-    </div>
+        </div>
+      </AuthLayout>
+    );
+  }
+
+  return (
+    <AuthLayout
+      title="パスワードリセット"
+      description="登録済みのメールアドレスを入力してください"
+    >
+      <fetcher.Form method="post" {...getFormProps(form)}>
+        <input type="hidden" name="intent" value="forgotPassword" />
+
+        <div className="space-y-5">
+          <FormField
+            label="メールアドレス"
+            htmlFor={fields.email.id}
+            error={fields.email.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.email, { type: "email" })}
+              placeholder="example@email.com"
+              error={fields.email.errors?.[0]}
+            />
+          </FormField>
+
+          {form.errors && (
+            <p className="text-xs text-destructive">{form.errors}</p>
+          )}
+
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? "送信中..." : "リセットメールを送信"}
+          </Button>
+        </div>
+      </fetcher.Form>
+
+      <p className="mt-6 text-center text-sm">
+        <Link
+          to="/platform/login"
+          className="text-text-secondary hover:underline"
+        >
+          ログインに戻る
+        </Link>
+      </p>
+    </AuthLayout>
   );
 }

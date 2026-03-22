@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 
+import { getCustomer } from "@/core/application/customer/getCustomer";
 import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { createReservation } from "@/core/application/reservation/createReservation";
@@ -153,16 +154,27 @@ export async function action({ params, request }: Route.ActionArgs) {
       },
     );
 
-    // TODO: 認証済みユーザーの customerId を取得する
-    const customerId = ""; // Placeholder
+    // 認証済みユーザーの customerId を取得する
+    // authProvider 実装後は request.headers からセッション情報を取得する
+    const customerResult = await handleUseCase(() =>
+      getCustomer({
+        container,
+        headers: request.headers,
+        input: { authUserId: request.headers.get("x-auth-user-id") ?? "" },
+      }),
+    ).match(
+      (r) => ({ customerId: r.id, error: null }),
+      () => ({ customerId: null, error: "予約するにはログインが必要です" }),
+    );
 
-    if (!customerId) {
+    if (!customerResult.customerId) {
       return {
         intent: "createReservation",
-        error: "予約するにはログインが必要です",
+        error: customerResult.error,
         needsLogin: true,
       };
     }
+    const customerId = customerResult.customerId;
 
     const result = await handleUseCase(() =>
       createReservation({
@@ -327,7 +339,9 @@ export default function ReservationPage({ loaderData }: Route.ComponentProps) {
             <Link to={`/shop/${tenant.urlPath}`}>
               <Button variant="outline">店舗ページに戻る</Button>
             </Link>
-            {/* TODO: マイページへのリンク */}
+            <Link to="/mypage/reservations">
+              <Button>予約一覧を確認</Button>
+            </Link>
           </div>
         </div>
       </PublicLayout>

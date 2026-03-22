@@ -1,42 +1,59 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { useSearchParams } from "react-router";
+import { data, Link, useSearchParams } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Pagination } from "@/components/ui/Pagination";
 import { Tabs } from "@/components/ui/Tabs";
+import { getUnreadNotificationCount } from "@/core/application/notification/getUnreadNotificationCount";
+import type { NotificationDetail } from "@/core/application/notification/listNotifications";
+import { listNotifications } from "@/core/application/notification/listNotifications";
+import { markAllNotificationsAsRead } from "@/core/application/notification/markAllNotificationsAsRead";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
-type NotificationItem = {
-  id: string;
-  type: "reservation" | "announcement";
-  title: string;
-  message: string;
-  isRead: boolean;
-  createdAt: string;
-  referenceUrl: string | null;
+const ITEMS_PER_PAGE = 20;
+
+const notificationTypeLabels: Record<string, string> = {
+  reservation_confirmed: "予約",
+  reservation_updated: "予約",
+  reservation_cancelled: "予約",
+  reservation_reminder: "予約",
+  reservation_pending: "予約",
+  reservation_approved: "予約",
+  reservation_rejected: "予約",
 };
 
-const notificationTypeLabels: Record<NotificationItem["type"], string> = {
-  reservation: "予約",
-  announcement: "お知らせ",
-};
-
-const markAllReadSchema = z.object({});
+const markAllReadSchema = z.object({
+  customerId: z.string().min(1),
+});
 
 const handlers = {
   markAllAsRead: defineHandler({
     schema: markAllReadSchema,
-    handler: async (_value, _args) => {
-      // TODO: 全通知を既読にするユースケースを実装
-      console.log("Mark all as read");
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      return handleUseCase(() =>
+        markAllNotificationsAsRead({
+          container,
+          headers: args.request.headers,
+          input: {
+            recipientType: "customer",
+            recipientId: value.customerId,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -46,59 +63,91 @@ export async function action(args: Route.ActionArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter") ?? "all";
   const page = Number(url.searchParams.get("page") ?? "1");
 
-  // TODO: 認証ユーザーのIDで通知一覧を取得
-  const dummyNotifications: NotificationItem[] = [
-    {
-      id: "1",
-      type: "reservation",
-      title: "予約が確定しました",
-      message: "サンプル美容室の予約が確定されました。",
-      isRead: false,
-      createdAt: "2026-03-22 14:30",
-      referenceUrl: "/mypage/reservations/1",
-    },
-    {
-      id: "2",
-      type: "announcement",
-      title: "システムメンテナンスのお知らせ",
-      message: "3月30日にシステムメンテナンスを実施します。",
-      isRead: true,
-      createdAt: "2026-03-20 10:00",
-      referenceUrl: null,
-    },
-    {
-      id: "3",
-      type: "reservation",
-      title: "予約リマインダー",
-      message: "明日10:00からのカットの予約があります。",
-      isRead: false,
-      createdAt: "2026-03-19 18:00",
-      referenceUrl: "/mypage/reservations/1",
-    },
-  ];
+  // authProvider 実装後: 認証ユーザーの customerId を取得する
+  const customerId = request.headers.get("x-customer-id") ?? "";
 
-  const filtered =
+  if (!customerId) {
+    return {
+      notifications: [] as NotificationDetail[],
+      filter,
+      page,
+      totalPages: 0,
+      unreadCount: 0,
+      customerId: "",
+    };
+  }
+
+  // 通知タイプフィルター: "all" の場合は null
+  const typeFilter =
     filter === "all"
-      ? dummyNotifications
-      : dummyNotifications.filter((n) => n.type === filter);
+      ? null
+      : filter === "reservation"
+        ? "reservation_confirmed"
+        : null;
+
+  const result = await handleUseCase(() =>
+    listNotifications({
+      container,
+      headers: request.headers,
+      input: {
+        recipientType: "customer",
+        recipientId: customerId,
+        typeFilter,
+        page,
+        limit: ITEMS_PER_PAGE,
+      },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const unreadResult = await handleUseCase(() =>
+    getUnreadNotificationCount({
+      container,
+      headers: request.headers,
+      input: {
+        recipientType: "customer",
+        recipientId: customerId,
+      },
+    }),
+  ).match(
+    (r) => r,
+    () => ({ count: 0 }),
+  );
 
   return {
-    notifications: filtered,
+    notifications: result.items,
     filter,
     page,
-    totalPages: 1,
-    unreadCount: dummyNotifications.filter((n) => !n.isRead).length,
+    totalPages: Math.ceil(result.totalCount / ITEMS_PER_PAGE),
+    unreadCount: unreadResult.count,
+    customerId,
   };
+}
+
+function getNotificationUrl(notification: NotificationDetail): string {
+  if (
+    notification.referenceType === "reservation" &&
+    notification.referenceId
+  ) {
+    return `/mypage/reservations/${notification.referenceId}`;
+  }
+  return "#";
 }
 
 export default function NotificationsIndexPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { notifications, filter, page, totalPages, unreadCount } = loaderData;
+  const { notifications, filter, page, totalPages, unreadCount, customerId } =
+    loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
   const fetcher = useCompositeAction<typeof handlers>();
 
@@ -114,11 +163,7 @@ export default function NotificationsIndexPage({
     },
   });
 
-  fetcher.register("markAllAsRead", {
-    onSuccess: () => {
-      console.log("All marked as read");
-    },
-  });
+  fetcher.register("markAllAsRead", {});
 
   const handleFilterChange = (newFilter: string) => {
     const params = new URLSearchParams(searchParams);
@@ -142,6 +187,7 @@ export default function NotificationsIndexPage({
         {unreadCount > 0 && (
           <fetcher.Form method="post" {...getFormProps(markAllForm)}>
             <input type="hidden" name="intent" value="markAllAsRead" />
+            <input type="hidden" name="customerId" value={customerId} />
             <Button
               type="submit"
               variant="ghost"
@@ -162,9 +208,9 @@ export default function NotificationsIndexPage({
         ) : (
           <div className="space-y-2">
             {notifications.map((notification) => (
-              <a
+              <Link
                 key={notification.id}
-                href={notification.referenceUrl ?? "#"}
+                to={getNotificationUrl(notification)}
                 className={`block rounded-lg border p-4 transition-colors ${
                   notification.isRead
                     ? "border-border bg-white"
@@ -178,7 +224,8 @@ export default function NotificationsIndexPage({
                         <span className="inline-block h-2 w-2 rounded-full bg-primary" />
                       )}
                       <span className="text-xs text-text-muted">
-                        {notificationTypeLabels[notification.type]}
+                        {notificationTypeLabels[notification.type] ??
+                          "お知らせ"}
                       </span>
                     </div>
                     <p
@@ -191,10 +238,10 @@ export default function NotificationsIndexPage({
                     </p>
                   </div>
                   <span className="shrink-0 text-xs text-text-muted">
-                    {notification.createdAt}
+                    {notification.createdAt.toLocaleDateString("ja-JP")}
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         )}

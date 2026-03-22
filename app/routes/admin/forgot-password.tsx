@@ -1,88 +1,128 @@
-import { Form, Link, useActionData, useNavigation } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
+import { Link } from "react-router";
+import { z } from "zod";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import type { Route } from "./+types/forgot-password";
 
-// TODO: action でパスワードリセットメール送信処理を実装
-export async function action({ request }: { request: Request }) {
-  const formData = await request.formData();
-  const _email = formData.get("email") as string;
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, "メールアドレスを入力してください")
+    .email("有効なメールアドレスを入力してください"),
+});
 
-  // TODO: パスワードリセットメール送信
-  return { success: true };
+const handlers = {
+  forgotPassword: defineHandler({
+    schema: forgotPasswordSchema,
+    handler: async (value, _args) => {
+      // TODO: パスワードリセットメール送信を実装
+      // 1. authProvider でリセットトークン生成
+      // 2. メール送信
+      console.log("Admin forgot password:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
 }
 
-export default function AdminForgotPasswordPage() {
-  const actionData = useActionData<typeof action>();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
+  const fetcher = useCompositeAction<typeof handlers>();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  if (actionData?.success) {
+  const [form, fields] = useForm({
+    id: "admin-forgot-password-form",
+    lastResult:
+      fetcher.data?.intent === "forgotPassword" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.forgotPassword.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.forgotPassword.schema,
+      });
+    },
+  });
+
+  fetcher.register("forgotPassword", {
+    onSuccess: () => {
+      setIsSubmitted(true);
+    },
+  });
+
+  const isPending = fetcher.isPending("forgotPassword");
+
+  if (isSubmitted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md space-y-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">
-            リセットメールを送信しました
-          </h1>
-          <p className="text-gray-600">
-            ご入力いただいたメールアドレスにパスワードリセット用のリンクを送信しました。メールをご確認ください。
+      <AuthLayout
+        title="リセットメールを送信しました"
+        description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
+      >
+        <div className="text-center">
+          <p className="mb-6 text-sm text-text-secondary">
+            メールが届かない場合は、迷惑メールフォルダをご確認ください。
           </p>
           <Link
             to="/admin/login"
-            className="inline-block text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="text-sm font-medium text-primary hover:underline"
           >
             ログインページへ戻る
           </Link>
         </div>
-      </div>
+      </AuthLayout>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">
-            パスワードリセット
-          </h1>
-          <p className="mt-2 text-sm text-gray-600">
-            登録済みのメールアドレスを入力してください
-          </p>
-        </div>
+    <AuthLayout
+      title="パスワードリセット"
+      description="登録済みのメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。"
+    >
+      <fetcher.Form method="post" {...getFormProps(form)}>
+        <input type="hidden" name="intent" value="forgotPassword" />
 
-        <Form method="post" className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              メールアドレス
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="email@example.com"
+        <div className="space-y-5">
+          <FormField
+            label="メールアドレス"
+            htmlFor={fields.email.id}
+            error={fields.email.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.email, { type: "email" })}
+              placeholder="example@email.com"
+              error={fields.email.errors?.[0]}
             />
-          </div>
+          </FormField>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-          >
-            {isSubmitting ? "送信中..." : "リセットメールを送信"}
-          </button>
-        </Form>
+          {form.errors && (
+            <p className="text-xs text-destructive">{form.errors}</p>
+          )}
 
-        <p className="text-center text-sm text-gray-600">
-          <Link
-            to="/admin/login"
-            className="font-medium text-blue-600 hover:text-blue-500"
-          >
-            ログインページへ戻る
-          </Link>
-        </p>
-      </div>
-    </div>
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? "送信中..." : "リセットメールを送信"}
+          </Button>
+        </div>
+      </fetcher.Form>
+
+      <p className="mt-6 text-center text-sm">
+        <Link to="/admin/login" className="text-text-secondary hover:underline">
+          ログインページへ戻る
+        </Link>
+      </p>
+    </AuthLayout>
   );
 }

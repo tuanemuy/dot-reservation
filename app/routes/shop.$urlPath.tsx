@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { data, Link } from "react-router";
+import { useEffect, useState } from "react";
+import { data, Link, useFetcher } from "react-router";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -8,8 +8,11 @@ import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "@/components/ui/Tabs";
 import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
+import type { GetStaffProfileOutput } from "@/core/application/staff/getStaffProfile";
+import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
 import type { StaffProfileSummary } from "@/core/application/staff/listStaffProfiles";
 import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { listStaffsByMenu } from "@/core/application/staff/listStaffsByMenu";
 import type { GetTenantOutput } from "@/core/application/tenant/getTenant";
 import { getTenant } from "@/core/application/tenant/getTenant";
 import { handleUseCase } from "@/lib/handleUseCase";
@@ -58,6 +61,62 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     menus: menusResult.items,
     staff: staffResult.items,
   };
+}
+
+export async function action({ params, request }: Route.ActionArgs) {
+  const { container } = await import("@/core/di/server");
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "loadStaffProfile") {
+    const staffProfileId = formData.get("staffProfileId") as string;
+    const result = await handleUseCase(() =>
+      getStaffProfile({
+        container,
+        headers: request.headers,
+        input: { staffProfileId },
+      }),
+    ).match(
+      (r) => ({ intent: "loadStaffProfile" as const, profile: r, error: null }),
+      (e) => ({
+        intent: "loadStaffProfile" as const,
+        profile: null,
+        error: e.message,
+      }),
+    );
+    return result;
+  }
+
+  if (intent === "loadMenuStaff") {
+    const menuId = formData.get("menuId") as string;
+    const tenant = await handleUseCase(() =>
+      getTenant({
+        container,
+        headers: request.headers,
+        input: { urlPath: params.urlPath },
+      }),
+    ).match(
+      (r) => r,
+      (e) => {
+        throw data({ message: e.message }, { status: e.status });
+      },
+    );
+
+    const result = await handleUseCase(() =>
+      listStaffsByMenu({
+        container,
+        headers: request.headers,
+        input: { tenantId: tenant.id, menuId },
+      }),
+    ).match(
+      (r) => r,
+      () => ({ items: [] as StaffProfileSummary[] }),
+    );
+
+    return { intent: "loadMenuStaff" as const, staff: result.items };
+  }
+
+  throw data({ message: "Invalid intent" }, { status: 400 });
 }
 
 const DAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
@@ -352,7 +411,22 @@ function MenuDetailModal({
   urlPath: string;
   onClose: () => void;
 }) {
-  // TODO: メニューに対応可能なスタッフ一覧を取得して表示する
+  const fetcher = useFetcher();
+  const fetcherSubmit = fetcher.submit;
+
+  useEffect(() => {
+    if (menu) {
+      fetcherSubmit(
+        { intent: "loadMenuStaff", menuId: menu.id },
+        { method: "post" },
+      );
+    }
+  }, [menu, fetcherSubmit]);
+
+  const assignableStaff: StaffProfileSummary[] =
+    fetcher.data?.intent === "loadMenuStaff" ? fetcher.data.staff : [];
+  const isLoadingStaff = fetcher.state !== "idle";
+
   return (
     <Modal open={menu !== null} onClose={onClose} title={menu?.name}>
       {menu && (
@@ -372,6 +446,42 @@ function MenuDetailModal({
               </span>
             </div>
           </div>
+
+          {/* 担当可能スタッフ一覧 */}
+          <div>
+            <h4 className="mb-2 text-sm font-medium text-text-secondary">
+              担当可能スタッフ
+            </h4>
+            {isLoadingStaff ? (
+              <p className="text-sm text-text-muted">読み込み中...</p>
+            ) : assignableStaff.length === 0 ? (
+              <p className="text-sm text-text-muted">
+                担当スタッフが登録されていません
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {assignableStaff.map((s) => (
+                  <div key={s.id} className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-surface-secondary">
+                      {s.imageUrl ? (
+                        <img
+                          src={s.imageUrl}
+                          alt={s.displayName}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-xs text-text-muted">
+                          {s.displayName.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm">{s.displayName}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="pt-2">
             <Link to={`/shop/${urlPath}/reserve?menuId=${menu.id}`}>
               <Button className="w-full">このメニューで予約する</Button>
@@ -392,14 +502,78 @@ function StaffDetailModal({
   urlPath: string;
   onClose: () => void;
 }) {
-  // TODO: スタッフ詳細データを非同期で取得する
+  const fetcher = useFetcher();
+  const fetcherSubmit = fetcher.submit;
+
+  useEffect(() => {
+    if (staffId) {
+      fetcherSubmit(
+        { intent: "loadStaffProfile", staffProfileId: staffId },
+        { method: "post" },
+      );
+    }
+  }, [staffId, fetcherSubmit]);
+
+  const profile: GetStaffProfileOutput | null =
+    fetcher.data?.intent === "loadStaffProfile" ? fetcher.data.profile : null;
+  const isLoading = fetcher.state !== "idle";
+
   return (
-    <Modal open={staffId !== null} onClose={onClose} title="スタッフ詳細">
+    <Modal
+      open={staffId !== null}
+      onClose={onClose}
+      title={profile?.displayName ?? "スタッフ詳細"}
+    >
       {staffId && (
         <div className="space-y-4">
-          <p className="text-sm text-text-secondary">
-            スタッフ情報を読み込み中...
-          </p>
+          {isLoading ? (
+            <p className="text-sm text-text-muted">読み込み中...</p>
+          ) : profile ? (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-surface-secondary">
+                  {profile.imageUrl ? (
+                    <img
+                      src={profile.imageUrl}
+                      alt={profile.displayName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xl text-text-muted">
+                      {profile.displayName.charAt(0)}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-medium">{profile.displayName}</h3>
+                </div>
+              </div>
+
+              {profile.bio && (
+                <p className="text-sm text-text-secondary">{profile.bio}</p>
+              )}
+
+              {/* 担当メニュー一覧 */}
+              {profile.assignedMenus.length > 0 && (
+                <div>
+                  <h4 className="mb-2 text-sm font-medium text-text-secondary">
+                    担当メニュー
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {profile.assignedMenus.map((m) => (
+                      <Badge key={m.id} variant="default">
+                        {m.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-text-muted">
+              スタッフ情報を取得できませんでした
+            </p>
+          )}
           <div className="pt-2">
             <Link to={`/shop/${urlPath}/reserve?staffId=${staffId}`}>
               <Button className="w-full">このスタッフで予約する</Button>

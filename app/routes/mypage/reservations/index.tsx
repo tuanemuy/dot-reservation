@@ -1,22 +1,16 @@
-import { Link, useSearchParams } from "react-router";
+import { data, Link, useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Pagination } from "@/components/ui/Pagination";
 import { Tabs } from "@/components/ui/Tabs";
+import type { ReservationSummary } from "@/core/application/reservation/listReservations";
+import { listReservations } from "@/core/application/reservation/listReservations";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
-// TODO: 実際のユースケースからデータを取得する
-type ReservationSummary = {
-  id: string;
-  storeName: string;
-  menuName: string;
-  staffName: string | null;
-  date: string;
-  startTime: string;
-  status: "pending" | "confirmed" | "completed" | "cancelled" | "rejected";
-};
+const ITEMS_PER_PAGE = 10;
 
-const statusLabels: Record<ReservationSummary["status"], string> = {
+const statusLabels: Record<string, string> = {
   pending: "承認待ち",
   confirmed: "確定",
   completed: "完了",
@@ -32,49 +26,60 @@ type BadgeVariant =
   | "warning"
   | "destructive";
 
-const statusBadgeVariants: Record<ReservationSummary["status"], BadgeVariant> =
-  {
-    pending: "warning",
-    confirmed: "success",
-    completed: "default",
-    cancelled: "destructive",
-    rejected: "destructive",
-  };
+const statusBadgeVariants: Record<string, BadgeVariant> = {
+  pending: "warning",
+  confirmed: "success",
+  completed: "default",
+  cancelled: "destructive",
+  rejected: "destructive",
+};
 
 export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
   const url = new URL(request.url);
   const tab = url.searchParams.get("tab") ?? "upcoming";
   const page = Number(url.searchParams.get("page") ?? "1");
 
-  // TODO: 認証ユーザーのIDを取得して予約一覧を取得
-  // const customerId = "dummy-customer-id";
+  // authProvider 実装後: 認証ユーザーの customerId を取得する
+  const customerId = request.headers.get("x-customer-id") ?? "";
 
-  const dummyReservations: ReservationSummary[] = [
-    {
-      id: "1",
-      storeName: "サンプル美容室",
-      menuName: "カット",
-      staffName: "田中 花子",
-      date: "2026-03-25",
-      startTime: "10:00",
-      status: "confirmed",
+  if (!customerId) {
+    return {
+      reservations: [] as ReservationSummary[],
+      tab,
+      page,
+      totalPages: 0,
+    };
+  }
+
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+  const result = await handleUseCase(() =>
+    listReservations({
+      container,
+      headers: request.headers,
+      input: {
+        customerId,
+        status: null,
+        startDate: tab === "upcoming" ? todayStr : null,
+        endDate: tab === "past" ? todayStr : null,
+        page,
+        limit: ITEMS_PER_PAGE,
+      },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
     },
-    {
-      id: "2",
-      storeName: "サンプル美容室",
-      menuName: "カラー",
-      staffName: null,
-      date: "2026-03-28",
-      startTime: "14:00",
-      status: "pending",
-    },
-  ];
+  );
 
   return {
-    reservations: dummyReservations,
+    reservations: result.items,
     tab,
     page,
-    totalPages: 1,
+    totalPages: Math.ceil(result.totalCount / ITEMS_PER_PAGE),
   };
 }
 
@@ -118,13 +123,16 @@ export default function ReservationsIndexPage({
                     <div className="min-w-0 flex-1">
                       <div className="mb-1 flex items-center gap-2">
                         <Badge
-                          variant={statusBadgeVariants[reservation.status]}
+                          variant={
+                            statusBadgeVariants[reservation.status] ?? "default"
+                          }
                         >
-                          {statusLabels[reservation.status]}
+                          {statusLabels[reservation.status] ??
+                            reservation.status}
                         </Badge>
                       </div>
                       <p className="font-medium text-text">
-                        {reservation.storeName}
+                        {reservation.menuName}
                       </p>
                       <p className="mt-1 text-sm text-text-secondary">
                         {reservation.menuName}
@@ -132,7 +140,9 @@ export default function ReservationsIndexPage({
                       </p>
                     </div>
                     <div className="ml-4 text-right text-sm text-text-secondary">
-                      <p>{reservation.date}</p>
+                      <p>
+                        {new Date(reservation.date).toLocaleDateString("ja-JP")}
+                      </p>
                       <p>{reservation.startTime}</p>
                     </div>
                   </div>

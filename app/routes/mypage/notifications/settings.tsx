@@ -1,11 +1,16 @@
+import { data } from "react-router";
 import { z } from "zod";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
+import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
+import { updateNotificationPreference } from "@/core/application/notification/updateNotificationPreference";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/settings";
 
 type NotificationSetting = {
@@ -15,7 +20,20 @@ type NotificationSetting = {
   inAppEnabled: boolean;
 };
 
+const CUSTOMER_NOTIFICATION_TYPES: ReadonlyArray<{
+  type: string;
+  label: string;
+}> = [
+  { type: "reservation_confirmed", label: "予約確定" },
+  { type: "reservation_updated", label: "予約変更" },
+  { type: "reservation_cancelled", label: "予約キャンセル" },
+  { type: "reservation_reminder", label: "予約リマインダー" },
+  { type: "reservation_approved", label: "予約承認" },
+  { type: "reservation_rejected", label: "予約却下" },
+];
+
 const updateSettingSchema = z.object({
+  customerId: z.string().min(1),
   type: z.string().min(1),
   channel: z.enum(["email", "in_app"]),
   enabled: z.enum(["true", "false"]).transform((v) => v === "true"),
@@ -24,10 +42,25 @@ const updateSettingSchema = z.object({
 const handlers = {
   updateSetting: defineHandler({
     schema: updateSettingSchema,
-    handler: async (value, _args) => {
-      // TODO: 通知設定更新ユースケースを実装
-      console.log("Update notification setting:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      return handleUseCase(() =>
+        updateNotificationPreference({
+          container,
+          headers: args.request.headers,
+          input: {
+            recipientType: "customer",
+            recipientId: value.customerId,
+            channel: value.channel,
+            type: value.type,
+            enabled: value.enabled,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -36,61 +69,60 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader(_args: Route.LoaderArgs) {
-  // TODO: 認証ユーザーの通知設定を取得
-  const dummySettings: NotificationSetting[] = [
-    {
-      type: "reservation_confirmed",
-      label: "予約確定",
-      emailEnabled: true,
-      inAppEnabled: true,
-    },
-    {
-      type: "reservation_updated",
-      label: "予約変更",
-      emailEnabled: true,
-      inAppEnabled: true,
-    },
-    {
-      type: "reservation_cancelled",
-      label: "予約キャンセル",
-      emailEnabled: true,
-      inAppEnabled: true,
-    },
-    {
-      type: "reservation_reminder",
-      label: "予約リマインダー",
-      emailEnabled: true,
-      inAppEnabled: false,
-    },
-    {
-      type: "reservation_approved",
-      label: "予約承認",
-      emailEnabled: true,
-      inAppEnabled: true,
-    },
-    {
-      type: "reservation_rejected",
-      label: "予約却下",
-      emailEnabled: true,
-      inAppEnabled: true,
-    },
-  ];
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
 
-  return { settings: dummySettings };
+  // authProvider 実装後: 認証ユーザーの customerId を取得する
+  const customerId = request.headers.get("x-customer-id") ?? "";
+
+  if (!customerId) {
+    return { settings: [] as NotificationSetting[], customerId: "" };
+  }
+
+  const result = await handleUseCase(() =>
+    getNotificationPreferences({
+      container,
+      headers: request.headers,
+      input: {
+        recipientType: "customer",
+        recipientId: customerId,
+      },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  // 顧客向けの通知タイプのみをフィルタリングして整形
+  const settings: NotificationSetting[] = CUSTOMER_NOTIFICATION_TYPES.map(
+    ({ type, label }) => {
+      const emailPref = result.preferences.find(
+        (p) => p.channel === "email" && p.type === type,
+      );
+      const inAppPref = result.preferences.find(
+        (p) => p.channel === "in_app" && p.type === type,
+      );
+      return {
+        type,
+        label,
+        emailEnabled: emailPref?.enabled ?? true,
+        inAppEnabled: inAppPref?.enabled ?? true,
+      };
+    },
+  );
+
+  return { settings, customerId };
 }
 
 export default function NotificationSettingsPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { settings } = loaderData;
+  const { settings, customerId } = loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
 
-  fetcher.register("updateSetting", {
-    onSuccess: () => {
-      console.log("Setting updated");
-    },
-  });
+  fetcher.register("updateSetting", {});
 
   const handleToggle = (
     type: string,
@@ -99,6 +131,7 @@ export default function NotificationSettingsPage({
   ) => {
     const formData = new FormData();
     formData.set("intent", "updateSetting");
+    formData.set("customerId", customerId);
     formData.set("type", type);
     formData.set("channel", channel);
     formData.set("enabled", String(!currentValue));

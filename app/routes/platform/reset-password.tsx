@@ -1,130 +1,172 @@
-import { Form, Link } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
+import { data, Link } from "react-router";
+import { z } from "zod";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
 import type { Route } from "./+types/reset-password";
 
-// TODO: 認証チェック、トークン検証
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const _token = url.searchParams.get("token");
+const resetPasswordSchema = z
+  .object({
+    token: z.string().min(1),
+    password: z.string().min(8, "パスワードは8文字以上で入力してください"),
+    passwordConfirmation: z
+      .string()
+      .min(1, "パスワード（確認）を入力してください"),
+  })
+  .refine((val) => val.password === val.passwordConfirmation, {
+    message: "パスワードが一致しません",
+    path: ["passwordConfirmation"],
+  });
 
-  // TODO: トークンの有効性チェック
-  return {
-    tokenValid: true,
-  };
+const handlers = {
+  resetPassword: defineHandler({
+    schema: resetPasswordSchema,
+    handler: async (value, _args) => {
+      // TODO: プラットフォーム管理者のパスワード再設定を実装
+      console.log("Platform reset password:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
 }
 
-// TODO: 認証チェック
-export async function action({ request }: Route.ActionArgs) {
-  const _formData = await request.formData();
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
 
-  // TODO: パスワード再設定処理
-  return { success: true };
+  if (!token) {
+    throw data({ message: "無効なリンクです" }, { status: 400 });
+  }
+
+  // TODO: トークンの有効性を事前チェック
+  return { token, expired: false };
 }
 
 export default function PlatformResetPasswordPage({
   loaderData,
-  actionData,
 }: Route.ComponentProps) {
-  const { tokenValid } = loaderData;
-  const isSuccess = actionData?.success === true;
+  const { token, expired } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  if (!tokenValid) {
+  const [form, fields] = useForm({
+    id: "platform-reset-password-form",
+    lastResult:
+      fetcher.data?.intent === "resetPassword" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.resetPassword.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.resetPassword.schema,
+      });
+    },
+  });
+
+  fetcher.register("resetPassword", {
+    onSuccess: () => {
+      setIsCompleted(true);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Platform reset password failed:", err);
+    },
+  });
+
+  const isPending = fetcher.isPending("resetPassword");
+
+  if (expired) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-sm space-y-6">
-          <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-            <p className="mb-3 text-sm text-red-600">
-              このリンクは期限切れです。パスワードリセットを再度お試しください。
-            </p>
-            <Link
-              to="/platform/forgot-password"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
-            >
-              パスワードリセットページへ
-            </Link>
-          </div>
+      <AuthLayout title="リンクの有効期限切れ">
+        <div className="text-center">
+          <p className="mb-6 text-sm text-destructive">
+            パスワードリセットリンクの有効期限が切れています。
+          </p>
+          <Link
+            to="/platform/forgot-password"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            パスワードリセットを再送信
+          </Link>
         </div>
-      </div>
+      </AuthLayout>
     );
   }
 
-  if (isSuccess) {
+  if (isCompleted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-sm space-y-6">
-          <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-            <p className="mb-4 text-sm text-gray-700">
-              パスワードが正常に変更されました。
-            </p>
-            <Link
-              to="/platform/login"
-              className="inline-flex w-full justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-            >
-              ログインページへ
-            </Link>
-          </div>
+      <AuthLayout
+        title="パスワード再設定完了"
+        description="パスワードが正常に変更されました。"
+      >
+        <div className="text-center">
+          <Link to="/platform/login">
+            <Button>ログインページへ</Button>
+          </Link>
         </div>
-      </div>
+      </AuthLayout>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm space-y-6">
-        <div className="text-center">
-          <h1 className="text-xl font-bold text-gray-900">パスワード再設定</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            新しいパスワードを入力してください
-          </p>
+    <AuthLayout
+      title="パスワード再設定"
+      description="新しいパスワードを入力してください"
+    >
+      <fetcher.Form method="post" {...getFormProps(form)}>
+        <input type="hidden" name="intent" value="resetPassword" />
+        <input type="hidden" name="token" value={token} />
+
+        <div className="space-y-5">
+          <FormField
+            label="新しいパスワード"
+            htmlFor={fields.password.id}
+            error={fields.password.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.password, { type: "password" })}
+              placeholder="8文字以上"
+              error={fields.password.errors?.[0]}
+            />
+          </FormField>
+
+          <FormField
+            label="パスワード（確認）"
+            htmlFor={fields.passwordConfirmation.id}
+            error={fields.passwordConfirmation.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.passwordConfirmation, {
+                type: "password",
+              })}
+              placeholder="パスワードを再入力"
+              error={fields.passwordConfirmation.errors?.[0]}
+            />
+          </FormField>
+
+          {form.errors && (
+            <p className="text-xs text-destructive">{form.errors}</p>
+          )}
+
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? "設定中..." : "パスワードを変更"}
+          </Button>
         </div>
-
-        <Form
-          method="post"
-          className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200"
-        >
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                新しいパスワード
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                minLength={8}
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="passwordConfirmation"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                パスワード（確認）
-              </label>
-              <input
-                type="password"
-                id="passwordConfirmation"
-                name="passwordConfirmation"
-                required
-                minLength={8}
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
-            >
-              パスワードを変更
-            </button>
-          </div>
-        </Form>
-      </div>
-    </div>
+      </fetcher.Form>
+    </AuthLayout>
   );
 }

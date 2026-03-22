@@ -1,188 +1,352 @@
-import { Form } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { data, Link, redirect, useParams } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/Button";
+import { Card, CardBody } from "@/components/ui/Card";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import type { MenuDetail } from "@/core/application/menu/listMenus";
+import { listMenus } from "@/core/application/menu/listMenus";
+import { createProxyReservation } from "@/core/application/reservation/createProxyReservation";
+import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
+import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/new";
 
-// TODO: 認証チェック
-export async function loader({ params }: Route.LoaderArgs) {
-  const _tenantId = params.tenantId;
+const createReservationSchema = z.object({
+  tenantId: z.string().min(1),
+  staffProfileId: z.string().min(1),
+  customerName: z.string().min(1, "顧客名を入力してください"),
+  customerPhone: z.string().optional(),
+  menuId: z.string().min(1, "メニューを選択してください"),
+  date: z.string().min(1, "日付を選択してください"),
+  startTime: z.string().min(1, "時間を選択してください"),
+  note: z.string().optional(),
+});
 
-  // TODO: 担当メニュー・空き時間枠取得
-  return {
-    menus: [] as {
-      id: string;
-      name: string;
-      duration: number;
-      price: number;
-    }[],
-    availableSlots: [] as {
-      date: string;
-      times: string[];
-    }[],
-  };
+const handlers = {
+  createReservation: defineHandler({
+    schema: createReservationSchema,
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const result = await handleUseCase(() =>
+        createProxyReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: value.tenantId,
+            customerId: null,
+            customerName: value.customerName,
+            customerEmail: null,
+            customerPhoneNumber: value.customerPhone ?? null,
+            menuId: value.menuId,
+            staffProfileId: value.staffProfileId,
+            date: value.date,
+            startTime: value.startTime,
+            note: value.note ?? null,
+            createdBy: "staff",
+          },
+        }),
+      ).match(
+        (result) => result,
+        (e) => null,
+      );
+
+      if (!result) {
+        return error({
+          "": [
+            "予約の登録に失敗しました。時間枠が利用できない可能性があります。",
+          ],
+        });
+      }
+
+      throw redirect(`/staff/${value.tenantId}/reservations/${result.id}`);
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
 }
 
-// TODO: 認証チェック
-export async function action({ params, request }: Route.ActionArgs) {
-  const _tenantId = params.tenantId;
-  const _formData = await request.formData();
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+  const tenantId = params.tenantId;
 
-  // TODO: 代理予約登録処理
-  return { success: true };
+  // Get staff profiles to find current staff and their assigned menus
+  const profilesResult = await handleUseCase(() =>
+    listStaffProfiles({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const firstProfile = profilesResult.items[0];
+  const staffProfileId = firstProfile?.id ?? "";
+
+  // Get all menus for the tenant
+  const allMenusResult = await handleUseCase(() =>
+    listMenus({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result.items,
+    () => [] as MenuDetail[],
+  );
+
+  // Get assigned menus for this staff
+  let assignedMenuIds = new Set<string>();
+  if (firstProfile) {
+    const staffResult = await handleUseCase(() =>
+      getStaffProfile({
+        container,
+        headers: request.headers,
+        input: { staffProfileId: firstProfile.id },
+      }),
+    ).match(
+      (result) => result,
+      () => null,
+    );
+
+    if (staffResult) {
+      assignedMenuIds = new Set(staffResult.assignedMenus.map((m) => m.id));
+    }
+  }
+
+  const menus = allMenusResult
+    .filter((m) => assignedMenuIds.has(m.id))
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      duration: m.duration,
+      price: m.price,
+    }));
+
+  return {
+    menus,
+    staffProfileId,
+    tenantId,
+  };
 }
 
 export default function StaffNewReservationPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { menus } = loaderData;
+  const { menus, staffProfileId, tenantId } = loaderData;
+  const { tenantId: tenantIdParam } = useParams();
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const [reservationForm, reservationFields] = useForm({
+    id: "new-reservation-form",
+    defaultValue: {
+      tenantId,
+      staffProfileId,
+      customerName: "",
+      customerPhone: "",
+      menuId: "",
+      date: "",
+      startTime: "",
+      note: "",
+    },
+    lastResult:
+      fetcher.data?.intent === "createReservation" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.createReservation.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.createReservation.schema,
+      });
+    },
+  });
+
+  fetcher.register("createReservation", {
+    onSuccess: () => {
+      // Will redirect
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Reservation creation failed:", err);
+    },
+  });
+
+  const isPending = fetcher.isPending("createReservation");
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">代理予約登録</h1>
+      <h1 className="text-xl font-bold text-text">代理予約登録</h1>
 
-      <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <Form method="post" className="space-y-6">
-          {/* 顧客情報 */}
-          <fieldset className="space-y-4">
-            <legend className="text-base font-semibold text-gray-800">
-              顧客情報
-            </legend>
+      <Card>
+        <CardBody>
+          <fetcher.Form method="post" {...getFormProps(reservationForm)}>
+            <input type="hidden" name="intent" value="createReservation" />
+            <input type="hidden" name="tenantId" value={tenantId} />
+            <input type="hidden" name="staffProfileId" value={staffProfileId} />
 
-            {/* TODO: 既存顧客検索 */}
-            <div>
-              <label
-                htmlFor="customerName"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                顧客名
-              </label>
-              <input
-                type="text"
-                id="customerName"
-                name="customerName"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="customerPhone"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                電話番号
-              </label>
-              <input
-                type="tel"
-                id="customerPhone"
-                name="customerPhone"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-              />
-            </div>
-          </fieldset>
+            <div className="space-y-6">
+              {/* 顧客情報 */}
+              <fieldset className="space-y-4">
+                <legend className="text-base font-semibold text-text">
+                  顧客情報
+                </legend>
 
-          {/* メニュー選択 */}
-          <fieldset className="space-y-3">
-            <legend className="text-base font-semibold text-gray-800">
-              メニュー選択
-            </legend>
-            {menus.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                担当メニューがありません。
-              </p>
-            ) : (
-              <div className="space-y-2">
-                {menus.map((menu) => (
-                  <label
-                    key={menu.id}
-                    className="flex cursor-pointer items-center gap-3 rounded-md border border-gray-200 p-3 hover:bg-gray-50"
+                <FormField
+                  label="顧客名"
+                  htmlFor={reservationFields.customerName.id}
+                  error={reservationFields.customerName.errors}
+                  required
+                >
+                  <Input
+                    {...getInputProps(reservationFields.customerName, {
+                      type: "text",
+                    })}
+                    error={reservationFields.customerName.errors?.[0]}
+                  />
+                </FormField>
+
+                <FormField
+                  label="電話番号"
+                  htmlFor={reservationFields.customerPhone.id}
+                >
+                  <Input
+                    {...getInputProps(reservationFields.customerPhone, {
+                      type: "tel",
+                    })}
+                    placeholder="090-1234-5678"
+                  />
+                </FormField>
+              </fieldset>
+
+              {/* メニュー選択 */}
+              <fieldset className="space-y-3">
+                <legend className="text-base font-semibold text-text">
+                  メニュー選択
+                </legend>
+                <p className="text-xs text-text-muted">
+                  自分の担当メニューのみ選択可能です。
+                </p>
+                {menus.length === 0 ? (
+                  <p className="text-sm text-text-muted">
+                    担当メニューがありません。
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {menus.map((menu) => (
+                      <label
+                        key={menu.id}
+                        className="flex cursor-pointer items-center gap-3 rounded-md border border-border p-3 transition-colors hover:bg-surface-secondary"
+                      >
+                        <input
+                          type="radio"
+                          name="menuId"
+                          value={menu.id}
+                          className="text-primary focus:ring-primary"
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-text">
+                            {menu.name}
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {menu.duration}分 / &yen;
+                            {menu.price.toLocaleString()}
+                          </p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+
+                {reservationFields.menuId.errors && (
+                  <p className="text-xs text-destructive">
+                    {reservationFields.menuId.errors[0]}
+                  </p>
+                )}
+              </fieldset>
+
+              {/* 日時選択 */}
+              <fieldset className="space-y-3">
+                <legend className="text-base font-semibold text-text">
+                  日時選択
+                </legend>
+                <p className="text-xs text-text-muted">
+                  自分のシフト内の空き時間から選択してください。
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <FormField
+                    label="日付"
+                    htmlFor={reservationFields.date.id}
+                    error={reservationFields.date.errors}
+                    required
                   >
-                    <input
-                      type="radio"
-                      name="menuId"
-                      value={menu.id}
-                      className="text-gray-900 focus:ring-gray-500"
+                    <Input
+                      {...getInputProps(reservationFields.date, {
+                        type: "date",
+                      })}
+                      error={reservationFields.date.errors?.[0]}
                     />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        {menu.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {menu.duration}分 / ¥{menu.price.toLocaleString()}
-                      </p>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            )}
-          </fieldset>
+                  </FormField>
+                  <FormField
+                    label="時間"
+                    htmlFor={reservationFields.startTime.id}
+                    error={reservationFields.startTime.errors}
+                    required
+                  >
+                    <Input
+                      {...getInputProps(reservationFields.startTime, {
+                        type: "time",
+                      })}
+                      error={reservationFields.startTime.errors?.[0]}
+                    />
+                  </FormField>
+                </div>
+              </fieldset>
 
-          {/* 日時選択 */}
-          <fieldset className="space-y-3">
-            <legend className="text-base font-semibold text-gray-800">
-              日時選択
-            </legend>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="date"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
-                  日付
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
+              {/* 備考 */}
+              <FormField label="備考" htmlFor={reservationFields.note.id}>
+                <textarea
+                  id={reservationFields.note.id}
+                  name={reservationFields.note.name}
+                  rows={3}
+                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm transition-colors placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
-              </div>
-              <div>
-                <label
-                  htmlFor="time"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
-                  時間
-                </label>
-                <input
-                  type="time"
-                  id="time"
-                  name="time"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-                />
+              </FormField>
+
+              {reservationForm.errors && (
+                <p className="text-xs text-destructive">
+                  {reservationForm.errors}
+                </p>
+              )}
+
+              <div className="flex justify-end gap-3">
+                <Link to={`/staff/${tenantIdParam}/reservations`}>
+                  <Button type="button" variant="outline">
+                    キャンセル
+                  </Button>
+                </Link>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? "登録中..." : "登録する"}
+                </Button>
               </div>
             </div>
-          </fieldset>
-
-          {/* 備考 */}
-          <div>
-            <label
-              htmlFor="note"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              備考
-            </label>
-            <textarea
-              id="note"
-              name="note"
-              rows={3}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
-            />
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={() => history.back()}
-              className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              キャンセル
-            </button>
-            <button
-              type="submit"
-              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
-            >
-              登録
-            </button>
-          </div>
-        </Form>
-      </div>
+          </fetcher.Form>
+        </CardBody>
+      </Card>
     </div>
   );
 }

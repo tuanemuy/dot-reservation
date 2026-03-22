@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/Input";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
@@ -31,12 +32,13 @@ const resetPasswordSchema = z
 const handlers = {
   resetPassword: defineHandler({
     schema: resetPasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワード再設定を実装
+    handler: async (_value, _args) => {
+      // authProvider 実装後:
       // 1. authProvider でトークン検証
       // 2. パスワード更新
-      console.log("Reset password:", value);
-      return success();
+      return error({
+        "": ["パスワードリセット機能は現在準備中です"],
+      });
     },
   }),
 };
@@ -53,7 +55,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     throw data({ message: "無効なリンクです" }, { status: 400 });
   }
 
-  // TODO: トークンの有効性を事前チェック
+  // authProvider 実装後: トークンの有効性を事前チェックして expired フラグを設定する
   return { token, expired: false };
 }
 
@@ -81,9 +83,6 @@ export default function ResetPasswordPage({
   fetcher.register("resetPassword", {
     onSuccess: () => {
       setIsCompleted(true);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Reset password failed:", err);
     },
   });
 

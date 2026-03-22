@@ -1,11 +1,72 @@
-import { Form } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
+import { z } from "zod";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card, CardBody } from "@/components/ui/Card";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Modal } from "@/components/ui/Modal";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
 import type { Route } from "./+types/$userId";
 
-// TODO: 認証チェック
-export async function loader({ params }: Route.LoaderArgs) {
-  const _userId = params.userId;
+const suspendSchema = z.object({
+  reason: z.string().optional(),
+});
 
-  // TODO: ユーザー詳細取得
+const resumeSchema = z.object({});
+
+const deleteSchema = z.object({
+  confirmText: z.string().min(1, "「削除」と入力してください"),
+});
+
+const handlers = {
+  suspend: defineHandler({
+    schema: suspendSchema,
+    handler: async (value, _args) => {
+      // TODO: suspendCustomer ユースケースを呼び出す
+      // const userId = args.params.userId;
+      // await handleUseCase(() =>
+      //   suspendCustomer({ container, headers: args.request.headers, input: { customerId: userId } }),
+      // );
+      console.log("Suspend user:", value);
+      return success();
+    },
+  }),
+  resume: defineHandler({
+    schema: resumeSchema,
+    handler: async (_value, _args) => {
+      // TODO: reactivateCustomer ユースケースを呼び出す
+      console.log("Resume user");
+      return success();
+    },
+  }),
+  delete: defineHandler({
+    schema: deleteSchema,
+    handler: async (value, _args) => {
+      // TODO: deleteCustomer ユースケースを呼び出す
+      // 「削除」と一致するかの確認は handler 内で行う
+      console.log("Delete user:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export async function loader({ params: _params }: Route.LoaderArgs) {
+  // TODO: getCustomer ユースケースを呼び出す
+  // const result = await handleUseCase(() =>
+  //   getCustomer({ container, headers: request.headers, input: { customerId: params.userId } }),
+  // );
   return {
     user: {
       id: "",
@@ -29,164 +90,314 @@ export async function loader({ params }: Route.LoaderArgs) {
   };
 }
 
-// TODO: 認証チェック
-export async function action({ params, request }: Route.ActionArgs) {
-  const _userId = params.userId;
-  const formData = await request.formData();
-  const _intent = formData.get("intent");
-
-  // TODO: 停止・再開・削除処理
-  return { success: true };
-}
-
 const statusLabels: Record<string, string> = {
   active: "アクティブ",
   suspended: "停止中",
 };
 
-const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-700",
-  suspended: "bg-red-100 text-red-700",
+const statusBadgeVariant: Record<string, "success" | "destructive"> = {
+  active: "success",
+  suspended: "destructive",
 };
 
 export default function PlatformUserDetailPage({
   loaderData,
 }: Route.ComponentProps) {
   const { user, reservationStats } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+  const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showResumeModal, setShowResumeModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [suspendForm, suspendFields] = useForm({
+    id: "user-suspend-form",
+    lastResult: fetcher.data?.intent === "suspend" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.suspend.schema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.suspend.schema });
+    },
+  });
+
+  const [resumeForm] = useForm({
+    id: "user-resume-form",
+    lastResult: fetcher.data?.intent === "resume" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.resume.schema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.resume.schema });
+    },
+  });
+
+  const [deleteForm, deleteFields] = useForm({
+    id: "user-delete-form",
+    lastResult: fetcher.data?.intent === "delete" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.delete.schema),
+    shouldValidate: "onSubmit",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.delete.schema });
+    },
+  });
+
+  fetcher.register("suspend", {
+    onSuccess: () => {
+      setShowSuspendModal(false);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Suspend failed:", err);
+    },
+  });
+
+  fetcher.register("resume", {
+    onSuccess: () => {
+      setShowResumeModal(false);
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Resume failed:", err);
+    },
+  });
+
+  fetcher.register("delete", {
+    onSuccess: () => {
+      // TODO: ユーザー一覧ページへリダイレクト
+      console.log("User deleted");
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Delete failed:", err);
+    },
+  });
+
+  const isPendingSuspend = fetcher.isPending("suspend");
+  const isPendingResume = fetcher.isPending("resume");
+  const isPendingDelete = fetcher.isPending("delete");
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900">{user.name}</h1>
-        <span
-          className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[user.status] ?? "bg-gray-100 text-gray-700"}`}
-        >
+        <h1 className="text-2xl font-bold text-text">{user.name}</h1>
+        <Badge variant={statusBadgeVariant[user.status] ?? "default"}>
           {statusLabels[user.status] ?? user.status}
-        </span>
+        </Badge>
       </div>
 
       {/* 基本情報 */}
-      <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <h2 className="mb-4 text-base font-semibold text-gray-800">基本情報</h2>
-        <dl className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <dt className="text-xs font-medium text-gray-500">ユーザー名</dt>
-            <dd className="mt-1 text-sm text-gray-900">{user.name}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium text-gray-500">
-              メールアドレス
-            </dt>
-            <dd className="mt-1 text-sm text-gray-900">{user.email}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium text-gray-500">電話番号</dt>
-            <dd className="mt-1 text-sm text-gray-900">{user.phone || "-"}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium text-gray-500">登録日</dt>
-            <dd className="mt-1 text-sm text-gray-900">{user.createdAt}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium text-gray-500">最終ログイン</dt>
-            <dd className="mt-1 text-sm text-gray-900">
-              {user.lastLoginAt ?? "-"}
-            </dd>
-          </div>
-        </dl>
-      </div>
+      <Card>
+        <CardBody>
+          <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
+          <dl className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <dt className="text-xs font-medium text-text-secondary">
+                ユーザー名
+              </dt>
+              <dd className="mt-1 text-sm text-text">{user.name}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-text-secondary">
+                メールアドレス
+              </dt>
+              <dd className="mt-1 text-sm text-text">{user.email}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-text-secondary">
+                電話番号
+              </dt>
+              <dd className="mt-1 text-sm text-text">{user.phone || "-"}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-text-secondary">
+                登録日
+              </dt>
+              <dd className="mt-1 text-sm text-text">{user.createdAt}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-text-secondary">
+                最終ログイン
+              </dt>
+              <dd className="mt-1 text-sm text-text">
+                {user.lastLoginAt ?? "-"}
+              </dd>
+            </div>
+          </dl>
+        </CardBody>
+      </Card>
 
       {/* 予約履歴 */}
-      <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-800">予約履歴</h2>
-          <p className="text-sm text-gray-500">
-            総予約数: {reservationStats.totalCount.toLocaleString()}件
-          </p>
-        </div>
-        {reservationStats.recentReservations.length === 0 ? (
-          <p className="text-sm text-gray-500">予約履歴がありません</p>
-        ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200">
-              <tr>
-                <th className="pb-2 font-medium text-gray-700">店舗</th>
-                <th className="pb-2 font-medium text-gray-700">メニュー</th>
-                <th className="pb-2 font-medium text-gray-700">日時</th>
-                <th className="pb-2 font-medium text-gray-700">ステータス</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {reservationStats.recentReservations.map((reservation) => (
-                <tr key={reservation.id}>
-                  <td className="py-2 text-gray-900">
-                    {reservation.tenantName}
-                  </td>
-                  <td className="py-2 text-gray-600">{reservation.menuName}</td>
-                  <td className="py-2 text-gray-600">{reservation.dateTime}</td>
-                  <td className="py-2">
-                    <span className="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
-                      {reservation.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <Card>
+        <CardBody>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-text">予約履歴</h2>
+            <p className="text-sm text-text-secondary">
+              総予約数: {reservationStats.totalCount.toLocaleString()}件
+            </p>
+          </div>
+          {reservationStats.recentReservations.length === 0 ? (
+            <p className="text-sm text-text-muted">予約履歴がありません</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-border">
+                  <tr>
+                    <th className="pb-2 font-medium text-text-secondary">
+                      店舗
+                    </th>
+                    <th className="pb-2 font-medium text-text-secondary">
+                      メニュー
+                    </th>
+                    <th className="pb-2 font-medium text-text-secondary">
+                      日時
+                    </th>
+                    <th className="pb-2 font-medium text-text-secondary">
+                      ステータス
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {reservationStats.recentReservations.map((reservation) => (
+                    <tr key={reservation.id}>
+                      <td className="py-2 text-text">
+                        {reservation.tenantName}
+                      </td>
+                      <td className="py-2 text-text-secondary">
+                        {reservation.menuName}
+                      </td>
+                      <td className="py-2 text-text-secondary">
+                        {reservation.dateTime}
+                      </td>
+                      <td className="py-2">
+                        <Badge>{reservation.status}</Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardBody>
+      </Card>
 
       {/* アクション */}
       <div className="flex gap-3">
         {user.status === "active" ? (
-          <Form method="post">
-            <input type="hidden" name="intent" value="suspend" />
-            <button
-              type="submit"
-              className="rounded-md bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:outline-none"
-              onClick={(e) => {
-                if (!confirm("このユーザーを停止しますか？")) {
-                  e.preventDefault();
-                }
-              }}
-            >
-              アカウントを停止
-            </button>
-          </Form>
+          <Button variant="outline" onClick={() => setShowSuspendModal(true)}>
+            アカウントを停止
+          </Button>
         ) : (
-          <Form method="post">
-            <input type="hidden" name="intent" value="resume" />
-            <button
-              type="submit"
-              className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none"
-              onClick={(e) => {
-                if (!confirm("このユーザーを再開しますか？")) {
-                  e.preventDefault();
-                }
-              }}
-            >
-              アカウントを再開
-            </button>
-          </Form>
+          <Button variant="outline" onClick={() => setShowResumeModal(true)}>
+            アカウントを再開
+          </Button>
         )}
-        <Form method="post">
-          <input type="hidden" name="intent" value="delete" />
-          <button
-            type="submit"
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
-            onClick={(e) => {
-              const confirmed = prompt(
-                "削除するには「削除」と入力してください:",
-              );
-              if (confirmed !== "削除") {
-                e.preventDefault();
-              }
-            }}
-          >
-            アカウントを削除
-          </button>
-        </Form>
+        <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
+          アカウントを削除
+        </Button>
       </div>
+
+      {/* 停止モーダル */}
+      <Modal
+        open={showSuspendModal}
+        onClose={() => setShowSuspendModal(false)}
+        title="アカウントを停止"
+      >
+        <p className="mb-4 text-sm text-text-secondary">
+          このユーザーを停止しますか？停止中はログインできなくなります。
+        </p>
+        <fetcher.Form method="post" {...getFormProps(suspendForm)}>
+          <input type="hidden" name="intent" value="suspend" />
+          <div className="mb-4">
+            <FormField
+              label="停止理由（任意）"
+              htmlFor={suspendFields.reason.id}
+            >
+              <Input
+                {...getInputProps(suspendFields.reason, { type: "text" })}
+                placeholder="停止理由を入力"
+              />
+            </FormField>
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowSuspendModal(false)}
+            >
+              キャンセル
+            </Button>
+            <Button type="submit" disabled={isPendingSuspend}>
+              {isPendingSuspend ? "処理中..." : "停止する"}
+            </Button>
+          </div>
+        </fetcher.Form>
+      </Modal>
+
+      {/* 再開モーダル */}
+      <Modal
+        open={showResumeModal}
+        onClose={() => setShowResumeModal(false)}
+        title="アカウントを再開"
+      >
+        <p className="mb-4 text-sm text-text-secondary">
+          このユーザーを再開しますか？
+        </p>
+        <fetcher.Form method="post" {...getFormProps(resumeForm)}>
+          <input type="hidden" name="intent" value="resume" />
+          <div className="flex justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowResumeModal(false)}
+            >
+              キャンセル
+            </Button>
+            <Button type="submit" disabled={isPendingResume}>
+              {isPendingResume ? "処理中..." : "再開する"}
+            </Button>
+          </div>
+        </fetcher.Form>
+      </Modal>
+
+      {/* 削除モーダル */}
+      <Modal
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="アカウントを削除"
+      >
+        <p className="mb-4 text-sm text-text-secondary">
+          この操作は取り消せません。確認のため「削除」と入力してください。
+        </p>
+        <fetcher.Form method="post" {...getFormProps(deleteForm)}>
+          <input type="hidden" name="intent" value="delete" />
+          <div className="mb-4">
+            <FormField
+              label="「削除」と入力"
+              htmlFor={deleteFields.confirmText.id}
+              error={deleteFields.confirmText.errors}
+              required
+            >
+              <Input
+                {...getInputProps(deleteFields.confirmText, { type: "text" })}
+                placeholder="削除"
+                error={deleteFields.confirmText.errors?.[0]}
+              />
+            </FormField>
+          </div>
+          {deleteForm.errors && (
+            <p className="mb-4 text-xs text-destructive">{deleteForm.errors}</p>
+          )}
+          <div className="flex justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              キャンセル
+            </Button>
+            <Button
+              type="submit"
+              variant="destructive"
+              disabled={isPendingDelete}
+            >
+              {isPendingDelete ? "削除中..." : "削除する"}
+            </Button>
+          </div>
+        </fetcher.Form>
+      </Modal>
     </div>
   );
 }

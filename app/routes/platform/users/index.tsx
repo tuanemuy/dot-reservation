@@ -1,39 +1,58 @@
 import { Form, Link, useSearchParams } from "react-router";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { Pagination } from "@/components/ui/Pagination";
+import { Select } from "@/components/ui/Select";
 import type { Route } from "./+types/index";
 
-// TODO: 認証チェック
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const _keyword = url.searchParams.get("keyword") ?? "";
-  const _status = url.searchParams.get("status") ?? "";
-  const _page = url.searchParams.get("page") ?? "1";
+type UserSummary = {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  createdAt: string;
+  lastLoginAt: string | null;
+};
 
-  // TODO: ユーザー一覧取得
-  return {
-    users: [] as {
-      id: string;
-      name: string;
-      email: string;
-      status: string;
-      createdAt: string;
-      lastLoginAt: string | null;
-    }[],
-    pagination: {
-      currentPage: 1,
-      totalPages: 1,
-    },
-  };
-}
+const statusBadgeVariant: Record<string, "success" | "destructive"> = {
+  active: "success",
+  suspended: "destructive",
+};
 
 const statusLabels: Record<string, string> = {
   active: "アクティブ",
   suspended: "停止中",
 };
 
-const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-700",
-  suspended: "bg-red-100 text-red-700",
-};
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const _keyword = url.searchParams.get("keyword") ?? "";
+  const _status = url.searchParams.get("status") ?? "";
+  const _page = Number(url.searchParams.get("page") ?? "1");
+
+  // TODO: listCustomers ユースケースを呼び出す
+  // const result = await handleUseCase(() =>
+  //   listCustomers({
+  //     container,
+  //     headers: request.headers,
+  //     input: { keyword, status, page, limit: 20 },
+  //   }),
+  // ).match(
+  //   (result) => result,
+  //   (e) => { throw data({ message: e.message }, { status: e.status }); },
+  // );
+  const users: UserSummary[] = [];
+
+  return {
+    users,
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+    },
+  };
+}
 
 export default function PlatformUsersPage({
   loaderData,
@@ -43,111 +62,102 @@ export default function PlatformUsersPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">ユーザー管理</h1>
+      <h1 className="text-2xl font-bold text-text">ユーザー管理</h1>
 
       {/* フィルター */}
       <Form method="get" className="flex flex-wrap gap-3">
-        <input
+        <Input
           type="text"
           name="keyword"
           placeholder="名前・メールアドレスで検索"
           defaultValue={searchParams.get("keyword") ?? ""}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
+          className="w-auto"
         />
-        <select
+        <Select
           name="status"
           defaultValue={searchParams.get("status") ?? ""}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none"
+          className="w-auto"
         >
           <option value="">すべてのステータス</option>
           <option value="active">アクティブ</option>
           <option value="suspended">停止中</option>
-        </select>
-        <button
-          type="submit"
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-800"
-        >
-          検索
-        </button>
+        </Select>
+        <Button type="submit">検索</Button>
       </Form>
 
       {/* ユーザー一覧 */}
-      <div className="rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
+      <Card>
         {users.length === 0 ? (
-          <p className="p-8 text-center text-sm text-gray-500">
+          <p className="p-8 text-center text-sm text-text-muted">
             ユーザーが見つかりません
           </p>
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 font-medium text-gray-700">
-                  ユーザー名
-                </th>
-                <th className="px-4 py-3 font-medium text-gray-700">
-                  メールアドレス
-                </th>
-                <th className="px-4 py-3 font-medium text-gray-700">
-                  ステータス
-                </th>
-                <th className="px-4 py-3 font-medium text-gray-700">登録日</th>
-                <th className="px-4 py-3 font-medium text-gray-700">
-                  最終ログイン
-                </th>
-                <th className="px-4 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">
-                    {user.name}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{user.email}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusColors[user.status] ?? "bg-gray-100 text-gray-700"}`}
-                    >
-                      {statusLabels[user.status] ?? user.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{user.createdAt}</td>
-                  <td className="px-4 py-3 text-gray-600">
-                    {user.lastLoginAt ?? "-"}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      to={user.id}
-                      className="text-sm font-medium text-gray-600 hover:text-gray-900"
-                    >
-                      詳細
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-border bg-surface-secondary">
+                <tr>
+                  <th className="px-4 py-3 font-medium text-text-secondary">
+                    ユーザー名
+                  </th>
+                  <th className="px-4 py-3 font-medium text-text-secondary">
+                    メールアドレス
+                  </th>
+                  <th className="px-4 py-3 font-medium text-text-secondary">
+                    ステータス
+                  </th>
+                  <th className="px-4 py-3 font-medium text-text-secondary">
+                    登録日
+                  </th>
+                  <th className="px-4 py-3 font-medium text-text-secondary">
+                    最終ログイン
+                  </th>
+                  <th className="px-4 py-3" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
-        {/* ページネーション */}
-        {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 border-t border-gray-200 px-4 py-3">
-            {Array.from({ length: pagination.totalPages }, (_, i) => (
-              <Link
-                key={`page-${i + 1}`}
-                to={`?page=${i + 1}`}
-                className={`rounded-md px-3 py-1 text-sm ${
-                  pagination.currentPage === i + 1
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {i + 1}
-              </Link>
-            ))}
+              </thead>
+              <tbody className="divide-y divide-border">
+                {users.map((user) => (
+                  <tr key={user.id} className="hover:bg-surface-secondary">
+                    <td className="px-4 py-3 font-medium text-text">
+                      {user.name}
+                    </td>
+                    <td className="px-4 py-3 text-text-secondary">
+                      {user.email}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        variant={statusBadgeVariant[user.status] ?? "default"}
+                      >
+                        {statusLabels[user.status] ?? user.status}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3 text-text-secondary">
+                      {user.createdAt}
+                    </td>
+                    <td className="px-4 py-3 text-text-secondary">
+                      {user.lastLoginAt ?? "-"}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        to={user.id}
+                        className="text-sm font-medium text-primary hover:underline"
+                      >
+                        詳細
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
-      </div>
+      </Card>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        baseUrl="/platform/users"
+        searchParams={searchParams}
+      />
     </div>
   );
 }

@@ -1,99 +1,135 @@
-import { Form, Link, useActionData, useNavigation } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { Link } from "react-router";
+import { z } from "zod";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import {
+  createCompositeAction,
+  defineHandler,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import type { Route } from "./+types/login";
 
-// TODO: action で実際のログイン処理を実装
-export async function action({ request }: { request: Request }) {
-  const formData = await request.formData();
-  const _email = formData.get("email") as string;
-  const _password = formData.get("password") as string;
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "メールアドレスを入力してください")
+    .email("有効なメールアドレスを入力してください"),
+  password: z.string().min(1, "パスワードを入力してください"),
+});
 
-  // TODO: 認証処理
-  return { error: "メールアドレスまたはパスワードが正しくありません" };
+const handlers = {
+  login: defineHandler({
+    schema: loginSchema,
+    handler: async (value, _args) => {
+      // TODO: 認証サービスを使ってログイン処理を実装
+      // 1. authProvider でメール・パスワード認証
+      // 2. セッション作成
+      // 3. リダイレクト
+      console.log("Admin login:", value);
+      return success();
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
 }
 
-export default function AdminLoginPage() {
-  const actionData = useActionData<typeof action>();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+export default function AdminLoginPage(_props: Route.ComponentProps) {
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const [form, fields] = useForm({
+    id: "admin-login-form",
+    lastResult: fetcher.data?.intent === "login" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.login.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: handlers.login.schema });
+    },
+  });
+
+  fetcher.register("login", {
+    onSuccess: () => {
+      // TODO: ログイン成功後、テナント選択ページへリダイレクト
+      console.log("Admin login successful");
+    },
+    onHandlerError: ({ error: err }) => {
+      console.error("Admin login failed:", err);
+    },
+  });
+
+  const isPending = fetcher.isPending("login");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">管理画面ログイン</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            アカウントにログインしてください
-          </p>
-        </div>
+    <AuthLayout
+      title="管理画面ログイン"
+      description="アカウントにログインしてください"
+    >
+      <fetcher.Form method="post" {...getFormProps(form)}>
+        <input type="hidden" name="intent" value="login" />
 
-        <Form method="post" className="space-y-6">
-          {actionData?.error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-700">{actionData.error}</p>
-            </div>
+        <div className="space-y-5">
+          <FormField
+            label="メールアドレス"
+            htmlFor={fields.email.id}
+            error={fields.email.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.email, { type: "email" })}
+              placeholder="example@email.com"
+              error={fields.email.errors?.[0]}
+            />
+          </FormField>
+
+          <FormField
+            label="パスワード"
+            htmlFor={fields.password.id}
+            error={fields.password.errors}
+            required
+          >
+            <Input
+              {...getInputProps(fields.password, { type: "password" })}
+              placeholder="パスワード"
+              error={fields.password.errors?.[0]}
+            />
+          </FormField>
+
+          {form.errors && (
+            <p className="text-xs text-destructive">{form.errors}</p>
           )}
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              メールアドレス
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="email@example.com"
-            />
-          </div>
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? "ログイン中..." : "ログイン"}
+          </Button>
+        </div>
+      </fetcher.Form>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              パスワード
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="パスワード"
-            />
-          </div>
-
-          <div className="flex items-center justify-end">
-            <Link
-              to="/admin/forgot-password"
-              className="text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              パスワードをお忘れですか？
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+      <div className="mt-6 space-y-3 text-center text-sm">
+        <p>
+          <Link
+            to="/admin/forgot-password"
+            className="text-text-secondary hover:underline"
           >
-            {isSubmitting ? "ログイン中..." : "ログイン"}
-          </button>
-        </Form>
-
-        <p className="text-center text-sm text-gray-600">
+            パスワードをお忘れですか？
+          </Link>
+        </p>
+        <p className="text-text-secondary">
           アカウントをお持ちでないですか？{" "}
           <Link
             to="/admin/register"
-            className="font-medium text-blue-600 hover:text-blue-500"
+            className="font-medium text-primary hover:underline"
           >
             新規登録
           </Link>
         </p>
       </div>
-    </div>
+    </AuthLayout>
   );
 }

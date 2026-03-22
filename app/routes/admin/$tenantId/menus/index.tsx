@@ -1,53 +1,85 @@
 import { useState } from "react";
-import { Form, Link, useNavigation, useParams } from "react-router";
+import { data, Link } from "react-router";
+import { z } from "zod";
+import { deleteMenu } from "@/core/application/menu/deleteMenu";
+import { listMenus } from "@/core/application/menu/listMenus";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/index";
 
-// TODO: loader でメニュー一覧を取得
-// TODO: action でメニュー削除を実装
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const menusResult = await handleUseCase(() =>
+    listMenus({
+      container,
+      headers: request.headers,
+      input: { tenantId: params.tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
 
-// 仮データ
-const mockMenus = [
-  {
-    id: "1",
-    name: "カット",
-    category: "カット",
-    duration: 60,
-    price: 5000,
-  },
-  {
-    id: "2",
-    name: "カラー",
-    category: "カラー",
-    duration: 90,
-    price: 8000,
-  },
-  {
-    id: "3",
-    name: "パーマ",
-    category: "パーマ",
-    duration: 120,
-    price: 10000,
-  },
-  {
-    id: "4",
-    name: "カット＋カラー",
-    category: "セット",
-    duration: 120,
-    price: 12000,
-  },
-];
+  return { menus: menusResult.items };
+}
 
-export default function TenantMenusPage() {
-  const { tenantId } = useParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+const deleteMenuSchema = z.object({
+  menuId: z.string().min(1),
+});
+
+export const handlers = {
+  deleteMenu: defineHandler({
+    schema: deleteMenuSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        deleteMenu({
+          container,
+          headers: args.request.headers,
+          input: { menuId: value.menuId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export default function TenantMenusPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const { menus } = loaderData;
+  const tenantId = params.tenantId;
+  const fetcher = useCompositeAction<typeof handlers>();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-  const categories = [...new Set(mockMenus.map((m) => m.category))];
+  const categories = [...new Set(menus.map((m) => m.category).filter(Boolean))];
   const filteredMenus =
     categoryFilter === "all"
-      ? mockMenus
-      : mockMenus.filter((m) => m.category === categoryFilter);
+      ? menus
+      : menus.filter((m) => m.category === categoryFilter);
+
+  fetcher.register("deleteMenu", {
+    onSuccess: () => {
+      setDeletingId(null);
+    },
+  });
+
+  const isPendingDelete = fetcher.isPending("deleteMenu");
 
   return (
     <div className="p-8">
@@ -62,33 +94,35 @@ export default function TenantMenusPage() {
       </div>
 
       {/* カテゴリーフィルター */}
-      <div className="mb-6 flex gap-2">
-        <button
-          type="button"
-          onClick={() => setCategoryFilter("all")}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-            categoryFilter === "all"
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          すべて
-        </button>
-        {categories.map((category) => (
+      {categories.length > 0 && (
+        <div className="mb-6 flex gap-2">
           <button
-            key={category}
             type="button"
-            onClick={() => setCategoryFilter(category)}
+            onClick={() => setCategoryFilter("all")}
             className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-              categoryFilter === category
+              categoryFilter === "all"
                 ? "bg-gray-900 text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
-            {category}
+            すべて
           </button>
-        ))}
-      </div>
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setCategoryFilter(category!)}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${
+                categoryFilter === category
+                  ? "bg-gray-900 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* メニュー一覧 */}
       {filteredMenus.length === 0 ? (
@@ -135,7 +169,7 @@ export default function TenantMenusPage() {
                     </Link>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                    {menu.category}
+                    {menu.category ?? "-"}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                     {menu.duration}分
@@ -153,7 +187,7 @@ export default function TenantMenusPage() {
                       </Link>
                       {deletingId === menu.id ? (
                         <div className="flex items-center gap-2">
-                          <Form method="post" className="inline">
+                          <fetcher.Form method="post" className="inline">
                             <input
                               type="hidden"
                               name="intent"
@@ -166,12 +200,12 @@ export default function TenantMenusPage() {
                             />
                             <button
                               type="submit"
-                              disabled={isSubmitting}
+                              disabled={isPendingDelete}
                               className="font-medium text-red-600 hover:text-red-500 disabled:opacity-50"
                             >
                               削除する
                             </button>
-                          </Form>
+                          </fetcher.Form>
                           <button
                             type="button"
                             onClick={() => setDeletingId(null)}

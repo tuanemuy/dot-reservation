@@ -1,40 +1,28 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { Link } from "react-router";
+import { data, Link } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody, CardFooter, CardHeader } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { Select } from "@/components/ui/Select";
+import { cancelReservation } from "@/core/application/reservation/cancelReservation";
+import type { GetReservationOutput } from "@/core/application/reservation/getReservation";
+import { getReservation } from "@/core/application/reservation/getReservation";
+import { getTenant } from "@/core/application/tenant/getTenant";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
-type ReservationDetail = {
-  id: string;
-  storeName: string;
-  menuName: string;
-  menuDuration: number;
-  menuPrice: number;
-  staffName: string | null;
-  date: string;
-  startTime: string;
-  endTime: string;
-  status: "pending" | "confirmed" | "completed" | "cancelled" | "rejected";
-  note: string | null;
-  cancellationReason: string | null;
-  rejectionReason: string | null;
-  canModify: boolean;
-  canCancel: boolean;
-};
-
-const statusLabels: Record<ReservationDetail["status"], string> = {
+const statusLabels: Record<string, string> = {
   pending: "承認待ち",
   confirmed: "確定",
   completed: "完了",
@@ -50,7 +38,7 @@ type BadgeVariant =
   | "warning"
   | "destructive";
 
-const statusBadgeVariants: Record<ReservationDetail["status"], BadgeVariant> = {
+const statusBadgeVariants: Record<string, BadgeVariant> = {
   pending: "warning",
   confirmed: "success",
   completed: "default",
@@ -59,16 +47,30 @@ const statusBadgeVariants: Record<ReservationDetail["status"], BadgeVariant> = {
 };
 
 const cancelReasonSchema = z.object({
+  reservationId: z.string().min(1),
   reason: z.string().optional(),
 });
 
 const handlers = {
   cancelReservation: defineHandler({
     schema: cancelReasonSchema,
-    handler: async (value, _args) => {
-      // TODO: 予約キャンセルユースケースを実装
-      console.log("Cancel reservation:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      return handleUseCase(() =>
+        cancelReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            reservationId: value.reservationId,
+            reason: value.reason ?? null,
+            cancelledBy: "customer",
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -77,30 +79,63 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
   const reservationId = params.id;
 
-  // TODO: 認証ユーザーのIDを使って予約詳細を取得
+  const reservation = await handleUseCase(() =>
+    getReservation({
+      container,
+      headers: request.headers,
+      input: { reservationId },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
 
-  const dummyReservation: ReservationDetail = {
-    id: reservationId,
-    storeName: "サンプル美容室",
-    menuName: "カット",
-    menuDuration: 60,
-    menuPrice: 5000,
-    staffName: "田中 花子",
-    date: "2026-03-25",
-    startTime: "10:00",
-    endTime: "11:00",
-    status: "confirmed",
-    note: null,
-    cancellationReason: null,
-    rejectionReason: null,
-    canModify: true,
-    canCancel: true,
+  // テナント情報を取得して canModify/canCancel を判定
+  const tenantResult = await handleUseCase(() =>
+    getTenant({
+      container,
+      headers: request.headers,
+      input: { tenantId: reservation.tenantId },
+    }),
+  ).match(
+    (r) => r,
+    () => null,
+  );
+
+  const now = new Date();
+  let canModify = false;
+  let canCancel = false;
+
+  if (
+    tenantResult &&
+    (reservation.status === "confirmed" || reservation.status === "pending")
+  ) {
+    const reservationDateTime = new Date(reservation.date);
+    const [hours, minutes] = reservation.startTime.split(":").map(Number);
+    reservationDateTime.setHours(hours, minutes, 0, 0);
+    const deadlineMs =
+      tenantResult.reservationSettings.cancellationDeadlineHours *
+      60 *
+      60 *
+      1000;
+    const deadline = new Date(reservationDateTime.getTime() - deadlineMs);
+    canModify = now <= deadline;
+    canCancel = now <= deadline;
+  }
+
+  return {
+    reservation: {
+      ...reservation,
+      canModify,
+      canCancel,
+    },
   };
-
-  return { reservation: dummyReservation };
 }
 
 export default function ReservationDetailPage({
@@ -132,14 +167,13 @@ export default function ReservationDetailPage({
   const isCancelling = fetcher.isPending("cancelReservation");
 
   const detailRows: { label: string; value: string | null }[] = [
-    { label: "店舗名", value: reservation.storeName },
     { label: "メニュー", value: reservation.menuName },
     { label: "所要時間", value: `${reservation.menuDuration}分` },
     { label: "料金", value: `${reservation.menuPrice.toLocaleString()}円` },
     { label: "担当スタッフ", value: reservation.staffName ?? "指名なし" },
     {
       label: "予約日時",
-      value: `${reservation.date} ${reservation.startTime} - ${reservation.endTime}`,
+      value: `${new Date(reservation.date).toLocaleDateString("ja-JP")} ${reservation.startTime} - ${reservation.endTime}`,
     },
     { label: "備考", value: reservation.note },
     { label: "キャンセル理由", value: reservation.cancellationReason },
@@ -160,8 +194,8 @@ export default function ReservationDetailPage({
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h1 className="text-xl font-bold text-text">予約詳細</h1>
-          <Badge variant={statusBadgeVariants[reservation.status]}>
-            {statusLabels[reservation.status]}
+          <Badge variant={statusBadgeVariants[reservation.status] ?? "default"}>
+            {statusLabels[reservation.status] ?? reservation.status}
           </Badge>
         </CardHeader>
 
@@ -214,6 +248,7 @@ export default function ReservationDetailPage({
       >
         <fetcher.Form method="post" {...getFormProps(cancelForm)}>
           <input type="hidden" name="intent" value="cancelReservation" />
+          <input type="hidden" name="reservationId" value={reservation.id} />
           <div className="mb-4 space-y-1.5">
             <label
               htmlFor="cancel-reason"

@@ -1,31 +1,38 @@
-import { Link, useParams } from "react-router";
+import { data, Link } from "react-router";
+import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/index";
 
-// TODO: loader でスタッフ一覧を取得
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const staffResult = await handleUseCase(() =>
+    listStaffProfiles({
+      container,
+      headers: request.headers,
+      input: { tenantId: params.tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
 
-// 仮データ
-const mockStaff = [
-  {
-    id: "1",
-    name: "佐藤 花子",
-    image: null,
-    menuCount: 3,
-  },
-  {
-    id: "2",
-    name: "田中 次郎",
-    image: null,
-    menuCount: 2,
-  },
-];
+  return { staff: staffResult.items };
+}
 
-export default function TenantStaffPage() {
-  const { tenantId } = useParams();
+export default function TenantStaffPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const { staff } = loaderData;
+  const tenantId = params.tenantId;
 
   return (
     <div className="p-8">
       <h1 className="mb-8 text-2xl font-bold text-gray-900">スタッフ管理</h1>
 
-      {mockStaff.length === 0 ? (
+      {staff.length === 0 ? (
         <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
           <p className="text-gray-500">スタッフが登録されていません</p>
           <p className="mt-2 text-sm text-gray-400">
@@ -40,18 +47,18 @@ export default function TenantStaffPage() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {mockStaff.map((staff) => (
+          {staff.map((member) => (
             <Link
-              key={staff.id}
-              to={`/admin/${tenantId}/staff/${staff.id}`}
+              key={member.id}
+              to={`/admin/${tenantId}/staff/${member.id}`}
               className="group rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md"
             >
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-gray-500">
-                  {staff.image ? (
+                  {member.imageUrl ? (
                     <img
-                      src={staff.image}
-                      alt={staff.name}
+                      src={member.imageUrl}
+                      alt={member.displayName}
                       className="h-12 w-12 rounded-full object-cover"
                     />
                   ) : (
@@ -73,11 +80,8 @@ export default function TenantStaffPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                    {staff.name}
+                    {member.displayName}
                   </h2>
-                  <p className="text-sm text-gray-500">
-                    担当メニュー: {staff.menuCount}件
-                  </p>
                 </div>
               </div>
             </Link>

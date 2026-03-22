@@ -1,23 +1,103 @@
 import { useState } from "react";
-import { Form, Link, useNavigation, useParams } from "react-router";
+import { data, Link } from "react-router";
+import { z } from "zod";
+import { approveReservation } from "@/core/application/reservation/approveReservation";
+import { cancelReservation } from "@/core/application/reservation/cancelReservation";
+import { getReservation } from "@/core/application/reservation/getReservation";
+import { rejectReservation } from "@/core/application/reservation/rejectReservation";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/$reservationId";
 
-// TODO: loader で予約詳細を取得
-// TODO: action で承認/却下/キャンセルを実装
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const reservationResult = await handleUseCase(() =>
+    getReservation({
+      container,
+      headers: request.headers,
+      input: { reservationId: params.reservationId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
 
-// 仮データ
-const mockReservation = {
-  id: "1",
-  status: "pending",
-  customerName: "山田 太郎",
-  customerEmail: "yamada@example.com",
-  customerPhone: "090-1234-5678",
-  menuName: "カット",
-  duration: 60,
-  price: 5000,
-  staffName: "佐藤 花子",
-  dateTime: "2024-01-15 10:00",
-  notes: "初回です。",
+  return { reservation: reservationResult };
+}
+
+const rejectSchema = z.object({
+  reason: z.string().min(1, "却下理由を入力してください"),
+});
+
+const cancelSchema = z.object({
+  reason: z.string().min(1, "キャンセル理由を入力してください"),
+});
+
+export const handlers = {
+  approve: defineHandler({
+    handler: async (_formData, args) => {
+      return handleUseCase(() =>
+        approveReservation({
+          container,
+          headers: args.request.headers,
+          input: { reservationId: args.params.reservationId! },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+  reject: defineHandler({
+    schema: rejectSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        rejectReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            reservationId: args.params.reservationId!,
+            reason: value.reason,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+  cancel: defineHandler({
+    schema: cancelSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        cancelReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            reservationId: args.params.reservationId!,
+            reason: value.reason,
+            cancelledBy: "admin",
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
 };
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
 
 const statusLabels: Record<string, { text: string; className: string }> = {
   pending: { text: "承認待ち", className: "bg-yellow-100 text-yellow-800" },
@@ -27,18 +107,24 @@ const statusLabels: Record<string, { text: string; className: string }> = {
   rejected: { text: "却下", className: "bg-red-100 text-red-800" },
 };
 
-export default function TenantReservationDetailPage() {
-  const { tenantId, reservationId: _reservationId } = useParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+export default function TenantReservationDetailPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const tenantId = params.tenantId;
+  const { reservation } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [showCancelForm, setShowCancelForm] = useState(false);
 
-  const reservation = mockReservation;
   const status = statusLabels[reservation.status] ?? {
     text: reservation.status,
     className: "bg-gray-100 text-gray-800",
   };
+
+  const isPendingApprove = fetcher.isPending("approve");
+  const isPendingReject = fetcher.isPending("reject");
+  const isPendingCancel = fetcher.isPending("cancel");
 
   return (
     <div className="p-8">
@@ -69,16 +155,16 @@ export default function TenantReservationDetailPage() {
           <div className="flex gap-2">
             {reservation.status === "pending" && (
               <>
-                <Form method="post" className="inline">
+                <fetcher.Form method="post" className="inline">
                   <input type="hidden" name="intent" value="approve" />
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isPendingApprove}
                     className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
                   >
                     承認
                   </button>
-                </Form>
+                </fetcher.Form>
                 <button
                   type="button"
                   onClick={() => setShowRejectForm(true)}
@@ -112,7 +198,7 @@ export default function TenantReservationDetailPage() {
         {showRejectForm && (
           <div className="rounded-lg border border-red-200 bg-white p-6">
             <h3 className="mb-3 text-sm font-medium text-gray-900">却下理由</h3>
-            <Form method="post" className="space-y-3">
+            <fetcher.Form method="post" className="space-y-3">
               <input type="hidden" name="intent" value="reject" />
               <textarea
                 name="reason"
@@ -124,10 +210,10 @@ export default function TenantReservationDetailPage() {
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isPendingReject}
                   className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
                 >
-                  {isSubmitting ? "処理中..." : "却下する"}
+                  {isPendingReject ? "処理中..." : "却下する"}
                 </button>
                 <button
                   type="button"
@@ -137,7 +223,7 @@ export default function TenantReservationDetailPage() {
                   キャンセル
                 </button>
               </div>
-            </Form>
+            </fetcher.Form>
           </div>
         )}
 
@@ -147,7 +233,7 @@ export default function TenantReservationDetailPage() {
             <h3 className="mb-3 text-sm font-medium text-gray-900">
               キャンセル理由
             </h3>
-            <Form method="post" className="space-y-3">
+            <fetcher.Form method="post" className="space-y-3">
               <input type="hidden" name="intent" value="cancel" />
               <textarea
                 name="reason"
@@ -159,10 +245,10 @@ export default function TenantReservationDetailPage() {
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isPendingCancel}
                   className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
                 >
-                  {isSubmitting ? "処理中..." : "キャンセルする"}
+                  {isPendingCancel ? "処理中..." : "キャンセルする"}
                 </button>
                 <button
                   type="button"
@@ -172,7 +258,7 @@ export default function TenantReservationDetailPage() {
                   戻る
                 </button>
               </div>
-            </Form>
+            </fetcher.Form>
           </div>
         )}
 
@@ -183,23 +269,27 @@ export default function TenantReservationDetailPage() {
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">顧客名</dt>
               <dd className="text-sm text-gray-900">
-                {reservation.customerName}
+                {reservation.customerName ?? "-"}
               </dd>
             </div>
-            <div className="flex justify-between border-b border-gray-100 pb-3">
-              <dt className="text-sm font-medium text-gray-500">
-                メールアドレス
-              </dt>
-              <dd className="text-sm text-gray-900">
-                {reservation.customerEmail}
-              </dd>
-            </div>
-            <div className="flex justify-between border-b border-gray-100 pb-3">
-              <dt className="text-sm font-medium text-gray-500">電話番号</dt>
-              <dd className="text-sm text-gray-900">
-                {reservation.customerPhone}
-              </dd>
-            </div>
+            {reservation.customerEmail && (
+              <div className="flex justify-between border-b border-gray-100 pb-3">
+                <dt className="text-sm font-medium text-gray-500">
+                  メールアドレス
+                </dt>
+                <dd className="text-sm text-gray-900">
+                  {reservation.customerEmail}
+                </dd>
+              </div>
+            )}
+            {reservation.customerPhoneNumber && (
+              <div className="flex justify-between border-b border-gray-100 pb-3">
+                <dt className="text-sm font-medium text-gray-500">電話番号</dt>
+                <dd className="text-sm text-gray-900">
+                  {reservation.customerPhoneNumber}
+                </dd>
+              </div>
+            )}
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">メニュー</dt>
               <dd className="text-sm text-gray-900">{reservation.menuName}</dd>
@@ -207,29 +297,52 @@ export default function TenantReservationDetailPage() {
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">所要時間</dt>
               <dd className="text-sm text-gray-900">
-                {reservation.duration}分
+                {reservation.menuDuration}分
               </dd>
             </div>
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">料金</dt>
               <dd className="text-sm text-gray-900">
-                &yen;{reservation.price.toLocaleString()}
+                &yen;{reservation.menuPrice.toLocaleString()}
               </dd>
             </div>
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">
                 担当スタッフ
               </dt>
-              <dd className="text-sm text-gray-900">{reservation.staffName}</dd>
+              <dd className="text-sm text-gray-900">
+                {reservation.staffName ?? "-"}
+              </dd>
             </div>
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <dt className="text-sm font-medium text-gray-500">予約日時</dt>
-              <dd className="text-sm text-gray-900">{reservation.dateTime}</dd>
+              <dd className="text-sm text-gray-900">
+                {reservation.date} {reservation.startTime} -{" "}
+                {reservation.endTime}
+              </dd>
             </div>
-            {reservation.notes && (
+            {reservation.note && (
               <div className="flex justify-between">
                 <dt className="text-sm font-medium text-gray-500">備考</dt>
-                <dd className="text-sm text-gray-900">{reservation.notes}</dd>
+                <dd className="text-sm text-gray-900">{reservation.note}</dd>
+              </div>
+            )}
+            {reservation.rejectionReason && (
+              <div className="flex justify-between">
+                <dt className="text-sm font-medium text-gray-500">却下理由</dt>
+                <dd className="text-sm text-gray-900">
+                  {reservation.rejectionReason}
+                </dd>
+              </div>
+            )}
+            {reservation.cancellationReason && (
+              <div className="flex justify-between">
+                <dt className="text-sm font-medium text-gray-500">
+                  キャンセル理由
+                </dt>
+                <dd className="text-sm text-gray-900">
+                  {reservation.cancellationReason}
+                </dd>
               </div>
             )}
           </dl>

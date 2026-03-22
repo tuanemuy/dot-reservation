@@ -1,45 +1,61 @@
 import { useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router";
-
-// TODO: loader で予約一覧を取得
+import { data, Link, useSearchParams } from "react-router";
+import { listReservations } from "@/core/application/reservation/listReservations";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/index";
 
 type ViewMode = "list" | "calendar";
 
-// 仮データ
-const mockReservations = [
-  {
-    id: "1",
-    customerName: "山田 太郎",
-    menuName: "カット",
-    staffName: "佐藤 花子",
-    dateTime: "2024-01-15 10:00",
-    status: "pending",
-  },
-  {
-    id: "2",
-    customerName: "鈴木 一郎",
-    menuName: "カラー",
-    staffName: "田中 次郎",
-    dateTime: "2024-01-15 13:00",
-    status: "confirmed",
-  },
-  {
-    id: "3",
-    customerName: "高橋 美咲",
-    menuName: "パーマ",
-    staffName: "佐藤 花子",
-    dateTime: "2024-01-16 15:30",
-    status: "confirmed",
-  },
-  {
-    id: "4",
-    customerName: "渡辺 健太",
-    menuName: "カット＋カラー",
-    staffName: "田中 次郎",
-    dateTime: "2024-01-17 11:00",
-    status: "cancelled",
-  },
-];
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantId = params.tenantId;
+  const url = new URL(request.url);
+  const statusFilter = url.searchParams.get("status");
+
+  const reservationsResult = await handleUseCase(() =>
+    listReservations({
+      container,
+      headers: request.headers,
+      input: {
+        tenantId,
+        status: statusFilter,
+        startDate: null,
+        endDate: null,
+        page: 1,
+        limit: 50,
+      },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const pendingResult = await handleUseCase(() =>
+    listReservations({
+      container,
+      headers: request.headers,
+      input: {
+        tenantId,
+        status: "pending",
+        startDate: null,
+        endDate: null,
+        page: 1,
+        limit: 1,
+      },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [], totalCount: 0 }),
+  );
+
+  return {
+    reservations: reservationsResult.items,
+    totalCount: reservationsResult.totalCount,
+    pendingCount: pendingResult.totalCount,
+  };
+}
 
 const statusLabels: Record<string, { text: string; className: string }> = {
   pending: { text: "承認待ち", className: "bg-yellow-100 text-yellow-800" },
@@ -49,19 +65,16 @@ const statusLabels: Record<string, { text: string; className: string }> = {
   rejected: { text: "却下", className: "bg-red-100 text-red-800" },
 };
 
-const mockPendingCount = 1;
-
-export default function TenantReservationsPage() {
-  const { tenantId } = useParams();
+export default function TenantReservationsPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const { reservations, pendingCount } = loaderData;
+  const tenantId = params.tenantId;
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const statusFilter = searchParams.get("status") || "all";
-
-  const filteredReservations =
-    statusFilter === "all"
-      ? mockReservations
-      : mockReservations.filter((r) => r.status === statusFilter);
 
   return (
     <div className="p-8">
@@ -76,11 +89,11 @@ export default function TenantReservationsPage() {
       </div>
 
       {/* 承認待ちバナー */}
-      {mockPendingCount > 0 && (
+      {pendingCount > 0 && (
         <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-yellow-800">
-              承認待ちの予約が {mockPendingCount} 件あります
+              承認待ちの予約が {pendingCount} 件あります
             </p>
             <button
               type="button"
@@ -150,7 +163,7 @@ export default function TenantReservationsPage() {
 
       {/* リスト表示 */}
       {viewMode === "list" ? (
-        filteredReservations.length === 0 ? (
+        reservations.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
             <p className="text-gray-500">予約はありません</p>
           </div>
@@ -177,7 +190,7 @@ export default function TenantReservationsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredReservations.map((reservation) => {
+                {reservations.map((reservation) => {
                   const status = statusLabels[reservation.status] ?? {
                     text: reservation.status,
                     className: "bg-gray-100 text-gray-800",
@@ -196,17 +209,17 @@ export default function TenantReservationsPage() {
                           to={`/admin/${tenantId}/reservations/${reservation.id}`}
                           className="hover:text-blue-600"
                         >
-                          {reservation.customerName}
+                          {reservation.customerName ?? "-"}
                         </Link>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                         {reservation.menuName}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                        {reservation.staffName}
+                        {reservation.staffName ?? "-"}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                        {reservation.dateTime}
+                        {reservation.date} {reservation.startTime}
                       </td>
                     </tr>
                   );
@@ -216,11 +229,10 @@ export default function TenantReservationsPage() {
           </div>
         )
       ) : (
-        /* カレンダー表示（プレースホルダー） */
+        /* カレンダー表示 */
         <div className="rounded-lg border border-gray-200 bg-white p-8">
           <div className="flex min-h-96 items-center justify-center text-gray-400">
             <p>週表示の予約カレンダーがここに表示されます</p>
-            {/* TODO: 予約カレンダーコンポーネントを実装 */}
           </div>
         </div>
       )}

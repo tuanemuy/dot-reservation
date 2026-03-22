@@ -1,9 +1,39 @@
-import { NavLink, Outlet, useParams } from "react-router";
+import { data, Link, NavLink, Outlet, redirect } from "react-router";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/layout";
 
-// TODO: loader で認証チェック
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+  const { listMembers } = await import("@/core/application/member/listMembers");
 
-export default function StaffLayout() {
-  const { tenantId } = useParams();
+  // Check authentication - in a real app, this would use authProvider
+  // For now, we verify the tenant exists and has members
+  const tenantId = params.tenantId;
+
+  const membersResult = await handleUseCase(() =>
+    listMembers({
+      container,
+      headers: request.headers,
+      input: { tenantId, role: "staff" },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      if (e.status === 401) {
+        throw redirect("/admin/login");
+      }
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  return {
+    tenantId,
+    staffCount: membersResult.items.length,
+  };
+}
+
+export default function StaffLayout({ loaderData }: Route.ComponentProps) {
+  const { tenantId } = loaderData;
   const basePath = `/staff/${tenantId}`;
 
   const navItems = [
@@ -19,9 +49,19 @@ export default function StaffLayout() {
     <div className="flex min-h-screen">
       <aside className="hidden w-56 shrink-0 border-r border-border bg-white md:block">
         <div className="flex h-16 items-center border-b border-border px-4">
-          <p className="text-lg font-bold text-primary">スタッフ</p>
+          <Link
+            to="/admin/tenants"
+            className="text-sm text-text-secondary hover:text-text"
+          >
+            &larr; テナント一覧
+          </Link>
         </div>
-        <nav className="space-y-1 p-3">
+
+        <div className="px-4 py-3">
+          <h2 className="text-lg font-bold text-primary">スタッフ</h2>
+        </div>
+
+        <nav className="space-y-1 px-3">
           {navItems.map((item) => (
             <NavLink
               key={item.to}

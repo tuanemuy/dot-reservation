@@ -7,17 +7,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
 
-  // TODO: トークンを検証してメール確認処理を実行
-  // 1. authProvider でトークン検証
-  // 2. メールアドレス確認済みに更新
   let verified = false;
   let errorMessage: string | null = null;
 
-  if (token) {
-    // TODO: 実際の検証ロジックを実装
-    verified = true;
-  } else {
+  if (!token) {
     errorMessage = "無効なリンクです。";
+  } else {
+    // authProvider 実装後: トークンを検証してメールアドレス確認済みに更新する
+    // 現在は authProvider 未実装のため、トークンが存在すれば確認済みとする
+    verified = true;
   }
 
   return { verified, errorMessage };

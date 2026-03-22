@@ -1,35 +1,148 @@
-import { Form, Link, useNavigation, useParams } from "react-router";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { data, Link, redirect } from "react-router";
+import { z } from "zod";
+import { listMenus } from "@/core/application/menu/listMenus";
+import { getReservation } from "@/core/application/reservation/getReservation";
+import { updateReservation } from "@/core/application/reservation/updateReservation";
+import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/$reservationId.edit";
 
-// TODO: loader で予約情報・メニュー一覧・スタッフ一覧を取得
-// TODO: action で予約変更を実装
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantId = params.tenantId;
 
-// 仮データ
-const mockReservation = {
-  id: "1",
-  menuId: "1",
-  staffId: "1",
-  date: "2024-01-15",
-  time: "10:00",
-  notes: "初回です。",
+  const reservationResult = await handleUseCase(() =>
+    getReservation({
+      container,
+      headers: request.headers,
+      input: { reservationId: params.reservationId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const menusResult = await handleUseCase(() =>
+    listMenus({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [] }),
+  );
+
+  const staffResult = await handleUseCase(() =>
+    listStaffProfiles({
+      container,
+      headers: request.headers,
+      input: { tenantId },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [] }),
+  );
+
+  return {
+    reservation: reservationResult,
+    menus: menusResult.items,
+    staff: staffResult.items,
+  };
+}
+
+const updateReservationSchema = z.object({
+  menuId: z.string().min(1, "メニューを選択してください"),
+  staffId: z.string().optional().default(""),
+  date: z.string().min(1, "日付を入力してください"),
+  time: z.string().min(1, "時刻を入力してください"),
+});
+
+export const handlers = {
+  updateReservation: defineHandler({
+    schema: updateReservationSchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        updateReservation({
+          container,
+          headers: args.request.headers,
+          input: {
+            reservationId: args.params.reservationId!,
+            menuId: value.menuId,
+            staffProfileId: value.staffId || null,
+            date: value.date,
+            startTime: value.time,
+            note: null,
+            modifiedBy: "admin",
+          },
+        }),
+      ).match(
+        (result) => success({ id: result.id }),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
 };
 
-const mockMenus = [
-  { id: "1", name: "カット", duration: 60, price: 5000 },
-  { id: "2", name: "カラー", duration: 90, price: 8000 },
-  { id: "3", name: "パーマ", duration: 120, price: 10000 },
-];
+export async function action(args: Route.ActionArgs) {
+  const result = await createCompositeAction(args, handlers);
 
-const mockStaff = [
-  { id: "1", name: "佐藤 花子" },
-  { id: "2", name: "田中 次郎" },
-];
+  if (result.intent === "updateReservation" && result.status === "success") {
+    throw redirect(
+      `/admin/${args.params.tenantId}/reservations/${args.params.reservationId}`,
+    );
+  }
 
-export default function TenantReservationEditPage() {
-  const { tenantId, reservationId: _reservationId } = useParams();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  return result;
+}
 
-  const reservation = mockReservation;
+export default function TenantReservationEditPage({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const tenantId = params.tenantId;
+  const { reservation, menus, staff } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  // Find the menuId from the reservation's menuName
+  const currentMenu = menus.find((m) => m.name === reservation.menuName);
+  // Find the staffId from the reservation's staffName
+  const currentStaff = staff.find(
+    (s) => s.displayName === reservation.staffName,
+  );
+
+  const [form, fields] = useForm({
+    id: "update-reservation-form",
+    lastResult:
+      fetcher.data?.intent === "updateReservation" ? fetcher.data : undefined,
+    constraint: getZodConstraint(handlers.updateReservation.schema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    defaultValue: {
+      menuId: currentMenu?.id ?? "",
+      staffId: currentStaff?.id ?? "",
+      date: reservation.date,
+      time: reservation.startTime,
+    },
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: handlers.updateReservation.schema,
+      });
+    },
+  });
+
+  const isPending = fetcher.isPending("updateReservation");
 
   return (
     <div className="p-8">
@@ -44,10 +157,12 @@ export default function TenantReservationEditPage() {
       </div>
 
       <div className="max-w-2xl">
-        <Form
+        <fetcher.Form
           method="post"
+          {...getFormProps(form)}
           className="rounded-lg border border-gray-200 bg-white p-6"
         >
+          <input type="hidden" name="intent" value="updateReservation" />
           <div className="space-y-6">
             {/* メニュー選択 */}
             <section>
@@ -55,18 +170,21 @@ export default function TenantReservationEditPage() {
                 メニュー
               </h2>
               <select
-                name="menuId"
-                required
-                defaultValue={reservation.menuId}
+                {...getInputProps(fields.menuId, { type: "text" })}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
-                {mockMenus.map((menu) => (
+                {menus.map((menu) => (
                   <option key={menu.id} value={menu.id}>
                     {menu.name} ({menu.duration}分 / &yen;
                     {menu.price.toLocaleString()})
                   </option>
                 ))}
               </select>
+              {fields.menuId.errors && (
+                <p className="mt-1 text-sm text-red-600">
+                  {fields.menuId.errors}
+                </p>
+              )}
             </section>
 
             {/* スタッフ選択 */}
@@ -75,14 +193,13 @@ export default function TenantReservationEditPage() {
                 担当スタッフ
               </h2>
               <select
-                name="staffId"
-                defaultValue={reservation.staffId}
+                {...getInputProps(fields.staffId, { type: "text" })}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="">指名なし</option>
-                {mockStaff.map((staff) => (
-                  <option key={staff.id} value={staff.id}>
-                    {staff.name}
+                {staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.displayName}
                   </option>
                 ))}
               </select>
@@ -94,40 +211,40 @@ export default function TenantReservationEditPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="date"
+                    htmlFor={fields.date.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     日付
                   </label>
                   <input
-                    id="date"
-                    name="date"
-                    type="date"
-                    required
-                    defaultValue={reservation.date}
+                    {...getInputProps(fields.date, { type: "date" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
+                  {fields.date.errors && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {fields.date.errors}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
-                    htmlFor="time"
+                    htmlFor={fields.time.id}
                     className="block text-sm font-medium text-gray-700"
                   >
                     時刻
                   </label>
                   <input
-                    id="time"
-                    name="time"
-                    type="time"
-                    required
-                    defaultValue={reservation.time}
+                    {...getInputProps(fields.time, { type: "time" })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
+                  {fields.time.errors && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {fields.time.errors}
+                    </p>
+                  )}
                 </div>
               </div>
             </section>
-
-            {/* TODO: 変更前後の差分表示 */}
 
             {/* ボタン */}
             <div className="flex justify-end gap-3 border-t border-gray-200 pt-4">
@@ -139,14 +256,14 @@ export default function TenantReservationEditPage() {
               </Link>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
                 className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSubmitting ? "変更中..." : "予約を変更"}
+                {isPending ? "変更中..." : "予約を変更"}
               </button>
             </div>
           </div>
-        </Form>
+        </fetcher.Form>
       </div>
     </div>
   );

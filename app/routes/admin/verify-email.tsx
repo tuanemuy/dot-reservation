@@ -1,53 +1,62 @@
 import { Link } from "react-router";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import type { Route } from "./+types/verify-email";
 
-// TODO: loader でトークン検証を実装
-export async function loader({
-  request,
-}: {
-  request: Request;
-}): Promise<{ verified: boolean }> {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const _token = url.searchParams.get("token");
+  const token = url.searchParams.get("token");
 
-  // TODO: トークン検証処理
-  return { verified: true };
+  // TODO: トークンを検証してメール確認処理を実行
+  // 1. authProvider でトークン検証
+  // 2. メールアドレス確認済みに更新
+  let verified = false;
+  let errorMessage: string | null = null;
+
+  if (token) {
+    // TODO: 実際の検証ロジックを実装
+    verified = true;
+  } else {
+    errorMessage = "無効なリンクです。";
+  }
+
+  return { verified, errorMessage };
 }
 
-export default function AdminVerifyEmailPage() {
-  // TODO: loaderData から verified を受け取る
+export default function AdminVerifyEmailPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { verified, errorMessage } = loaderData;
+
+  if (!verified) {
+    return (
+      <AuthLayout title="メール確認エラー">
+        <div className="text-center">
+          <p className="mb-6 text-sm text-destructive">
+            {errorMessage ??
+              "メール確認に失敗しました。リンクの有効期限が切れている可能性があります。"}
+          </p>
+          <Link
+            to="/admin/register"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            新規登録ページへ戻る
+          </Link>
+        </div>
+      </AuthLayout>
+    );
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-6 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-          <svg
-            className="h-8 w-8 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          メールアドレスの確認が完了しました
-        </h1>
-        <p className="text-gray-600">
-          アカウントの登録が完了しました。ログインしてご利用ください。
-        </p>
-        <Link
-          to="/admin/login"
-          className="inline-block rounded-md bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          ログインページへ
+    <AuthLayout
+      title="メール確認完了"
+      description="メールアドレスの確認が完了しました。ログインしてご利用ください。"
+    >
+      <div className="text-center">
+        <Link to="/admin/login">
+          <Button>ログインページへ</Button>
         </Link>
       </div>
-    </div>
+    </AuthLayout>
   );
 }

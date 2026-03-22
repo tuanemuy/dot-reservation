@@ -25,11 +25,11 @@ const forgotPasswordSchema = z.object({
 const handlers = {
   forgotPassword: defineHandler({
     schema: forgotPasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワードリセットメール送信を実装
+    handler: async (_value, _args) => {
+      // authProvider 実装後:
       // 1. authProvider でリセットトークン生成
       // 2. メール送信
-      console.log("Forgot password:", value);
+      // セキュリティ上、メールが存在しない場合でも成功を返す
       return success();
     },
   }),

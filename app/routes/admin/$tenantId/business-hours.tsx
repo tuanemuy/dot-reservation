@@ -1,48 +1,160 @@
 import { useState } from "react";
-import { Form, useNavigation } from "react-router";
-
-// TODO: loader で営業設定を取得
-// TODO: action で営業設定更新を実装
+import { data } from "react-router";
+import { z } from "zod";
+import { addTemporaryHoliday } from "@/core/application/tenant/addTemporaryHoliday";
+import { getTenant } from "@/core/application/tenant/getTenant";
+import { removeTemporaryHoliday } from "@/core/application/tenant/removeTemporaryHoliday";
+import { updateBusinessHours } from "@/core/application/tenant/updateBusinessHours";
+import { container } from "@/core/di/server";
+import {
+  createCompositeAction,
+  defineHandler,
+  error,
+  success,
+  useCompositeAction,
+} from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/business-hours";
 
 const daysOfWeek = [
-  { key: "monday", label: "月曜日" },
-  { key: "tuesday", label: "火曜日" },
-  { key: "wednesday", label: "水曜日" },
-  { key: "thursday", label: "木曜日" },
-  { key: "friday", label: "金曜日" },
-  { key: "saturday", label: "土曜日" },
-  { key: "sunday", label: "日曜日" },
+  { key: 1, label: "月曜日" },
+  { key: 2, label: "火曜日" },
+  { key: 3, label: "水曜日" },
+  { key: 4, label: "木曜日" },
+  { key: 5, label: "金曜日" },
+  { key: 6, label: "土曜日" },
+  { key: 0, label: "日曜日" },
 ];
 
 type BusinessHour = {
-  day: string;
+  dayKey: number;
   isOpen: boolean;
   openTime: string;
   closeTime: string;
 };
 
-type SpecialClosedDay = {
-  id: string;
-  date: string;
-  reason: string;
-};
-
-export default function TenantBusinessHoursPage() {
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-
-  const [businessHours, setBusinessHours] = useState<BusinessHour[]>(
-    daysOfWeek.map((day) => ({
-      day: day.key,
-      isOpen: day.key !== "sunday",
-      openTime: "09:00",
-      closeTime: "18:00",
-    })),
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantResult = await handleUseCase(() =>
+    getTenant({
+      container,
+      headers: request.headers,
+      input: { tenantId: params.tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
   );
 
-  const [specialClosedDays, setSpecialClosedDays] = useState<
-    SpecialClosedDay[]
-  >([{ id: "1", date: "2024-12-31", reason: "年末休業" }]);
+  return { tenant: tenantResult };
+}
+
+const updateBusinessHoursSchema = z.object({
+  hours: z.string().min(1),
+});
+
+const addSpecialClosedDaySchema = z.object({
+  date: z.string().min(1, "日付を入力してください"),
+  reason: z.string().optional().default(""),
+});
+
+const removeSpecialClosedDaySchema = z.object({
+  date: z.string().min(1),
+});
+
+export const handlers = {
+  updateBusinessHours: defineHandler({
+    schema: updateBusinessHoursSchema,
+    handler: async (value, args) => {
+      const hours = JSON.parse(value.hours) as BusinessHour[];
+      const businessHours: Record<
+        number,
+        { open: string; close: string } | null
+      > = {};
+
+      for (const hour of hours) {
+        businessHours[hour.dayKey] = hour.isOpen
+          ? { open: hour.openTime, close: hour.closeTime }
+          : null;
+      }
+
+      return handleUseCase(() =>
+        updateBusinessHours({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: args.params.tenantId!,
+            businessHours,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+  addSpecialClosedDay: defineHandler({
+    schema: addSpecialClosedDaySchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        addTemporaryHoliday({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: args.params.tenantId!,
+            date: value.date,
+            reason: value.reason || null,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+  removeSpecialClosedDay: defineHandler({
+    schema: removeSpecialClosedDaySchema,
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        removeTemporaryHoliday({
+          container,
+          headers: args.request.headers,
+          input: {
+            tenantId: args.params.tenantId!,
+            date: value.date,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+};
+
+export async function action(args: Route.ActionArgs) {
+  return createCompositeAction(args, handlers);
+}
+
+export default function TenantBusinessHoursPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { tenant } = loaderData;
+  const fetcher = useCompositeAction<typeof handlers>();
+
+  const initialHours: BusinessHour[] = daysOfWeek.map((day) => {
+    const hours = tenant.businessHours[day.key];
+    return {
+      dayKey: day.key,
+      isOpen: hours !== null,
+      openTime: hours?.open ?? "09:00",
+      closeTime: hours?.close ?? "18:00",
+    };
+  });
+
+  const [businessHours, setBusinessHours] =
+    useState<BusinessHour[]>(initialHours);
 
   const [editingSection, setEditingSection] = useState<string | null>(null);
 
@@ -68,9 +180,14 @@ export default function TenantBusinessHoursPage() {
     }
   };
 
-  const removeSpecialClosedDay = (id: string) => {
-    setSpecialClosedDays((prev) => prev.filter((d) => d.id !== id));
-  };
+  fetcher.register("updateBusinessHours", {
+    onSuccess: () => {
+      setEditingSection(null);
+    },
+  });
+
+  const isPendingHours = fetcher.isPending("updateBusinessHours");
+  const isPendingAddClosed = fetcher.isPending("addSpecialClosedDay");
 
   return (
     <div className="p-8">
@@ -83,7 +200,7 @@ export default function TenantBusinessHoursPage() {
             <h2 className="text-lg font-semibold text-gray-900">営業時間</h2>
             {editingSection === "hours" ? (
               <div className="flex gap-2">
-                <Form method="post">
+                <fetcher.Form method="post">
                   <input
                     type="hidden"
                     name="intent"
@@ -96,12 +213,12 @@ export default function TenantBusinessHoursPage() {
                   />
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isPendingHours}
                     className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {isSubmitting ? "保存中..." : "保存"}
+                    {isPendingHours ? "保存中..." : "保存"}
                   </button>
-                </Form>
+                </fetcher.Form>
                 <button
                   type="button"
                   onClick={() => setEditingSection(null)}
@@ -124,9 +241,10 @@ export default function TenantBusinessHoursPage() {
           <div className="space-y-3">
             {businessHours.map((hour, index) => {
               const dayLabel =
-                daysOfWeek.find((d) => d.key === hour.day)?.label ?? hour.day;
+                daysOfWeek.find((d) => d.key === hour.dayKey)?.label ??
+                String(hour.dayKey);
               return (
-                <div key={hour.day} className="flex items-center gap-4">
+                <div key={hour.dayKey} className="flex items-center gap-4">
                   <div className="w-20 text-sm font-medium text-gray-700">
                     {dayLabel}
                   </div>
@@ -187,7 +305,7 @@ export default function TenantBusinessHoursPage() {
           </div>
 
           {/* 追加フォーム */}
-          <Form method="post" className="mb-4 flex items-end gap-4">
+          <fetcher.Form method="post" className="mb-4 flex items-end gap-4">
             <input type="hidden" name="intent" value="addSpecialClosedDay" />
             <div>
               <label
@@ -221,44 +339,55 @@ export default function TenantBusinessHoursPage() {
             </div>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isPendingAddClosed}
               className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
               追加
             </button>
-          </Form>
+          </fetcher.Form>
 
           {/* 一覧 */}
-          {specialClosedDays.length === 0 ? (
+          {tenant.temporaryHolidays.length === 0 ? (
             <p className="text-sm text-gray-500">
               臨時休業日は設定されていません
             </p>
           ) : (
             <div className="space-y-2">
-              {specialClosedDays.map((day) => (
-                <div
-                  key={day.id}
-                  className="flex items-center justify-between rounded-md bg-gray-50 px-4 py-3"
-                >
-                  <div>
-                    <span className="text-sm font-medium text-gray-900">
-                      {day.date}
-                    </span>
-                    {day.reason && (
-                      <span className="ml-3 text-sm text-gray-500">
-                        {day.reason}
-                      </span>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeSpecialClosedDay(day.id)}
-                    className="text-sm text-red-600 hover:text-red-500"
+              {tenant.temporaryHolidays.map((day) => {
+                const dateStr = new Date(day.date).toLocaleDateString("ja-JP");
+                const isoDate = day.date.split("T")[0];
+                return (
+                  <div
+                    key={day.date}
+                    className="flex items-center justify-between rounded-md bg-gray-50 px-4 py-3"
                   >
-                    削除
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <span className="text-sm font-medium text-gray-900">
+                        {dateStr}
+                      </span>
+                      {day.reason && (
+                        <span className="ml-3 text-sm text-gray-500">
+                          {day.reason}
+                        </span>
+                      )}
+                    </div>
+                    <fetcher.Form method="post" className="inline">
+                      <input
+                        type="hidden"
+                        name="intent"
+                        value="removeSpecialClosedDay"
+                      />
+                      <input type="hidden" name="date" value={isoDate} />
+                      <button
+                        type="submit"
+                        className="text-sm text-red-600 hover:text-red-500"
+                      >
+                        削除
+                      </button>
+                    </fetcher.Form>
+                  </div>
+                );
+              })}
             </div>
           )}
         </section>

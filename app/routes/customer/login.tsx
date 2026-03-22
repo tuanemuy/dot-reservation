@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/Input";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
@@ -25,17 +26,15 @@ const loginSchema = z.object({
 const handlers = {
   login: defineHandler({
     schema: loginSchema,
-    handler: async (value, _args) => {
-      // TODO: 認証サービスを使ってログイン処理を実装
+    handler: async (_value, _args) => {
+      // authProvider 実装後:
       // 1. authProvider でメール・パスワード認証
       // 2. セッション作成
-      // 3. リダイレクト
-      console.log("Login:", value);
-
-      // TODO: 認証失敗時のエラーハンドリング
-      // return error({ "": ["メールアドレスまたはパスワードが正しくありません"] });
-
-      return success();
+      // 3. redirect("/mypage/reservations") でマイページへリダイレクト
+      // 認証失敗時: return error({ "": ["メールアドレスまたはパスワードが正しくありません"] });
+      return error({
+        "": ["認証機能は現在準備中です"],
+      });
     },
   }),
 };
@@ -60,11 +59,7 @@ export default function CustomerLoginPage(_props: Route.ComponentProps) {
 
   fetcher.register("login", {
     onSuccess: () => {
-      // TODO: ログイン成功後のリダイレクト処理
-      console.log("Login successful");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Login failed:", err);
+      // authProvider 実装後: navigate("/mypage/reservations") でマイページへ遷移
     },
   });
 
