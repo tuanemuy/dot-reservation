@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リラクゼーションサロン Calm - dot.reservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       Reset & Base
+       ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 400;
+      color: #3D2C1E;
+      background-color: #FAF5EB;
+      line-height: 1.8;
+    }
+
+    /* ========================================
+       Header / Navigation
+       ======================================== */
+    .header {
+      background-color: #FDF8F0;
+      border-bottom: 1px solid #E8DFD2;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #3D2C1E;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .logo .dot {
+      color: #C4704B;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3D2C1E;
+      transition: background-color 0.2s ease;
+    }
+
+    .header-icon:hover {
+      background-color: rgba(61, 44, 30, 0.06);
+    }
+
+    .header-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: #3D2C1E;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    /* ========================================
+       Main Content Wrapper
+       ======================================== */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 80px;
+    }
+
+    /* ========================================
+       Breadcrumb
+       ======================================== */
+    .breadcrumb {
+      padding: 16px 0;
+      font-size: 0.8125rem;
+      color: #8C7A6B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breadcrumb a {
+      color: #8C7A6B;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: #C4704B;
+    }
+
+    .breadcrumb .separator {
+      font-size: 0.6875rem;
+      color: #BFB3A4;
+    }
+
+    .breadcrumb .current {
+      color: #3D2C1E;
+    }
+
+    /* ========================================
+       Hero Section
+       ======================================== */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      margin-top: 8px;
+      margin-bottom: 48px;
+      align-items: start;
+    }
+
+    /* Image Carousel Placeholder */
+    .hero-gallery {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .hero-gallery-main {
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(145deg, #C4704B 0%, #D4845E 35%, #C9A96E 70%, #A3B18A 100%);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+    }
+
+    .hero-gallery-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(253, 248, 240, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 30%, rgba(201, 169, 110, 0.2) 0%, transparent 50%);
+    }
+
+    .gallery-indicator {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 8px;
+    }
+
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .gallery-dot.active {
+      background-color: #fff;
+    }
+
+    .hero-gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .hero-thumb {
+      height: 80px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .hero-thumb:nth-child(1) {
+      background: linear-gradient(135deg, #C4704B, #D4845E);
+    }
+
+    .hero-thumb:nth-child(2) {
+      background: linear-gradient(135deg, #A3B18A, #7C8C6E);
+    }
+
+    .hero-thumb:nth-child(3) {
+      background: linear-gradient(135deg, #C9A96E, #D4845E);
+    }
+
+    .hero-thumb:nth-child(4) {
+      background: linear-gradient(135deg, #7C8C6E, #A3B18A);
+    }
+
+    .hero-thumb:hover {
+      opacity: 0.8;
+    }
+
+    /* Shop Info Side Panel */
+    .hero-info {
+      background-color: #FDF8F0;
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 24px rgba(61, 44, 30, 0.06), 0 1px 4px rgba(61, 44, 30, 0.04);
+      border: 1px solid #E8DFD2;
+    }
+
+    .category-badge {
+      display: inline-block;
+      background-color: rgba(163, 177, 138, 0.15);
+      color: #7C8C6E;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+
+    .shop-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #3D2C1E;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .shop-name-sub {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      color: #8C7A6B;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    .shop-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .shop-meta-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: #5C4A3A;
+    }
+
+    .shop-meta-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      color: #C4704B;
+    }
+
+    .shop-meta-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: #C4704B;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .shop-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #E8DFD2;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .rating-star {
+      width: 18px;
+      height: 18px;
+      color: #C9A96E;
+    }
+
+    .rating-star svg {
+      width: 18px;
+      height: 18px;
+      fill: #C9A96E;
+    }
+
+    .rating-value {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: #3D2C1E;
+    }
+
+    .rating-count {
+      font-size: 0.8125rem;
+      color: #8C7A6B;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #C4704B 0%, #D4845E 100%);
+      color: #FDF8F0;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 16px rgba(196, 112, 75, 0.25);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(196, 112, 75, 0.35);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .cta-sub {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: #8C7A6B;
+    }
+
+    /* ========================================
+       Tabs Section
+       ======================================== */
+    .tabs-section {
+      margin-bottom: 40px;
+    }
+
+    .tabs-nav {
+      display: flex;
+      border-bottom: 2px solid #E8DFD2;
+      gap: 0;
+    }
+
+    .tab-item {
+      padding: 14px 32px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: #8C7A6B;
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .tab-item:hover {
+      color: #5C4A3A;
+    }
+
+    .tab-item.active {
+      color: #C4704B;
+      font-weight: 600;
+    }
+
+    .tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: #C4704B;
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* ========================================
+       Menu Cards
+       ======================================== */
+    .menu-section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #3D2C1E;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .menu-section-desc {
+      font-size: 0.875rem;
+      color: #8C7A6B;
+      margin-bottom: 28px;
+    }
+
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .menu-card {
+      background-color: #FDF8F0;
+      border: 1px solid #E8DFD2;
+      border-radius: 16px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .menu-card:hover {
+      box-shadow: 0 6px 28px rgba(61, 44, 30, 0.07);
+      border-color: #D4C5B5;
+    }
+
+    .menu-card-body {
+      min-width: 0;
+    }
+
+    .menu-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .menu-card-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #3D2C1E;
+      letter-spacing: 0.02em;
+    }
+
+    .menu-card-duration {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8125rem;
+      color: #7C8C6E;
+      background-color: rgba(163, 177, 138, 0.12);
+      padding: 3px 12px;
+      border-radius: 16px;
+      font-weight: 500;
+    }
+
+    .menu-card-duration svg {
+      width: 14px;
+      height: 14px;
+      stroke: #7C8C6E;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .menu-card-desc {
+      font-size: 0.875rem;
+      color: #6B5B4E;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .menu-card-action {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .menu-card-price {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #C4704B;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+
+    .menu-card-price .yen {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      margin-right: 2px;
+    }
+
+    .menu-card-price .tax {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #8C7A6B;
+      margin-left: 4px;
+    }
+
+    .menu-book-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      background-color: transparent;
+      color: #C4704B;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: 2px solid #C4704B;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .menu-book-btn:hover {
+      background-color: #C4704B;
+      color: #FDF8F0;
+      transform: translateY(-1px);
+    }
+
+    .menu-book-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* ========================================
+       Popular Badge
+       ======================================== */
+    .popular-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #C9A96E 0%, #D4B87A 100%);
+      color: #FDF8F0;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .popular-badge svg {
+      width: 12px;
+      height: 12px;
+      fill: #FDF8F0;
+    }
+
+    /* ========================================
+       Sidebar Staff Peek
+       ======================================== */
+    .content-area {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .sidebar-card {
+      background-color: #FDF8F0;
+      border: 1px solid #E8DFD2;
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+
+    .sidebar-card-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #3D2C1E;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .staff-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .staff-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .staff-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FDF8F0;
+    }
+
+    .staff-avatar:nth-child(1) {
+      background: linear-gradient(135deg, #C4704B, #D4845E);
+    }
+
+    .staff-item:nth-child(1) .staff-avatar {
+      background: linear-gradient(135deg, #C4704B, #D4845E);
+    }
+
+    .staff-item:nth-child(2) .staff-avatar {
+      background: linear-gradient(135deg, #7C8C6E, #A3B18A);
+    }
+
+    .staff-item:nth-child(3) .staff-avatar {
+      background: linear-gradient(135deg, #C9A96E, #D4B87A);
+    }
+
+    .staff-info {
+      min-width: 0;
+    }
+
+    .staff-name {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: #3D2C1E;
+      line-height: 1.4;
+    }
+
+    .staff-role {
+      font-size: 0.75rem;
+      color: #8C7A6B;
+    }
+
+    /* Business Hours Sidebar */
+    .hours-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      padding: 6px 0;
+    }
+
+    .hours-day {
+      color: #5C4A3A;
+      font-weight: 500;
+    }
+
+    .hours-time {
+      color: #8C7A6B;
+    }
+
+    .hours-row.today {
+      background-color: rgba(196, 112, 75, 0.06);
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin: 0 -10px;
+    }
+
+    .hours-row.today .hours-day {
+      color: #C4704B;
+      font-weight: 600;
+    }
+
+    .hours-row.today .hours-time {
+      color: #C4704B;
+    }
+
+    /* ========================================
+       Decorative Divider
+       ======================================== */
+    .organic-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 12px 0 28px;
+    }
+
+    .organic-divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #E8DFD2, transparent);
+    }
+
+    .organic-divider-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #C9A96E;
+      opacity: 0.5;
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    .footer {
+      background-color: #3D2C1E;
+      color: #C9B99A;
+      padding: 48px 40px;
+      margin-top: 80px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #FDF8F0;
+    }
+
+    .footer-logo .dot {
+      color: #D4845E;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: #C9B99A;
+      text-decoration: none;
+      font-size: 0.8125rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #FDF8F0;
+    }
+
+    .footer-copyright {
+      font-size: 0.75rem;
+      color: #8C7A6B;
+      margin-top: 28px;
+      text-align: center;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== Header ======== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo"><span class="dot">dot.</span>reservation</a>
+      <div class="header-actions">
+        <button class="header-icon" aria-label="検索">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        </button>
+        <button class="header-icon" aria-label="ユーザーメニュー">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======== Main ======== -->
+  <main class="main">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="#">トップ</a>
+      <span class="separator">›</span>
+      <a href="#">東京都</a>
+      <span class="separator">›</span>
+      <a href="#">渋谷区</a>
+      <span class="separator">›</span>
+      <span class="current">リラクゼーションサロン Calm</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-gallery">
+        <div class="hero-gallery-main">
+          <div class="gallery-indicator">
+            <span class="gallery-dot active"></span>
+            <span class="gallery-dot"></span>
+            <span class="gallery-dot"></span>
+            <span class="gallery-dot"></span>
+          </div>
+        </div>
+        <div class="hero-gallery-thumbs">
+          <div class="hero-thumb"></div>
+          <div class="hero-thumb"></div>
+          <div class="hero-thumb"></div>
+          <div class="hero-thumb"></div>
+        </div>
+      </div>
+
+      <div class="hero-info">
+        <span class="category-badge">整体院</span>
+        <h1 class="shop-name">リラクゼーションサロン Calm</h1>
+        <p class="shop-name-sub">Relaxation Salon Calm</p>
+
+        <div class="shop-rating">
+          <div class="rating-stars">
+            <span class="rating-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span>
+            <span class="rating-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span>
+            <span class="rating-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span>
+            <span class="rating-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span>
+            <span class="rating-star" style="opacity: 0.3;"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span>
+          </div>
+          <span class="rating-value">4.2</span>
+          <span class="rating-count">(128件)</span>
+        </div>
+
+        <div class="shop-meta">
+          <div class="shop-meta-item">
+            <span class="shop-meta-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span>東京都渋谷区神宮前3-1-25</span>
+          </div>
+          <div class="shop-meta-item">
+            <span class="shop-meta-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <span>03-1234-5678</span>
+          </div>
+          <div class="shop-meta-item">
+            <span class="shop-meta-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <span>10:00 - 21:00（最終受付 20:00）</span>
+          </div>
+        </div>
+
+        <a href="#" class="cta-button">予約する</a>
+        <p class="cta-sub">空き状況をカレンダーで確認できます</p>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <section class="tabs-section">
+      <nav class="tabs-nav" aria-label="店舗情報タブ">
+        <button class="tab-item active">メニュー</button>
+        <button class="tab-item">スタッフ</button>
+        <button class="tab-item">アクセス</button>
+        <button class="tab-item">店舗情報</button>
+      </nav>
+    </section>
+
+    <!-- Content Area: Menu + Sidebar -->
+    <div class="content-area">
+
+      <!-- Menu List -->
+      <section>
+        <h2 class="menu-section-title">施術メニュー</h2>
+        <p class="menu-section-desc">お客様のお悩みに合わせて、最適なメニューをお選びください。</p>
+
+        <div class="organic-divider">
+          <span class="organic-divider-line"></span>
+          <span class="organic-divider-dot"></span>
+          <span class="organic-divider-line"></span>
+        </div>
+
+        <div class="menu-list">
+
+          <!-- Menu 1 -->
+          <article class="menu-card">
+            <div class="menu-card-body">
+              <div class="menu-card-header">
+                <h3 class="menu-card-name">全身もみほぐし</h3>
+                <span class="popular-badge">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+                  人気
+                </span>
+                <span class="menu-card-duration">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  60分
+                </span>
+              </div>
+              <p class="menu-card-desc">全身の筋肉をほぐし、血行を促進します。日頃の疲れをしっかりと癒す定番コースです。</p>
+            </div>
+            <div class="menu-card-action">
+              <div class="menu-card-price"><span class="yen">¥</span>6,000<span class="tax">(税込)</span></div>
+              <a href="#" class="menu-book-btn">
+                このメニューで予約する
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Menu 2 -->
+          <article class="menu-card">
+            <div class="menu-card-body">
+              <div class="menu-card-header">
+                <h3 class="menu-card-name">ヘッドスパ</h3>
+                <span class="menu-card-duration">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  30分
+                </span>
+              </div>
+              <p class="menu-card-desc">頭皮のコリをほぐし、リフレッシュ。デスクワークや目の疲れが気になる方におすすめです。</p>
+            </div>
+            <div class="menu-card-action">
+              <div class="menu-card-price"><span class="yen">¥</span>3,500<span class="tax">(税込)</span></div>
+              <a href="#" class="menu-book-btn">
+                このメニューで予約する
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Menu 3 -->
+          <article class="menu-card">
+            <div class="menu-card-body">
+              <div class="menu-card-header">
+                <h3 class="menu-card-name">アロマオイルトリートメント</h3>
+                <span class="popular-badge">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+                  人気
+                </span>
+                <span class="menu-card-duration">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  90分
+                </span>
+              </div>
+              <p class="menu-card-desc">厳選されたアロマオイルで全身をトリートメント。心身ともに深いリラクゼーションをお届けします。</p>
+            </div>
+            <div class="menu-card-action">
+              <div class="menu-card-price"><span class="yen">¥</span>9,800<span class="tax">(税込)</span></div>
+              <a href="#" class="menu-book-btn">
+                このメニューで予約する
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Menu 4 -->
+          <article class="menu-card">
+            <div class="menu-card-body">
+              <div class="menu-card-header">
+                <h3 class="menu-card-name">足つぼリフレクソロジー</h3>
+                <span class="menu-card-duration">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  45分
+                </span>
+              </div>
+              <p class="menu-card-desc">足裏のツボを刺激し、全身の疲れを癒します。立ち仕事やむくみが気になる方に最適です。</p>
+            </div>
+            <div class="menu-card-action">
+              <div class="menu-card-price"><span class="yen">¥</span>4,500<span class="tax">(税込)</span></div>
+              <a href="#" class="menu-book-btn">
+                このメニューで予約する
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Menu 5 -->
+          <article class="menu-card">
+            <div class="menu-card-body">
+              <div class="menu-card-header">
+                <h3 class="menu-card-name">骨盤矯正コース</h3>
+                <span class="menu-card-duration">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  50分
+                </span>
+              </div>
+              <p class="menu-card-desc">骨盤の歪みを整え、姿勢改善をサポート。腰痛や肩こりの根本的な改善を目指します。</p>
+            </div>
+            <div class="menu-card-action">
+              <div class="menu-card-price"><span class="yen">¥</span>5,500<span class="tax">(税込)</span></div>
+              <a href="#" class="menu-book-btn">
+                このメニューで予約する
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <!-- Staff Card -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-card-title">在籍スタッフ</h3>
+          <div class="staff-list">
+            <div class="staff-item">
+              <div class="staff-avatar">田</div>
+              <div class="staff-info">
+                <div class="staff-name">田中 美咲</div>
+                <div class="staff-role">チーフセラピスト</div>
+              </div>
+            </div>
+            <div class="staff-item">
+              <div class="staff-avatar">佐</div>
+              <div class="staff-info">
+                <div class="staff-name">佐藤 健一</div>
+                <div class="staff-role">整体師</div>
+              </div>
+            </div>
+            <div class="staff-item">
+              <div class="staff-avatar">山</div>
+              <div class="staff-info">
+                <div class="staff-name">山本 あおい</div>
+                <div class="staff-role">アロマセラピスト</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business Hours Card -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-card-title">営業時間</h3>
+          <div class="hours-list">
+            <div class="hours-row today">
+              <span class="hours-day">日曜日（本日）</span>
+              <span class="hours-time">10:00 - 19:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">月曜日</span>
+              <span class="hours-time">10:00 - 21:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">火曜日</span>
+              <span class="hours-time">10:00 - 21:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">水曜日</span>
+              <span class="hours-time">定休日</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">木曜日</span>
+              <span class="hours-time">10:00 - 21:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">金曜日</span>
+              <span class="hours-time">10:00 - 21:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-day">土曜日</span>
+              <span class="hours-time">10:00 - 20:00</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- ======== Footer ======== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="dot">dot.</span>reservation</div>
+      <nav class="footer-links">
+        <a href="#">ヘルプ</a>
+        <a href="#">利用規約</a>
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">お問い合わせ</a>
+      </nav>
+    </div>
+    <p class="footer-copyright">&copy; 2026 dot.reservation All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

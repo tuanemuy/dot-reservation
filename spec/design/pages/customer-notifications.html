@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>通知 - マイページ - dot.reservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Primary (Sage Green) */
+      --color-primary-lighter: oklch(0.96 0.02 155);
+      --color-primary-light: oklch(0.78 0.06 155);
+      --color-primary: oklch(0.52 0.08 155);
+      --color-primary-dark: oklch(0.45 0.07 155);
+      --color-primary-darker: oklch(0.36 0.06 155);
+
+      /* Secondary (Rose) */
+      --color-secondary-lighter: oklch(0.96 0.02 350);
+      --color-secondary-light: oklch(0.84 0.06 350);
+      --color-secondary: oklch(0.65 0.12 350);
+      --color-secondary-dark: oklch(0.52 0.12 350);
+      --color-secondary-darker: oklch(0.40 0.12 350);
+
+      /* Accent (Warm Gold) */
+      --color-accent-lighter: oklch(0.97 0.02 75);
+      --color-accent-light: oklch(0.84 0.08 75);
+      --color-accent: oklch(0.67 0.11 75);
+      --color-accent-dark: oklch(0.53 0.10 75);
+      --color-accent-darker: oklch(0.43 0.09 75);
+
+      /* Neutral */
+      --color-neutral-50: oklch(0.99 0.002 80);
+      --color-neutral-100: oklch(0.97 0.004 80);
+      --color-neutral-200: oklch(0.94 0.005 80);
+      --color-neutral-300: oklch(0.88 0.006 80);
+      --color-neutral-400: oklch(0.78 0.006 80);
+      --color-neutral-500: oklch(0.65 0.006 80);
+      --color-neutral-600: oklch(0.55 0.006 80);
+      --color-neutral-700: oklch(0.45 0.006 80);
+      --color-neutral-800: oklch(0.35 0.006 80);
+      --color-neutral-900: oklch(0.25 0.006 80);
+
+      /* Semantic */
+      --color-success: oklch(0.55 0.12 145);
+      --color-warning: oklch(0.72 0.14 70);
+      --color-error: oklch(0.55 0.16 25);
+      --color-info: oklch(0.55 0.10 240);
+
+      /* Background */
+      --color-bg-page: #FFFFFF;
+      --color-bg-card: #FFFFFF;
+      --color-bg-section: var(--color-neutral-100);
+      --color-bg-elevated: #FFFFFF;
+
+      /* Typography */
+      --font-heading: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+      --font-body: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+      --text-xs: clamp(0.6875rem, 0.65rem + 0.1vw, 0.75rem);
+      --text-sm: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);
+      --text-base: clamp(0.8125rem, 0.75rem + 0.2vw, 0.9375rem);
+      --text-lg: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
+      --text-xl: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+      --text-2xl: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+      --text-3xl: clamp(1.75rem, 1.5rem + 0.7vw, 2.125rem);
+      --weight-light: 300;
+      --weight-normal: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --leading-tight: 1.3;
+      --leading-normal: 1.7;
+      --leading-relaxed: 1.9;
+      --tracking-tight: -0.02em;
+      --tracking-normal: 0;
+      --tracking-wide: 0.04em;
+
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 2.5rem;
+      --space-3xl: 3.5rem;
+      --space-section: 5rem;
+
+      /* Border Radius */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+
+      /* Shadow */
+      --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.04);
+      --shadow-md: 0 2px 8px oklch(0 0 0 / 0.06);
+      --shadow-lg: 0 4px 16px oklch(0 0 0 / 0.08);
+
+      /* Transition */
+      --transition-fast: 0.1s ease;
+      --transition-default: 0.15s ease;
+      --transition-slow: 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-neutral-700);
+      background-color: var(--color-bg-page);
+      line-height: var(--leading-normal);
+      font-weight: var(--weight-normal);
+      font-size: var(--text-base);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-bg-page);
+      border-bottom: 1px solid var(--color-neutral-300);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 var(--space-2xl);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--color-neutral-900);
+      text-decoration: none;
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .logo span { color: var(--color-primary); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .header-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-neutral-500);
+      transition: background var(--transition-default), color var(--transition-default);
+      position: relative;
+    }
+
+    .header-icon-btn:hover {
+      background: var(--color-neutral-200);
+      color: var(--color-neutral-800);
+    }
+
+    .header-icon-btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .header-icon-btn svg { width: 20px; height: 20px; }
+
+    .header-icon-btn.has-notification::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--color-accent);
+      border-radius: var(--radius-full);
+      border: 2px solid var(--color-bg-page);
+    }
+
+    /* ===== Breadcrumb ===== */
+    .breadcrumb {
+      padding: var(--space-md) 0;
+      font-size: var(--text-sm);
+      color: var(--color-neutral-400);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .breadcrumb a {
+      color: var(--color-neutral-500);
+      text-decoration: none;
+      transition: color var(--transition-default);
+    }
+
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .breadcrumb-sep { color: var(--color-neutral-300); }
+    .breadcrumb-current { color: var(--color-neutral-700); }
+
+    /* ===== Main Layout ===== */
+    .main-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 var(--space-2xl);
+    }
+
+    .mypage-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-2xl);
+      padding-bottom: var(--space-section);
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar { padding-top: var(--space-sm); }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      font-size: var(--text-base);
+      font-weight: var(--weight-normal);
+      color: var(--color-neutral-600);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: background var(--transition-default), color var(--transition-default);
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--color-neutral-200);
+      color: var(--color-neutral-800);
+    }
+
+    .sidebar-nav-item:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .sidebar-nav-item.active {
+      background: var(--color-primary-lighter);
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    .sidebar-nav-item svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ===== Content Area ===== */
+    .content-area { min-width: 0; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+    }
+
+    .page-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-semibold);
+      color: var(--color-neutral-900);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+    }
+
+    .btn-small-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      height: 32px;
+      padding: 0 var(--space-md);
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-neutral-300);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--color-neutral-600);
+      cursor: pointer;
+      transition: background var(--transition-default), border-color var(--transition-default), color var(--transition-default);
+      font-family: inherit;
+    }
+
+    .btn-small-outline:hover {
+      background: var(--color-neutral-100);
+      border-color: var(--color-neutral-400);
+      color: var(--color-neutral-800);
+    }
+
+    .btn-small-outline:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .btn-small-outline svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ===== Filter Tabs ===== */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--color-neutral-300);
+      margin-bottom: var(--space-lg);
+    }
+
+    .tab {
+      padding: var(--space-sm) var(--space-lg);
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--color-neutral-400);
+      text-decoration: none;
+      position: relative;
+      transition: color var(--transition-default);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    .tab:hover { color: var(--color-neutral-700); }
+
+    .tab:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .tab.active { color: var(--color-neutral-900); }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--color-primary);
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* ===== Notification List ===== */
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notification-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--color-neutral-200);
+      transition: background var(--transition-default);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .notification-item:first-child {
+      border-top: 1px solid var(--color-neutral-200);
+    }
+
+    .notification-item:hover {
+      background: var(--color-neutral-50);
+    }
+
+    .notification-item.unread {
+      background: var(--color-primary-lighter);
+    }
+
+    .notification-item.unread:hover {
+      background: oklch(0.96 0.02 155 / 0.7);
+    }
+
+    .notification-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .notification-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .notification-icon.reservation {
+      background: oklch(0.55 0.12 145 / 0.1);
+      color: var(--color-success);
+    }
+
+    .notification-icon.change {
+      background: oklch(0.72 0.14 70 / 0.1);
+      color: var(--color-warning);
+    }
+
+    .notification-icon.cancel {
+      background: oklch(0.55 0.16 25 / 0.1);
+      color: var(--color-error);
+    }
+
+    .notification-icon.info {
+      background: oklch(0.55 0.10 240 / 0.1);
+      color: var(--color-info);
+    }
+
+    .notification-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notification-message {
+      font-size: var(--text-base);
+      color: var(--color-neutral-700);
+      line-height: var(--leading-normal);
+    }
+
+    .notification-item.unread .notification-message {
+      font-weight: var(--weight-medium);
+      color: var(--color-neutral-800);
+    }
+
+    .notification-time {
+      font-size: var(--text-xs);
+      color: var(--color-neutral-500);
+      margin-top: var(--space-xs);
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      flex-shrink: 0;
+      margin-top: var(--space-sm);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      border-top: 1px solid var(--color-neutral-300);
+      margin-top: var(--space-2xl);
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-2xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--color-neutral-400);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--color-primary); }
+
+    .footer-copy {
+      font-size: var(--text-xs);
+      color: var(--color-neutral-400);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo"><span>dot.</span>reservation</a>
+      <div class="header-actions">
+        <button class="header-icon-btn" aria-label="検索">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+          </svg>
+        </button>
+        <button class="header-icon-btn has-notification" aria-label="マイページ">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="main-container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="#">マイページ</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">通知</span>
+    </nav>
+
+    <!-- My Page Layout -->
+    <div class="mypage-layout">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <a href="#" class="sidebar-nav-item">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+            </svg>
+            予約一覧
+          </a>
+          <a href="#" class="sidebar-nav-item active">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+            </svg>
+            通知
+          </a>
+          <a href="#" class="sidebar-nav-item">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+            プロフィール設定
+          </a>
+          <a href="#" class="sidebar-nav-item">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            通知設定
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <main class="content-area">
+        <div class="page-header">
+          <h1 class="page-title">通知</h1>
+          <button class="btn-small-outline">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+            すべて既読にする
+          </button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="tabs">
+          <button class="tab active">すべて</button>
+          <button class="tab">予約関連</button>
+          <button class="tab">お知らせ</button>
+        </div>
+
+        <!-- Notification List -->
+        <div class="notification-list">
+
+          <!-- Unread: reservation confirmed -->
+          <a href="#" class="notification-item unread">
+            <div class="notification-icon reservation">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">リラクゼーションサロン Calm での予約が確定しました。4月5日（土）14:00 からのご予約です。</div>
+              <div class="notification-time">2時間前</div>
+            </div>
+            <div class="notification-dot"></div>
+          </a>
+
+          <!-- Unread: reservation change -->
+          <a href="#" class="notification-item unread">
+            <div class="notification-icon change">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">ヘアサロン Bloom から予約変更のリクエストがあります。内容をご確認ください。</div>
+              <div class="notification-time">5時間前</div>
+            </div>
+            <div class="notification-dot"></div>
+          </a>
+
+          <!-- Read: info -->
+          <a href="#" class="notification-item">
+            <div class="notification-icon info">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">お気に入りの店舗「ネイルサロン Petal」が新しいメニューを追加しました。</div>
+              <div class="notification-time">昨日</div>
+            </div>
+          </a>
+
+          <!-- Read: reservation confirmed -->
+          <a href="#" class="notification-item">
+            <div class="notification-icon reservation">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">ネイルサロン Petal での予約が確定しました。4月20日（日）16:30 からのご予約です。</div>
+              <div class="notification-time">3日前</div>
+            </div>
+          </a>
+
+          <!-- Read: cancellation -->
+          <a href="#" class="notification-item">
+            <div class="notification-icon cancel">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">エステティックサロン Lueur での3月15日の予約がキャンセルされました。</div>
+              <div class="notification-time">1週間前</div>
+            </div>
+          </a>
+
+          <!-- Read: info -->
+          <a href="#" class="notification-item">
+            <div class="notification-icon info">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+              </svg>
+            </div>
+            <div class="notification-body">
+              <div class="notification-message">dot.reservation からのお知らせ：利用規約が更新されました。詳細はこちらをご確認ください。</div>
+              <div class="notification-time">2週間前</div>
+            </div>
+          </a>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#" class="footer-logo"><span>dot.</span>reservation</a>
+      <p class="footer-copy">&copy; 2026 dot.reservation All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

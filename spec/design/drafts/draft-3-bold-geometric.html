@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draft 3 - Bold Geometric | リラクゼーションサロン Calm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       RESET & BASE
+       ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #0F0F1A;
+      background-color: #F5F5F7;
+      line-height: 1.6;
+    }
+
+    /* ========================================
+       COLOR VARIABLES (via custom properties)
+       ======================================== */
+    :root {
+      --dark-primary: #0F0F1A;
+      --dark-secondary: #1A1A2E;
+      --dark-tertiary: #252542;
+      --accent: #6366F1;
+      --accent-hover: #4F46E5;
+      --accent-light: rgba(99, 102, 241, 0.12);
+      --coral: #F43F5E;
+      --white: #FFFFFF;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --text-on-dark: rgba(255, 255, 255, 0.92);
+      --text-on-dark-muted: rgba(255, 255, 255, 0.55);
+    }
+
+    /* ========================================
+       HEADER / NAVIGATION
+       ======================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--dark-primary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-on-dark-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .header-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-on-dark);
+    }
+
+    .header-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ========================================
+       HERO SECTION
+       ======================================== */
+    .hero {
+      margin-top: 64px;
+      background: var(--dark-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(244, 63, 94, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-image-area {
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, var(--dark-secondary) 0%, var(--dark-tertiary) 50%, rgba(99, 102, 241, 0.2) 100%);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      margin: 48px 0;
+    }
+
+    .hero-image-area::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255, 255, 255, 0.015) 40px,
+        rgba(255, 255, 255, 0.015) 80px
+      );
+    }
+
+    .hero-image-area::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--coral));
+    }
+
+    .hero-image-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-on-dark-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .carousel-dot {
+      width: 32px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 0;
+    }
+
+    .carousel-dot.active {
+      background: var(--accent);
+    }
+
+    .hero-content {
+      padding: 60px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 2px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 0;
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-on-dark-muted);
+      margin-bottom: 28px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-on-dark-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .hero-meta-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--gray-400);
+      flex-shrink: 0;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-cta::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: skewX(-12deg);
+      pointer-events: none;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .hero-cta svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ========================================
+       GEOMETRIC ACCENT BAR
+       ======================================== */
+    .accent-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--coral) 40%, var(--accent) 100%);
+    }
+
+    /* ========================================
+       TAB SECTION
+       ======================================== */
+    .tab-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 64px;
+      z-index: 50;
+    }
+
+    .tab-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      gap: 0;
+    }
+
+    .tab-item {
+      padding: 18px 32px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--gray-400);
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    .tab-item:hover {
+      color: var(--gray-600);
+    }
+
+    .tab-item.active {
+      color: var(--dark-primary);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    /* ========================================
+       CONTENT AREA
+       ======================================== */
+    .content-area {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--dark-primary);
+      letter-spacing: -0.03em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 0;
+    }
+
+    .menu-count {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      letter-spacing: 0.05em;
+    }
+
+    /* ========================================
+       MENU CARDS
+       ======================================== */
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .menu-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .menu-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08);
+    }
+
+    .menu-card:hover::before {
+      opacity: 1;
+    }
+
+    .menu-card-body {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .menu-card-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .menu-name {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--dark-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .menu-duration {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: var(--dark-primary);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .menu-description {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .menu-card-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 36px;
+      border-left: 1px solid var(--gray-200);
+      gap: 16px;
+      min-width: 220px;
+    }
+
+    .menu-price {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--dark-primary);
+      letter-spacing: -0.03em;
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+
+    .menu-price-symbol {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-400);
+    }
+
+    .menu-price-tax {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--gray-400);
+      margin-left: 4px;
+    }
+
+    .menu-book-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .menu-book-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .menu-book-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ========================================
+       FEATURED CARD (first menu item)
+       ======================================== */
+    .menu-card.featured {
+      background: var(--dark-primary);
+      border-color: var(--dark-tertiary);
+    }
+
+    .menu-card.featured::before {
+      background: var(--coral);
+      opacity: 1;
+    }
+
+    .menu-card.featured .menu-name {
+      color: var(--white);
+    }
+
+    .menu-card.featured .menu-description {
+      color: var(--text-on-dark-muted);
+    }
+
+    .menu-card.featured .menu-duration {
+      background: var(--coral);
+      color: var(--white);
+    }
+
+    .menu-card.featured .menu-card-action {
+      border-left-color: var(--dark-tertiary);
+    }
+
+    .menu-card.featured .menu-price {
+      color: var(--white);
+    }
+
+    .menu-card.featured .menu-price-symbol {
+      color: var(--text-on-dark-muted);
+    }
+
+    .menu-card.featured .menu-price-tax {
+      color: var(--text-on-dark-muted);
+    }
+
+    .menu-card.featured .menu-book-btn {
+      background: var(--coral);
+    }
+
+    .menu-card.featured .menu-book-btn:hover {
+      background: #E11D48;
+    }
+
+    .menu-card.featured:hover {
+      border-color: var(--coral);
+      box-shadow: 0 4px 32px rgba(244, 63, 94, 0.15);
+    }
+
+    .featured-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: var(--coral);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+
+    /* ========================================
+       STAFF PREVIEW (below menu)
+       ======================================== */
+    .staff-preview {
+      margin-top: 56px;
+      padding-top: 48px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .staff-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      padding: 28px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .staff-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+    }
+
+    .staff-avatar {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--dark-secondary), var(--dark-tertiary));
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-on-dark-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .staff-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .staff-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--dark-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .staff-role {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gray-400);
+    }
+
+    .staff-card-arrow {
+      color: var(--gray-300);
+      flex-shrink: 0;
+    }
+
+    .staff-card-arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ========================================
+       SHOP INFO COMPACT (bottom)
+       ======================================== */
+    .info-bar {
+      background: var(--dark-primary);
+      margin-top: 56px;
+      border-radius: 4px;
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .info-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-on-dark-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-on-dark);
+    }
+
+    /* ========================================
+       FOOTER
+       ======================================== */
+    .footer {
+      background: var(--dark-primary);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 40px;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.04em;
+    }
+
+    .footer-logo span {
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-on-dark-muted);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       HEADER
+       ======================================== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">dot<span>.</span>reservation</a>
+      <div class="header-actions">
+        <button class="header-btn" aria-label="検索">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </button>
+        <button class="header-btn" aria-label="ユーザー">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================
+       HERO SECTION
+       ======================================== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-image-area">
+        <div class="hero-image-placeholder">SHOP PHOTO</div>
+        <div class="carousel-dots">
+          <div class="carousel-dot active"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+          <div class="carousel-dot"></div>
+        </div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">整体院</div>
+        <h1 class="hero-title">リラクゼーション<br>サロン Calm</h1>
+        <p class="hero-subtitle">心と身体に、深い安らぎを。</p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+            </svg>
+            東京都渋谷区神宮前3-1-25
+          </div>
+          <div class="hero-meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+            </svg>
+            03-1234-5678
+          </div>
+          <div class="hero-meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            10:00 - 21:00（最終受付 20:00）
+          </div>
+        </div>
+        <a href="#" class="hero-cta">
+          予約する
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accent bar -->
+  <div class="accent-bar"></div>
+
+  <!-- ========================================
+       TAB SECTION
+       ======================================== -->
+  <nav class="tab-section">
+    <div class="tab-inner">
+      <div class="tab-item active">メニュー</div>
+      <div class="tab-item">スタッフ</div>
+      <div class="tab-item">アクセス</div>
+      <div class="tab-item">店舗情報</div>
+    </div>
+  </nav>
+
+  <!-- ========================================
+       CONTENT: MENU TAB
+       ======================================== -->
+  <main class="content-area">
+    <div class="section-header">
+      <h2 class="section-title">メニュー</h2>
+      <span class="menu-count">5 MENUS</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <!-- Menu Card 1 (Featured) -->
+      <div class="menu-card featured">
+        <div class="menu-card-body">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+            <span class="featured-label">POPULAR</span>
+          </div>
+          <div class="menu-card-top">
+            <span class="menu-name">全身もみほぐし</span>
+            <span class="menu-duration">60 min</span>
+          </div>
+          <p class="menu-description">全身の筋肉をほぐし、血行を促進します。日々の疲れやコリを丁寧にケアする定番メニューです。</p>
+        </div>
+        <div class="menu-card-action">
+          <div class="menu-price">
+            <span class="menu-price-symbol">&yen;</span>6,000
+            <span class="menu-price-tax">(税込)</span>
+          </div>
+          <a href="#" class="menu-book-btn">
+            このメニューで予約する
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Card 2 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <span class="menu-name">ヘッドスパ</span>
+            <span class="menu-duration">30 min</span>
+          </div>
+          <p class="menu-description">頭皮のコリをほぐし、リフレッシュ。眼精疲労やストレスが気になる方におすすめです。</p>
+        </div>
+        <div class="menu-card-action">
+          <div class="menu-price">
+            <span class="menu-price-symbol">&yen;</span>3,500
+            <span class="menu-price-tax">(税込)</span>
+          </div>
+          <a href="#" class="menu-book-btn">
+            このメニューで予約する
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Card 3 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <span class="menu-name">アロマオイルトリートメント</span>
+            <span class="menu-duration">90 min</span>
+          </div>
+          <p class="menu-description">厳選されたアロマオイルで全身をトリートメント。深いリラクゼーションと美肌効果をお楽しみください。</p>
+        </div>
+        <div class="menu-card-action">
+          <div class="menu-price">
+            <span class="menu-price-symbol">&yen;</span>9,800
+            <span class="menu-price-tax">(税込)</span>
+          </div>
+          <a href="#" class="menu-book-btn">
+            このメニューで予約する
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Card 4 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <span class="menu-name">足つぼリフレクソロジー</span>
+            <span class="menu-duration">45 min</span>
+          </div>
+          <p class="menu-description">足裏のツボを刺激し、全身の疲れを癒します。立ち仕事やむくみが気になる方に最適なメニューです。</p>
+        </div>
+        <div class="menu-card-action">
+          <div class="menu-price">
+            <span class="menu-price-symbol">&yen;</span>4,500
+            <span class="menu-price-tax">(税込)</span>
+          </div>
+          <a href="#" class="menu-book-btn">
+            このメニューで予約する
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Card 5 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <span class="menu-name">骨盤矯正コース</span>
+            <span class="menu-duration">50 min</span>
+          </div>
+          <p class="menu-description">骨盤の歪みを整え、姿勢改善をサポート。デスクワークや産後ケアにもおすすめのコースです。</p>
+        </div>
+        <div class="menu-card-action">
+          <div class="menu-price">
+            <span class="menu-price-symbol">&yen;</span>5,500
+            <span class="menu-price-tax">(税込)</span>
+          </div>
+          <a href="#" class="menu-book-btn">
+            このメニューで予約する
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================
+         STAFF PREVIEW
+         ======================================== -->
+    <section class="staff-preview">
+      <div class="section-header">
+        <h2 class="section-title">スタッフ</h2>
+        <span class="menu-count">3 STAFF</span>
+      </div>
+      <div class="staff-grid">
+        <div class="staff-card">
+          <div class="staff-avatar">PHOTO</div>
+          <div class="staff-info">
+            <div class="staff-name">田中 美咲</div>
+            <div class="staff-role">セラピスト / 指名率No.1</div>
+          </div>
+          <div class="staff-card-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </div>
+        <div class="staff-card">
+          <div class="staff-avatar">PHOTO</div>
+          <div class="staff-info">
+            <div class="staff-name">佐藤 健一</div>
+            <div class="staff-role">チーフセラピスト</div>
+          </div>
+          <div class="staff-card-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </div>
+        <div class="staff-card">
+          <div class="staff-avatar">PHOTO</div>
+          <div class="staff-info">
+            <div class="staff-name">山本 あおい</div>
+            <div class="staff-role">アロマセラピスト</div>
+          </div>
+          <div class="staff-card-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================
+         SHOP INFO BAR
+         ======================================== -->
+    <div class="info-bar">
+      <div class="info-block">
+        <span class="info-label">ADDRESS</span>
+        <span class="info-value">東京都渋谷区神宮前3-1-25</span>
+      </div>
+      <div class="info-block">
+        <span class="info-label">PHONE</span>
+        <span class="info-value">03-1234-5678</span>
+      </div>
+      <div class="info-block">
+        <span class="info-label">HOURS</span>
+        <span class="info-value">10:00 - 21:00</span>
+      </div>
+      <div class="info-block">
+        <span class="info-label">CLOSED</span>
+        <span class="info-value">毎週水曜日</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================
+       FOOTER
+       ======================================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">dot<span>.</span>reservation</div>
+      <div class="footer-copy">&copy; 2026 dot.reservation All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
