@@ -37,6 +37,11 @@ export class DrizzleSqliteReservationRepository
     return `${year}-${month}-${day}`;
   }
 
+  private parseLocalDate(dateStr: string): Date {
+    const parts = dateStr.split("-").map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
   private into(data: ReservationDataModel): ReservationType {
     return {
       id: data.id as ReservationIdType,
@@ -44,7 +49,7 @@ export class DrizzleSqliteReservationRepository
       customerId: (data.customerId as CustomerIdType) || null,
       menuId: data.menuId as MenuIdType,
       staffProfileId: (data.staffProfileId as StaffProfileIdType) || null,
-      date: new Date(data.date),
+      date: this.parseLocalDate(data.date),
       startTime: data.startTime as TimeOfDayType,
       endTime: data.endTime as TimeOfDayType,
       status: data.status as ReservationStatusType,

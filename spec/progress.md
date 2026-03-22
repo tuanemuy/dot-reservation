@@ -12,7 +12,7 @@
 - [x] notification
 
 ## アダプター
-- [ ] drizzleSqlite (スキーマ + リポジトリ)
+- [x] drizzleSqlite (スキーマ + リポジトリ)
 
 ## ユースケース
 - [ ] customer

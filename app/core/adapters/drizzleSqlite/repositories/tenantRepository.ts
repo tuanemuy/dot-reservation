@@ -18,7 +18,11 @@ import type {
   Pagination,
   PaginationResult,
 } from "@/core/domain/common/pagination";
-import type { DayOfWeek as DayOfWeekType } from "@/core/domain/common/valueObject";
+import type {
+  DayOfWeek as DayOfWeekType,
+  PhoneNumber as PhoneNumberType,
+  PostalCode as PostalCodeType,
+} from "@/core/domain/common/valueObject";
 import type { Tenant as TenantType } from "@/core/domain/tenant/entity";
 import type {
   TenantFilter,
@@ -28,7 +32,9 @@ import type {
   ApprovalMethod as ApprovalMethodType,
   BusinessHours as BusinessHoursType,
   TenantCategory as TenantCategoryType,
+  TenantDescription as TenantDescriptionType,
   TenantId as TenantIdType,
+  TenantName as TenantNameType,
   TenantStatus as TenantStatusType,
   TenantUrlPath as TenantUrlPathType,
 } from "@/core/domain/tenant/valueObject";
@@ -50,17 +56,17 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
 
     return {
       id: data.id as TenantIdType,
-      name: data.name,
+      name: data.name as TenantNameType,
       category: data.category as TenantCategoryType,
       urlPath: data.urlPath as TenantUrlPathType,
-      postalCode: data.postalCode,
+      postalCode: data.postalCode as PostalCodeType,
       address: {
         prefecture: data.addressPrefecture,
         city: data.addressCity,
         street: data.addressStreet,
       },
-      phoneNumber: data.phoneNumber,
-      description: data.description,
+      phoneNumber: data.phoneNumber as PhoneNumberType,
+      description: data.description as TenantDescriptionType | null,
       imageUrls,
       businessHours,
       regularHolidays,

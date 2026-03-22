@@ -28,6 +28,11 @@ export class DrizzleSqliteShiftRequestRepository
     return `${year}-${month}-${day}`;
   }
 
+  private parseLocalDate(dateStr: string): Date {
+    const parts = dateStr.split("-").map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
   private into(data: ShiftRequestDataModel): ShiftRequestType {
     const timeRange: TimeRangeType | null =
       data.startTime && data.endTime
@@ -41,7 +46,7 @@ export class DrizzleSqliteShiftRequestRepository
       id: data.id as ShiftRequestIdType,
       tenantId: data.tenantId as TenantIdType,
       staffProfileId: data.staffProfileId as StaffProfileIdType,
-      date: new Date(data.date),
+      date: this.parseLocalDate(data.date),
       type: data.type as ShiftRequestTypeType,
       timeRange,
       note: data.note,

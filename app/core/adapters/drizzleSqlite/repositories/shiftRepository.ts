@@ -26,12 +26,17 @@ export class DrizzleSqliteShiftRepository implements ShiftRepository {
     return `${year}-${month}-${day}`;
   }
 
+  private parseLocalDate(dateStr: string): Date {
+    const parts = dateStr.split("-").map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
   private into(data: ShiftDataModel): ShiftType {
     return {
       id: data.id as ShiftIdType,
       tenantId: data.tenantId as TenantIdType,
       staffProfileId: data.staffProfileId as StaffProfileIdType,
-      date: new Date(data.date),
+      date: this.parseLocalDate(data.date),
       timeRange: {
         start: data.startTime as TimeOfDayType,
         end: data.endTime as TimeOfDayType,

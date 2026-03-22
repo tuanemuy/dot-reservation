@@ -1,18 +1,24 @@
 import type { InferSelectModel } from "drizzle-orm";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, like, or, sql } from "drizzle-orm";
 import { customers } from "@/core/adapters/drizzleSqlite/schema";
 import { SystemError, SystemErrorCode } from "@/core/application/error";
 import type {
   Pagination,
   PaginationResult,
 } from "@/core/domain/common/pagination";
-import type { Email as EmailType } from "@/core/domain/common/valueObject";
+import type {
+  Email as EmailType,
+  PhoneNumber as PhoneNumberType,
+} from "@/core/domain/common/valueObject";
 import type { Customer as CustomerType } from "@/core/domain/customer/entity";
 import type {
   CustomerFilter,
   CustomerRepository,
 } from "@/core/domain/customer/ports/customerRepository";
-import type { CustomerId as CustomerIdType } from "@/core/domain/customer/valueObject";
+import type {
+  CustomerDisplayName as CustomerDisplayNameType,
+  CustomerId as CustomerIdType,
+} from "@/core/domain/customer/valueObject";
 import type { Executor } from "../client";
 
 type CustomerDataModel = InferSelectModel<typeof customers>;
@@ -24,9 +30,9 @@ export class DrizzleSqliteCustomerRepository implements CustomerRepository {
     return {
       id: data.id as CustomerIdType,
       authUserId: data.authUserId,
-      displayName: data.displayName,
+      displayName: data.displayName as CustomerDisplayNameType,
       email: data.email as EmailType,
-      phoneNumber: data.phoneNumber,
+      phoneNumber: data.phoneNumber as PhoneNumberType | null,
       status: data.status as "active" | "suspended",
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
@@ -132,6 +138,15 @@ export class DrizzleSqliteCustomerRepository implements CustomerRepository {
       const conditions = [];
       if (filter.status) {
         conditions.push(eq(customers.status, filter.status));
+      }
+      if (filter.keyword) {
+        const pattern = `%${filter.keyword}%`;
+        conditions.push(
+          or(
+            like(customers.displayName, pattern),
+            like(customers.email, pattern),
+          ),
+        );
       }
       const whereClause =
         conditions.length > 0 ? and(...conditions) : undefined;
