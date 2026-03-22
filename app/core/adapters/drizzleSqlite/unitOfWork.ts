@@ -4,9 +4,18 @@ import type {
   UnitOfWorkProvider,
 } from "@/core/application/unitOfWork";
 import type { Database, Executor } from "./client";
-
-// import { DrizzleSqliteOutboxRepository } from "./repositories/outboxRepository";
-// import { DrizzleSqlite${Entity}Repository } from "./repositories/${entity}Repository";
+import { DrizzleSqliteCustomerRepository } from "./repositories/customerRepository";
+import { DrizzleSqliteInvitationRepository } from "./repositories/invitationRepository";
+import { DrizzleSqliteMemberRepository } from "./repositories/memberRepository";
+import { DrizzleSqliteMenuRepository } from "./repositories/menuRepository";
+import { DrizzleSqliteNotificationPreferenceRepository } from "./repositories/notificationPreferenceRepository";
+import { DrizzleSqliteNotificationRepository } from "./repositories/notificationRepository";
+import { DrizzleSqliteOutboxRepository } from "./repositories/outboxRepository";
+import { DrizzleSqliteReservationRepository } from "./repositories/reservationRepository";
+import { DrizzleSqliteShiftRepository } from "./repositories/shiftRepository";
+import { DrizzleSqliteShiftRequestRepository } from "./repositories/shiftRequestRepository";
+import { DrizzleSqliteStaffProfileRepository } from "./repositories/staffProfileRepository";
+import { DrizzleSqliteTenantRepository } from "./repositories/tenantRepository";
 
 /**
  * Configuration for transaction retry behavior
@@ -115,10 +124,20 @@ export class DrizzleSqliteUnitOfWorkProvider implements UnitOfWorkProvider {
 /**
  * Create all repositories with the given database executor
  */
-function createRepositories(_db: Executor): Repositories {
-  // TODO: Uncomment when adapter implementations are available
+function createRepositories(db: Executor): Repositories {
   return {
-    // outboxRepository: new DrizzleSqliteOutboxRepository(_db),
-    // ${entity}Repository: new DrizzleSqlite${Entity}Repository(_db),
-  } as Repositories;
+    outboxRepository: new DrizzleSqliteOutboxRepository(db),
+    customerRepository: new DrizzleSqliteCustomerRepository(db),
+    tenantRepository: new DrizzleSqliteTenantRepository(db),
+    memberRepository: new DrizzleSqliteMemberRepository(db),
+    invitationRepository: new DrizzleSqliteInvitationRepository(db),
+    menuRepository: new DrizzleSqliteMenuRepository(db),
+    staffProfileRepository: new DrizzleSqliteStaffProfileRepository(db),
+    shiftRepository: new DrizzleSqliteShiftRepository(db),
+    shiftRequestRepository: new DrizzleSqliteShiftRequestRepository(db),
+    reservationRepository: new DrizzleSqliteReservationRepository(db),
+    notificationRepository: new DrizzleSqliteNotificationRepository(db),
+    notificationPreferenceRepository:
+      new DrizzleSqliteNotificationPreferenceRepository(db),
+  };
 }
