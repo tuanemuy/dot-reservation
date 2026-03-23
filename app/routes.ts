@@ -6,6 +6,9 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
+  // better-auth API
+  route("api/auth/*", "routes/api.auth.$.ts"),
+
   // 公開ページ
   index("routes/index.tsx"),
   route("search", "routes/search.tsx"),
@@ -18,6 +21,7 @@ export default [
   route("customer/verify-email", "routes/customer/verify-email.tsx"),
   route("customer/forgot-password", "routes/customer/forgot-password.tsx"),
   route("customer/reset-password", "routes/customer/reset-password.tsx"),
+  route("customer/setup", "routes/customer/setup.tsx"),
 
   // 顧客マイページ
   layout("routes/mypage/layout.tsx", [
@@ -44,6 +48,7 @@ export default [
   route("admin/verify-email", "routes/admin/verify-email.tsx"),
   route("admin/forgot-password", "routes/admin/forgot-password.tsx"),
   route("admin/reset-password", "routes/admin/reset-password.tsx"),
+  route("admin/setup", "routes/admin/setup.tsx"),
 
   // 管理画面共通（認証済み）
   layout("routes/admin/layout.tsx", [

@@ -1,23 +1,17 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data, Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { z } from "zod";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import {
-  createCompositeAction,
-  defineHandler,
-  success,
-  useCompositeAction,
-} from "@/lib/compositeAction";
+import { authClient } from "@/lib/authClient";
 import type { Route } from "./+types/reset-password";
 
 const resetPasswordSchema = z
   .object({
-    token: z.string().min(1),
     password: z.string().min(8, "パスワードは8文字以上で入力してください"),
     passwordConfirmation: z
       .string()
@@ -28,73 +22,68 @@ const resetPasswordSchema = z
     path: ["passwordConfirmation"],
   });
 
-const handlers = {
-  resetPassword: defineHandler({
-    schema: resetPasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワード再設定を実装
-      // 1. authProvider でトークン検証
-      // 2. パスワード更新
-      console.log("Admin reset password:", value);
-      return success();
-    },
-  }),
-};
-
-export async function action(args: Route.ActionArgs) {
-  return createCompositeAction(args, handlers);
-}
-
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
-
-  if (!token) {
-    throw data({ message: "無効なリンクです" }, { status: 400 });
-  }
-
-  // TODO: トークンの有効性を事前チェック
-  return { token, expired: false };
-}
-
-export default function AdminResetPasswordPage({
-  loaderData,
-}: Route.ComponentProps) {
-  const { token, expired } = loaderData;
-  const fetcher = useCompositeAction<typeof handlers>();
+export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const [isCompleted, setIsCompleted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [form, fields] = useForm({
     id: "admin-reset-password-form",
-    lastResult:
-      fetcher.data?.intent === "resetPassword" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.resetPassword.schema),
+    constraint: getZodConstraint(resetPasswordSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: handlers.resetPassword.schema,
-      });
+      return parseWithZod(formData, { schema: resetPasswordSchema });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+
+      if (!token) {
+        setFormError("無効なリンクです。");
+        return;
+      }
+
+      const formData = new FormData(event.currentTarget);
+      const parsed = parseWithZod(formData, { schema: resetPasswordSchema });
+      if (parsed.status !== "success") {
+        return;
+      }
+
+      setFormError(null);
+      setIsPending(true);
+
+      authClient
+        .resetPassword({
+          newPassword: parsed.value.password,
+          token,
+        })
+        .then(({ error: resetError }) => {
+          if (resetError) {
+            setFormError(
+              resetError.message ?? "パスワードの再設定に失敗しました。",
+            );
+            setIsPending(false);
+            return;
+          }
+
+          setIsCompleted(true);
+          setIsPending(false);
+        })
+        .catch(() => {
+          setFormError("パスワードの再設定に失敗しました。");
+          setIsPending(false);
+        });
     },
   });
 
-  fetcher.register("resetPassword", {
-    onSuccess: () => {
-      setIsCompleted(true);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Admin reset password failed:", err);
-    },
-  });
-
-  const isPending = fetcher.isPending("resetPassword");
-
-  if (expired) {
+  if (!token) {
     return (
-      <AuthLayout title="リンクの有効期限切れ">
+      <AuthLayout title="無効なリンク">
         <div className="text-center">
           <p className="mb-6 text-sm text-destructive">
-            パスワードリセットリンクの有効期限が切れています。
+            パスワードリセットリンクが無効です。
           </p>
           <Link
             to="/admin/forgot-password"
@@ -127,10 +116,7 @@ export default function AdminResetPasswordPage({
       title="新しいパスワードの設定"
       description="新しいパスワードを入力してください。"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="resetPassword" />
-        <input type="hidden" name="token" value={token} />
-
+      <form method="post" {...getFormProps(form)}>
         <div className="space-y-5">
           <FormField
             label="新しいパスワード"
@@ -160,6 +146,8 @@ export default function AdminResetPasswordPage({
             />
           </FormField>
 
+          {formError && <p className="text-xs text-destructive">{formError}</p>}
+
           {form.errors && (
             <p className="text-xs text-destructive">{form.errors}</p>
           )}
@@ -168,7 +156,7 @@ export default function AdminResetPasswordPage({
             {isPending ? "設定中..." : "パスワードを設定"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm">
         <Link to="/admin/login" className="text-text-secondary hover:underline">

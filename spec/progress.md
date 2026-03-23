@@ -51,12 +51,12 @@
 - [x] テナント管理者ページ
 - [x] スタッフページ
 - [x] プラットフォーム管理画面
-- [ ] better-auth クライアント設定 (authClient 初期化)
-- [ ] better-auth API ルート (app/routes/api.auth.$.ts)
-- [ ] 顧客プロフィール作成ページ (/customer/setup) — クロス登録用
-- [ ] 管理画面プロフィール作成ページ (/admin/setup) — クロス登録用
-- [ ] 顧客認証ページ更新 (signUp/signIn/signOut/forgetPassword/resetPassword 実装)
-- [ ] 管理画面認証ページ更新 (同上)
-- [ ] プラットフォーム認証ページ更新 (同上)
-- [ ] ルートローダー更新 (authProvider.getSession によるセッション検証)
-- [ ] 登録ページ更新 (メール登録済み時のログイン誘導)
+- [x] better-auth クライアント設定 (authClient 初期化)
+- [x] better-auth API ルート (app/routes/api.auth.$.ts)
+- [x] 顧客プロフィール作成ページ (/customer/setup) — クロス登録用
+- [x] 管理画面プロフィール作成ページ (/admin/setup) — クロス登録用
+- [x] 顧客認証ページ更新 (signUp/signIn/signOut/forgetPassword/resetPassword 実装)
+- [x] 管理画面認証ページ更新 (同上)
+- [x] プラットフォーム認証ページ更新 (同上)
+- [x] ルートローダー更新 (authProvider.getSession によるセッション検証)
+- [x] 登録ページ更新 (メール登録済み時のログイン誘導)

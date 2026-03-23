@@ -1,4 +1,4 @@
-import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { createCustomer } from "@/core/application/customer/createCustomer";
+import { authClient } from "@/lib/authClient";
 import {
   createCompositeAction,
   defineHandler,
@@ -35,23 +36,24 @@ const registerSchema = z
     path: ["passwordConfirmation"],
   });
 
+const createCustomerSchema = z.object({
+  authUserId: z.string().min(1),
+  displayName: z.string().min(1),
+  email: z.string().email(),
+});
+
 const handlers = {
-  register: defineHandler({
-    schema: registerSchema,
+  createCustomer: defineHandler({
+    schema: createCustomerSchema,
     handler: async (value, args) => {
       const { container } = await import("@/core/di/server");
-      // authProvider 実装後:
-      // 1. authProvider でユーザー作成 -> authUserId 取得
-      // 2. 確認メール送信
-      // 現在は authProvider 未実装のため、仮の authUserId で顧客エンティティを作成
-      const authUserId = crypto.randomUUID();
 
       const result = await handleUseCase(() =>
         createCustomer({
           container,
           headers: args.request.headers,
           input: {
-            authUserId,
+            authUserId: value.authUserId,
             displayName: value.displayName,
             email: value.email,
           },
@@ -73,25 +75,81 @@ export async function action(args: Route.ActionArgs) {
 export default function CustomerRegisterPage(_props: Route.ComponentProps) {
   const fetcher = useCompositeAction<typeof handlers>();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [form, fields] = useForm({
     id: "register-form",
-    lastResult: fetcher.data?.intent === "register" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.register.schema),
+    constraint: getZodConstraint(registerSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: handlers.register.schema });
+      return parseWithZod(formData, { schema: registerSchema });
     },
   });
 
-  fetcher.register("register", {
+  fetcher.register("createCustomer", {
     onSuccess: () => {
       setIsSubmitted(true);
+      setIsPending(false);
+    },
+    onHandlerError: () => {
+      setFormError("アカウントの作成に失敗しました。もう一度お試しください。");
+      setIsPending(false);
     },
   });
 
-  const isPending = fetcher.isPending("register");
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setFormError(null);
+
+    const formData = new FormData(event.currentTarget);
+    const submission = parseWithZod(formData, { schema: registerSchema });
+
+    if (submission.status !== "success") {
+      return;
+    }
+
+    const { displayName, email, password } = submission.value;
+
+    setIsPending(true);
+
+    const { data: signUpData, error: signUpError } =
+      await authClient.signUp.email({
+        name: displayName,
+        email,
+        password,
+        callbackURL: "/customer/verify-email",
+      });
+
+    if (signUpError) {
+      if (signUpError.code === "USER_ALREADY_EXISTS") {
+        setFormError(
+          "このメールアドレスは既に登録されています。ログインしてください。",
+        );
+      } else {
+        setFormError(
+          signUpError.message ?? "登録に失敗しました。もう一度お試しください。",
+        );
+      }
+      setIsPending(false);
+      return;
+    }
+
+    const authUserId = signUpData?.user?.id;
+
+    if (authUserId) {
+      const createCustomerFormData = new FormData();
+      createCustomerFormData.set("intent", "createCustomer");
+      createCustomerFormData.set("authUserId", authUserId);
+      createCustomerFormData.set("displayName", displayName);
+      createCustomerFormData.set("email", email);
+      fetcher.submit(createCustomerFormData, { method: "post" });
+    } else {
+      setIsSubmitted(true);
+      setIsPending(false);
+    }
+  }
 
   if (isSubmitted) {
     return (
@@ -116,9 +174,7 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
 
   return (
     <AuthLayout title="新規登録">
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="register" />
-
+      <form id={form.id} onSubmit={handleSubmit} noValidate>
         <div className="space-y-5">
           <FormField
             label="表示名"
@@ -174,6 +230,20 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
             />
           </FormField>
 
+          {formError && (
+            <div className="space-y-2">
+              <p className="text-xs text-destructive">{formError}</p>
+              {formError.includes("既に登録されています") && (
+                <Link
+                  to="/customer/login"
+                  className="block text-sm font-medium text-primary hover:underline"
+                >
+                  ログインページへ
+                </Link>
+              )}
+            </div>
+          )}
+
           {form.errors && (
             <p className="text-xs text-destructive">{form.errors}</p>
           )}
@@ -182,7 +252,7 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
             {isPending ? "登録中..." : "新規登録"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm text-text-secondary">
         すでにアカウントをお持ちですか？{" "}

@@ -1,18 +1,11 @@
-import { getFormProps, getInputProps, useForm } from "@conform-to/react";
-import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { z } from "zod";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import {
-  createCompositeAction,
-  defineHandler,
-  success,
-  useCompositeAction,
-} from "@/lib/compositeAction";
-import type { Route } from "./+types/login";
+import { authClient } from "@/lib/authClient";
 
 const loginSchema = z.object({
   email: z
@@ -22,95 +15,99 @@ const loginSchema = z.object({
   password: z.string().min(1, "パスワードを入力してください"),
 });
 
-const handlers = {
-  login: defineHandler({
-    schema: loginSchema,
-    handler: async (value, _args) => {
-      // TODO: プラットフォーム管理者の認証処理を実装
-      // 1. authProvider でメール・パスワード認証
-      // 2. プラットフォーム管理者権限チェック
-      // 3. セッション作成
-      // 4. リダイレクト
-      console.log("Platform login:", value);
-      return success();
-    },
-  }),
-};
+export default function PlatformLoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    form?: string;
+  }>({});
+  const [isPending, setIsPending] = useState(false);
 
-export async function action(args: Route.ActionArgs) {
-  return createCompositeAction(args, handlers);
-}
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrors({});
 
-export default function PlatformLoginPage(_props: Route.ComponentProps) {
-  const fetcher = useCompositeAction<typeof handlers>();
+    const result = loginSchema.safeParse({ email, password });
+    if (!result.success) {
+      const fieldErrors: { email?: string; password?: string } = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as "email" | "password";
+        fieldErrors[field] = issue.message;
+      }
+      setErrors(fieldErrors);
+      return;
+    }
 
-  const [form, fields] = useForm({
-    id: "platform-login-form",
-    lastResult: fetcher.data?.intent === "login" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.login.schema),
-    shouldValidate: "onSubmit",
-    shouldRevalidate: "onBlur",
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: handlers.login.schema });
-    },
-  });
+    setIsPending(true);
+    const { error } = await authClient.signIn.email({
+      email: result.data.email,
+      password: result.data.password,
+    });
+    setIsPending(false);
 
-  fetcher.register("login", {
-    onSuccess: () => {
-      // TODO: ダッシュボードへリダイレクト
-      console.log("Platform login successful");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Platform login failed:", err);
-    },
-  });
+    if (error) {
+      setErrors({
+        form: "メールアドレスまたはパスワードが正しくありません",
+      });
+      return;
+    }
 
-  const isPending = fetcher.isPending("login");
+    navigate("/platform/dashboard");
+  };
 
   return (
     <AuthLayout
       title="プラットフォーム管理"
       description="管理者アカウントでログイン"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="login" />
-
+      <form onSubmit={handleSubmit}>
         <div className="space-y-5">
           <FormField
             label="メールアドレス"
-            htmlFor={fields.email.id}
-            error={fields.email.errors}
+            htmlFor="platform-login-email"
+            error={errors.email ? [errors.email] : undefined}
             required
           >
             <Input
-              {...getInputProps(fields.email, { type: "email" })}
+              id="platform-login-email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="example@email.com"
-              error={fields.email.errors?.[0]}
+              error={errors.email}
             />
           </FormField>
 
           <FormField
             label="パスワード"
-            htmlFor={fields.password.id}
-            error={fields.password.errors}
+            htmlFor="platform-login-password"
+            error={errors.password ? [errors.password] : undefined}
             required
           >
             <Input
-              {...getInputProps(fields.password, { type: "password" })}
+              id="platform-login-password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="パスワード"
-              error={fields.password.errors?.[0]}
+              error={errors.password}
             />
           </FormField>
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
+          {errors.form && (
+            <p className="text-xs text-destructive">{errors.form}</p>
           )}
 
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? "ログイン中..." : "ログイン"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm">
         <Link

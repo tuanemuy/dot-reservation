@@ -1,37 +1,21 @@
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
-import type { Route } from "./+types/verify-email";
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
+export default function VerifyEmailPage() {
+  const [searchParams] = useSearchParams();
+  const errorCode = searchParams.get("error");
 
-  let verified = false;
-  let errorMessage: string | null = null;
+  if (errorCode) {
+    const errorMessage =
+      errorCode === "TOKEN_EXPIRED"
+        ? "リンクの有効期限が切れています。再度新規登録を行ってください。"
+        : "メール確認に失敗しました。リンクが無効です。";
 
-  if (!token) {
-    errorMessage = "無効なリンクです。";
-  } else {
-    // authProvider 実装後: トークンを検証してメールアドレス確認済みに更新する
-    // 現在は authProvider 未実装のため、トークンが存在すれば確認済みとする
-    verified = true;
-  }
-
-  return { verified, errorMessage };
-}
-
-export default function VerifyEmailPage({ loaderData }: Route.ComponentProps) {
-  const { verified, errorMessage } = loaderData;
-
-  if (!verified) {
     return (
       <AuthLayout title="メール確認エラー">
         <div className="text-center">
-          <p className="mb-6 text-sm text-destructive">
-            {errorMessage ??
-              "メール確認に失敗しました。リンクの有効期限が切れている可能性があります。"}
-          </p>
+          <p className="mb-6 text-sm text-destructive">{errorMessage}</p>
           <Link
             to="/customer/register"
             className="text-sm font-medium text-primary hover:underline"

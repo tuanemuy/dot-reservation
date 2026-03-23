@@ -1,17 +1,13 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { z } from "zod";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import {
-  createCompositeAction,
-  defineHandler,
-  success,
-  useCompositeAction,
-} from "@/lib/compositeAction";
+import { authClient } from "@/lib/authClient";
 import type { Route } from "./+types/login";
 
 const loginSchema = z.object({
@@ -22,58 +18,59 @@ const loginSchema = z.object({
   password: z.string().min(1, "パスワードを入力してください"),
 });
 
-const handlers = {
-  login: defineHandler({
-    schema: loginSchema,
-    handler: async (value, _args) => {
-      // TODO: 認証サービスを使ってログイン処理を実装
-      // 1. authProvider でメール・パスワード認証
-      // 2. セッション作成
-      // 3. リダイレクト
-      console.log("Admin login:", value);
-      return success();
-    },
-  }),
-};
-
-export async function action(args: Route.ActionArgs) {
-  return createCompositeAction(args, handlers);
-}
-
 export default function AdminLoginPage(_props: Route.ComponentProps) {
-  const fetcher = useCompositeAction<typeof handlers>();
+  const navigate = useNavigate();
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [form, fields] = useForm({
     id: "admin-login-form",
-    lastResult: fetcher.data?.intent === "login" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.login.schema),
+    constraint: getZodConstraint(loginSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: handlers.login.schema });
+      return parseWithZod(formData, { schema: loginSchema });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const parsed = parseWithZod(formData, { schema: loginSchema });
+      if (parsed.status !== "success") {
+        return;
+      }
+
+      setFormError(null);
+      setIsPending(true);
+
+      const { email, password } = parsed.value;
+
+      authClient.signIn
+        .email({
+          email,
+          password,
+        })
+        .then(({ error: signInError }) => {
+          if (signInError) {
+            setFormError("メールアドレスまたはパスワードが正しくありません");
+            setIsPending(false);
+            return;
+          }
+
+          navigate("/admin/tenants");
+        })
+        .catch(() => {
+          setFormError("ログインに失敗しました。");
+          setIsPending(false);
+        });
     },
   });
-
-  fetcher.register("login", {
-    onSuccess: () => {
-      // TODO: ログイン成功後、テナント選択ページへリダイレクト
-      console.log("Admin login successful");
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Admin login failed:", err);
-    },
-  });
-
-  const isPending = fetcher.isPending("login");
 
   return (
     <AuthLayout
       title="管理画面ログイン"
       description="アカウントにログインしてください"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="login" />
-
+      <form method="post" {...getFormProps(form)}>
         <div className="space-y-5">
           <FormField
             label="メールアドレス"
@@ -101,6 +98,8 @@ export default function AdminLoginPage(_props: Route.ComponentProps) {
             />
           </FormField>
 
+          {formError && <p className="text-xs text-destructive">{formError}</p>}
+
           {form.errors && (
             <p className="text-xs text-destructive">{form.errors}</p>
           )}
@@ -109,7 +108,7 @@ export default function AdminLoginPage(_props: Route.ComponentProps) {
             {isPending ? "ログイン中..." : "ログイン"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <div className="mt-6 space-y-3 text-center text-sm">
         <p>

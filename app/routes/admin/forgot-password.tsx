@@ -7,12 +7,7 @@ import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import {
-  createCompositeAction,
-  defineHandler,
-  success,
-  useCompositeAction,
-} from "@/lib/compositeAction";
+import { authClient } from "@/lib/authClient";
 import type { Route } from "./+types/forgot-password";
 
 const forgotPasswordSchema = z.object({
@@ -22,48 +17,45 @@ const forgotPasswordSchema = z.object({
     .email("有効なメールアドレスを入力してください"),
 });
 
-const handlers = {
-  forgotPassword: defineHandler({
-    schema: forgotPasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワードリセットメール送信を実装
-      // 1. authProvider でリセットトークン生成
-      // 2. メール送信
-      console.log("Admin forgot password:", value);
-      return success();
-    },
-  }),
-};
-
-export async function action(args: Route.ActionArgs) {
-  return createCompositeAction(args, handlers);
-}
-
 export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
-  const fetcher = useCompositeAction<typeof handlers>();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [form, fields] = useForm({
     id: "admin-forgot-password-form",
-    lastResult:
-      fetcher.data?.intent === "forgotPassword" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.forgotPassword.schema),
+    constraint: getZodConstraint(forgotPasswordSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: handlers.forgotPassword.schema,
-      });
+      return parseWithZod(formData, { schema: forgotPasswordSchema });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const parsed = parseWithZod(formData, { schema: forgotPasswordSchema });
+      if (parsed.status !== "success") {
+        return;
+      }
+
+      setFormError(null);
+      setIsPending(true);
+
+      authClient
+        .requestPasswordReset({
+          email: parsed.value.email,
+          redirectTo: "/admin/reset-password",
+        })
+        .then(() => {
+          setIsSubmitted(true);
+          setIsPending(false);
+        })
+        .catch(() => {
+          setFormError("送信に失敗しました。");
+          setIsPending(false);
+        });
     },
   });
-
-  fetcher.register("forgotPassword", {
-    onSuccess: () => {
-      setIsSubmitted(true);
-    },
-  });
-
-  const isPending = fetcher.isPending("forgotPassword");
 
   if (isSubmitted) {
     return (
@@ -91,9 +83,7 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
       title="パスワードリセット"
       description="登録済みのメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="forgotPassword" />
-
+      <form method="post" {...getFormProps(form)}>
         <div className="space-y-5">
           <FormField
             label="メールアドレス"
@@ -108,6 +98,8 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
             />
           </FormField>
 
+          {formError && <p className="text-xs text-destructive">{formError}</p>}
+
           {form.errors && (
             <p className="text-xs text-destructive">{form.errors}</p>
           )}
@@ -116,7 +108,7 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
             {isPending ? "送信中..." : "リセットメールを送信"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm">
         <Link to="/admin/login" className="text-text-secondary hover:underline">

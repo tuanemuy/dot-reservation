@@ -1,10 +1,23 @@
-import { data, Link, NavLink, Outlet, useParams } from "react-router";
+import { data, Link, NavLink, Outlet, redirect, useParams } from "react-router";
 import { getTenant } from "@/core/application/tenant/getTenant";
-import { container } from "@/core/di/server";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/layout";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (members.length === 0) {
+    throw redirect("/admin/setup");
+  }
+
   const tenantId = params.tenantId;
 
   const tenantResult = await handleUseCase(() =>

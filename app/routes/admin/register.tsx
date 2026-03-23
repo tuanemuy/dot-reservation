@@ -7,12 +7,16 @@ import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
+import { createMemberAccount } from "@/core/application/member/createMemberAccount";
+import { authClient } from "@/lib/authClient";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/register";
 
 const registerSchema = z
@@ -32,16 +36,33 @@ const registerSchema = z
     path: ["passwordConfirmation"],
   });
 
+const createMemberAccountSchema = z.object({
+  authUserId: z.string().min(1),
+  name: z.string().min(1),
+  email: z.string().email(),
+});
+
 const handlers = {
-  register: defineHandler({
-    schema: registerSchema,
-    handler: async (value, _args) => {
-      // TODO: 認証サービスを使ってアカウント作成を実装
-      // 1. authProvider でユーザー作成
-      // 2. createMemberAccount ユースケースでメンバーアカウント作成
-      // 3. 確認メール送信
-      console.log("Admin register:", value);
-      return success({ email: value.email });
+  createMemberAccount: defineHandler({
+    schema: createMemberAccountSchema,
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+      const result = await handleUseCase(() =>
+        createMemberAccount({
+          container,
+          headers: args.request.headers,
+          input: {
+            authUserId: value.authUserId,
+            name: value.name,
+            email: value.email,
+          },
+        }),
+      ).match(
+        (r) => success({ email: r.email }),
+        (e) => error({ "": [e.message] }),
+      );
+
+      return result;
     },
   }),
 };
@@ -53,28 +74,83 @@ export async function action(args: Route.ActionArgs) {
 export default function AdminRegisterPage(_props: Route.ComponentProps) {
   const fetcher = useCompositeAction<typeof handlers>();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const [form, fields] = useForm({
     id: "admin-register-form",
-    lastResult: fetcher.data?.intent === "register" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.register.schema),
+    constraint: getZodConstraint(registerSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: handlers.register.schema });
+      return parseWithZod(formData, { schema: registerSchema });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const parsed = parseWithZod(formData, { schema: registerSchema });
+      if (parsed.status !== "success") {
+        return;
+      }
+
+      setFormError(null);
+      setIsSigningUp(true);
+
+      const { name, email, password } = parsed.value;
+
+      authClient.signUp
+        .email({
+          name,
+          email,
+          password,
+        })
+        .then(({ data: signUpData, error: signUpError }) => {
+          if (signUpError) {
+            if (signUpError.code === "USER_ALREADY_EXISTS") {
+              setFormError(
+                "このメールアドレスは既に登録されています。ログインしてください。",
+              );
+            } else {
+              setFormError(signUpError.message ?? "登録に失敗しました。");
+            }
+            setIsSigningUp(false);
+            return;
+          }
+
+          if (!signUpData?.user) {
+            setFormError("登録に失敗しました。");
+            setIsSigningUp(false);
+            return;
+          }
+
+          const memberFormData = new FormData();
+          memberFormData.set("intent", "createMemberAccount");
+          memberFormData.set("authUserId", signUpData.user.id);
+          memberFormData.set("name", name);
+          memberFormData.set("email", email);
+          fetcher.submit(memberFormData, { method: "post" });
+        })
+        .catch(() => {
+          setFormError("登録に失敗しました。");
+          setIsSigningUp(false);
+        });
     },
   });
 
-  fetcher.register("register", {
+  fetcher.register("createMemberAccount", {
     onSuccess: () => {
+      setIsSigningUp(false);
       setIsSubmitted(true);
     },
     onHandlerError: ({ error: err }) => {
-      console.error("Admin registration failed:", err);
+      setIsSigningUp(false);
+      setFormError(
+        err?.[""]?.[0] ?? "メンバーアカウントの作成に失敗しました。",
+      );
     },
   });
 
-  const isPending = fetcher.isPending("register");
+  const isPending = isSigningUp || fetcher.isPending("createMemberAccount");
 
   if (isSubmitted) {
     return (
@@ -102,9 +178,7 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
       title="管理画面アカウント登録"
       description="新しいアカウントを作成します"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="register" />
-
+      <form method="post" {...getFormProps(form)}>
         <div className="space-y-5">
           <FormField
             label="氏名"
@@ -160,6 +234,20 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
             />
           </FormField>
 
+          {formError && (
+            <div className="text-xs text-destructive">
+              <p>{formError}</p>
+              {formError.includes("既に登録されています") && (
+                <Link
+                  to="/admin/login"
+                  className="mt-1 inline-block font-medium text-primary hover:underline"
+                >
+                  ログインページへ
+                </Link>
+              )}
+            </div>
+          )}
+
           {form.errors && (
             <p className="text-xs text-destructive">{form.errors}</p>
           )}
@@ -168,7 +256,7 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
             {isPending ? "登録中..." : "アカウントを登録"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm text-text-secondary">
         既にアカウントをお持ちですか？{" "}

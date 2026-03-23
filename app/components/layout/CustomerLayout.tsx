@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
+import { authClient } from "@/lib/authClient";
 
 type CustomerLayoutProps = {
   children: ReactNode;
@@ -13,6 +14,13 @@ const navItems = [
 ];
 
 export function CustomerLayout({ children }: CustomerLayoutProps) {
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await authClient.signOut();
+    navigate("/");
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-border bg-white">
@@ -21,13 +29,19 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
             dot-reservation
           </Link>
           <nav className="flex items-center gap-4">
-            {/* TODO: ログインユーザー情報表示 */}
             <Link
               to="/"
               className="text-sm text-text-secondary hover:text-text"
             >
               トップへ
             </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-sm text-text-secondary hover:text-text"
+            >
+              ログアウト
+            </button>
           </nav>
         </div>
       </header>

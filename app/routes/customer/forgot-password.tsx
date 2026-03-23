@@ -1,5 +1,3 @@
-import { getFormProps, getInputProps, useForm } from "@conform-to/react";
-import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { Link } from "react-router";
 import { z } from "zod";
@@ -7,13 +5,7 @@ import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import {
-  createCompositeAction,
-  defineHandler,
-  success,
-  useCompositeAction,
-} from "@/lib/compositeAction";
-import type { Route } from "./+types/forgot-password";
+import { authClient } from "@/lib/authClient";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -22,48 +14,36 @@ const forgotPasswordSchema = z.object({
     .email("有効なメールアドレスを入力してください"),
 });
 
-const handlers = {
-  forgotPassword: defineHandler({
-    schema: forgotPasswordSchema,
-    handler: async (_value, _args) => {
-      // authProvider 実装後:
-      // 1. authProvider でリセットトークン生成
-      // 2. メール送信
-      // セキュリティ上、メールが存在しない場合でも成功を返す
-      return success();
-    },
-  }),
-};
-
-export async function action(args: Route.ActionArgs) {
-  return createCompositeAction(args, handlers);
-}
-
-export default function ForgotPasswordPage(_props: Route.ComponentProps) {
-  const fetcher = useCompositeAction<typeof handlers>();
+export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; form?: string }>({});
+  const [isPending, setIsPending] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [form, fields] = useForm({
-    id: "forgot-password-form",
-    lastResult:
-      fetcher.data?.intent === "forgotPassword" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.forgotPassword.schema),
-    shouldValidate: "onSubmit",
-    shouldRevalidate: "onBlur",
-    onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: handlers.forgotPassword.schema,
-      });
-    },
-  });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrors({});
 
-  fetcher.register("forgotPassword", {
-    onSuccess: () => {
-      setIsSubmitted(true);
-    },
-  });
+    const result = forgotPasswordSchema.safeParse({ email });
+    if (!result.success) {
+      const fieldErrors: { email?: string } = {};
+      for (const issue of result.error.issues) {
+        if (issue.path[0] === "email") {
+          fieldErrors.email = issue.message;
+        }
+      }
+      setErrors(fieldErrors);
+      return;
+    }
 
-  const isPending = fetcher.isPending("forgotPassword");
+    setIsPending(true);
+    await authClient.requestPasswordReset({
+      email: result.data.email,
+      redirectTo: "/customer/reset-password",
+    });
+    setIsPending(false);
+    setIsSubmitted(true);
+  };
 
   if (isSubmitted) {
     return (
@@ -91,32 +71,34 @@ export default function ForgotPasswordPage(_props: Route.ComponentProps) {
       title="パスワードリセット"
       description="登録済みのメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。"
     >
-      <fetcher.Form method="post" {...getFormProps(form)}>
-        <input type="hidden" name="intent" value="forgotPassword" />
-
+      <form onSubmit={handleSubmit}>
         <div className="space-y-5">
           <FormField
             label="メールアドレス"
-            htmlFor={fields.email.id}
-            error={fields.email.errors}
+            htmlFor="customer-forgot-password-email"
+            error={errors.email ? [errors.email] : undefined}
             required
           >
             <Input
-              {...getInputProps(fields.email, { type: "email" })}
+              id="customer-forgot-password-email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="example@email.com"
-              error={fields.email.errors?.[0]}
+              error={errors.email}
             />
           </FormField>
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
+          {errors.form && (
+            <p className="text-xs text-destructive">{errors.form}</p>
           )}
 
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? "送信中..." : "リセットメールを送信"}
           </Button>
         </div>
-      </fetcher.Form>
+      </form>
 
       <p className="mt-6 text-center text-sm">
         <Link

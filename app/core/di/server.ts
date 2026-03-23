@@ -60,9 +60,9 @@ function getServerConfig(): ServerConfig {
 }
 
 /**
- * Create a DI container with the given configuration
+ * Create server-side dependencies with the given configuration
  */
-export function createContainer(config: ServerConfig): Container {
+function createDependencies(config: ServerConfig) {
   const db = getDatabase(config.databaseUrl);
   const unitOfWorkProvider = new DrizzleSqliteUnitOfWorkProvider(db);
 
@@ -82,7 +82,7 @@ export function createContainer(config: ServerConfig): Container {
     authEmailSender,
   });
 
-  return {
+  const container: Container = {
     config: {
       appUrl: config.appUrl,
       sessionTimeoutHours: 24,
@@ -113,6 +113,11 @@ export function createContainer(config: ServerConfig): Container {
       },
     },
   };
+
+  return { container, auth };
 }
 
-export const container = createContainer(getServerConfig());
+const dependencies = createDependencies(getServerConfig());
+
+export const container = dependencies.container;
+export const auth = dependencies.auth;

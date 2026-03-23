@@ -1,34 +1,26 @@
-import { data, Link, NavLink, Outlet, redirect } from "react-router";
-import { handleUseCase } from "@/lib/handleUseCase";
+import { Link, NavLink, Outlet, redirect } from "react-router";
 import type { Route } from "./+types/layout";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
-  const { listMembers } = await import("@/core/application/member/listMembers");
 
-  // Check authentication - in a real app, this would use authProvider
-  // For now, we verify the tenant exists and has members
-  const tenantId = params.tenantId;
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
 
-  const membersResult = await handleUseCase(() =>
-    listMembers({
-      container,
-      headers: request.headers,
-      input: { tenantId, role: "staff" },
-    }),
-  ).match(
-    (result) => result,
-    (e) => {
-      if (e.status === 401) {
-        throw redirect("/admin/login");
-      }
-      throw data({ message: e.message }, { status: e.status });
-    },
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
   );
+  if (members.length === 0) {
+    throw redirect("/admin/setup");
+  }
+
+  const tenantId = params.tenantId;
 
   return {
     tenantId,
-    staffCount: membersResult.items.length,
+    staffCount: members.length,
   };
 }
 
