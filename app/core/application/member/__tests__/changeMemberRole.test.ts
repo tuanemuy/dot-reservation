@@ -3,8 +3,13 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
-import { ForbiddenError, NotFoundError } from "@/core/application/error";
+import {
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+} from "@/core/application/error";
 import { BusinessRuleError } from "@/core/domain/error";
+import { MemberId } from "@/core/domain/member/valueObject";
 import { changeMemberRole } from "../changeMemberRole";
 import { addMemberToTenant, createTestTenant } from "./memberTestHelpers";
 
@@ -38,10 +43,10 @@ describe("changeMemberRole", () => {
     // Verify role changed
     const members = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.memberRepository.findById(staffMemberId as any);
+        return repos.memberRepository.findById(MemberId.create(staffMemberId));
       },
     );
-    expect(members!.role).toBe("admin");
+    expect(members?.role).toBe("admin");
   });
 
   it("should change role from admin to staff when other admins exist", async () => {
@@ -70,10 +75,10 @@ describe("changeMemberRole", () => {
 
     const member = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.memberRepository.findById(secondAdminId as any);
+        return repos.memberRepository.findById(MemberId.create(secondAdminId));
       },
     );
-    expect(member!.role).toBe("staff");
+    expect(member?.role).toBe("staff");
   });
 
   it("should throw ForbiddenError when changing own role", async () => {
@@ -94,7 +99,7 @@ describe("changeMemberRole", () => {
     ).rejects.toThrow(ForbiddenError);
   });
 
-  it("should throw when last admin tries to change role to staff", async () => {
+  it("should throw ConflictError when last admin tries to change role to staff", async () => {
     const container = getContainer();
     const { tenantId, adminMemberId } = await createTestTenant(container);
 
@@ -119,7 +124,7 @@ describe("changeMemberRole", () => {
           newRole: "staff",
         },
       }),
-    ).rejects.toThrow(BusinessRuleError);
+    ).rejects.toThrow(ConflictError);
   });
 
   it("should auto-create StaffProfile when changing from admin to staff", async () => {
@@ -150,7 +155,7 @@ describe("changeMemberRole", () => {
     const staffProfile = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.staffProfileRepository.findByMemberId(
-          secondAdminId as any,
+          MemberId.create(secondAdminId),
         );
       },
     );
@@ -174,7 +179,7 @@ describe("changeMemberRole", () => {
     const profileBefore = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.staffProfileRepository.findByMemberId(
-          staffMemberId as any,
+          MemberId.create(staffMemberId),
         );
       },
     );
@@ -195,7 +200,7 @@ describe("changeMemberRole", () => {
     const profileAfter = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.staffProfileRepository.findByMemberId(
-          staffMemberId as any,
+          MemberId.create(staffMemberId),
         );
       },
     );

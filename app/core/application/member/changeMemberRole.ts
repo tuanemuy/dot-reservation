@@ -1,9 +1,13 @@
+import { BusinessRuleError } from "@/core/domain/error";
 import { Member } from "@/core/domain/member/entity";
+import { MemberErrorCode } from "@/core/domain/member/errorCode";
 import { MemberPolicyService } from "@/core/domain/member/services/memberPolicyService";
 import { MemberId, MemberRole } from "@/core/domain/member/valueObject";
 import { StaffProfile } from "@/core/domain/staff/entity";
 import { TenantId } from "@/core/domain/tenant/valueObject";
 import {
+  ConflictError,
+  ConflictErrorCode,
   ForbiddenError,
   ForbiddenErrorCode,
   NotFoundError,
@@ -47,7 +51,17 @@ export async function changeMemberRole({
     const adminCount =
       await repositories.memberRepository.countAdminsByTenantId(tenantId);
 
-    MemberPolicyService.canChangeRole(adminCount, member.role, newRole);
+    try {
+      MemberPolicyService.canChangeRole(adminCount, member.role, newRole);
+    } catch (error) {
+      if (
+        error instanceof BusinessRuleError &&
+        error.code === MemberErrorCode.LastAdminCannotChangeRole
+      ) {
+        throw new ConflictError(ConflictErrorCode.Conflict, error.message);
+      }
+      throw error;
+    }
 
     const { entity: updatedMember, events } = Member.changeRole(
       member,
