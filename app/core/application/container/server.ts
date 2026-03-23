@@ -1,4 +1,5 @@
 import type { AuthProvider } from "@/core/domain/auth/ports/authProvider";
+import type { OutboxRepository } from "@/core/domain/common/ports/outboxRepository";
 import type { CustomerRepository } from "@/core/domain/customer/ports/customerRepository";
 import type { EmailSender as MemberEmailSender } from "@/core/domain/member/ports/emailSender";
 import type { InvitationRepository } from "@/core/domain/member/ports/invitationRepository";
@@ -11,6 +12,7 @@ import type { ReservationRepository } from "@/core/domain/reservation/ports/rese
 import type { ShiftRepository } from "@/core/domain/shift/ports/shiftRepository";
 import type { ShiftRequestRepository } from "@/core/domain/shift/ports/shiftRequestRepository";
 import type { StaffProfileRepository } from "@/core/domain/staff/ports/staffProfileRepository";
+import type { StorageManager } from "@/core/domain/staff/ports/storageManager";
 import type { TenantRepository } from "@/core/domain/tenant/ports/tenantRepository";
 import type { UnitOfWorkProvider } from "../unitOfWork";
 
@@ -49,4 +51,6 @@ export type Container = {
   // External services
   memberEmailSender: MemberEmailSender;
   notificationEmailSender: NotificationEmailSender;
+  storageManager: StorageManager;
+  outboxRepository: OutboxRepository;
 };

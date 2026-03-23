@@ -88,6 +88,7 @@ type NotificationType =
   | "invitation_received"
   | "member_joined"
   | "member_left"
+  | "member_removed"
   | "shift_request_submitted";
 
 const VALID_NOTIFICATION_TYPES: ReadonlySet<string> = new Set([
@@ -104,6 +105,7 @@ const VALID_NOTIFICATION_TYPES: ReadonlySet<string> = new Set([
   "invitation_received",
   "member_joined",
   "member_left",
+  "member_removed",
   "shift_request_submitted",
 ]);
 

@@ -15,6 +15,7 @@ import { DrizzleSqliteMemberRepository } from "@/core/adapters/drizzleSqlite/rep
 import { DrizzleSqliteMenuRepository } from "@/core/adapters/drizzleSqlite/repositories/menuRepository";
 import { DrizzleSqliteNotificationPreferenceRepository } from "@/core/adapters/drizzleSqlite/repositories/notificationPreferenceRepository";
 import { DrizzleSqliteNotificationRepository } from "@/core/adapters/drizzleSqlite/repositories/notificationRepository";
+import { DrizzleSqliteOutboxRepository } from "@/core/adapters/drizzleSqlite/repositories/outboxRepository";
 import { DrizzleSqliteReservationRepository } from "@/core/adapters/drizzleSqlite/repositories/reservationRepository";
 import { DrizzleSqliteShiftRepository } from "@/core/adapters/drizzleSqlite/repositories/shiftRepository";
 import { DrizzleSqliteShiftRequestRepository } from "@/core/adapters/drizzleSqlite/repositories/shiftRequestRepository";
@@ -26,6 +27,7 @@ import type { Container } from "@/core/application/container/server";
 import type { AuthProvider } from "@/core/domain/auth/ports/authProvider";
 import type { EmailSender as MemberEmailSender } from "@/core/domain/member/ports/emailSender";
 import type { EmailSender as NotificationEmailSender } from "@/core/domain/notification/ports/emailSender";
+import type { StorageManager } from "@/core/domain/staff/ports/storageManager";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -167,6 +169,11 @@ export async function createTestContainer(
     notificationEmailSender: {
       sendNotificationEmail: async () => {},
     } as NotificationEmailSender,
+    storageManager: {
+      uploadImage: async () => "https://example.com/test-image.png",
+      deleteImage: async () => {},
+    } as StorageManager,
+    outboxRepository: new DrizzleSqliteOutboxRepository(dbWithCleanup.db),
     // Test utilities
     db: dbWithCleanup.db,
     cleanup: async () => {
