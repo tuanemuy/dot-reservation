@@ -23,6 +23,7 @@ import { DrizzleSqliteTenantRepository } from "@/core/adapters/drizzleSqlite/rep
 import * as schema from "@/core/adapters/drizzleSqlite/schema";
 import { DrizzleSqliteUnitOfWorkProvider } from "@/core/adapters/drizzleSqlite/unitOfWork";
 import type { Container } from "@/core/application/container/server";
+import type { AuthProvider } from "@/core/domain/auth/ports/authProvider";
 import type { EmailSender as MemberEmailSender } from "@/core/domain/member/ports/emailSender";
 import type { EmailSender as NotificationEmailSender } from "@/core/domain/notification/ports/emailSender";
 
@@ -154,6 +155,12 @@ export async function createTestContainer(
     ),
     notificationPreferenceRepository:
       new DrizzleSqliteNotificationPreferenceRepository(dbWithCleanup.db),
+    authProvider: {
+      getSession: async () => null,
+      deleteUser: async () => {},
+      banUser: async () => {},
+      unbanUser: async () => {},
+    } as AuthProvider,
     memberEmailSender: {
       sendInvitationEmail: async () => {},
     } as MemberEmailSender,

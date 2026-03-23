@@ -16,28 +16,41 @@
 | 認証ユーザーID（AuthUserId） | better-auth ユーザーの一意識別子。Customer.authUserId / Member.authUserId に対応 |
 | メール確認（Email Verification） | ユーザー登録時にメールアドレスの所有を確認するプロセス |
 
+## 認証アカウント共有モデル
+
+1つの better-auth ユーザー（1つのメールアドレス）で、Customer エンティティと Member エンティティの**両方を持てる**。
+
+- ユーザー種別はドメインエンティティの存在で判別する（better-auth の role ではない）
+- ログインは共通セッション。アクセスする URL パス（`/customer/*` vs `/admin/*`）でコンテキストが決まる
+- 詳細は [ADR-002](../adr/002-separate-customer-member-auth.md) を参照
+
 ## 認証フロー
 
 ### ユーザー登録（サインアップ）
 
 顧客登録とメンバー登録は別々のページで行われるが、認証基盤としては同一の better-auth インスタンスを使用する。
 
-**顧客登録フロー:**
+**初回登録フロー（auth ユーザーが未作成の場合）:**
 1. フロントエンドが `authClient.signUp.email({ name, email, password })` を呼び出す
 2. better-auth がユーザーレコードを作成し、確認メールを送信する
-3. フロントエンドが成功コールバックで `createCustomer` ユースケースを呼び出す（authUserId, displayName, email を渡す）
+3. フロントエンドが成功コールバックで、ドメインエンティティ作成ユースケースを呼び出す
+   - 顧客登録ページ: `createCustomer(authUserId, displayName, email)`
+   - メンバー登録ページ: `createMemberAccount(authUserId, name, email)`
 4. ユーザーはメール確認リンクをクリック → 確認完了ページ → ログインページ
 
-**メンバー登録フロー:**
-1. フロントエンドが `authClient.signUp.email({ name, email, password })` を呼び出す
-2. better-auth がユーザーレコードを作成し、確認メールを送信する
-3. フロントエンドが成功コールバックで `createMemberAccount` ユースケースを呼び出す（authUserId, name, email を渡す）
-4. ユーザーはメール確認リンクをクリック → 確認完了ページ → 管理画面ログインページ
+**クロス登録フロー（auth ユーザーが既に存在する場合）:**
+1. フロントエンドが `authClient.signUp.email(...)` を呼び出す → 「メールアドレスは既に登録済みです」エラー
+2. フロントエンドがエラーを検知し、「このメールアドレスは既に登録されています。ログインしてください。」とメッセージを表示する
+3. ユーザーがログインページに移動し、ログインする
+4. ログイン後、ルートの loader がドメインエンティティの存在を確認する
+5. ドメインエンティティが存在しない → プロフィール作成ページにリダイレクトする
+6. プロフィール作成ページで必要情報を入力 → ドメインエンティティ作成ユースケースを呼び出す
+   - 顧客プロフィール作成: `createCustomer(authUserId, displayName, email)`
+   - メンバープロフィール作成: `createMemberAccount(authUserId, name, email)`
 
 **障害時のリカバリ:**
-- ステップ 2 成功後にステップ 3 が失敗した場合、auth ユーザーは存在するがドメインエンティティが未作成の状態になる
-- この場合、ユーザーは再ログイン後にドメインエンティティ作成をリトライできる
-- ルートの loader でセッションは有効だが対応するドメインエンティティが見つからない場合、エンティティ作成ページにリダイレクトする
+- 初回登録のステップ 2 成功後にステップ 3 が失敗した場合、auth ユーザーは存在するがドメインエンティティが未作成の状態になる
+- この場合、ユーザーは再ログイン後にドメインエンティティ作成をリトライできる（クロス登録フローと同じ動き）
 
 ### ログイン（サインイン）
 
@@ -46,8 +59,8 @@
 3. 以降のリクエストは Cookie に含まれるトークンで認証される
 
 **ログイン後のルーティング:**
-- 顧客ログイン: ドメインエンティティ（Customer）の存在確認 → マイページへ
-- メンバーログイン: ドメインエンティティ（Member）の存在確認 → テナント選択 or ダッシュボードへ
+- 顧客ログイン: Customer エンティティの存在確認 → 存在しない場合はプロフィール作成ページ、存在する場合はマイページへ
+- メンバーログイン: Member エンティティの存在確認 → 存在しない場合はプロフィール作成ページ、存在する場合はテナント選択 or ダッシュボードへ
 - プラットフォーム管理者ログイン: `user.role === "admin"` を確認 → 管理ダッシュボードへ
 
 ### セッション検証
@@ -57,7 +70,7 @@
 1. loader/action で `container.authProvider.getSession(request.headers)` を呼び出す
 2. セッションが null → 未認証。ログインページへリダイレクト
 3. セッションが有効 → `authUser.id` を使って対応するドメインエンティティを取得
-4. ドメインエンティティが存在しない → エラーまたはリダイレクト
+4. ドメインエンティティが存在しない → プロフィール作成ページへリダイレクト
 5. ドメインエンティティの状態を確認（停止中でないか等）
 
 ### ログアウト（サインアウト）
@@ -85,6 +98,25 @@
 2. better-auth が新しいメールアドレスに確認メールを送信する
 3. 確認完了後、better-auth がユーザーのメールを更新する
 4. better-auth の databaseHooks でドメインエンティティ（Customer / Member）のメールも連動して更新する
+
+## 停止・BAN の設計
+
+### 顧客の停止（ドメインレベル）
+
+顧客の停止は **Customer.status** で管理する。better-auth の BAN は使用しない。
+
+- `suspendCustomer`: Customer.status を "suspended" に変更するのみ
+- `reactivateCustomer`: Customer.status を "active" に変更するのみ
+- 顧客ページの loader で Customer.status === "suspended" をチェックし、停止中ならエラーページを表示する
+- **メンバーとしてのアクセスは影響を受けない**（同一 auth ユーザーでもメンバー側は正常に利用可能）
+
+### プラットフォームレベルの BAN（auth レベル）
+
+プラットフォーム管理者がユーザーを完全にブロックする場合に、better-auth の BAN を使用する。
+
+- `authProvider.banUser()`: auth ユーザーを BAN → 全セッション無効化 → 全サービスでログイン不可
+- **顧客としてもメンバーとしてもアクセス不可**になる
+- この操作はプラットフォーム管理者の明示的な操作でのみ実行される
 
 ## 型定義
 
@@ -124,7 +156,7 @@
 
 - `getSession(headers: Headers): Promise<{ user: AuthUser; session: AuthSession } | null>` — リクエストヘッダーの Cookie からセッションを検証し、有効であればユーザー情報とセッション情報を返す。無効または期限切れの場合は null
 - `deleteUser(userId: string): Promise<void>` — 認証ユーザーを削除する。関連するセッション・アカウント情報も全て削除される
-- `banUser(userId: string, reason?: string): Promise<void>` — ユーザーを BAN する。既存のセッションも全て無効化され、以降のログインが拒否される
+- `banUser(userId: string, reason?: string): Promise<void>` — ユーザーを BAN する。既存のセッションも全て無効化され、以降のログインが拒否される。プラットフォームレベルのブロックに使用
 - `unbanUser(userId: string): Promise<void>` — BAN を解除する
 
 ### AuthEmailSender
@@ -191,7 +223,8 @@ databaseHooks: {
     update: {
       after: async (user) => {
         // メールアドレス変更時にドメインエンティティのメールも更新
-        // Customer.email, Member.email を user.email に同期
+        // Customer.email を user.email に同期（Customer が存在する場合）
+        // Member.email を user.email に同期（Member が存在する場合）
       }
     }
   }
@@ -204,20 +237,22 @@ databaseHooks: {
 
 | 操作 | 統合内容 |
 |---|---|
-| 顧客登録 | `authClient.signUp` → `createCustomer(authUserId, ...)` |
+| 顧客登録（新規） | `authClient.signUp` → `createCustomer(authUserId, ...)` |
+| 顧客登録（クロス登録） | ログイン後、Customer 未作成なら → プロフィール作成ページ → `createCustomer(authUserId, ...)` |
 | 顧客ログイン | `authClient.signIn` → セッション取得 → `findByAuthUserId(authUserId)` |
-| アカウント削除 | `deleteCustomer` 内で `authProvider.deleteUser(authUserId)` を呼び出す |
-| アカウント停止 | `suspendCustomer` 内で `authProvider.banUser(authUserId, reason)` を呼び出す |
-| アカウント再開 | `reactivateCustomer` 内で `authProvider.unbanUser(authUserId)` を呼び出す |
+| アカウント削除 | `deleteCustomer` → Customer エンティティ削除 → `cleanupAuthUserIfOrphaned` |
+| アカウント停止 | `suspendCustomer` → Customer.status を "suspended" に変更（auth BAN は使用しない） |
+| アカウント再開 | `reactivateCustomer` → Customer.status を "active" に変更 |
 | メール変更 | better-auth の databaseHooks で Customer.email を同期 |
 
 ### Member ドメイン
 
 | 操作 | 統合内容 |
 |---|---|
-| メンバー登録 | `authClient.signUp` → `createMemberAccount(authUserId, ...)` |
+| メンバー登録（新規） | `authClient.signUp` → `createMemberAccount(authUserId, ...)` |
+| メンバー登録（クロス登録） | ログイン後、Member 未作成なら → プロフィール作成ページ → `createMemberAccount(authUserId, ...)` |
 | メンバーログイン | `authClient.signIn` → セッション取得 → `findByAuthUserId(authUserId)` |
-| アカウント削除 | `deleteMemberAccount` 内で `authProvider.deleteUser(authUserId)` を呼び出す |
+| アカウント削除 | `deleteMemberAccount` → Member エンティティ削除 → `cleanupAuthUserIfOrphaned` |
 | メール変更 | better-auth の databaseHooks で Member.email を同期 |
 
 ### プラットフォーム管理者
@@ -226,16 +261,20 @@ databaseHooks: {
 |---|---|
 | 管理者ログイン | `authClient.signIn` → セッション取得 → `user.role === "admin"` を確認 |
 | 管理者作成 | システム側でシードスクリプトにより事前作成。`role = "admin"` を設定 |
-| 顧客停止 | `suspendCustomer` → `authProvider.banUser()` |
-| 顧客再開 | `reactivateCustomer` → `authProvider.unbanUser()` |
+| ユーザー BAN | `authProvider.banUser()` — 全サービスでのアクセスをブロック |
+| ユーザー BAN 解除 | `authProvider.unbanUser()` |
 
 ## ユースケース（概要）
 
-Auth 固有のユースケースは定義しない。認証操作は better-auth が直接ハンドリングし、ドメインエンティティの操作は既存の各ドメインのユースケースが担当する。
+### cleanupAuthUserIfOrphaned — auth ユーザーの条件付き削除
 
-ただし、以下の既存ユースケースに AuthProvider ポートの呼び出しを追加する:
+Customer または Member のアカウント削除後に呼び出す。auth ユーザーに紐づくドメインエンティティが一つも存在しない場合にのみ、auth ユーザーを削除する。
 
-- `deleteCustomer` — `authProvider.deleteUser()` を追加
-- `suspendCustomer` — `authProvider.banUser()` を追加
-- `reactivateCustomer` — `authProvider.unbanUser()` を追加
-- `deleteMemberAccount` — `authProvider.deleteUser()` を追加
+- **入力**: authUserId（string）
+- **処理フロー**:
+  1. `customerRepository.findByAuthUserId(authUserId)` で Customer の存在を確認する
+  2. `memberRepository.findByAuthUserId(authUserId)` で Member の存在を確認する
+  3. 両方とも存在しない場合、`authProvider.deleteUser(authUserId)` で auth ユーザーを削除する
+  4. いずれかが存在する場合、何もしない
+
+その他の既存ユースケースへの AuthProvider ポート呼び出し変更は [usecases/auth.md](../usecases/auth.md) を参照。

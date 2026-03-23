@@ -6,6 +6,10 @@
 
 | テーブル名 | ドメイン | 説明 |
 |---|---|---|
+| users | Auth (better-auth) | 認証ユーザー |
+| sessions | Auth (better-auth) | セッション |
+| accounts | Auth (better-auth) | 認証アカウント（プロバイダー紐づけ） |
+| verifications | Auth (better-auth) | メール確認・パスワードリセットトークン |
 | customers | Customer | 顧客アカウント |
 | tenants | Tenant | テナント（店舗） |
 | temporary_holidays | Tenant | 臨時休業日 |
@@ -20,6 +24,98 @@
 | notifications | Notification | 通知 |
 | notification_preferences | Notification | 通知設定 |
 | outbox_events | Common | Outboxイベント |
+
+---
+
+## users（better-auth 管理）
+
+better-auth コアテーブル + admin プラグインのフィールド。better-auth の Drizzle アダプター（`usePlural: true`）で管理される。
+
+| カラム名 | 型 | 制約 | 説明 |
+|---|---|---|---|
+| id | TEXT | PK | 認証ユーザーID |
+| name | TEXT | NOT NULL | 表示名 |
+| email | TEXT | NOT NULL, UNIQUE | メールアドレス |
+| email_verified | INTEGER | NOT NULL, DEFAULT 0 | メール確認済みフラグ (0/1) |
+| image | TEXT | | プロフィール画像URL |
+| role | TEXT | NOT NULL, DEFAULT 'user' | ロール (user / admin)。admin プラグインが追加 |
+| banned | INTEGER | NOT NULL, DEFAULT 0 | BAN フラグ (0/1)。admin プラグインが追加 |
+| ban_reason | TEXT | | BAN 理由。admin プラグインが追加 |
+| ban_expires | INTEGER | | BAN 解除日時（Unix timestamp）。admin プラグインが追加 |
+| created_at | INTEGER | NOT NULL | 作成日時 |
+| updated_at | INTEGER | NOT NULL | 更新日時 |
+
+**インデックス:**
+- `idx_users_email` ON (email) UNIQUE
+
+**備考:**
+- このテーブルのスキーマは better-auth CLI (`npx auth generate`) で生成する
+- `customers.auth_user_id` と `members.auth_user_id` がこのテーブルの `id` を参照する
+
+---
+
+## sessions（better-auth 管理）
+
+| カラム名 | 型 | 制約 | 説明 |
+|---|---|---|---|
+| id | TEXT | PK | セッションID |
+| user_id | TEXT | NOT NULL, FK → users.id | ユーザーID |
+| token | TEXT | NOT NULL, UNIQUE | セッショントークン |
+| expires_at | INTEGER | NOT NULL | 有効期限（Unix timestamp） |
+| ip_address | TEXT | | IPアドレス |
+| user_agent | TEXT | | ユーザーエージェント |
+| created_at | INTEGER | NOT NULL | 作成日時 |
+| updated_at | INTEGER | NOT NULL | 更新日時 |
+
+**インデックス:**
+- `idx_sessions_user_id` ON (user_id)
+- `idx_sessions_token` ON (token) UNIQUE
+
+---
+
+## accounts（better-auth 管理）
+
+| カラム名 | 型 | 制約 | 説明 |
+|---|---|---|---|
+| id | TEXT | PK | アカウントID |
+| user_id | TEXT | NOT NULL, FK → users.id | ユーザーID |
+| account_id | TEXT | NOT NULL | プロバイダーアカウントID |
+| provider_id | TEXT | NOT NULL | プロバイダーID（"credential" = メール+パスワード） |
+| access_token | TEXT | | アクセストークン（OAuth用） |
+| refresh_token | TEXT | | リフレッシュトークン（OAuth用） |
+| access_token_expires_at | INTEGER | | アクセストークン有効期限 |
+| refresh_token_expires_at | INTEGER | | リフレッシュトークン有効期限 |
+| scope | TEXT | | OAuthスコープ |
+| id_token | TEXT | | IDトークン（OAuth用） |
+| password | TEXT | | ハッシュ化されたパスワード（メール+パスワード認証用） |
+| created_at | INTEGER | NOT NULL | 作成日時 |
+| updated_at | INTEGER | NOT NULL | 更新日時 |
+
+**インデックス:**
+- `idx_accounts_user_id` ON (user_id)
+
+**備考:**
+- メール+パスワード認証の場合、`provider_id = "credential"`, `account_id = user_id`, `password` にハッシュ値を格納
+- OAuth プロバイダーは初期リリースでは対象外だが、テーブル構造は better-auth が標準で作成する
+
+---
+
+## verifications（better-auth 管理）
+
+| カラム名 | 型 | 制約 | 説明 |
+|---|---|---|---|
+| id | TEXT | PK | 検証ID |
+| identifier | TEXT | NOT NULL | 検証対象の識別子（メールアドレス等） |
+| value | TEXT | NOT NULL | 検証トークン |
+| expires_at | INTEGER | NOT NULL | 有効期限（Unix timestamp） |
+| created_at | INTEGER | NOT NULL | 作成日時 |
+| updated_at | INTEGER | NOT NULL | 更新日時 |
+
+**インデックス:**
+- `idx_verifications_identifier` ON (identifier)
+
+**備考:**
+- メール確認トークン（有効期限: 24時間）とパスワードリセットトークン（有効期限: 1時間）を管理
 
 ---
 

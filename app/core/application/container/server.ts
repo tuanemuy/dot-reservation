@@ -1,3 +1,4 @@
+import type { AuthProvider } from "@/core/domain/auth/ports/authProvider";
 import type { CustomerRepository } from "@/core/domain/customer/ports/customerRepository";
 import type { EmailSender as MemberEmailSender } from "@/core/domain/member/ports/emailSender";
 import type { InvitationRepository } from "@/core/domain/member/ports/invitationRepository";
@@ -41,6 +42,9 @@ export type Container = {
   reservationRepository: ReservationRepository;
   notificationRepository: NotificationRepository;
   notificationPreferenceRepository: NotificationPreferenceRepository;
+
+  // Auth
+  authProvider: AuthProvider;
 
   // External services
   memberEmailSender: MemberEmailSender;

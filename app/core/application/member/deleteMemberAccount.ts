@@ -2,6 +2,7 @@ import type { DomainEvent } from "@/core/domain/common/event";
 import { MemberEvents } from "@/core/domain/member/events";
 import type { TenantMembership } from "@/core/domain/member/services/memberPolicyService";
 import { MemberPolicyService } from "@/core/domain/member/services/memberPolicyService";
+import { cleanupAuthUserIfOrphaned } from "../auth/cleanupAuthUserIfOrphaned";
 import { NotFoundError, NotFoundErrorCode } from "../error";
 import type { ServiceArgs } from "../types";
 
@@ -12,11 +13,13 @@ export type DeleteMemberAccountInput = {
 export async function deleteMemberAccount({
   container,
   input,
+  headers,
 }: ServiceArgs<DeleteMemberAccountInput>): Promise<void> {
+  const { authUserId } = input;
+
   await container.unitOfWorkProvider.transaction(async (repositories) => {
-    const members = await repositories.memberRepository.findByAuthUserId(
-      input.authUserId,
-    );
+    const members =
+      await repositories.memberRepository.findByAuthUserId(authUserId);
 
     if (members.length === 0) {
       throw new NotFoundError(
@@ -64,5 +67,11 @@ export async function deleteMemberAccount({
     }
 
     await repositories.outboxRepository.saveEvents(events);
+  });
+
+  await cleanupAuthUserIfOrphaned({
+    container,
+    headers,
+    input: { authUserId },
   });
 }

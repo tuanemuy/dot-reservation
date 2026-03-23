@@ -5,6 +5,8 @@
  * with all necessary adapters for server-side operations.
  */
 
+import { BetterAuthProvider } from "@/core/adapters/betterAuth/authProvider";
+import { createBetterAuth } from "@/core/adapters/betterAuth/server";
 import { getDatabase } from "@/core/adapters/drizzleSqlite/client";
 import { DrizzleSqliteCustomerRepository } from "@/core/adapters/drizzleSqlite/repositories/customerRepository";
 import { DrizzleSqliteInvitationRepository } from "@/core/adapters/drizzleSqlite/repositories/invitationRepository";
@@ -19,6 +21,7 @@ import { DrizzleSqliteStaffProfileRepository } from "@/core/adapters/drizzleSqli
 import { DrizzleSqliteTenantRepository } from "@/core/adapters/drizzleSqlite/repositories/tenantRepository";
 import { DrizzleSqliteUnitOfWorkProvider } from "@/core/adapters/drizzleSqlite/unitOfWork";
 import type { Container } from "@/core/application/container/server";
+import type { AuthEmailSender } from "@/core/domain/auth/ports/authEmailSender";
 
 /**
  * Server configuration type
@@ -26,6 +29,7 @@ import type { Container } from "@/core/application/container/server";
 export type ServerConfig = {
   databaseUrl: string;
   appUrl: string;
+  authSecret: string;
 };
 
 /**
@@ -34,6 +38,7 @@ export type ServerConfig = {
 function getServerConfig(): ServerConfig {
   const databaseUrl = process.env.SQLITE_URL;
   const appUrl = process.env.APP_URL;
+  const authSecret = process.env.AUTH_SECRET;
 
   if (!databaseUrl) {
     throw new Error("SQLITE_URL environment variable is not set");
@@ -43,9 +48,14 @@ function getServerConfig(): ServerConfig {
     throw new Error("APP_URL environment variable is not set");
   }
 
+  if (!authSecret) {
+    throw new Error("AUTH_SECRET environment variable is not set");
+  }
+
   return {
     databaseUrl,
     appUrl,
+    authSecret,
   };
 }
 
@@ -56,6 +66,22 @@ export function createContainer(config: ServerConfig): Container {
   const db = getDatabase(config.databaseUrl);
   const unitOfWorkProvider = new DrizzleSqliteUnitOfWorkProvider(db);
 
+  const authEmailSender: AuthEmailSender = {
+    sendVerificationEmail: async () => {
+      console.warn("Verification email sending not implemented yet");
+    },
+    sendPasswordResetEmail: async () => {
+      console.warn("Password reset email sending not implemented yet");
+    },
+  };
+
+  const auth = createBetterAuth({
+    db,
+    baseURL: config.appUrl,
+    secret: config.authSecret,
+    authEmailSender,
+  });
+
   return {
     config: {
       appUrl: config.appUrl,
@@ -63,6 +89,7 @@ export function createContainer(config: ServerConfig): Container {
       maxSessionsPerUser: 3,
     },
     unitOfWorkProvider,
+    authProvider: new BetterAuthProvider(auth),
     customerRepository: new DrizzleSqliteCustomerRepository(db),
     tenantRepository: new DrizzleSqliteTenantRepository(db),
     memberRepository: new DrizzleSqliteMemberRepository(db),
@@ -75,7 +102,6 @@ export function createContainer(config: ServerConfig): Container {
     notificationRepository: new DrizzleSqliteNotificationRepository(db),
     notificationPreferenceRepository:
       new DrizzleSqliteNotificationPreferenceRepository(db),
-    // TODO: Implement real email senders
     memberEmailSender: {
       sendInvitationEmail: async () => {
         console.warn("Email sending not implemented yet");
