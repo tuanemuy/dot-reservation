@@ -3,9 +3,10 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
-import { ValidationError } from "@/core/application/error";
+import { ConflictError, ValidationError } from "@/core/application/error";
 import { BusinessRuleError } from "@/core/domain/error";
 import { createMemberAccount } from "../createMemberAccount";
+import { createTestTenant } from "./memberTestHelpers";
 
 describe("createMemberAccount", () => {
   const getContainer = setupTestContainer();
@@ -104,5 +105,26 @@ describe("createMemberAccount", () => {
         },
       }),
     ).rejects.toThrow(BusinessRuleError);
+  });
+
+  it("should throw ConflictError when authUserId already exists", async () => {
+    const container = getContainer();
+    const authUserId = "auth-duplicate-member";
+
+    // Create a tenant with an admin member that has this authUserId
+    await createTestTenant(container, { authUserId });
+
+    // Attempting to create a member account with the same authUserId should conflict
+    await expect(
+      createMemberAccount({
+        container,
+        headers: createMockHeaders(),
+        input: {
+          authUserId,
+          name: "Duplicate User",
+          email: "duplicate@example.com",
+        },
+      }),
+    ).rejects.toThrow(ConflictError);
   });
 });

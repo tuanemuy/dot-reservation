@@ -1,19 +1,22 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { createTenant } from "@/core/application/tenant/createTenant";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/new-tenant";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -48,30 +51,40 @@ const createTenantSchema = z.object({
 const handlers = {
   createTenant: defineHandler({
     schema: createTenantSchema,
-    handler: async (value, _args) => {
-      // TODO: 認証ユーザーの情報を取得して createTenant ユースケースを呼び出す
-      // const result = await handleUseCase(() =>
-      //   createTenant({
-      //     container,
-      //     headers: args.request.headers,
-      //     input: {
-      //       authUserId,
-      //       name: value.name,
-      //       category: value.category,
-      //       urlPath: value.urlPath,
-      //       postalCode: value.postalCode,
-      //       address: { prefecture: value.prefecture, city: value.city, street: value.street },
-      //       phoneNumber: value.phone,
-      //       creatorName,
-      //       creatorEmail,
-      //     },
-      //   }),
-      // ).match(
-      //   (result) => result,
-      //   (e) => error({ "": [e.message] }),
-      // );
-      console.log("Create tenant:", value);
-      return success({ tenantId: "new-tenant-id" });
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        throw redirect("/admin/login");
+      }
+
+      return handleUseCase(() =>
+        createTenant({
+          container,
+          headers: args.request.headers,
+          input: {
+            authUserId: session.user.id,
+            name: value.name,
+            category: value.category,
+            urlPath: value.urlPath,
+            postalCode: value.postalCode,
+            address: {
+              prefecture: value.prefecture,
+              city: value.city,
+              street: value.street,
+            },
+            phoneNumber: value.phone,
+            creatorName: session.user.name,
+            creatorEmail: session.user.email,
+          },
+        }),
+      ).match(
+        (result) => success({ tenantId: result.id }),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -81,6 +94,7 @@ export async function action(args: Route.ActionArgs) {
 }
 
 export default function AdminNewTenantPage(_props: Route.ComponentProps) {
+  const navigate = useNavigate();
   const fetcher = useCompositeAction<typeof handlers>();
   const [step, setStep] = useState(1);
 
@@ -100,8 +114,7 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
 
   fetcher.register("createTenant", {
     onSuccess: ({ data: result }) => {
-      // TODO: 作成後のテナントダッシュボードへリダイレクト
-      console.log("Tenant created:", result);
+      navigate(`/admin/${result.tenantId}/dashboard`);
     },
     onHandlerError: ({ error: err }) => {
       console.error("Tenant creation failed:", err);

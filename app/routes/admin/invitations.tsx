@@ -1,17 +1,24 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
+import { acceptInvitation } from "@/core/application/member/acceptInvitation";
+import { declineInvitation } from "@/core/application/member/declineInvitation";
+import { listPendingInvitations } from "@/core/application/member/listPendingInvitations";
+import { getTenant } from "@/core/application/tenant/getTenant";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/invitations";
 
 type PendingInvitation = {
@@ -33,32 +40,58 @@ const declineSchema = z.object({
 const handlers = {
   accept: defineHandler({
     schema: acceptSchema,
-    handler: async (value, _args) => {
-      // TODO: acceptInvitation ユースケースを呼び出す
-      // await handleUseCase(() =>
-      //   acceptInvitation({
-      //     container,
-      //     headers: args.request.headers,
-      //     input: { invitationId: value.invitationId, authUserId, email },
-      //   }),
-      // );
-      console.log("Accept invitation:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        throw redirect("/admin/login");
+      }
+
+      return handleUseCase(() =>
+        acceptInvitation({
+          container,
+          headers: args.request.headers,
+          input: {
+            invitationId: value.invitationId,
+            authUserId: session.user.id,
+            email: session.user.email,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   decline: defineHandler({
     schema: declineSchema,
-    handler: async (value, _args) => {
-      // TODO: declineInvitation ユースケースを呼び出す
-      // await handleUseCase(() =>
-      //   declineInvitation({
-      //     container,
-      //     headers: args.request.headers,
-      //     input: { invitationId: value.invitationId, authUserId, email },
-      //   }),
-      // );
-      console.log("Decline invitation:", value);
-      return success();
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        throw redirect("/admin/login");
+      }
+
+      return handleUseCase(() =>
+        declineInvitation({
+          container,
+          headers: args.request.headers,
+          input: {
+            invitationId: value.invitationId,
+            authUserId: session.user.id,
+            email: session.user.email,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -67,17 +100,49 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader({ request: _request }: Route.LoaderArgs) {
-  // TODO: 認証ユーザーのメールアドレスで listPendingInvitations ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   listPendingInvitations({
-  //     container,
-  //     headers: request.headers,
-  //     input: { email: currentUser.email },
-  //   }),
-  // );
-  // テナント名・招待者名はそれぞれのリポジトリから取得
-  const invitations: PendingInvitation[] = [];
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const result = await handleUseCase(() =>
+    listPendingInvitations({
+      container,
+      headers: request.headers,
+      input: { email: session.user.email },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const invitations: PendingInvitation[] = await Promise.all(
+    result.items.map(async (item) => {
+      const tenantResult = await handleUseCase(() =>
+        getTenant({
+          container,
+          headers: request.headers,
+          input: { tenantId: item.tenantId },
+        }),
+      ).match(
+        (result) => result,
+        () => null,
+      );
+
+      return {
+        id: item.id,
+        tenantName: tenantResult?.name ?? "不明なテナント",
+        inviterName: "",
+        role: item.role,
+        invitedAt: new Date(item.createdAt).toLocaleDateString("ja-JP"),
+      };
+    }),
+  );
 
   return { invitations };
 }

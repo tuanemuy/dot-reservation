@@ -1,18 +1,23 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { deleteMemberAccount } from "@/core/application/member/deleteMemberAccount";
+import { updateMemberProfile } from "@/core/application/member/updateMemberProfile";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/profile";
 
 const updateProfileSchema = z.object({
@@ -44,27 +49,80 @@ const deleteAccountSchema = z.object({
 const handlers = {
   updateProfile: defineHandler({
     schema: updateProfileSchema,
-    handler: async (value, _args) => {
-      // TODO: updateMemberProfile ユースケースを呼び出す
-      console.log("Update member profile:", value);
+    handler: async (value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        throw redirect("/admin/login");
+      }
+
+      const members = await container.memberRepository.findByAuthUserId(
+        session.user.id,
+      );
+      if (members.length === 0) {
+        return error({ "": ["メンバー情報が見つかりません"] });
+      }
+
+      const results = await Promise.all(
+        members.map((member) =>
+          handleUseCase(() =>
+            updateMemberProfile({
+              container,
+              headers: args.request.headers,
+              input: {
+                memberId: member.id,
+                name: value.name,
+                phoneNumber: value.phoneNumber || null,
+              },
+            }),
+          ).match(
+            () => true,
+            () => false,
+          ),
+        ),
+      );
+
+      if (results.some((r) => !r)) {
+        return error({ "": ["プロフィールの更新に失敗しました"] });
+      }
+
       return success();
     },
   }),
   changePassword: defineHandler({
     schema: changePasswordSchema,
-    handler: async (value, _args) => {
-      // TODO: パスワード変更を実装
-      console.log("Change password:", value);
-      return success();
+    handler: async (_value, _args) => {
+      // パスワード変更はクライアントサイドで authClient.changePassword() を使用
+      return error({
+        "": ["パスワード変更はクライアントサイドで実行してください。"],
+      });
     },
   }),
   deleteAccount: defineHandler({
     schema: deleteAccountSchema,
-    handler: async (value, _args) => {
-      // TODO: deleteMemberAccount ユースケースを呼び出す
-      // 唯一の管理者の場合は警告を返す
-      console.log("Delete member account:", value);
-      return success();
+    handler: async (_value, args) => {
+      const { container } = await import("@/core/di/server");
+
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        throw redirect("/admin/login");
+      }
+
+      return handleUseCase(() =>
+        deleteMemberAccount({
+          container,
+          headers: args.request.headers,
+          input: { authUserId: session.user.id },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -73,13 +131,24 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader(_args: Route.LoaderArgs) {
-  // TODO: 認証ユーザーのプロフィールを取得
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const member = members[0];
+
   return {
     profile: {
-      name: "",
-      email: "",
-      phoneNumber: "",
+      name: member?.name ?? session.user.name,
+      email: session.user.email,
+      phoneNumber: (member?.phoneNumber as string | null) ?? "",
     },
   };
 }
@@ -155,9 +224,10 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
   });
 
   fetcher.register("deleteAccount", {
-    onSuccess: () => {
-      // TODO: ログアウト＆リダイレクト
-      console.log("Account deleted");
+    onSuccess: async () => {
+      const { authClient } = await import("@/lib/authClient");
+      await authClient.signOut();
+      window.location.href = "/admin/login";
     },
     onHandlerError: ({ error: err }) => {
       console.error("Account deletion failed:", err);

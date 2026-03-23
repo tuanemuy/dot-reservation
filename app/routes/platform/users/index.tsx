@@ -1,10 +1,13 @@
-import { Form, Link, useSearchParams } from "react-router";
+import { data, Form, Link, useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
 import { Select } from "@/components/ui/Select";
+import { listCustomers } from "@/core/application/customer/listCustomers";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
 type UserSummary = {
@@ -28,28 +31,38 @@ const statusLabels: Record<string, string> = {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const _keyword = url.searchParams.get("keyword") ?? "";
-  const _status = url.searchParams.get("status") ?? "";
-  const _page = Number(url.searchParams.get("page") ?? "1");
+  const keyword = url.searchParams.get("keyword") || null;
+  const status = url.searchParams.get("status") || null;
+  const page = Number(url.searchParams.get("page") ?? "1");
+  const limit = 20;
 
-  // TODO: listCustomers ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   listCustomers({
-  //     container,
-  //     headers: request.headers,
-  //     input: { keyword, status, page, limit: 20 },
-  //   }),
-  // ).match(
-  //   (result) => result,
-  //   (e) => { throw data({ message: e.message }, { status: e.status }); },
-  // );
-  const users: UserSummary[] = [];
+  const result = await handleUseCase(() =>
+    listCustomers({
+      container,
+      headers: request.headers,
+      input: { keyword, status, page, limit },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const users: UserSummary[] = result.items.map((item) => ({
+    id: item.id,
+    name: item.displayName,
+    email: item.email,
+    status: item.status,
+    createdAt: item.createdAt.toLocaleDateString("ja-JP"),
+    lastLoginAt: null,
+  }));
 
   return {
     users,
     pagination: {
-      currentPage: 1,
-      totalPages: 1,
+      currentPage: page,
+      totalPages: Math.max(1, Math.ceil(result.totalCount / limit)),
     },
   };
 }

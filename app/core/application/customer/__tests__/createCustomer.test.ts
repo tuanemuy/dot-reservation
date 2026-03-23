@@ -3,7 +3,7 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
-import { ConflictError } from "@/core/application/error";
+import { ConflictError, ValidationError } from "@/core/application/error";
 import { BusinessRuleError } from "@/core/domain/error";
 import { createCustomer } from "../createCustomer";
 
@@ -156,23 +156,21 @@ describe("createCustomer", () => {
     ).rejects.toThrow(BusinessRuleError);
   });
 
-  it("authUserIdが空文字の場合でも顧客が作成される（現在の実装ではバリデーションなし）", async () => {
+  it("authUserIdが空文字の場合ValidationErrorがスローされる", async () => {
     const container = getContainer();
     const headers = createMockHeaders();
 
-    // The current implementation does not validate authUserId for emptiness.
-    // This test documents the current behavior.
-    const result = await createCustomer({
-      container,
-      headers,
-      input: {
-        authUserId: "",
-        displayName: "空認証IDユーザー",
-        email: "empty-auth@example.com",
-      },
-    });
-
-    expect(result.id).toBeDefined();
+    await expect(
+      createCustomer({
+        container,
+        headers,
+        input: {
+          authUserId: "",
+          displayName: "空認証IDユーザー",
+          email: "empty-auth@example.com",
+        },
+      }),
+    ).rejects.toThrow(ValidationError);
   });
 
   it("displayNameが最大文字数を超えている場合BusinessRuleErrorがスローされる", async () => {

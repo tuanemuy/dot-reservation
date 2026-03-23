@@ -13,9 +13,13 @@ import {
 import { createReservation } from "../createReservation";
 import { getReservation } from "../getReservation";
 import {
+  assignMenuToStaff,
   formatDate,
+  insertMember,
+  insertMenu,
   insertReservation,
   insertShift,
+  insertStaffProfile,
   setupReservationScenario,
 } from "./helpers";
 
@@ -101,6 +105,72 @@ describe("createReservation", () => {
       input: { reservationId: result.id },
     });
     expect(reservation.staffName).toBe("Test Staff");
+  });
+
+  it("複数スタッフが存在する場合、指名なしで予約すると空きスタッフの中から自動的に割り当てられる", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+    const dateStr = formatDate(scenario.reservationDate);
+
+    // Fill the first staff's slot so the second staff should be assigned
+    await insertReservation(container.db, {
+      tenantId: scenario.tenantId,
+      customerId: scenario.customerId,
+      menuId: scenario.menuId,
+      staffProfileId: scenario.staffProfileId,
+      date: dateStr,
+      startTime: "10:00",
+      endTime: "11:00",
+      status: "confirmed",
+      menuName: "Test Menu",
+      menuDuration: 60,
+      menuPrice: 5000,
+      createdBy: "customer",
+    });
+
+    // Create a second staff member assigned to the same menu
+    const member2Id = await insertMember(container.db, scenario.tenantId, {
+      authUserId: "auth-staff-2",
+      name: "Second Staff Member",
+      email: "staff2@example.com",
+    });
+    const staff2Id = await insertStaffProfile(
+      container.db,
+      scenario.tenantId,
+      member2Id,
+      { displayName: "Second Staff" },
+    );
+    await assignMenuToStaff(container.db, staff2Id, scenario.menuId);
+    await insertShift(
+      container.db,
+      scenario.tenantId,
+      staff2Id,
+      scenario.reservationDate,
+    );
+
+    // Auto-assign should pick the second staff since the first is booked
+    const result = await createReservation({
+      container,
+      headers,
+      input: {
+        tenantId: scenario.tenantId,
+        customerId: scenario.customerId,
+        menuId: scenario.menuId,
+        staffProfileId: null,
+        date: dateStr,
+        startTime: "10:00",
+        note: null,
+      },
+    });
+
+    expect(result.id).toBeDefined();
+
+    const reservation = await getReservation({
+      container,
+      headers,
+      input: { reservationId: result.id },
+    });
+    expect(reservation.staffName).toBe("Second Staff");
   });
 
   it("メニュー名、所要時間、料金がスナップショットとして保存される", async () => {
@@ -361,6 +431,78 @@ describe("createReservation", () => {
           menuId: scenario.menuId,
           staffProfileId: scenario.staffProfileId,
           date: formatDate(farDate),
+          startTime: "10:00",
+          note: null,
+        },
+      }),
+    ).rejects.toThrow(ValidationError);
+  });
+
+  it("存在しないcustomerIdを指定するとNotFoundErrorが発生する", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+
+    await expect(
+      createReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: uuidv7(),
+          menuId: scenario.menuId,
+          staffProfileId: scenario.staffProfileId,
+          date: formatDate(scenario.reservationDate),
+          startTime: "10:00",
+          note: null,
+        },
+      }),
+    ).rejects.toThrow(NotFoundError);
+  });
+
+  it("存在しないstaffProfileIdを指定するとエラーが発生する", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+
+    // A non-existent staffProfileId has no shifts, so slot availability check
+    // fails first with ConflictError before the NotFoundError can be reached.
+    await expect(
+      createReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: scenario.customerId,
+          menuId: scenario.menuId,
+          staffProfileId: uuidv7(),
+          date: formatDate(scenario.reservationDate),
+          startTime: "10:00",
+          note: null,
+        },
+      }),
+    ).rejects.toThrow(ConflictError);
+  });
+
+  it("指定したスタッフが該当メニューを担当していない場合バリデーションエラーが発生する", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+
+    // Create a second menu that the staff is NOT assigned to
+    const unassignedMenuId = await insertMenu(container.db, scenario.tenantId, {
+      name: "Unassigned Menu",
+      duration: 60,
+      price: 3000,
+    });
+
+    await expect(
+      createReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: scenario.customerId,
+          menuId: unassignedMenuId,
+          staffProfileId: scenario.staffProfileId,
+          date: formatDate(scenario.reservationDate),
           startTime: "10:00",
           note: null,
         },

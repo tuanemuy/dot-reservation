@@ -1,6 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { data, useNavigate } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -8,12 +9,20 @@ import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { listMembers } from "@/core/application/member/listMembers";
+import { deleteTenant } from "@/core/application/tenant/deleteTenant";
+import { getTenant } from "@/core/application/tenant/getTenant";
+import { reactivateTenant } from "@/core/application/tenant/reactivateTenant";
+import { suspendTenant } from "@/core/application/tenant/suspendTenant";
+import { container } from "@/core/di/server";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/$tenantId";
 
 const suspendSchema = z.object({
@@ -29,31 +38,67 @@ const deleteSchema = z.object({
 const handlers = {
   suspend: defineHandler({
     schema: suspendSchema,
-    handler: async (value, _args) => {
-      // TODO: suspendTenant ユースケースを呼び出す
-      // const tenantId = args.params.tenantId;
-      // await handleUseCase(() =>
-      //   suspendTenant({ container, headers: args.request.headers, input: { tenantId } }),
-      // );
-      console.log("Suspend tenant:", value);
-      return success();
+    handler: async (_value, args) => {
+      const tenantId = args.params.tenantId!;
+      return handleUseCase(() =>
+        suspendTenant({
+          container,
+          headers: args.request.headers,
+          input: { tenantId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   resume: defineHandler({
     schema: resumeSchema,
-    handler: async (_value, _args) => {
-      // TODO: reactivateTenant ユースケースを呼び出す
-      console.log("Resume tenant");
-      return success();
+    handler: async (_value, args) => {
+      const tenantId = args.params.tenantId!;
+      return handleUseCase(() =>
+        reactivateTenant({
+          container,
+          headers: args.request.headers,
+          input: { tenantId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   delete: defineHandler({
     schema: deleteSchema,
-    handler: async (value, _args) => {
-      // TODO: deleteTenant ユースケースを呼び出す
-      // テナント名の一致確認は handler 内で行う
-      console.log("Delete tenant:", value);
-      return success();
+    handler: async (value, args) => {
+      const tenantId = args.params.tenantId!;
+
+      const tenantResult = await handleUseCase(() =>
+        getTenant({
+          container,
+          headers: args.request.headers,
+          input: { tenantId },
+        }),
+      );
+
+      if (tenantResult.isErr()) {
+        return error({ "": [tenantResult.error.message] });
+      }
+
+      if (value.confirmName !== tenantResult.value.name) {
+        return error({ confirmName: ["テナント名が一致しません"] });
+      }
+
+      return handleUseCase(() =>
+        deleteTenant({
+          container,
+          headers: args.request.headers,
+          input: { tenantId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -62,29 +107,64 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader({ params: _params }: Route.LoaderArgs) {
-  // TODO: getTenant ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   getTenant({ container, headers: request.headers, input: { tenantId: params.tenantId } }),
-  // );
-  // TODO: listMembers ユースケースを呼び出す
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const tenantResult = await handleUseCase(() =>
+    getTenant({
+      container,
+      headers: request.headers,
+      input: { tenantId: params.tenantId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const membersResult = await handleUseCase(() =>
+    listMembers({
+      container,
+      headers: request.headers,
+      input: { tenantId: params.tenantId!, role: null },
+    }),
+  ).match(
+    (result) => result,
+    () => ({
+      items: [] as {
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+        joinedAt: string;
+      }[],
+    }),
+  );
+
+  const address = [
+    tenantResult.address.prefecture,
+    tenantResult.address.city,
+    tenantResult.address.street,
+  ]
+    .filter(Boolean)
+    .join("");
+
   return {
     tenant: {
-      id: "",
-      name: "",
-      category: "",
-      urlPath: "",
-      address: "",
-      phone: "",
-      status: "" as "active" | "suspended",
-      createdAt: "",
+      id: tenantResult.id,
+      name: tenantResult.name,
+      category: tenantResult.category,
+      urlPath: tenantResult.urlPath,
+      address,
+      phone: tenantResult.phoneNumber,
+      status: tenantResult.status as "active" | "suspended",
+      createdAt: tenantResult.id ? new Date().toLocaleDateString("ja-JP") : "",
     },
-    members: [] as {
-      id: string;
-      name: string;
-      email: string;
-      role: string;
-    }[],
+    members: membersResult.items.map((m) => ({
+      id: m.id,
+      name: m.name,
+      email: m.email,
+      role: m.role,
+    })),
     stats: {
       menuCount: 0,
       totalReservations: 0,
@@ -108,6 +188,7 @@ export default function PlatformTenantDetailPage({
 }: Route.ComponentProps) {
   const { tenant, members, stats } = loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
+  const navigate = useNavigate();
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -160,8 +241,7 @@ export default function PlatformTenantDetailPage({
 
   fetcher.register("delete", {
     onSuccess: () => {
-      // TODO: テナント一覧ページへリダイレクト
-      console.log("Tenant deleted");
+      navigate("/platform/tenants");
     },
     onHandlerError: ({ error: err }) => {
       console.error("Delete failed:", err);

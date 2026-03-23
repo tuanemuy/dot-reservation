@@ -1,16 +1,20 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { useSearchParams } from "react-router";
+import { data, redirect, useSearchParams } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Pagination } from "@/components/ui/Pagination";
 import { Tabs } from "@/components/ui/Tabs";
+import { listNotifications } from "@/core/application/notification/listNotifications";
+import { markAllNotificationsAsRead } from "@/core/application/notification/markAllNotificationsAsRead";
+import { container } from "@/core/di/server";
 import {
   createCompositeAction,
   defineHandler,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
 type NotificationItem = {
@@ -29,21 +33,52 @@ const notificationTypeLabels: Record<NotificationItem["type"], string> = {
   announcement: "お知らせ",
 };
 
+function mapNotificationTypeToCategory(type: string): NotificationItem["type"] {
+  if (type.startsWith("reservation") || type === "new_reservation") {
+    return "reservation";
+  }
+  if (
+    type === "member_joined" ||
+    type === "member_left" ||
+    type === "invitation_received"
+  ) {
+    return "member";
+  }
+  return "announcement";
+}
+
+const ITEMS_PER_PAGE = 20;
+
 const markAllReadSchema = z.object({});
 
 const handlers = {
   markAllAsRead: defineHandler({
     schema: markAllReadSchema,
-    handler: async (_value, _args) => {
-      // TODO: markAllNotificationsAsRead ユースケースを呼び出す
-      // await handleUseCase(() =>
-      //   markAllNotificationsAsRead({
-      //     container,
-      //     headers: args.request.headers,
-      //     input: { recipientType: "member", recipientId },
-      //   }),
-      // );
-      console.log("Mark all as read");
+    handler: async (_value, args) => {
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) throw redirect("/admin/login");
+
+      const members = await container.memberRepository.findByAuthUserId(
+        session.user.id,
+      );
+      if (members.length === 0) throw redirect("/admin/login");
+
+      const memberId = members[0]!.id;
+
+      await handleUseCase(() =>
+        markAllNotificationsAsRead({
+          container,
+          headers: args.request.headers,
+          input: { recipientType: "member", recipientId: memberId },
+        }),
+      ).match(
+        () => undefined,
+        (e) => {
+          throw data({ message: e.message }, { status: e.status });
+        },
+      );
       return success();
     },
   }),
@@ -54,19 +89,65 @@ export async function action(args: Route.ActionArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) throw redirect("/admin/login");
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (members.length === 0) throw redirect("/admin/login");
+
+  const memberId = members[0]!.id;
+
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter") ?? "all";
   const page = Number(url.searchParams.get("page") ?? "1");
 
-  // TODO: 認証ユーザーのIDで管理画面通知一覧を取得
-  const notifications: NotificationItem[] = [];
+  const result = await handleUseCase(() =>
+    listNotifications({
+      container,
+      headers: request.headers,
+      input: {
+        recipientType: "member",
+        recipientId: memberId,
+        typeFilter: null,
+        page,
+        limit: ITEMS_PER_PAGE,
+      },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const allNotifications: NotificationItem[] = result.items.map((item) => ({
+    id: item.id,
+    type: mapNotificationTypeToCategory(item.type),
+    title: item.title,
+    message: item.message,
+    isRead: item.isRead,
+    createdAt: item.createdAt.toLocaleDateString("ja-JP"),
+    referenceUrl:
+      item.referenceType && item.referenceId
+        ? `/${item.referenceType}/${item.referenceId}`
+        : null,
+  }));
+
+  const notifications =
+    filter === "all"
+      ? allNotifications
+      : allNotifications.filter((n) => n.type === filter);
+
+  const totalPages = Math.max(1, Math.ceil(result.totalCount / ITEMS_PER_PAGE));
 
   return {
     notifications,
     filter,
     page,
-    totalPages: 1,
-    unreadCount: notifications.filter((n) => !n.isRead).length,
+    totalPages,
+    unreadCount: allNotifications.filter((n) => !n.isRead).length,
   };
 }
 

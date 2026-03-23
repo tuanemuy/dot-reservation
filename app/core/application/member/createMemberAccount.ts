@@ -1,6 +1,11 @@
 import { Email } from "@/core/domain/common/valueObject";
 import { MemberName } from "@/core/domain/member/valueObject";
-import { ValidationError, ValidationErrorCode } from "../error";
+import {
+  ConflictError,
+  ConflictErrorCode,
+  ValidationError,
+  ValidationErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 export type CreateMemberAccountInput = {
@@ -23,6 +28,7 @@ export type CreateMemberAccountOutput = {
  * This simply validates and returns the provided auth user information.
  */
 export async function createMemberAccount({
+  container,
   input,
 }: ServiceArgs<CreateMemberAccountInput>): Promise<CreateMemberAccountOutput> {
   if (!input.authUserId) {
@@ -37,6 +43,17 @@ export async function createMemberAccount({
 
   // Validate email via Email value object (throws BusinessRuleError on invalid format)
   Email.create(input.email);
+
+  // Check for duplicate authUserId
+  const existingMembers = await container.memberRepository.findByAuthUserId(
+    input.authUserId,
+  );
+  if (existingMembers.length > 0) {
+    throw new ConflictError(
+      ConflictErrorCode.Conflict,
+      "Member account with this authUserId already exists",
+    );
+  }
 
   return {
     authUserId: input.authUserId,

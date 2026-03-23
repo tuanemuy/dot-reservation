@@ -1,10 +1,13 @@
-import { Form, Link, useSearchParams } from "react-router";
+import { data, Form, Link, useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
 import { Select } from "@/components/ui/Select";
+import { listTenants } from "@/core/application/tenant/listTenants";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
 type TenantSummary = {
@@ -28,29 +31,39 @@ const statusLabels: Record<string, string> = {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const _keyword = url.searchParams.get("keyword") ?? "";
-  const _status = url.searchParams.get("status") ?? "";
-  const _category = url.searchParams.get("category") ?? "";
-  const _page = Number(url.searchParams.get("page") ?? "1");
+  const keyword = url.searchParams.get("keyword") || null;
+  const status = url.searchParams.get("status") || null;
+  const category = url.searchParams.get("category") || null;
+  const page = Number(url.searchParams.get("page") ?? "1");
+  const limit = 20;
 
-  // TODO: listTenants ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   listTenants({
-  //     container,
-  //     headers: request.headers,
-  //     input: { keyword, status, category, page, limit: 20 },
-  //   }),
-  // ).match(
-  //   (result) => result,
-  //   (e) => { throw data({ message: e.message }, { status: e.status }); },
-  // );
-  const tenants: TenantSummary[] = [];
+  const result = await handleUseCase(() =>
+    listTenants({
+      container,
+      headers: request.headers,
+      input: { keyword, status, category, page, limit },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const tenants: TenantSummary[] = result.items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    status: item.status,
+    memberCount: 0,
+    createdAt: item.createdAt,
+  }));
 
   return {
     tenants,
     pagination: {
-      currentPage: 1,
-      totalPages: 1,
+      currentPage: page,
+      totalPages: Math.max(1, Math.ceil(result.totalCount / limit)),
     },
   };
 }

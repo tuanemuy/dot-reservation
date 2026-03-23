@@ -1,29 +1,32 @@
-import { Link } from "react-router";
+import { data, Link, redirect } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { listMemberTenants } from "@/core/application/member/listMemberTenants";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/tenants";
 
-type TenantWithRole = {
-  tenantId: string;
-  tenantName: string;
-  role: string;
-};
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
 
-export async function loader({ request: _request }: Route.LoaderArgs) {
-  // TODO: 認証ユーザーのIDを取得して listMemberTenants ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   listMemberTenants({
-  //     container,
-  //     headers: request.headers,
-  //     input: { authUserId },
-  //   }),
-  // ).match(
-  //   (result) => result,
-  //   (e) => { throw data({ message: e.message }, { status: e.status }); },
-  // );
-  const tenants: TenantWithRole[] = [];
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
 
-  return { tenants };
+  const result = await handleUseCase(() =>
+    listMemberTenants({
+      container,
+      headers: request.headers,
+      input: { authUserId: session.user.id },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  return { tenants: result.items };
 }
 
 export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {

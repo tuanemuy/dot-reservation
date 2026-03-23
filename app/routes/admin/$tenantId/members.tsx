@@ -1,7 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { cancelInvitation } from "@/core/application/member/cancelInvitation";
 import { changeMemberRole } from "@/core/application/member/changeMemberRole";
@@ -78,17 +78,37 @@ const resendInvitationSchema = z.object({
   invitationId: z.string().min(1),
 });
 
+async function getAuthenticatedMemberId(
+  headers: Headers,
+  tenantId: string,
+): Promise<string> {
+  const session = await container.authProvider.getSession(headers);
+  if (!session) throw redirect("/admin/login");
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const memberInTenant = members.find((m) => m.tenantId === tenantId);
+  if (!memberInTenant) throw redirect("/admin/tenants");
+
+  return memberInTenant.id;
+}
+
 export const handlers = {
   invite: defineHandler({
     schema: inviteSchema,
     handler: async (value, args) => {
+      const memberId = await getAuthenticatedMemberId(
+        args.request.headers,
+        args.params.tenantId!,
+      );
       return handleUseCase(() =>
         createInvitation({
           container,
           headers: args.request.headers,
           input: {
             tenantId: args.params.tenantId!,
-            invitedByMemberId: "", // TODO: 認証ユーザーのメンバーIDを渡す
+            invitedByMemberId: memberId,
             email: value.email,
             role: value.role,
           },
@@ -102,13 +122,17 @@ export const handlers = {
   changeRole: defineHandler({
     schema: changeRoleSchema,
     handler: async (value, args) => {
+      const memberId = await getAuthenticatedMemberId(
+        args.request.headers,
+        args.params.tenantId!,
+      );
       return handleUseCase(() =>
         changeMemberRole({
           container,
           headers: args.request.headers,
           input: {
             tenantId: args.params.tenantId!,
-            operatorMemberId: "", // TODO: 認証ユーザーのメンバーIDを渡す
+            operatorMemberId: memberId,
             targetMemberId: value.memberId,
             newRole: value.role,
           },
@@ -122,13 +146,17 @@ export const handlers = {
   removeMember: defineHandler({
     schema: removeMemberSchema,
     handler: async (value, args) => {
+      const memberId = await getAuthenticatedMemberId(
+        args.request.headers,
+        args.params.tenantId!,
+      );
       return handleUseCase(() =>
         removeMember({
           container,
           headers: args.request.headers,
           input: {
             tenantId: args.params.tenantId!,
-            operatorMemberId: "", // TODO: 認証ユーザーのメンバーIDを渡す
+            operatorMemberId: memberId,
             targetMemberId: value.memberId,
           },
         }),

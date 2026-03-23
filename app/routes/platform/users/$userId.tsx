@@ -1,6 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { data, useNavigate } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -8,12 +9,19 @@ import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { deleteCustomer } from "@/core/application/customer/deleteCustomer";
+import { getCustomer } from "@/core/application/customer/getCustomer";
+import { reactivateCustomer } from "@/core/application/customer/reactivateCustomer";
+import { suspendCustomer } from "@/core/application/customer/suspendCustomer";
+import { container } from "@/core/di/server";
 import {
   createCompositeAction,
   defineHandler,
+  error,
   success,
   useCompositeAction,
 } from "@/lib/compositeAction";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/$userId";
 
 const suspendSchema = z.object({
@@ -29,31 +37,53 @@ const deleteSchema = z.object({
 const handlers = {
   suspend: defineHandler({
     schema: suspendSchema,
-    handler: async (value, _args) => {
-      // TODO: suspendCustomer ユースケースを呼び出す
-      // const userId = args.params.userId;
-      // await handleUseCase(() =>
-      //   suspendCustomer({ container, headers: args.request.headers, input: { customerId: userId } }),
-      // );
-      console.log("Suspend user:", value);
-      return success();
+    handler: async (_value, args) => {
+      const userId = args.params.userId!;
+      return handleUseCase(() =>
+        suspendCustomer({
+          container,
+          headers: args.request.headers,
+          input: { customerId: userId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   resume: defineHandler({
     schema: resumeSchema,
-    handler: async (_value, _args) => {
-      // TODO: reactivateCustomer ユースケースを呼び出す
-      console.log("Resume user");
-      return success();
+    handler: async (_value, args) => {
+      const userId = args.params.userId!;
+      return handleUseCase(() =>
+        reactivateCustomer({
+          container,
+          headers: args.request.headers,
+          input: { customerId: userId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
   delete: defineHandler({
     schema: deleteSchema,
-    handler: async (value, _args) => {
-      // TODO: deleteCustomer ユースケースを呼び出す
-      // 「削除」と一致するかの確認は handler 内で行う
-      console.log("Delete user:", value);
-      return success();
+    handler: async (value, args) => {
+      if (value.confirmText !== "削除") {
+        return error({ confirmText: ["「削除」と入力してください"] });
+      }
+      const userId = args.params.userId!;
+      return handleUseCase(() =>
+        deleteCustomer({
+          container,
+          headers: args.request.headers,
+          input: { customerId: userId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
@@ -62,19 +92,28 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-export async function loader({ params: _params }: Route.LoaderArgs) {
-  // TODO: getCustomer ユースケースを呼び出す
-  // const result = await handleUseCase(() =>
-  //   getCustomer({ container, headers: request.headers, input: { customerId: params.userId } }),
-  // );
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const customerResult = await handleUseCase(() =>
+    getCustomer({
+      container,
+      headers: request.headers,
+      input: { customerId: params.userId },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
   return {
     user: {
-      id: "",
-      name: "",
-      email: "",
-      phone: "",
-      status: "" as "active" | "suspended",
-      createdAt: "",
+      id: customerResult.id,
+      name: customerResult.displayName,
+      email: customerResult.email,
+      phone: customerResult.phoneNumber ?? "",
+      status: customerResult.status as "active" | "suspended",
+      createdAt: customerResult.createdAt.toLocaleDateString("ja-JP"),
       lastLoginAt: null as string | null,
     },
     reservationStats: {
@@ -105,6 +144,7 @@ export default function PlatformUserDetailPage({
 }: Route.ComponentProps) {
   const { user, reservationStats } = loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
+  const navigate = useNavigate();
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -157,8 +197,7 @@ export default function PlatformUserDetailPage({
 
   fetcher.register("delete", {
     onSuccess: () => {
-      // TODO: ユーザー一覧ページへリダイレクト
-      console.log("User deleted");
+      navigate("/platform/users");
     },
     onHandlerError: ({ error: err }) => {
       console.error("Delete failed:", err);

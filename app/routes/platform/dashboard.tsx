@@ -1,16 +1,70 @@
-import { Link } from "react-router";
+import { data, Link } from "react-router";
 import { Card, CardBody } from "@/components/ui/Card";
+import { listCustomers } from "@/core/application/customer/listCustomers";
+import { listTenants } from "@/core/application/tenant/listTenants";
+import { container } from "@/core/di/server";
+import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/dashboard";
 
-export async function loader(_args: Route.LoaderArgs) {
-  // TODO: プラットフォームサマリー取得
-  // listTenants / listCustomers ユースケースから集計
+export async function loader({ request }: Route.LoaderArgs) {
+  const tenantsResult = await handleUseCase(() =>
+    listTenants({
+      container,
+      headers: request.headers,
+      input: { keyword: null, status: null, category: null, page: 1, limit: 1 },
+    }),
+  ).match(
+    (result) => result,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  const activeTenantsResult = await handleUseCase(() =>
+    listTenants({
+      container,
+      headers: request.headers,
+      input: {
+        keyword: null,
+        status: "active",
+        category: null,
+        page: 1,
+        limit: 1,
+      },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [], totalCount: 0 }),
+  );
+
+  const customersResult = await handleUseCase(() =>
+    listCustomers({
+      container,
+      headers: request.headers,
+      input: { keyword: null, status: null, page: 1, limit: 1 },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [], totalCount: 0 }),
+  );
+
+  const activeCustomersResult = await handleUseCase(() =>
+    listCustomers({
+      container,
+      headers: request.headers,
+      input: { keyword: null, status: "active", page: 1, limit: 1 },
+    }),
+  ).match(
+    (result) => result,
+    () => ({ items: [], totalCount: 0 }),
+  );
+
   return {
     summary: {
-      totalTenants: 0,
-      activeTenants: 0,
-      totalUsers: 0,
-      activeUsers: 0,
+      totalTenants: tenantsResult.totalCount,
+      activeTenants: activeTenantsResult.totalCount,
+      totalUsers: customersResult.totalCount,
+      activeUsers: activeCustomersResult.totalCount,
     },
   };
 }

@@ -1,6 +1,11 @@
 import { Email } from "@/core/domain/common/valueObject";
 import { Customer } from "@/core/domain/customer/entity";
-import { ConflictError, ConflictErrorCode } from "../error";
+import {
+  ConflictError,
+  ConflictErrorCode,
+  ValidationError,
+  ValidationErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 export type CreateCustomerInput = {
@@ -19,6 +24,13 @@ export async function createCustomer({
   container,
   input,
 }: ServiceArgs<CreateCustomerInput>): Promise<CreateCustomerOutput> {
+  if (!input.authUserId) {
+    throw new ValidationError(
+      ValidationErrorCode.InvalidInput,
+      "authUserId is required",
+    );
+  }
+
   const email = Email.create(input.email);
 
   const { entity: customer, events } = Customer.create({
