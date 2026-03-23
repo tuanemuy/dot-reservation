@@ -154,13 +154,19 @@ export async function action({ params, request }: Route.ActionArgs) {
       },
     );
 
-    // 認証済みユーザーの customerId を取得する
-    // authProvider 実装後は request.headers からセッション情報を取得する
+    const session = await container.authProvider.getSession(request.headers);
+    if (!session) {
+      return {
+        intent: "createReservation",
+        error: "予約するにはログインが必要です",
+        needsLogin: true,
+      };
+    }
     const customerResult = await handleUseCase(() =>
       getCustomer({
         container,
         headers: request.headers,
-        input: { authUserId: request.headers.get("x-auth-user-id") ?? "" },
+        input: { authUserId: session.user.id },
       }),
     ).match(
       (r) => ({ customerId: r.id, error: null }),

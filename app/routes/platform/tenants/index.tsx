@@ -7,6 +7,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { Select } from "@/components/ui/Select";
 import { listTenants } from "@/core/application/tenant/listTenants";
 import { container } from "@/core/di/server";
+import { TenantId } from "@/core/domain/tenant/valueObject";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
@@ -50,12 +51,24 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
+  const memberCounts = await Promise.all(
+    result.items.map(async (item) => {
+      const tenantId = TenantId.create(item.id);
+      const members = await container.memberRepository.findByTenantId(
+        tenantId,
+        { page: 1, limit: 1 },
+      );
+      return { id: item.id, count: members.total };
+    }),
+  );
+  const memberCountMap = new Map(memberCounts.map((mc) => [mc.id, mc.count]));
+
   const tenants: TenantSummary[] = result.items.map((item) => ({
     id: item.id,
     name: item.name,
     category: item.category,
     status: item.status,
-    memberCount: 0,
+    memberCount: memberCountMap.get(item.id) ?? 0,
     createdAt: item.createdAt,
   }));
 

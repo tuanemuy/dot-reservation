@@ -13,7 +13,9 @@ import { deleteCustomer } from "@/core/application/customer/deleteCustomer";
 import { getCustomer } from "@/core/application/customer/getCustomer";
 import { reactivateCustomer } from "@/core/application/customer/reactivateCustomer";
 import { suspendCustomer } from "@/core/application/customer/suspendCustomer";
+import { listReservations } from "@/core/application/reservation/listReservations";
 import { container } from "@/core/di/server";
+import { TenantId } from "@/core/domain/tenant/valueObject";
 import {
   createCompositeAction,
   defineHandler,
@@ -106,6 +108,60 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
+  const reservationsResult = await handleUseCase(() =>
+    listReservations({
+      container,
+      headers: request.headers,
+      input: {
+        customerId: customerResult.id,
+        status: null,
+        startDate: null,
+        endDate: null,
+        page: 1,
+        limit: 10,
+      },
+    }),
+  ).match(
+    (result) => result,
+    () => ({
+      items: [] as {
+        id: string;
+        tenantId: string;
+        menuName: string;
+        date: string;
+        startTime: string;
+        status: string;
+      }[],
+      totalCount: 0,
+    }),
+  );
+
+  // Resolve tenant names for recent reservations
+  const uniqueTenantIds = [
+    ...new Set(reservationsResult.items.map((r) => r.tenantId)),
+  ];
+  const tenantNames = new Map<string, string>();
+  await Promise.all(
+    uniqueTenantIds.map(async (tid) => {
+      const tenantId = TenantId.create(tid);
+      const tenant = await container.unitOfWorkProvider.transaction(
+        async (repositories) =>
+          repositories.tenantRepository.findById(tenantId),
+      );
+      if (tenant) {
+        tenantNames.set(tid, tenant.name);
+      }
+    }),
+  );
+
+  const recentReservations = reservationsResult.items.map((r) => ({
+    id: r.id,
+    tenantName: tenantNames.get(r.tenantId) ?? "",
+    menuName: r.menuName,
+    dateTime: `${r.date} ${r.startTime}`,
+    status: r.status,
+  }));
+
   return {
     user: {
       id: customerResult.id,
@@ -114,17 +170,14 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       phone: customerResult.phoneNumber ?? "",
       status: customerResult.status as "active" | "suspended",
       createdAt: customerResult.createdAt.toLocaleDateString("ja-JP"),
+      // lastLoginAt is not available: AuthProvider port does not expose session
+      // listing per user. To implement this, add a listSessionsByUserId method
+      // to AuthProvider and the better-auth adapter.
       lastLoginAt: null as string | null,
     },
     reservationStats: {
-      totalCount: 0,
-      recentReservations: [] as {
-        id: string;
-        tenantName: string;
-        menuName: string;
-        dateTime: string;
-        status: string;
-      }[],
+      totalCount: reservationsResult.totalCount,
+      recentReservations,
     },
   };
 }

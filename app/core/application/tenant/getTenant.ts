@@ -38,6 +38,7 @@ export type GetTenantOutput = {
     approvalMethod: string;
   };
   status: string;
+  createdAt: Date;
 };
 
 export async function getTenant({
@@ -107,5 +108,6 @@ export async function getTenant({
       approvalMethod: tenant.reservationSettings.approvalMethod,
     },
     status: tenant.status,
+    createdAt: tenant.createdAt,
   };
 }

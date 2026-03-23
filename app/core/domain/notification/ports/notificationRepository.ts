@@ -31,4 +31,5 @@ export interface NotificationRepository {
 export type NotificationFilter = {
   readonly isRead?: boolean;
   readonly type?: NotificationType;
+  readonly types?: readonly NotificationType[];
 };

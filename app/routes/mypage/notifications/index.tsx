@@ -1,6 +1,6 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { data, Link, useSearchParams } from "react-router";
+import { data, Link, redirect, useSearchParams } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Pagination } from "@/components/ui/Pagination";
@@ -68,19 +68,17 @@ export async function loader({ request }: Route.LoaderArgs) {
   const filter = url.searchParams.get("filter") ?? "all";
   const page = Number(url.searchParams.get("page") ?? "1");
 
-  // authProvider 実装後: 認証ユーザーの customerId を取得する
-  const customerId = request.headers.get("x-customer-id") ?? "";
-
-  if (!customerId) {
-    return {
-      notifications: [] as NotificationDetail[],
-      filter,
-      page,
-      totalPages: 0,
-      unreadCount: 0,
-      customerId: "",
-    };
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/customer/login");
   }
+  const customer = await container.customerRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (!customer) {
+    throw redirect("/customer/setup");
+  }
+  const customerId = customer.id;
 
   // 通知タイプフィルター: "all" の場合は null
   const typeFilter =
@@ -98,6 +96,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         recipientType: "customer",
         recipientId: customerId,
         typeFilter,
+        typeFilters: null,
         page,
         limit: ITEMS_PER_PAGE,
       },

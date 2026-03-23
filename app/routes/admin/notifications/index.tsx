@@ -47,6 +47,23 @@ function mapNotificationTypeToCategory(type: string): NotificationItem["type"] {
   return "announcement";
 }
 
+const categoryToNotificationTypes: Record<string, readonly string[]> = {
+  reservation: [
+    "reservation_confirmed",
+    "reservation_updated",
+    "reservation_cancelled",
+    "reservation_reminder",
+    "reservation_pending",
+    "reservation_approved",
+    "reservation_rejected",
+    "new_reservation",
+    "reservation_updated_by_customer",
+    "reservation_cancelled_by_customer",
+  ],
+  member: ["member_joined", "member_left", "invitation_received"],
+  announcement: ["shift_request_submitted"],
+};
+
 const ITEMS_PER_PAGE = 20;
 
 const markAllReadSchema = z.object({});
@@ -103,6 +120,9 @@ export async function loader({ request }: Route.LoaderArgs) {
   const filter = url.searchParams.get("filter") ?? "all";
   const page = Number(url.searchParams.get("page") ?? "1");
 
+  const typeFilters =
+    filter === "all" ? null : (categoryToNotificationTypes[filter] ?? null);
+
   const result = await handleUseCase(() =>
     listNotifications({
       container,
@@ -111,6 +131,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         recipientType: "member",
         recipientId: memberId,
         typeFilter: null,
+        typeFilters,
         page,
         limit: ITEMS_PER_PAGE,
       },
@@ -122,7 +143,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
-  const allNotifications: NotificationItem[] = result.items.map((item) => ({
+  const notifications: NotificationItem[] = result.items.map((item) => ({
     id: item.id,
     type: mapNotificationTypeToCategory(item.type),
     title: item.title,
@@ -135,11 +156,6 @@ export async function loader({ request }: Route.LoaderArgs) {
         : null,
   }));
 
-  const notifications =
-    filter === "all"
-      ? allNotifications
-      : allNotifications.filter((n) => n.type === filter);
-
   const totalPages = Math.max(1, Math.ceil(result.totalCount / ITEMS_PER_PAGE));
 
   return {
@@ -147,7 +163,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     filter,
     page,
     totalPages,
-    unreadCount: allNotifications.filter((n) => !n.isRead).length,
+    unreadCount: notifications.filter((n) => !n.isRead).length,
   };
 }
 

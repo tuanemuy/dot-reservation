@@ -55,6 +55,9 @@ export async function loader({ request }: Route.LoaderArgs) {
     email: item.email,
     status: item.status,
     createdAt: item.createdAt.toLocaleDateString("ja-JP"),
+    // lastLoginAt is not available: AuthProvider port does not expose session
+    // listing per user. To implement this, add a listSessionsByUserId method
+    // to AuthProvider and the better-auth adapter.
     lastLoginAt: null,
   }));
 

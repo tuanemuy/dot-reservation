@@ -1,7 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { useState } from "react";
-import { data } from "react-router";
+import { type FormEvent, useRef, useState } from "react";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
@@ -71,23 +71,11 @@ const handlers = {
       );
     },
   }),
-  changePassword: defineHandler({
-    schema: changePasswordSchema,
-    handler: async (_value, _args) => {
-      // authProvider 実装後:
-      // 1. authProvider で現在のパスワード検証
-      // 2. パスワード更新
-      return error({
-        "": ["パスワード変更機能は現在準備中です"],
-      });
-    },
-  }),
   deleteAccount: defineHandler({
     schema: deleteAccountSchema,
     handler: async (value, args) => {
       const { container } = await import("@/core/di/server");
 
-      // authProvider 実装後: パスワード検証を追加する
       return handleUseCase(() =>
         deleteCustomer({
           container,
@@ -111,21 +99,19 @@ export async function action(args: Route.ActionArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
 
-  // authProvider 実装後: 認証ユーザーの customerId を取得する
-  const customerId = request.headers.get("x-customer-id") ?? "";
-
-  if (!customerId) {
-    return {
-      profile: {
-        id: "",
-        displayName: "",
-        email: "",
-        phoneNumber: null as string | null,
-      },
-    };
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/customer/login");
   }
+  const customer = await container.customerRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (!customer) {
+    throw redirect("/customer/setup");
+  }
+  const customerId = customer.id;
 
-  const customer = await handleUseCase(() =>
+  const customerDetail = await handleUseCase(() =>
     getCustomer({
       container,
       headers: request.headers,
@@ -140,10 +126,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   return {
     profile: {
-      id: customer.id,
-      displayName: customer.displayName,
-      email: customer.email,
-      phoneNumber: customer.phoneNumber,
+      id: customerDetail.id,
+      displayName: customerDetail.displayName,
+      email: customerDetail.email,
+      phoneNumber: customerDetail.phoneNumber,
     },
   };
 }
@@ -152,6 +138,10 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   const { profile } = loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [isPendingPassword, setIsPendingPassword] = useState(false);
+  const passwordFormRef = useRef<HTMLFormElement>(null);
 
   const [profileForm, profileFields] = useForm({
     id: "profile-form",
@@ -175,14 +165,12 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
 
   const [passwordForm, passwordFields] = useForm({
     id: "password-form",
-    lastResult:
-      fetcher.data?.intent === "changePassword" ? fetcher.data : undefined,
-    constraint: getZodConstraint(handlers.changePassword.schema),
+    constraint: getZodConstraint(changePasswordSchema),
     shouldValidate: "onSubmit",
     shouldRevalidate: "onBlur",
     onValidate({ formData }) {
       return parseWithZod(formData, {
-        schema: handlers.changePassword.schema,
+        schema: changePasswordSchema,
       });
     },
   });
@@ -205,21 +193,47 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
 
   fetcher.register("updateProfile", {});
 
-  fetcher.register("changePassword", {
-    onSuccess: () => {
-      passwordForm.reset();
-    },
-  });
-
   fetcher.register("deleteAccount", {
     onSuccess: () => {
-      // authProvider 実装後: ログアウト処理 & リダイレクト
       setShowDeleteDialog(false);
     },
   });
 
+  const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordSuccess(false);
+
+    const formData = new FormData(e.currentTarget);
+    const result = parseWithZod(formData, { schema: changePasswordSchema });
+    if (result.status !== "success") {
+      return;
+    }
+
+    setIsPendingPassword(true);
+    try {
+      const { authClient } = await import("@/lib/authClient");
+      const response = await authClient.changePassword({
+        currentPassword: result.value.currentPassword,
+        newPassword: result.value.newPassword,
+      });
+
+      if (response.error) {
+        setPasswordError(
+          response.error.message ?? "パスワードの変更に失敗しました",
+        );
+      } else {
+        setPasswordSuccess(true);
+        passwordFormRef.current?.reset();
+      }
+    } catch {
+      setPasswordError("パスワードの変更に失敗しました");
+    } finally {
+      setIsPendingPassword(false);
+    }
+  };
+
   const isPendingProfile = fetcher.isPending("updateProfile");
-  const isPendingPassword = fetcher.isPending("changePassword");
   const isPendingDelete = fetcher.isPending("deleteAccount");
 
   return (
@@ -294,9 +308,11 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <h2 className="mb-4 text-lg font-semibold text-text">
             パスワード変更
           </h2>
-          <fetcher.Form method="post" {...getFormProps(passwordForm)}>
-            <input type="hidden" name="intent" value="changePassword" />
-
+          <form
+            ref={passwordFormRef}
+            {...getFormProps(passwordForm)}
+            onSubmit={handlePasswordSubmit}
+          >
             <div className="space-y-5">
               <FormField
                 label="現在のパスワード"
@@ -341,6 +357,16 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
                 />
               </FormField>
 
+              {passwordError && (
+                <p className="text-xs text-destructive">{passwordError}</p>
+              )}
+
+              {passwordSuccess && (
+                <p className="text-xs text-green-600">
+                  パスワードを変更しました
+                </p>
+              )}
+
               {passwordForm.errors && (
                 <p className="text-xs text-destructive">
                   {passwordForm.errors}
@@ -351,7 +377,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
                 {isPendingPassword ? "変更中..." : "パスワードを変更"}
               </Button>
             </div>
-          </fetcher.Form>
+          </form>
         </CardBody>
       </Card>
 

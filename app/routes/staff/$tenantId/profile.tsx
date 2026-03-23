@@ -1,13 +1,12 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
-import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { getStaffProfileByMemberId } from "@/core/application/staff/getStaffProfileByMemberId";
 import { updateStaffProfile } from "@/core/application/staff/updateStaffProfile";
 import {
   createCompositeAction,
@@ -58,40 +57,25 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
   const tenantId = params.tenantId;
 
-  // Get staff profiles for this tenant to find the current user's profile
-  const profilesResult = await handleUseCase(() =>
-    listStaffProfiles({
-      container,
-      headers: request.headers,
-      input: { tenantId },
-    }),
-  ).match(
-    (result) => result,
-    (e) => {
-      throw data({ message: e.message }, { status: e.status });
-    },
-  );
-
-  // For now, use the first staff profile
-  // In production, this would be filtered by the authenticated member ID
-  const firstProfile = profilesResult.items[0];
-
-  if (!firstProfile) {
-    return {
-      profile: {
-        id: "",
-        displayName: "",
-        bio: "",
-        profileImageUrl: null as string | null,
-      },
-    };
+  // Get authenticated staff profile
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
   }
 
-  const profileResult = await handleUseCase(() =>
-    getStaffProfile({
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const currentMember = members.find((m) => m.tenantId === tenantId);
+  if (!currentMember) {
+    throw redirect("/admin/tenants");
+  }
+
+  const myProfile = await handleUseCase(() =>
+    getStaffProfileByMemberId({
       container,
       headers: request.headers,
-      input: { staffProfileId: firstProfile.id },
+      input: { memberId: currentMember.id },
     }),
   ).match(
     (result) => result,
@@ -102,10 +86,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   return {
     profile: {
-      id: profileResult.id,
-      displayName: profileResult.displayName,
-      bio: profileResult.bio ?? "",
-      profileImageUrl: profileResult.imageUrl,
+      id: myProfile.id,
+      displayName: myProfile.displayName,
+      bio: myProfile.bio ?? "",
+      profileImageUrl: myProfile.imageUrl,
     },
   };
 }

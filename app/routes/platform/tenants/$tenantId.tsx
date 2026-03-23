@@ -10,11 +10,13 @@ import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { listMembers } from "@/core/application/member/listMembers";
+import { listMenus } from "@/core/application/menu/listMenus";
 import { deleteTenant } from "@/core/application/tenant/deleteTenant";
 import { getTenant } from "@/core/application/tenant/getTenant";
 import { reactivateTenant } from "@/core/application/tenant/reactivateTenant";
 import { suspendTenant } from "@/core/application/tenant/suspendTenant";
 import { container } from "@/core/di/server";
+import { TenantId } from "@/core/domain/tenant/valueObject";
 import {
   createCompositeAction,
   defineHandler,
@@ -140,6 +142,28 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     }),
   );
 
+  const tenantId = TenantId.create(params.tenantId);
+
+  const [menusResult, totalReservations, monthlyReservations] =
+    await Promise.all([
+      handleUseCase(() =>
+        listMenus({
+          container,
+          headers: request.headers,
+          input: { tenantId: params.tenantId },
+        }),
+      ).match(
+        (result) => result,
+        () => ({ items: [] as { id: string }[] }),
+      ),
+      container.reservationRepository.countByTenantId(tenantId),
+      container.reservationRepository.countByTenantIdAndMonth(
+        tenantId,
+        new Date().getFullYear(),
+        new Date().getMonth() + 1,
+      ),
+    ]);
+
   const address = [
     tenantResult.address.prefecture,
     tenantResult.address.city,
@@ -157,7 +181,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       address,
       phone: tenantResult.phoneNumber,
       status: tenantResult.status as "active" | "suspended",
-      createdAt: tenantResult.id ? new Date().toLocaleDateString("ja-JP") : "",
+      createdAt: tenantResult.createdAt.toLocaleDateString("ja-JP"),
     },
     members: membersResult.items.map((m) => ({
       id: m.id,
@@ -166,9 +190,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       role: m.role,
     })),
     stats: {
-      menuCount: 0,
-      totalReservations: 0,
-      monthlyReservations: 0,
+      menuCount: menusResult.items.length,
+      totalReservations,
+      monthlyReservations,
     },
   };
 }

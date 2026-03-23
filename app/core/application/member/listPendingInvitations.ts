@@ -9,6 +9,7 @@ export type ListPendingInvitationsInput = {
 export type PendingInvitation = {
   id: string;
   tenantId: string;
+  invitedBy: string;
   role: string;
   expiresAt: string;
   createdAt: string;
@@ -36,6 +37,7 @@ export async function listPendingInvitations({
     .map((inv) => ({
       id: inv.id as string,
       tenantId: inv.tenantId as string,
+      invitedBy: inv.invitedBy as string,
       role: inv.role,
       expiresAt: inv.expiresAt.toISOString(),
       createdAt: inv.createdAt.toISOString(),

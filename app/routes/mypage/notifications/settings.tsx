@@ -1,4 +1,4 @@
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
@@ -72,12 +72,17 @@ export async function action(args: Route.ActionArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
 
-  // authProvider 実装後: 認証ユーザーの customerId を取得する
-  const customerId = request.headers.get("x-customer-id") ?? "";
-
-  if (!customerId) {
-    return { settings: [] as NotificationSetting[], customerId: "" };
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/customer/login");
   }
+  const customer = await container.customerRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (!customer) {
+    throw redirect("/customer/setup");
+  }
+  const customerId = customer.id;
 
   const result = await handleUseCase(() =>
     getNotificationPreferences({

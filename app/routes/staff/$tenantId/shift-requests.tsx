@@ -1,6 +1,6 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
@@ -8,7 +8,7 @@ import { Select } from "@/components/ui/Select";
 import type { ShiftRequestDetail } from "@/core/application/shift/listShiftRequests";
 import { listShiftRequests } from "@/core/application/shift/listShiftRequests";
 import { submitShiftRequests } from "@/core/application/shift/submitShiftRequests";
-import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { getStaffProfileByMemberId } from "@/core/application/staff/getStaffProfileByMemberId";
 import {
   createCompositeAction,
   defineHandler,
@@ -112,12 +112,25 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const tenantId = params.tenantId;
   const targetPeriod = getNextWeekRange();
 
-  // Get staff profiles to find current staff
-  const profilesResult = await handleUseCase(() =>
-    listStaffProfiles({
+  // Get authenticated staff profile
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const currentMember = members.find((m) => m.tenantId === tenantId);
+  if (!currentMember) {
+    throw redirect("/admin/tenants");
+  }
+
+  const myProfile = await handleUseCase(() =>
+    getStaffProfileByMemberId({
       container,
       headers: request.headers,
-      input: { tenantId },
+      input: { memberId: currentMember.id },
     }),
   ).match(
     (result) => result,
@@ -126,8 +139,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
-  const firstProfile = profilesResult.items[0];
-  const staffProfileId = firstProfile?.id ?? "";
+  const staffProfileId = myProfile.id;
 
   // Get existing shift requests
   const existingRequests = staffProfileId

@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
-import type { GetStaffProfileOutput } from "@/core/application/staff/getStaffProfile";
-import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
-import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { getStaffProfileByMemberId } from "@/core/application/staff/getStaffProfileByMemberId";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/menus";
 
@@ -25,31 +23,25 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
   const tenantId = params.tenantId;
 
-  // Get staff profiles to find the current staff
-  const profilesResult = await handleUseCase(() =>
-    listStaffProfiles({
-      container,
-      headers: request.headers,
-      input: { tenantId },
-    }),
-  ).match(
-    (result) => result,
-    (e) => {
-      throw data({ message: e.message }, { status: e.status });
-    },
-  );
-
-  const firstProfile = profilesResult.items[0];
-  if (!firstProfile) {
-    return { menus: [] as AssignedMenu[] };
+  // Get authenticated staff profile
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
   }
 
-  // Get full staff profile (includes assigned menu IDs)
-  const staffResult = await handleUseCase(() =>
-    getStaffProfile({
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const currentMember = members.find((m) => m.tenantId === tenantId);
+  if (!currentMember) {
+    throw redirect("/admin/tenants");
+  }
+
+  const myProfile = await handleUseCase(() =>
+    getStaffProfileByMemberId({
       container,
       headers: request.headers,
-      input: { staffProfileId: firstProfile.id },
+      input: { memberId: currentMember.id },
     }),
   ).match(
     (result) => result,
@@ -71,7 +63,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   );
 
   // Filter to only assigned menus
-  const assignedMenuIds = new Set(staffResult.assignedMenus.map((m) => m.id));
+  const assignedMenuIds = new Set(myProfile.assignedMenus.map((m) => m.id));
 
   const menus: AssignedMenu[] = allMenusResult
     .filter((m) => assignedMenuIds.has(m.id))

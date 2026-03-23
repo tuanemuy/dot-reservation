@@ -1,9 +1,8 @@
-import { data, Link, useSearchParams } from "react-router";
+import { data, Link, redirect, useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Pagination } from "@/components/ui/Pagination";
 import { Tabs } from "@/components/ui/Tabs";
-import type { ReservationSummary } from "@/core/application/reservation/listReservations";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
@@ -40,17 +39,17 @@ export async function loader({ request }: Route.LoaderArgs) {
   const tab = url.searchParams.get("tab") ?? "upcoming";
   const page = Number(url.searchParams.get("page") ?? "1");
 
-  // authProvider 実装後: 認証ユーザーの customerId を取得する
-  const customerId = request.headers.get("x-customer-id") ?? "";
-
-  if (!customerId) {
-    return {
-      reservations: [] as ReservationSummary[],
-      tab,
-      page,
-      totalPages: 0,
-    };
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/customer/login");
   }
+  const customer = await container.customerRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (!customer) {
+    throw redirect("/customer/setup");
+  }
+  const customerId = customer.id;
 
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;

@@ -8,6 +8,7 @@ export type ListNotificationsInput = {
   recipientType: string;
   recipientId: string;
   typeFilter: string | null;
+  typeFilters: readonly string[] | null;
   page: number;
   limit: number;
 };
@@ -41,6 +42,10 @@ export async function listNotifications({
       type: input.typeFilter
         ? (input.typeFilter as NotificationTypeVO)
         : undefined,
+      types:
+        input.typeFilters && input.typeFilters.length > 0
+          ? (input.typeFilters as NotificationTypeVO[])
+          : undefined,
     },
     {
       page: input.page,

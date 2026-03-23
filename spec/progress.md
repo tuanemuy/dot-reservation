@@ -62,11 +62,13 @@
 - [x] 登録ページ更新 (メール登録済み時のログイン誘導)
 - [x] プラットフォーム管理画面ユースケース接続 (dashboard/users/tenants)
 - [x] 管理画面共通ページユースケース接続 (tenants/new-tenant/invitations/profile/notifications/members)
+- [x] スタッフルート認証修正 (items[0] → 認証メンバーのスタッフプロフィール取得)
+- [x] 顧客マイページ認証修正 (x-customer-id ヘッダー → authProvider.getSession)
+- [x] プラットフォーム管理画面スタブ解消 (memberCount, stats, createdAt を実データに)
+- [x] 管理画面通知フィルター修正 (サーバーサイドフィルタリング + 正しいページネーション)
+- [x] 管理画面招待者名修正 (inviterName をメンバーリポジトリから取得)
+- [x] パスワード変更をクライアントサイド実装 (authClient.changePassword())
+- [x] 予約ページ認証修正 (shop.$urlPath.reserve.tsx の authProvider 統合)
 
 ## 残存課題（低リスク・別タスク）
-- [ ] platform/users: lastLoginAt がスタブ（null）— ログイン履歴取得のユースケースが未定義
-- [ ] platform/tenants: memberCount がスタブ（0）— テナント一覧での集計が未実装
-- [ ] platform/tenants/$tenantId: stats（メニュー数・予約数）がスタブ（0）
-- [ ] admin/profile: changePassword が server-side 未実装（client-side authClient.changePassword() を推奨）
-- [ ] admin/notifications: フィルター適用時の totalPages 計算がフィルタ前の totalCount ベース
-- [ ] admin/invitations: inviterName が空文字（招待者の名前取得が未実装）
+- [ ] platform/users: lastLoginAt がスタブ（null）— AuthProvider ポートにセッション一覧メソッドが未定義のため取得不可

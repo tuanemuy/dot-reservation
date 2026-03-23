@@ -1,5 +1,5 @@
 import type { InferSelectModel } from "drizzle-orm";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { notifications } from "@/core/adapters/drizzleSqlite/schema";
 import { SystemError, SystemErrorCode } from "@/core/application/error";
 import type {
@@ -121,6 +121,10 @@ export class DrizzleSqliteNotificationRepository
 
       if (filter.type !== undefined) {
         conditions.push(eq(notifications.type, filter.type));
+      }
+
+      if (filter.types !== undefined && filter.types.length > 0) {
+        conditions.push(inArray(notifications.type, [...filter.types]));
       }
 
       const whereClause = and(...conditions);

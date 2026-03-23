@@ -11,6 +11,7 @@ import { acceptInvitation } from "@/core/application/member/acceptInvitation";
 import { declineInvitation } from "@/core/application/member/declineInvitation";
 import { listPendingInvitations } from "@/core/application/member/listPendingInvitations";
 import { getTenant } from "@/core/application/tenant/getTenant";
+import { MemberId } from "@/core/domain/member/valueObject";
 import {
   createCompositeAction,
   defineHandler,
@@ -123,21 +124,24 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const invitations: PendingInvitation[] = await Promise.all(
     result.items.map(async (item) => {
-      const tenantResult = await handleUseCase(() =>
-        getTenant({
-          container,
-          headers: request.headers,
-          input: { tenantId: item.tenantId },
-        }),
-      ).match(
-        (result) => result,
-        () => null,
-      );
+      const [tenantResult, inviterMember] = await Promise.all([
+        handleUseCase(() =>
+          getTenant({
+            container,
+            headers: request.headers,
+            input: { tenantId: item.tenantId },
+          }),
+        ).match(
+          (result) => result,
+          () => null,
+        ),
+        container.memberRepository.findById(MemberId.create(item.invitedBy)),
+      ]);
 
       return {
         id: item.id,
         tenantName: tenantResult?.name ?? "不明なテナント",
-        inviterName: "",
+        inviterName: inviterMember?.name ?? "不明",
         role: item.role,
         invitedAt: new Date(item.createdAt).toLocaleDateString("ja-JP"),
       };

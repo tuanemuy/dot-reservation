@@ -10,8 +10,7 @@ import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import { updateReservation } from "@/core/application/reservation/updateReservation";
-import { getStaffProfile } from "@/core/application/staff/getStaffProfile";
-import { listStaffProfiles } from "@/core/application/staff/listStaffProfiles";
+import { getStaffProfileByMemberId } from "@/core/application/staff/getStaffProfileByMemberId";
 import {
   createCompositeAction,
   defineHandler,
@@ -87,12 +86,25 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
-  // Get staff profiles to find assigned menus
-  const profilesResult = await handleUseCase(() =>
-    listStaffProfiles({
+  // Get authenticated staff profile
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const currentMember = members.find((m) => m.tenantId === tenantId);
+  if (!currentMember) {
+    throw redirect("/admin/tenants");
+  }
+
+  const myProfile = await handleUseCase(() =>
+    getStaffProfileByMemberId({
       container,
       headers: request.headers,
-      input: { tenantId },
+      input: { memberId: currentMember.id },
     }),
   ).match(
     (result) => result,
@@ -113,26 +125,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     () => [] as MenuDetail[],
   );
 
-  // Get assigned menus for the first staff (current user)
-  const firstProfile = profilesResult.items[0];
-  let assignedMenuIds = new Set<string>();
-
-  if (firstProfile) {
-    const staffResult = await handleUseCase(() =>
-      getStaffProfile({
-        container,
-        headers: request.headers,
-        input: { staffProfileId: firstProfile.id },
-      }),
-    ).match(
-      (result) => result,
-      () => null,
-    );
-
-    if (staffResult) {
-      assignedMenuIds = new Set(staffResult.assignedMenus.map((m) => m.id));
-    }
-  }
+  // Filter to only assigned menus
+  const assignedMenuIds = new Set(myProfile.assignedMenus.map((m) => m.id));
 
   const menus = allMenusResult
     .filter((m) => assignedMenuIds.has(m.id))
