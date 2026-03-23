@@ -1,4 +1,5 @@
-import { data, redirect } from "react-router";
+import { useState } from "react";
+import { data, redirect, useFetcher } from "react-router";
 import { z } from "zod";
 import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
 import { updateNotificationPreference } from "@/core/application/notification/updateNotificationPreference";
@@ -7,7 +8,6 @@ import {
   createCompositeAction,
   defineHandler,
   success,
-  useCompositeAction,
 } from "@/lib/compositeAction";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/settings";
@@ -223,26 +223,135 @@ function ToggleSwitch({
   );
 }
 
-export default function AdminNotificationSettingsPage({
-  loaderData,
-}: Route.ComponentProps) {
-  const { settings } = loaderData;
-  const fetcher = useCompositeAction<typeof handlers>();
+/**
+ * Derives the optimistic (displayed) value for a setting toggle.
+ *
+ * If a fetcher is currently submitting for this setting+channel,
+ * we show the value being submitted (optimistic).
+ * Otherwise we show the server data.
+ */
+function useOptimisticToggle(
+  serverValue: boolean,
+  settingType: string,
+  channel: "email" | "in_app",
+  fetcher: ReturnType<typeof useFetcher>,
+): boolean {
+  const isSubmittingThis =
+    fetcher.state !== "idle" &&
+    fetcher.formData?.get("type") === settingType &&
+    fetcher.formData?.get("channel") === channel;
 
-  fetcher.register("updateSetting", {});
+  if (isSubmittingThis) {
+    return fetcher.formData?.get("enabled") === "true";
+  }
+  return serverValue;
+}
 
-  const handleToggle = (
-    type: string,
-    channel: "email" | "in_app",
-    currentValue: boolean,
-  ) => {
+function AdminSettingRow({
+  setting,
+  isLast,
+}: {
+  setting: NotificationSetting;
+  isLast: boolean;
+}) {
+  const emailFetcher = useFetcher();
+  const inAppFetcher = useFetcher();
+
+  const [emailReverted, setEmailReverted] = useState<boolean | null>(null);
+  const [inAppReverted, setInAppReverted] = useState<boolean | null>(null);
+
+  const emailDisplayed = useOptimisticToggle(
+    emailReverted ?? setting.emailEnabled,
+    setting.type,
+    "email",
+    emailFetcher,
+  );
+  const inAppDisplayed = useOptimisticToggle(
+    inAppReverted ?? setting.inAppEnabled,
+    setting.type,
+    "in_app",
+    inAppFetcher,
+  );
+
+  // Clear revert state when server data changes (successful revalidation)
+  if (emailReverted !== null && emailFetcher.state === "idle") {
+    setEmailReverted(null);
+  }
+  if (inAppReverted !== null && inAppFetcher.state === "idle") {
+    setInAppReverted(null);
+  }
+
+  const handleToggle = (channel: "email" | "in_app", currentValue: boolean) => {
+    const fetcher = channel === "email" ? emailFetcher : inAppFetcher;
     const formData = new FormData();
     formData.set("intent", "updateSetting");
-    formData.set("type", type);
+    formData.set("type", setting.type);
     formData.set("channel", channel);
     formData.set("enabled", String(!currentValue));
     fetcher.submit(formData, { method: "post" });
   };
+
+  // Detect failed submissions and revert
+  if (
+    emailFetcher.state === "idle" &&
+    emailFetcher.data &&
+    typeof emailFetcher.data === "object" &&
+    "status" in emailFetcher.data &&
+    emailFetcher.data.status === "error" &&
+    emailReverted === null
+  ) {
+    setEmailReverted(setting.emailEnabled);
+  }
+
+  if (
+    inAppFetcher.state === "idle" &&
+    inAppFetcher.data &&
+    typeof inAppFetcher.data === "object" &&
+    "status" in inAppFetcher.data &&
+    inAppFetcher.data.status === "error" &&
+    inAppReverted === null
+  ) {
+    setInAppReverted(setting.inAppEnabled);
+  }
+
+  return (
+    <tr
+      className={`transition-colors duration-[0.15s] ease-[ease] hover:bg-neutral-50 ${
+        !isLast ? "border-b border-neutral-200" : ""
+      }`}
+    >
+      <td className="px-[var(--space-lg)] py-[var(--space-md)]">
+        <div className="text-[length:var(--text-base)] font-[var(--weight-medium)] text-neutral-800">
+          {setting.label}
+        </div>
+        {setting.description && (
+          <div className="mt-0.5 text-[length:var(--text-xs)] text-neutral-500">
+            {setting.description}
+          </div>
+        )}
+      </td>
+      <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+        <ToggleSwitch
+          checked={emailDisplayed}
+          onChange={() => handleToggle("email", emailDisplayed)}
+          ariaLabel={`${setting.label}のメール通知を${emailDisplayed ? "オフ" : "オン"}にする`}
+        />
+      </td>
+      <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+        <ToggleSwitch
+          checked={inAppDisplayed}
+          onChange={() => handleToggle("in_app", inAppDisplayed)}
+          ariaLabel={`${setting.label}のアプリ内通知を${inAppDisplayed ? "オフ" : "オン"}にする`}
+        />
+      </td>
+    </tr>
+  );
+}
+
+export default function AdminNotificationSettingsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { settings } = loaderData;
 
   return (
     <div>
@@ -272,41 +381,11 @@ export default function AdminNotificationSettingsPage({
           </thead>
           <tbody>
             {settings.map((setting, i) => (
-              <tr
+              <AdminSettingRow
                 key={setting.type}
-                className={`transition-colors duration-[0.15s] ease-[ease] hover:bg-neutral-50 ${
-                  i < settings.length - 1 ? "border-b border-neutral-200" : ""
-                }`}
-              >
-                <td className="px-[var(--space-lg)] py-[var(--space-md)]">
-                  <div className="text-[length:var(--text-base)] font-[var(--weight-medium)] text-neutral-800">
-                    {setting.label}
-                  </div>
-                  {setting.description && (
-                    <div className="mt-0.5 text-[length:var(--text-xs)] text-neutral-500">
-                      {setting.description}
-                    </div>
-                  )}
-                </td>
-                <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
-                  <ToggleSwitch
-                    checked={setting.emailEnabled}
-                    onChange={() =>
-                      handleToggle(setting.type, "email", setting.emailEnabled)
-                    }
-                    ariaLabel={`${setting.label}のメール通知を${setting.emailEnabled ? "オフ" : "オン"}にする`}
-                  />
-                </td>
-                <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
-                  <ToggleSwitch
-                    checked={setting.inAppEnabled}
-                    onChange={() =>
-                      handleToggle(setting.type, "in_app", setting.inAppEnabled)
-                    }
-                    ariaLabel={`${setting.label}のアプリ内通知を${setting.inAppEnabled ? "オフ" : "オン"}にする`}
-                  />
-                </td>
-              </tr>
+                setting={setting}
+                isLast={i === settings.length - 1}
+              />
             ))}
           </tbody>
         </table>

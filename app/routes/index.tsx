@@ -1,11 +1,21 @@
 import { useState } from "react";
-import { Form, Link, useNavigate } from "react-router";
+import { data, Form, Link, useNavigate } from "react-router";
 import { PublicLayout } from "@/components/layout/PublicLayout";
+import { searchTenants } from "@/core/application/tenant/searchTenants";
+import { handleUseCase } from "@/lib/handleUseCase";
+import type { Route } from "./+types/index";
 
-const categories = [
+/** Icon components for category cards (mapped by category name) */
+const CATEGORY_ICONS: Record<
+  string,
   {
-    id: "seitai",
-    name: "整体院",
+    iconBg: string;
+    iconColor: string;
+    iconStyle?: React.CSSProperties;
+    icon: React.ReactNode;
+  }
+> = {
+  整体院: {
     iconBg: "bg-primary-lighter",
     iconColor: "text-primary",
     icon: (
@@ -24,9 +34,7 @@ const categories = [
       </svg>
     ),
   },
-  {
-    id: "gym",
-    name: "ジム",
+  ジム: {
     iconBg: "bg-accent-lighter",
     iconColor: "text-accent",
     icon: (
@@ -45,9 +53,7 @@ const categories = [
       </svg>
     ),
   },
-  {
-    id: "beauty",
-    name: "美容院",
+  美容院: {
     iconBg: "bg-secondary-lighter",
     iconColor: "text-secondary",
     icon: (
@@ -66,11 +72,13 @@ const categories = [
       </svg>
     ),
   },
-  {
-    id: "relaxation",
-    name: "リラクゼーション",
+  リラクゼーション: {
     iconBg: "",
     iconColor: "",
+    iconStyle: {
+      background: "oklch(0.96 0.02 200)",
+      color: "oklch(0.55 0.10 240)",
+    },
     icon: (
       <svg
         fill="none"
@@ -87,9 +95,91 @@ const categories = [
       </svg>
     ),
   },
-];
+};
 
-export default function TopPage() {
+/** Default icon for categories without a specific icon mapping */
+const DEFAULT_CATEGORY_ICON = {
+  iconBg: "",
+  iconColor: "",
+  iconStyle: {
+    background: "var(--color-neutral-100)",
+    color: "var(--color-neutral-600)",
+  },
+  icon: (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <title>カテゴリ</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+      />
+    </svg>
+  ),
+};
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  // Fetch all active tenants (with a high limit to get all for category/area extraction)
+  const result = await handleUseCase(() =>
+    searchTenants({
+      container,
+      headers: request.headers,
+      input: {
+        keyword: null,
+        area: null,
+        category: null,
+        page: 1,
+        limit: 1000,
+      },
+    }),
+  ).match(
+    (r) => r,
+    (e) => {
+      throw data({ message: e.message }, { status: e.status });
+    },
+  );
+
+  // Extract unique categories from active tenants
+  const categorySet = new Set<string>();
+  const prefectureSet = new Set<string>();
+
+  for (const tenant of result.items) {
+    if (tenant.category) {
+      categorySet.add(tenant.category);
+    }
+  }
+
+  // We need prefectures from tenant addresses.
+  // Since searchTenants doesn't return address info, we fetch from the repository directly.
+  const tenants = await container.unitOfWorkProvider.transaction(
+    async (repositories) => {
+      return repositories.tenantRepository.findAll(
+        { status: "active" },
+        { page: 1, limit: 1000 },
+      );
+    },
+  );
+
+  for (const tenant of tenants.items) {
+    if (tenant.address.prefecture) {
+      prefectureSet.add(tenant.address.prefecture);
+    }
+  }
+
+  const categories = [...categorySet].sort();
+  const prefectures = [...prefectureSet].sort();
+
+  return { categories, prefectures };
+}
+
+export default function TopPage({ loaderData }: Route.ComponentProps) {
+  const { categories, prefectures } = loaderData;
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const [area, setArea] = useState("");
@@ -247,11 +337,11 @@ export default function TopPage() {
                   }}
                 >
                   <option value="">エリアを選択</option>
-                  <option value="渋谷区">渋谷区</option>
-                  <option value="新宿区">新宿区</option>
-                  <option value="港区">港区</option>
-                  <option value="世田谷区">世田谷区</option>
-                  <option value="目黒区">目黒区</option>
+                  {prefectures.map((pref) => (
+                    <option key={pref} value={pref}>
+                      {pref}
+                    </option>
+                  ))}
                 </select>
                 <span
                   className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-neutral-500"
@@ -290,10 +380,11 @@ export default function TopPage() {
                   }}
                 >
                   <option value="">カテゴリを選択</option>
-                  <option value="整体院">整体院</option>
-                  <option value="ジム">ジム</option>
-                  <option value="美容院">美容院</option>
-                  <option value="リラクゼーション">リラクゼーション</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
                 </select>
                 <span
                   className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-neutral-500"
@@ -356,49 +447,49 @@ export default function TopPage() {
         <div
           className="grid"
           style={{
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: `repeat(${Math.min(categories.length, 4)}, 1fr)`,
             gap: "var(--space-md)",
           }}
         >
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              to={`/search?category=${encodeURIComponent(cat.name)}`}
-              className="flex cursor-pointer flex-col items-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-primary-light hover:shadow-[var(--shadow-sm)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style={{
-                gap: "var(--space-md)",
-                padding: "var(--space-xl) var(--space-md)",
-                borderRadius: "var(--radius-lg)",
-              }}
-            >
-              <div
-                className={`flex items-center justify-center ${cat.iconBg} ${cat.iconColor}`}
+          {categories.map((catName) => {
+            const catIcon = CATEGORY_ICONS[catName] ?? DEFAULT_CATEGORY_ICON;
+            return (
+              <Link
+                key={catName}
+                to={`/search?category=${encodeURIComponent(catName)}`}
+                className="flex cursor-pointer flex-col items-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-primary-light hover:shadow-[var(--shadow-sm)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 style={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: "var(--radius-xl)",
-                  ...(cat.id === "relaxation"
-                    ? {
-                        background: "oklch(0.96 0.02 200)",
-                        color: "oklch(0.55 0.10 240)",
-                      }
-                    : {}),
+                  gap: "var(--space-md)",
+                  padding: "var(--space-xl) var(--space-md)",
+                  borderRadius: "var(--radius-lg)",
                 }}
               >
-                <span className="[&>svg]:h-6 [&>svg]:w-6">{cat.icon}</span>
-              </div>
-              <span
-                className="text-center text-neutral-800"
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "var(--text-base)",
-                  fontWeight: "var(--weight-medium)",
-                }}
-              >
-                {cat.name}
-              </span>
-            </Link>
-          ))}
+                <div
+                  className={`flex items-center justify-center ${catIcon.iconBg} ${catIcon.iconColor}`}
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: "var(--radius-xl)",
+                    ...catIcon.iconStyle,
+                  }}
+                >
+                  <span className="[&>svg]:h-6 [&>svg]:w-6">
+                    {catIcon.icon}
+                  </span>
+                </div>
+                <span
+                  className="text-center text-neutral-800"
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "var(--text-base)",
+                    fontWeight: "var(--weight-medium)",
+                  }}
+                >
+                  {catName}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

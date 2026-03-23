@@ -1,4 +1,5 @@
-import { data, redirect } from "react-router";
+import { useState } from "react";
+import { data, redirect, useFetcher } from "react-router";
 import { z } from "zod";
 import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
 import { updateNotificationPreference } from "@/core/application/notification/updateNotificationPreference";
@@ -7,7 +8,6 @@ import {
   defineHandler,
   error,
   success,
-  useCompositeAction,
 } from "@/lib/compositeAction";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/settings";
@@ -141,27 +141,163 @@ export async function loader({ request }: Route.LoaderArgs) {
   return { settings, customerId };
 }
 
-export default function NotificationSettingsPage({
-  loaderData,
-}: Route.ComponentProps) {
-  const { settings, customerId } = loaderData;
-  const fetcher = useCompositeAction<typeof handlers>();
+/**
+ * Derives the optimistic (displayed) value for a setting toggle.
+ *
+ * If a fetcher is currently submitting for this setting+channel,
+ * we show the value being submitted (optimistic).
+ * Otherwise we show the server data.
+ */
+function useOptimisticToggle(
+  serverValue: boolean,
+  settingType: string,
+  channel: "email" | "in_app",
+  fetcher: ReturnType<typeof useFetcher>,
+): boolean {
+  const isSubmittingThis =
+    fetcher.state !== "idle" &&
+    fetcher.formData?.get("type") === settingType &&
+    fetcher.formData?.get("channel") === channel;
 
-  fetcher.register("updateSetting", {});
+  if (isSubmittingThis) {
+    return fetcher.formData?.get("enabled") === "true";
+  }
+  return serverValue;
+}
 
-  const handleToggle = (
-    type: string,
-    channel: "email" | "in_app",
-    currentValue: boolean,
-  ) => {
+function SettingRow({
+  setting,
+  customerId,
+  isLast,
+}: {
+  setting: NotificationSetting;
+  customerId: string;
+  isLast: boolean;
+}) {
+  const emailFetcher = useFetcher();
+  const inAppFetcher = useFetcher();
+
+  const [emailReverted, setEmailReverted] = useState<boolean | null>(null);
+  const [inAppReverted, setInAppReverted] = useState<boolean | null>(null);
+
+  // Derive displayed state: optimistic while submitting, server data otherwise
+  const emailDisplayed = useOptimisticToggle(
+    emailReverted ?? setting.emailEnabled,
+    setting.type,
+    "email",
+    emailFetcher,
+  );
+  const inAppDisplayed = useOptimisticToggle(
+    inAppReverted ?? setting.inAppEnabled,
+    setting.type,
+    "in_app",
+    inAppFetcher,
+  );
+
+  // Clear revert state when server data changes (successful revalidation)
+  // This runs after loader revalidation brings fresh data
+  if (emailReverted !== null && emailFetcher.state === "idle") {
+    setEmailReverted(null);
+  }
+  if (inAppReverted !== null && inAppFetcher.state === "idle") {
+    setInAppReverted(null);
+  }
+
+  const handleToggle = (channel: "email" | "in_app", currentValue: boolean) => {
+    const fetcher = channel === "email" ? emailFetcher : inAppFetcher;
     const formData = new FormData();
     formData.set("intent", "updateSetting");
     formData.set("customerId", customerId);
-    formData.set("type", type);
+    formData.set("type", setting.type);
     formData.set("channel", channel);
     formData.set("enabled", String(!currentValue));
     fetcher.submit(formData, { method: "post" });
   };
+
+  // Detect failed submissions and revert
+  if (
+    emailFetcher.state === "idle" &&
+    emailFetcher.data &&
+    typeof emailFetcher.data === "object" &&
+    "status" in emailFetcher.data &&
+    emailFetcher.data.status === "error" &&
+    emailReverted === null
+  ) {
+    setEmailReverted(setting.emailEnabled);
+  }
+
+  if (
+    inAppFetcher.state === "idle" &&
+    inAppFetcher.data &&
+    typeof inAppFetcher.data === "object" &&
+    "status" in inAppFetcher.data &&
+    inAppFetcher.data.status === "error" &&
+    inAppReverted === null
+  ) {
+    setInAppReverted(setting.inAppEnabled);
+  }
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 140px 140px",
+        gap: "0",
+        padding: "var(--space-lg) var(--space-xl)",
+        borderBottom: isLast ? "none" : "1px solid var(--color-neutral-200)",
+        alignItems: "center",
+        transition: "background var(--transition-default)",
+      }}
+    >
+      <div className="flex flex-col" style={{ gap: "var(--space-xs)" }}>
+        <div
+          style={{
+            fontSize: "var(--text-base)",
+            fontWeight: "var(--weight-medium)",
+            color: "var(--color-neutral-800)",
+          }}
+        >
+          {setting.label}
+        </div>
+        <div
+          style={{
+            fontSize: "var(--text-xs)",
+            color: "var(--color-neutral-500)",
+          }}
+        >
+          {setting.description}
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <label className="mypage-toggle">
+          <input
+            type="checkbox"
+            checked={emailDisplayed}
+            onChange={() => handleToggle("email", emailDisplayed)}
+            aria-label={`${setting.label}のメール通知`}
+          />
+          <span className="mypage-toggle-slider" />
+        </label>
+      </div>
+      <div className="flex justify-center">
+        <label className="mypage-toggle">
+          <input
+            type="checkbox"
+            checked={inAppDisplayed}
+            onChange={() => handleToggle("in_app", inAppDisplayed)}
+            aria-label={`${setting.label}のアプリ内通知`}
+          />
+          <span className="mypage-toggle-slider" />
+        </label>
+      </div>
+    </div>
+  );
+}
+
+export default function NotificationSettingsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { settings, customerId } = loaderData;
 
   return (
     <div>
@@ -244,67 +380,12 @@ export default function NotificationSettingsPage({
 
         {/* Rows */}
         {settings.map((setting, idx) => (
-          <div
+          <SettingRow
             key={setting.type}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 140px 140px",
-              gap: "0",
-              padding: "var(--space-lg) var(--space-xl)",
-              borderBottom:
-                idx < settings.length - 1
-                  ? "1px solid var(--color-neutral-200)"
-                  : "none",
-              alignItems: "center",
-              transition: "background var(--transition-default)",
-            }}
-          >
-            <div className="flex flex-col" style={{ gap: "var(--space-xs)" }}>
-              <div
-                style={{
-                  fontSize: "var(--text-base)",
-                  fontWeight: "var(--weight-medium)",
-                  color: "var(--color-neutral-800)",
-                }}
-              >
-                {setting.label}
-              </div>
-              <div
-                style={{
-                  fontSize: "var(--text-xs)",
-                  color: "var(--color-neutral-500)",
-                }}
-              >
-                {setting.description}
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <label className="mypage-toggle">
-                <input
-                  type="checkbox"
-                  checked={setting.emailEnabled}
-                  onChange={() =>
-                    handleToggle(setting.type, "email", setting.emailEnabled)
-                  }
-                  aria-label={`${setting.label}のメール通知`}
-                />
-                <span className="mypage-toggle-slider" />
-              </label>
-            </div>
-            <div className="flex justify-center">
-              <label className="mypage-toggle">
-                <input
-                  type="checkbox"
-                  checked={setting.inAppEnabled}
-                  onChange={() =>
-                    handleToggle(setting.type, "in_app", setting.inAppEnabled)
-                  }
-                  aria-label={`${setting.label}のアプリ内通知`}
-                />
-                <span className="mypage-toggle-slider" />
-              </label>
-            </div>
-          </div>
+            setting={setting}
+            customerId={customerId}
+            isLast={idx === settings.length - 1}
+          />
         ))}
       </div>
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { data, redirect } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Modal } from "@/components/ui/Modal";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { cancelInvitation } from "@/core/application/member/cancelInvitation";
 import { changeMemberRole } from "@/core/application/member/changeMemberRole";
@@ -25,6 +26,15 @@ import type { Route } from "./+types/members";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const tenantId = params.tenantId;
+
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) throw redirect("/admin/login");
+
+  const currentUserMembers = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  const currentMember = currentUserMembers.find((m) => m.tenantId === tenantId);
+  if (!currentMember) throw redirect("/admin/tenants");
 
   const membersResult = await handleUseCase(() =>
     listMembers({
@@ -51,6 +61,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   );
 
   return {
+    currentMemberId: currentMember.id as string,
+    currentMemberRole: currentMember.role as string,
     members: membersResult.items,
     invitations: invitationsResult.items,
   };
@@ -221,12 +233,19 @@ const roleLabels: Record<string, { text: string; className: string }> = {
 export default function TenantMembersPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { members, invitations } = loaderData;
+  const { currentMemberId, currentMemberRole, members, invitations } =
+    loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
   const [activeTab, setActiveTab] = useState<"members" | "invitations">(
     "members",
   );
   const [showInviteForm, setShowInviteForm] = useState(false);
+  const [removingMemberId, setRemovingMemberId] = useState<string | null>(null);
+  const removingMember = removingMemberId
+    ? members.find((m) => m.id === removingMemberId)
+    : null;
+  const canManageMembers =
+    currentMemberRole === "admin" || currentMemberRole === "owner";
 
   const [inviteForm, inviteFields] = useForm({
     id: "invite-form",
@@ -248,8 +267,19 @@ export default function TenantMembersPage({
     },
   });
 
+  fetcher.register("removeMember", {
+    onSuccess: () => {
+      setRemovingMemberId(null);
+      toast.success("メンバーを削除しました");
+    },
+    onHandlerError: ({ error: err }) => {
+      toast.error(err?.[""]?.[0] ?? "メンバーの削除に失敗しました");
+    },
+  });
+
   const isPendingInvite = fetcher.isPending("invite");
   const isPendingChangeRole = fetcher.isPending("changeRole");
+  const isPendingRemove = fetcher.isPending("removeMember");
 
   return (
     <div className="">
@@ -403,27 +433,42 @@ export default function TenantMembersPage({
                       {new Date(member.joinedAt).toLocaleDateString("ja-JP")}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
-                      <fetcher.Form method="post" className="inline">
-                        <input type="hidden" name="intent" value="changeRole" />
-                        <input
-                          type="hidden"
-                          name="memberId"
-                          value={member.id}
-                        />
-                        <select
-                          name="role"
-                          defaultValue={member.role}
-                          disabled={isPendingChangeRole}
-                          onChange={(e) => {
-                            const form = e.target.closest("form");
-                            if (form) form.requestSubmit();
-                          }}
-                          className="rounded border border-neutral-300 px-2 py-1 text-xs text-neutral-600"
-                        >
-                          <option value="admin">管理者</option>
-                          <option value="staff">スタッフ</option>
-                        </select>
-                      </fetcher.Form>
+                      <div className="flex items-center justify-end gap-3">
+                        <fetcher.Form method="post" className="inline">
+                          <input
+                            type="hidden"
+                            name="intent"
+                            value="changeRole"
+                          />
+                          <input
+                            type="hidden"
+                            name="memberId"
+                            value={member.id}
+                          />
+                          <select
+                            name="role"
+                            defaultValue={member.role}
+                            disabled={isPendingChangeRole}
+                            onChange={(e) => {
+                              const form = e.target.closest("form");
+                              if (form) form.requestSubmit();
+                            }}
+                            className="rounded border border-neutral-300 px-2 py-1 text-xs text-neutral-600"
+                          >
+                            <option value="admin">管理者</option>
+                            <option value="staff">スタッフ</option>
+                          </select>
+                        </fetcher.Form>
+                        {canManageMembers && member.id !== currentMemberId && (
+                          <button
+                            type="button"
+                            onClick={() => setRemovingMemberId(member.id)}
+                            className="font-medium text-destructive hover:text-destructive"
+                          >
+                            削除
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
@@ -540,6 +585,49 @@ export default function TenantMembersPage({
           )}
         </div>
       )}
+
+      {/* メンバー削除確認モーダル */}
+      <Modal
+        open={removingMemberId !== null}
+        onClose={() => setRemovingMemberId(null)}
+        title="メンバー削除"
+      >
+        <p className="mb-6 text-sm text-neutral-600">
+          {removingMember
+            ? `${removingMember.name} を削除しますか？`
+            : "このメンバーを削除しますか？"}
+          担当している予約は「担当者未定」になります。
+        </p>
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={() => setRemovingMemberId(null)}
+            className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+          >
+            キャンセル
+          </button>
+          <fetcher.Form
+            method="post"
+            onSubmit={() => {
+              // Modal will close on success via the register callback
+            }}
+          >
+            <input type="hidden" name="intent" value="removeMember" />
+            <input
+              type="hidden"
+              name="memberId"
+              value={removingMemberId ?? ""}
+            />
+            <button
+              type="submit"
+              disabled={isPendingRemove}
+              className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-destructive px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+            >
+              {isPendingRemove ? "削除中..." : "削除する"}
+            </button>
+          </fetcher.Form>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -9,6 +9,9 @@ export default [
   // better-auth API
   route("api/auth/*", "routes/api.auth.$.ts"),
 
+  // Tenant API
+  route("api/check-url-path", "routes/api.check-url-path.ts"),
+
   // 公開ページ
   index("routes/index.tsx"),
   route("search", "routes/search.tsx"),

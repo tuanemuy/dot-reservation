@@ -3,6 +3,7 @@ import { data, Link } from "react-router";
 import { z } from "zod";
 import { deleteMenu } from "@/core/application/menu/deleteMenu";
 import { listMenus } from "@/core/application/menu/listMenus";
+import { updateMenuSortOrders } from "@/core/application/menu/updateMenuSortOrders";
 import { container } from "@/core/di/server";
 import {
   createCompositeAction,
@@ -35,6 +36,10 @@ const deleteMenuSchema = z.object({
   menuId: z.string().min(1),
 });
 
+const updateSortOrdersSchema = z.object({
+  items: z.string().min(1),
+});
+
 export const handlers = {
   deleteMenu: defineHandler({
     schema: deleteMenuSchema,
@@ -44,6 +49,25 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: { menuId: value.menuId },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
+    },
+  }),
+  updateSortOrders: defineHandler({
+    schema: updateSortOrdersSchema,
+    handler: async (value, args) => {
+      const items = JSON.parse(value.items) as {
+        menuId: string;
+        sortOrder: number;
+      }[];
+      return handleUseCase(() =>
+        updateMenuSortOrders({
+          container,
+          headers: args.request.headers,
+          input: { items },
         }),
       ).match(
         () => success(),
@@ -80,6 +104,32 @@ export default function TenantMenusPage({
   });
 
   const isPendingDelete = fetcher.isPending("deleteMenu");
+  const isPendingSortOrders = fetcher.isPending("updateSortOrders");
+
+  const handleMoveMenu = (menuId: string, direction: "up" | "down") => {
+    const currentIndex = filteredMenus.findIndex((m) => m.id === menuId);
+    if (currentIndex < 0) return;
+    const swapIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+    if (swapIndex < 0 || swapIndex >= filteredMenus.length) return;
+
+    const items = filteredMenus.map((m, i) => {
+      if (i === currentIndex) {
+        return { menuId: m.id, sortOrder: filteredMenus[swapIndex].sortOrder };
+      }
+      if (i === swapIndex) {
+        return {
+          menuId: m.id,
+          sortOrder: filteredMenus[currentIndex].sortOrder,
+        };
+      }
+      return { menuId: m.id, sortOrder: m.sortOrder };
+    });
+
+    const formData = new FormData();
+    formData.set("intent", "updateSortOrders");
+    formData.set("items", JSON.stringify(items));
+    fetcher.submit(formData, { method: "post" });
+  };
 
   return (
     <div className="">
@@ -140,6 +190,9 @@ export default function TenantMenusPage({
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-neutral-200">
               <tr>
+                <th className="px-3 py-3 text-center text-xs font-medium uppercase tracking-wider text-neutral-500">
+                  並び順
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   メニュー名
                 </th>
@@ -158,8 +211,59 @@ export default function TenantMenusPage({
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filteredMenus.map((menu) => (
+              {filteredMenus.map((menu, index) => (
                 <tr key={menu.id} className="hover:bg-neutral-200">
+                  <td className="whitespace-nowrap px-3 py-4 text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <button
+                        type="button"
+                        disabled={index === 0 || isPendingSortOrders}
+                        onClick={() => handleMoveMenu(menu.id, "up")}
+                        className="rounded p-1 text-neutral-400 hover:bg-neutral-300 hover:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-30"
+                        aria-label="上に移動"
+                      >
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={
+                          index === filteredMenus.length - 1 ||
+                          isPendingSortOrders
+                        }
+                        onClick={() => handleMoveMenu(menu.id, "down")}
+                        className="rounded p-1 text-neutral-400 hover:bg-neutral-300 hover:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-30"
+                        aria-label="下に移動"
+                      >
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-800">
                     <Link
                       to={`/admin/${tenantId}/menus/${menu.id}`}

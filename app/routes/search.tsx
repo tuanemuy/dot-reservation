@@ -7,7 +7,56 @@ import type { Route } from "./+types/search";
 
 const ITEMS_PER_PAGE = 12;
 
-const categoryFilters = ["整体院", "ジム", "美容院", "リラクゼーション"];
+/** 47 Japanese prefectures in standard order */
+const PREFECTURES = [
+  "北海道",
+  "青森県",
+  "岩手県",
+  "宮城県",
+  "秋田県",
+  "山形県",
+  "福島県",
+  "茨城県",
+  "栃木県",
+  "群馬県",
+  "埼玉県",
+  "千葉県",
+  "東京都",
+  "神奈川県",
+  "新潟県",
+  "富山県",
+  "石川県",
+  "福井県",
+  "山梨県",
+  "長野県",
+  "岐阜県",
+  "静岡県",
+  "愛知県",
+  "三重県",
+  "滋賀県",
+  "京都府",
+  "大阪府",
+  "兵庫県",
+  "奈良県",
+  "和歌山県",
+  "鳥取県",
+  "島根県",
+  "岡山県",
+  "広島県",
+  "山口県",
+  "徳島県",
+  "香川県",
+  "愛媛県",
+  "高知県",
+  "福岡県",
+  "佐賀県",
+  "長崎県",
+  "熊本県",
+  "大分県",
+  "宮崎県",
+  "鹿児島県",
+  "沖縄県",
+] as const;
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -18,6 +67,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const { container } = await import("@/core/di/server");
 
+  // Fetch search results
   const result = await handleUseCase(() =>
     searchTenants({
       container,
@@ -37,19 +87,48 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
+  // Fetch all active tenants to extract available categories
+  const allTenants = await handleUseCase(() =>
+    searchTenants({
+      container,
+      headers: request.headers,
+      input: {
+        keyword: null,
+        area: null,
+        category: null,
+        page: 1,
+        limit: 1000,
+      },
+    }),
+  ).match(
+    (r) => r,
+    () => ({ items: [], totalCount: 0 }),
+  );
+
+  const categorySet = new Set<string>();
+  for (const tenant of allTenants.items) {
+    if (tenant.category) {
+      categorySet.add(tenant.category);
+    }
+  }
+  const categoryFilters = [...categorySet].sort();
+
   return {
     items: result.items,
     totalCount: result.totalCount,
     currentPage: page,
     totalPages: Math.ceil(result.totalCount / ITEMS_PER_PAGE),
+    categoryFilters,
   };
 }
 
 export default function SearchPage({ loaderData }: Route.ComponentProps) {
-  const { items, totalCount, currentPage, totalPages } = loaderData;
+  const { items, totalCount, currentPage, totalPages, categoryFilters } =
+    loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const category = searchParams.get("category") || "";
+  const area = searchParams.get("area") || "";
 
   function handleCategoryToggle(cat: string) {
     const newParams = new URLSearchParams(searchParams);
@@ -57,6 +136,17 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
       newParams.delete("category");
     } else {
       newParams.set("category", cat);
+    }
+    newParams.set("page", "1");
+    setSearchParams(newParams);
+  }
+
+  function handleAreaChange(prefecture: string) {
+    const newParams = new URLSearchParams(searchParams);
+    if (prefecture === "") {
+      newParams.delete("area");
+    } else {
+      newParams.set("area", prefecture);
     }
     newParams.set("page", "1");
     setSearchParams(newParams);
@@ -158,6 +248,66 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
             className="sticky"
             style={{ top: "calc(64px + var(--space-lg))" }}
           >
+            {/* Area Filter */}
+            <div style={{ marginBottom: "var(--space-xl)" }}>
+              <h3
+                className="border-b border-neutral-200 text-neutral-800 uppercase"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: "var(--weight-semibold)",
+                  letterSpacing: "var(--tracking-wide)",
+                  marginBottom: "var(--space-md)",
+                  paddingBottom: "var(--space-sm)",
+                }}
+              >
+                エリア
+              </h3>
+              <div className="relative">
+                <select
+                  value={area}
+                  onChange={(e) => handleAreaChange(e.target.value)}
+                  className="w-full cursor-pointer appearance-none border border-neutral-300 bg-[var(--color-bg-card)] text-neutral-700 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "var(--text-sm)",
+                    fontWeight: "var(--weight-medium)",
+                    borderRadius: "var(--radius-md)",
+                    padding:
+                      "var(--space-sm) var(--space-2xl) var(--space-sm) var(--space-md)",
+                  }}
+                >
+                  <option value="">すべてのエリア</option>
+                  {PREFECTURES.map((pref) => (
+                    <option key={pref} value={pref}>
+                      {pref}
+                    </option>
+                  ))}
+                </select>
+                <span
+                  className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-neutral-500"
+                  style={{ right: "var(--space-sm)" }}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <title>開く</title>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            {/* Category Filter */}
             <div style={{ marginBottom: "var(--space-xl)" }}>
               <h3
                 className="border-b border-neutral-200 text-neutral-800 uppercase"

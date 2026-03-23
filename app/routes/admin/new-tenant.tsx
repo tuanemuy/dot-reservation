@@ -1,6 +1,6 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { redirect, useNavigate } from "react-router";
 import { z } from "zod";
 import { createTenant } from "@/core/application/tenant/createTenant";
@@ -88,6 +88,20 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
+const step1Schema = z.object({
+  name: z.string().min(1, "テナント名を入力してください"),
+  category: z.string().min(1, "カテゴリーを選択してください"),
+  urlPath: z.string().min(1, "URLパスを入力してください"),
+});
+
+const step2Schema = z.object({
+  postalCode: z.string().min(1, "郵便番号を入力してください"),
+  prefecture: z.string().min(1, "都道府県を入力してください"),
+  city: z.string().min(1, "市区町村を入力してください"),
+  street: z.string().min(1, "番地を入力してください"),
+  phone: z.string().min(1, "電話番号を入力してください"),
+});
+
 const stepLabels = ["基本情報", "所在地・連絡先", "確認"];
 
 const inputClass =
@@ -96,10 +110,111 @@ const inputClass =
 const labelClass =
   "mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700";
 
+function useUrlPathCheck() {
+  const [urlPathStatus, setUrlPathStatus] = useState<
+    "idle" | "checking" | "available" | "taken"
+  >("idle");
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const checkUrlPath = useCallback((value: string) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    if (!value || value.length < 3) {
+      setUrlPathStatus("idle");
+      return;
+    }
+
+    setUrlPathStatus("checking");
+
+    debounceRef.current = setTimeout(async () => {
+      const params = new URLSearchParams({ urlPath: value });
+      const res = await fetch(`/api/check-url-path?${params.toString()}`);
+      if (res.ok) {
+        const json = await res.json();
+        setUrlPathStatus(json.available ? "available" : "taken");
+      } else {
+        setUrlPathStatus("idle");
+      }
+    }, 400);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
+
+  return { urlPathStatus, checkUrlPath };
+}
+
+function UrlPathIndicator({
+  status,
+}: {
+  status: "idle" | "checking" | "available" | "taken";
+}) {
+  if (status === "idle") return null;
+
+  if (status === "checking") {
+    return (
+      <p className="mt-[var(--space-xs)] text-[length:var(--text-xs)] text-neutral-500">
+        確認中...
+      </p>
+    );
+  }
+
+  if (status === "available") {
+    return (
+      <p className="mt-[var(--space-xs)] flex items-center gap-1 text-[length:var(--text-xs)] text-green-600">
+        <svg
+          className="h-3.5 w-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 12.75l6 6 9-13.5"
+          />
+        </svg>
+        利用可能
+      </p>
+    );
+  }
+
+  return (
+    <p className="mt-[var(--space-xs)] flex items-center gap-1 text-[length:var(--text-xs)] text-error">
+      <svg
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+      既に使用されています
+    </p>
+  );
+}
+
 export default function AdminNewTenantPage(_props: Route.ComponentProps) {
   const navigate = useNavigate();
   const fetcher = useCompositeAction<typeof handlers>();
   const [step, setStep] = useState(1);
+  const [stepErrors, setStepErrors] = useState<Record<string, string[]>>({});
+  const { urlPathStatus, checkUrlPath } = useUrlPathCheck();
 
   const [form, fields] = useForm({
     id: "new-tenant-form",
@@ -122,6 +237,44 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
   });
 
   const isPending = fetcher.isPending("createTenant");
+
+  const handleNextStep = () => {
+    const schema = step === 1 ? step1Schema : step === 2 ? step2Schema : null;
+    if (!schema) {
+      setStep((s) => s + 1);
+      return;
+    }
+
+    const values: Record<string, string> = {};
+    for (const key of Object.keys(schema.shape)) {
+      values[key] = fields[key as keyof typeof fields]?.value ?? "";
+    }
+
+    const result = schema.safeParse(values);
+    if (!result.success) {
+      const errors: Record<string, string[]> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as string;
+        if (!errors[field]) {
+          errors[field] = [];
+        }
+        errors[field].push(issue.message);
+      }
+      setStepErrors(errors);
+      return;
+    }
+
+    setStepErrors({});
+    setStep((s) => s + 1);
+  };
+
+  const getFieldErrors = (fieldName: string): string[] | undefined => {
+    const conformErrors = fields[fieldName as keyof typeof fields]?.errors;
+    const localErrors = stepErrors[fieldName];
+    if (conformErrors) return conformErrors as string[];
+    if (localErrors) return localErrors;
+    return undefined;
+  };
 
   return (
     <div className="mx-auto w-full max-w-[680px] flex-1 px-[var(--space-2xl)] py-[var(--space-3xl)]">
@@ -187,9 +340,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="例: リラクゼーションサロン Calm"
                 className={inputClass}
               />
-              {fields.name.errors && (
+              {getFieldErrors("name") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.name.errors}
+                  {getFieldErrors("name")}
                 </p>
               )}
             </div>
@@ -216,9 +369,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 <option value="relaxation">リラクゼーションサロン</option>
                 <option value="other">その他</option>
               </select>
-              {fields.category.errors && (
+              {getFieldErrors("category") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.category.errors}
+                  {getFieldErrors("category")}
                 </p>
               )}
             </div>
@@ -237,15 +390,19 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 <input
                   {...getInputProps(fields.urlPath, { type: "text" })}
                   placeholder="salon-calm"
+                  onChange={(e) => {
+                    checkUrlPath(e.target.value);
+                  }}
                   className="h-11 min-w-0 flex-1 border-none bg-white px-[var(--space-md)] font-[var(--font-body)] text-[length:var(--text-base)] text-neutral-800 placeholder:text-neutral-500 focus:outline-none"
                 />
               </div>
+              <UrlPathIndicator status={urlPathStatus} />
               <p className="mt-[var(--space-xs)] text-[length:var(--text-xs)] text-neutral-500">
                 英数字とハイフンのみ使用できます。公開ページのURLになります。
               </p>
-              {fields.urlPath.errors && (
+              {getFieldErrors("urlPath") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.urlPath.errors}
+                  {getFieldErrors("urlPath")}
                 </p>
               )}
             </div>
@@ -273,9 +430,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="123-4567"
                 className={`${inputClass} w-48`}
               />
-              {fields.postalCode.errors && (
+              {getFieldErrors("postalCode") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.postalCode.errors}
+                  {getFieldErrors("postalCode")}
                 </p>
               )}
             </div>
@@ -292,9 +449,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="東京都"
                 className={inputClass}
               />
-              {fields.prefecture.errors && (
+              {getFieldErrors("prefecture") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.prefecture.errors}
+                  {getFieldErrors("prefecture")}
                 </p>
               )}
             </div>
@@ -311,9 +468,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="渋谷区"
                 className={inputClass}
               />
-              {fields.city.errors && (
+              {getFieldErrors("city") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.city.errors}
+                  {getFieldErrors("city")}
                 </p>
               )}
             </div>
@@ -330,9 +487,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="神南1-2-3"
                 className={inputClass}
               />
-              {fields.street.errors && (
+              {getFieldErrors("street") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.street.errors}
+                  {getFieldErrors("street")}
                 </p>
               )}
             </div>
@@ -349,9 +506,9 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
                 placeholder="03-1234-5678"
                 className={inputClass}
               />
-              {fields.phone.errors && (
+              {getFieldErrors("phone") && (
                 <p className="mt-1 text-[length:var(--text-xs)] text-error">
-                  {fields.phone.errors}
+                  {getFieldErrors("phone")}
                 </p>
               )}
             </div>
@@ -431,7 +588,7 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
         {step < 3 ? (
           <button
             type="button"
-            onClick={() => setStep((s) => s + 1)}
+            onClick={handleNextStep}
             className="inline-flex h-11 items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-primary px-[var(--space-xl)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99]"
           >
             次へ
