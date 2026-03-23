@@ -64,7 +64,22 @@ export const handlers = {
         sortOrder: number;
       }[];
       try {
-        items = JSON.parse(value.items);
+        const parsed: unknown = JSON.parse(value.items);
+        if (
+          !Array.isArray(parsed) ||
+          !parsed.every(
+            (item: unknown) =>
+              typeof item === "object" &&
+              item !== null &&
+              "menuId" in item &&
+              "sortOrder" in item &&
+              typeof (item as Record<string, unknown>).menuId === "string" &&
+              typeof (item as Record<string, unknown>).sortOrder === "number",
+          )
+        ) {
+          return error({ "": ["Invalid data format"] });
+        }
+        items = parsed as { menuId: string; sortOrder: number }[];
       } catch {
         return error({ "": ["Invalid data format"] });
       }

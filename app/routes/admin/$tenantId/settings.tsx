@@ -100,6 +100,23 @@ export const handlers = {
         return error({ "": ["画像ファイルを選択してください"] });
       }
 
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        return error({
+          "": ["対応していないファイル形式です（JPEG, PNG, WebP, GIF のみ）"],
+        });
+      }
+
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        return error({ "": ["ファイルサイズは10MB以下にしてください"] });
+      }
+
       const currentUrls = formData.get("currentImageUrls");
       const existingUrls =
         typeof currentUrls === "string" && currentUrls
