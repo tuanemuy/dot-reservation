@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { data, Link, useSearchParams } from "react-router";
+import { useCallback } from "react";
+import { data, Link, useNavigate, useSearchParams } from "react-router";
+import {
+  addDays,
+  formatDateISO,
+  getMonday,
+  WeekCalendar,
+} from "@/components/reservation/WeekCalendar";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { container } from "@/core/di/server";
@@ -8,10 +14,34 @@ import type { Route } from "./+types/index";
 
 type ViewMode = "list" | "calendar";
 
+function parseWeekStart(param: string | null): Date {
+  if (param) {
+    const [year, month, day] = param.split("-").map(Number);
+    if (year && month && day) {
+      return new Date(year, month - 1, day);
+    }
+  }
+  return getMonday(new Date());
+}
+
 export async function loader({ params, request }: Route.LoaderArgs) {
   const tenantId = params.tenantId;
   const url = new URL(request.url);
   const statusFilter = url.searchParams.get("status");
+  const viewMode = url.searchParams.get("view") ?? "list";
+  const weekStartParam = url.searchParams.get("weekStart");
+
+  let startDate: string | null = null;
+  let endDate: string | null = null;
+  let limit = 50;
+
+  if (viewMode === "calendar") {
+    const weekStart = parseWeekStart(weekStartParam);
+    const weekEnd = addDays(weekStart, 6);
+    startDate = formatDateISO(weekStart);
+    endDate = formatDateISO(weekEnd);
+    limit = 200;
+  }
 
   const reservationsResult = await handleUseCase(() =>
     listReservations({
@@ -20,10 +50,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       input: {
         tenantId,
         status: statusFilter,
-        startDate: null,
-        endDate: null,
+        startDate,
+        endDate,
         page: 1,
-        limit: 50,
+        limit,
       },
     }),
   ).match(
@@ -65,9 +95,47 @@ export default function TenantReservationsPage({
   const { reservations, pendingCount } = loaderData;
   const tenantId = params.tenantId;
   const [searchParams, setSearchParams] = useSearchParams();
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const navigate = useNavigate();
+
+  const viewMode: ViewMode =
+    (searchParams.get("view") as ViewMode) === "calendar" ? "calendar" : "list";
 
   const statusFilter = searchParams.get("status") || "all";
+
+  const weekStart = parseWeekStart(searchParams.get("weekStart"));
+
+  const setViewMode = useCallback(
+    (mode: ViewMode) => {
+      const params = new URLSearchParams(searchParams);
+      if (mode === "calendar") {
+        params.set("view", "calendar");
+        if (!params.has("weekStart")) {
+          params.set("weekStart", formatDateISO(getMonday(new Date())));
+        }
+      } else {
+        params.delete("view");
+        params.delete("weekStart");
+      }
+      setSearchParams(params);
+    },
+    [searchParams, setSearchParams],
+  );
+
+  const handleWeekChange = useCallback(
+    (newWeekStart: Date) => {
+      const params = new URLSearchParams(searchParams);
+      params.set("weekStart", formatDateISO(newWeekStart));
+      params.set("view", "calendar");
+      navigate(`?${params.toString()}`, { preventScrollReset: true });
+    },
+    [searchParams, navigate],
+  );
+
+  const buildDetailPath = useCallback(
+    (reservationId: string) =>
+      `/admin/${tenantId}/reservations/${reservationId}`,
+    [tenantId],
+  );
 
   return (
     <div className="">
@@ -91,8 +159,9 @@ export default function TenantReservationsPage({
             <button
               type="button"
               onClick={() => {
-                searchParams.set("status", "pending");
-                setSearchParams(searchParams);
+                const params = new URLSearchParams(searchParams);
+                params.set("status", "pending");
+                setSearchParams(params);
               }}
               className="text-sm font-medium text-warning underline hover:text-warning"
             >
@@ -135,12 +204,13 @@ export default function TenantReservationsPage({
           <select
             value={statusFilter}
             onChange={(e) => {
+              const params = new URLSearchParams(searchParams);
               if (e.target.value === "all") {
-                searchParams.delete("status");
+                params.delete("status");
               } else {
-                searchParams.set("status", e.target.value);
+                params.set("status", e.target.value);
               }
-              setSearchParams(searchParams);
+              setSearchParams(params);
             }}
             className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600"
           >
@@ -216,11 +286,12 @@ export default function TenantReservationsPage({
         )
       ) : (
         /* カレンダー表示 */
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-8">
-          <div className="flex min-h-96 items-center justify-center text-neutral-500">
-            <p>週表示の予約カレンダーがここに表示されます</p>
-          </div>
-        </div>
+        <WeekCalendar
+          reservations={reservations}
+          weekStart={weekStart}
+          onWeekChange={handleWeekChange}
+          buildDetailPath={buildDetailPath}
+        />
       )}
     </div>
   );

@@ -1,7 +1,9 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
 import { data, Link, redirect } from "react-router";
 import { z } from "zod";
+import { ReservationDiffDisplay } from "@/components/reservation/ReservationDiffDisplay";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import { updateReservation } from "@/core/application/reservation/updateReservation";
@@ -122,6 +124,13 @@ export default function TenantReservationEditPage({
     (s) => s.displayName === reservation.staffName,
   );
 
+  const [formValues, setFormValues] = useState({
+    menuId: currentMenu?.id ?? "",
+    staffId: currentStaff?.id ?? "",
+    date: reservation.date,
+    time: reservation.startTime,
+  });
+
   const [form, fields] = useForm({
     id: "update-reservation-form",
     lastResult:
@@ -143,6 +152,32 @@ export default function TenantReservationEditPage({
   });
 
   const isPending = fetcher.isPending("updateReservation");
+
+  const selectedMenu = menus.find((m) => m.id === formValues.menuId);
+  const selectedStaff = staff.find((s) => s.id === formValues.staffId);
+
+  const diffFields = [
+    {
+      label: "メニュー",
+      oldValue: reservation.menuName,
+      newValue: selectedMenu?.name ?? reservation.menuName,
+    },
+    {
+      label: "担当スタッフ",
+      oldValue: reservation.staffName ?? "指名なし",
+      newValue: selectedStaff?.displayName ?? "指名なし",
+    },
+    {
+      label: "日付",
+      oldValue: reservation.date,
+      newValue: formValues.date,
+    },
+    {
+      label: "時刻",
+      oldValue: reservation.startTime,
+      newValue: formValues.time,
+    },
+  ];
 
   return (
     <div className="">
@@ -171,6 +206,12 @@ export default function TenantReservationEditPage({
               </h2>
               <select
                 {...getInputProps(fields.menuId, { type: "text" })}
+                onChange={(e) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    menuId: e.target.value,
+                  }))
+                }
                 className="block w-full rounded-md border border-neutral-300 px-3 py-2 text-neutral-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 {menus.map((menu) => (
@@ -194,6 +235,12 @@ export default function TenantReservationEditPage({
               </h2>
               <select
                 {...getInputProps(fields.staffId, { type: "text" })}
+                onChange={(e) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    staffId: e.target.value,
+                  }))
+                }
                 className="block w-full rounded-md border border-neutral-300 px-3 py-2 text-neutral-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 <option value="">指名なし</option>
@@ -220,6 +267,12 @@ export default function TenantReservationEditPage({
                   </label>
                   <input
                     {...getInputProps(fields.date, { type: "date" })}
+                    onChange={(e) =>
+                      setFormValues((prev) => ({
+                        ...prev,
+                        date: e.target.value,
+                      }))
+                    }
                     className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {fields.date.errors && (
@@ -237,6 +290,12 @@ export default function TenantReservationEditPage({
                   </label>
                   <input
                     {...getInputProps(fields.time, { type: "time" })}
+                    onChange={(e) =>
+                      setFormValues((prev) => ({
+                        ...prev,
+                        time: e.target.value,
+                      }))
+                    }
                     className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {fields.time.errors && (
@@ -247,6 +306,9 @@ export default function TenantReservationEditPage({
                 </div>
               </div>
             </section>
+
+            {/* 変更内容の確認 */}
+            <ReservationDiffDisplay fields={diffFields} />
 
             {/* ボタン */}
             <div className="flex justify-end gap-3 border-t border-neutral-300 pt-4">

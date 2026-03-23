@@ -1,7 +1,9 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
+import { useState } from "react";
 import { data, Link, redirect, useParams } from "react-router";
 import { z } from "zod";
+import { ReservationDiffDisplay } from "@/components/reservation/ReservationDiffDisplay";
 import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { getReservation } from "@/core/application/reservation/getReservation";
@@ -152,11 +154,19 @@ export default function StaffReservationEditPage({
   const { tenantId } = useParams();
   const fetcher = useCompositeAction<typeof handlers>();
 
+  const currentMenu = menus.find((m) => m.name === reservation.menuName);
+
+  const [formValues, setFormValues] = useState({
+    menuId: currentMenu?.id ?? "",
+    date: reservation.date,
+    startTime: reservation.startTime,
+  });
+
   const [editForm, editFields] = useForm({
     id: "edit-reservation-form",
     defaultValue: {
       reservationId: reservation.id,
-      menuId: "",
+      menuId: currentMenu?.id ?? "",
       date: reservation.date,
       startTime: reservation.startTime,
       note: reservation.note,
@@ -183,6 +193,26 @@ export default function StaffReservationEditPage({
   });
 
   const isPending = fetcher.isPending("updateReservation");
+
+  const selectedMenu = menus.find((m) => m.id === formValues.menuId);
+
+  const diffFields = [
+    {
+      label: "メニュー",
+      oldValue: reservation.menuName,
+      newValue: selectedMenu?.name ?? reservation.menuName,
+    },
+    {
+      label: "日付",
+      oldValue: reservation.date,
+      newValue: formValues.date,
+    },
+    {
+      label: "時刻",
+      oldValue: reservation.startTime,
+      newValue: formValues.startTime,
+    },
+  ];
 
   return (
     <div>
@@ -238,6 +268,13 @@ export default function StaffReservationEditPage({
                       type="radio"
                       name="menuId"
                       value={menu.id}
+                      defaultChecked={menu.id === (currentMenu?.id ?? "")}
+                      onChange={(e) =>
+                        setFormValues((prev) => ({
+                          ...prev,
+                          menuId: e.target.value,
+                        }))
+                      }
                       className="h-[18px] w-[18px] shrink-0 accent-primary"
                     />
                     <div className="flex-1">
@@ -273,6 +310,12 @@ export default function StaffReservationEditPage({
               </label>
               <input
                 {...getInputProps(editFields.date, { type: "date" })}
+                onChange={(e) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    date: e.target.value,
+                  }))
+                }
                 className="h-11 w-full rounded-[10px] border border-border bg-white px-4 font-body text-base text-text transition-colors duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary"
               />
               {editFields.date.errors && (
@@ -290,6 +333,12 @@ export default function StaffReservationEditPage({
               </label>
               <input
                 {...getInputProps(editFields.startTime, { type: "time" })}
+                onChange={(e) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    startTime: e.target.value,
+                  }))
+                }
                 className="h-11 w-full rounded-[10px] border border-border bg-white px-4 font-body text-base text-text transition-colors duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary"
               />
               {editFields.startTime.errors && (
@@ -346,6 +395,11 @@ export default function StaffReservationEditPage({
             placeholder="予約に関するメモを入力してください"
             className="w-full resize-y rounded-[10px] border border-border bg-white p-4 font-body text-base text-text transition-colors duration-150 placeholder:text-text-muted hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary"
           />
+        </div>
+
+        {/* 変更内容の確認 */}
+        <div className="mb-8 max-w-[640px]">
+          <ReservationDiffDisplay fields={diffFields} />
         </div>
 
         {editForm.errors && (
