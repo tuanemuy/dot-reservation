@@ -242,7 +242,7 @@ export default function StaffSchedulePage({
 
                   return (
                     <div
-                      key={`month-${i}`}
+                      key={`month-${cellDateStr}`}
                       className={`min-h-16 bg-white p-1.5 ${
                         !isCurrentMonth ? "opacity-40" : ""
                       } ${cellDateStr === today ? "ring-1 ring-inset ring-primary" : ""}`}

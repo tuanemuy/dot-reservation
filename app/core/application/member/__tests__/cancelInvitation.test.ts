@@ -4,6 +4,7 @@ import {
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
 import { NotFoundError } from "@/core/application/error";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { acceptInvitation } from "../acceptInvitation";
 import { cancelInvitation } from "../cancelInvitation";
 import { createInvitation } from "../createInvitation";
@@ -37,10 +38,10 @@ describe("cancelInvitation", () => {
     // Verify status changed to cancelled
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(InvitationId.create(invResult.id));
       },
     );
-    expect(invitation!.status).toBe("cancelled");
+    expect(invitation?.status).toBe("cancelled");
   });
 
   it("should throw when invitation is already accepted", async () => {
@@ -159,7 +160,7 @@ describe("cancelInvitation", () => {
     // Manually expire
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({
@@ -179,10 +180,10 @@ describe("cancelInvitation", () => {
     // Verify status changed to cancelled
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(InvitationId.create(invResult.id));
       },
     );
-    expect(invitation!.status).toBe("cancelled");
+    expect(invitation?.status).toBe("cancelled");
   });
 
   it("should throw NotFoundError for non-existent invitationId", async () => {

@@ -8,6 +8,7 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "@/core/application/error";
+import { InvitationId, MemberId } from "@/core/domain/member/valueObject";
 import { acceptInvitation } from "../acceptInvitation";
 import { cancelInvitation } from "../cancelInvitation";
 import { createInvitation } from "../createInvitation";
@@ -75,11 +76,11 @@ describe("acceptInvitation", () => {
     // Verify member exists in the tenant
     const member = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.memberRepository.findById(result.memberId as any);
+        return repos.memberRepository.findById(MemberId.create(result.memberId));
       },
     );
     expect(member).not.toBeNull();
-    expect(member!.tenantId).toBe(tenantId);
+    expect(member?.tenantId).toBe(tenantId);
   });
 
   it("should throw ConflictError when invitation is expired", async () => {
@@ -100,7 +101,7 @@ describe("acceptInvitation", () => {
     // Manually expire the invitation
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({
@@ -269,7 +270,7 @@ describe("acceptInvitation", () => {
     const profile = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.staffProfileRepository.findByMemberId(
-          result.memberId as any,
+          MemberId.create(result.memberId),
         );
       },
     );
@@ -305,7 +306,7 @@ describe("acceptInvitation", () => {
     const profile = await container.unitOfWorkProvider.transaction(
       async (repos) => {
         return repos.staffProfileRepository.findByMemberId(
-          result.memberId as any,
+          MemberId.create(result.memberId),
         );
       },
     );
