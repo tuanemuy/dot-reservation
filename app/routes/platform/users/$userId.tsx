@@ -763,15 +763,12 @@ function ActionButton({
 }) {
   const isWarning = variant === "warning";
   const color = isWarning ? "var(--color-warning)" : "var(--color-error)";
-  const hoverBg = isWarning
-    ? "oklch(0.72 0.14 70 / 0.08)"
-    : "oklch(0.55 0.16 25 / 0.06)";
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex cursor-pointer items-center justify-center"
+      className={`inline-flex cursor-pointer items-center justify-center ${isWarning ? "hover-action-warning" : "hover-action-error"}`}
       style={{
         gap: "var(--space-sm)",
         height: "44px",
@@ -784,14 +781,6 @@ function ActionButton({
         fontSize: "var(--text-sm)",
         fontWeight: 500,
         letterSpacing: "var(--tracking-wide)",
-        transition:
-          "background var(--transition-default), color var(--transition-default), transform var(--transition-fast)",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = hoverBg;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = "var(--color-bg-page)";
       }}
     >
       {children}

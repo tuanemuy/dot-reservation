@@ -417,30 +417,19 @@ export default function NotificationsIndexPage({
               <Link
                 key={notification.id}
                 to={getNotificationUrl(notification)}
-                className="flex items-start"
+                className={`flex items-start ${notification.isRead ? "hover-notification-read" : "hover-notification-unread"}`}
                 style={{
                   gap: "var(--space-md)",
                   padding: "var(--space-md) var(--space-lg)",
                   borderBottom: "1px solid var(--color-neutral-200)",
                   borderTop:
                     idx === 0 ? "1px solid var(--color-neutral-200)" : "none",
-                  transition: "background var(--transition-default)",
                   cursor: "pointer",
                   textDecoration: "none",
                   color: "inherit",
                   background: notification.isRead
                     ? "transparent"
                     : "var(--color-primary-lighter)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = notification.isRead
-                    ? "var(--color-neutral-50)"
-                    : "oklch(0.96 0.02 155 / 0.7)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = notification.isRead
-                    ? "transparent"
-                    : "var(--color-primary-lighter)";
                 }}
               >
                 {/* Icon */}

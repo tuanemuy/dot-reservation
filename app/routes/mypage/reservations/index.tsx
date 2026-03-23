@@ -1,3 +1,4 @@
+import type React from "react";
 import { data, Link, redirect, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
 import { listReservations } from "@/core/application/reservation/listReservations";
@@ -15,16 +16,27 @@ const statusLabels: Record<string, string> = {
   rejected: "却下",
 };
 
-const statusBadgeStyles: Record<string, string> = {
-  pending:
-    "background: oklch(0.72 0.14 70 / 0.1); color: var(--color-warning);",
-  confirmed:
-    "background: oklch(0.55 0.12 145 / 0.1); color: var(--color-success);",
-  completed:
-    "background: var(--color-neutral-200); color: var(--color-neutral-600);",
-  cancelled:
-    "background: oklch(0.55 0.16 25 / 0.1); color: var(--color-error);",
-  rejected: "background: oklch(0.55 0.16 25 / 0.1); color: var(--color-error);",
+const statusBadgeStyles: Record<string, React.CSSProperties> = {
+  pending: {
+    background: "oklch(0.72 0.14 70 / 0.1)",
+    color: "var(--color-warning)",
+  },
+  confirmed: {
+    background: "oklch(0.55 0.12 145 / 0.1)",
+    color: "var(--color-success)",
+  },
+  completed: {
+    background: "var(--color-neutral-200)",
+    color: "var(--color-neutral-600)",
+  },
+  cancelled: {
+    background: "oklch(0.55 0.16 25 / 0.1)",
+    color: "var(--color-error)",
+  },
+  rejected: {
+    background: "oklch(0.55 0.16 25 / 0.1)",
+    color: "var(--color-error)",
+  },
 };
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -217,20 +229,7 @@ export default function ReservationsIndexPage({
                       fontWeight: "var(--weight-medium)",
                       borderRadius: "var(--radius-sm)",
                       letterSpacing: "var(--tracking-wide)",
-                      ...(Object.fromEntries(
-                        (statusBadgeStyles[reservation.status] ?? "")
-                          .split(";")
-                          .filter(Boolean)
-                          .map((s) => {
-                            const [k, v] = s.split(":").map((x) => x.trim());
-                            return [
-                              k.replace(/-([a-z])/g, (_, c: string) =>
-                                c.toUpperCase(),
-                              ),
-                              v,
-                            ];
-                          }),
-                      ) as React.CSSProperties),
+                      ...(statusBadgeStyles[reservation.status] ?? {}),
                     }}
                   >
                     {statusLabels[reservation.status] ?? reservation.status}

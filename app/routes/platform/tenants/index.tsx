@@ -258,19 +258,7 @@ export default function PlatformTenantsPage({
             </thead>
             <tbody>
               {tenants.map((tenant, index) => (
-                <tr
-                  key={tenant.id}
-                  style={{
-                    transition: "background var(--transition-default)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background =
-                      "var(--color-neutral-50)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
+                <tr key={tenant.id} className="hover-table-row">
                   <td
                     style={{
                       padding: "var(--space-md) var(--space-lg)",

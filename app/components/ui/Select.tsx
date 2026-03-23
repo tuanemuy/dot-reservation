@@ -12,7 +12,7 @@ export function Select({
 }: SelectProps) {
   return (
     <select
-      className={`w-full appearance-none rounded-md border bg-white px-3 py-2 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-surface-secondary disabled:opacity-70 ${
+      className={`w-full appearance-none rounded-md border bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:bg-surface-secondary disabled:opacity-70 ${
         error ? "border-destructive" : "border-border"
       } ${className}`}
       {...props}

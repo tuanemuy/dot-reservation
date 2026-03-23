@@ -253,7 +253,7 @@ function QuickLinkCard({
   return (
     <Link
       to={to}
-      className="flex items-center no-underline"
+      className="hover-card-highlight flex items-center no-underline"
       style={{
         gap: "var(--space-md)",
         padding: "var(--space-lg)",
@@ -261,16 +261,6 @@ function QuickLinkCard({
         border: "1px solid var(--color-neutral-300)",
         borderRadius: "var(--radius-md)",
         color: "var(--color-neutral-800)",
-        transition:
-          "border-color var(--transition-default), box-shadow var(--transition-default)",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = "var(--color-primary-light)";
-        e.currentTarget.style.boxShadow = "var(--shadow-sm)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "var(--color-neutral-300)";
-        e.currentTarget.style.boxShadow = "none";
       }}
     >
       <div

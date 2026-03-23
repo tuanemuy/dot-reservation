@@ -135,7 +135,7 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
             <button
               type="button"
               onClick={handleSignOut}
-              className="flex cursor-pointer items-center border-none bg-transparent"
+              className="hover-bg-neutral-200 flex cursor-pointer items-center border-none bg-transparent"
               style={{
                 gap: "var(--space-sm)",
                 height: "40px",
@@ -145,13 +145,6 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
                 fontFamily: "var(--font-body)",
                 fontSize: "var(--text-sm)",
                 fontWeight: 500,
-                transition: "background var(--transition-default)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--color-neutral-200)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
               }}
             >
               <span

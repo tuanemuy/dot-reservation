@@ -213,19 +213,7 @@ export default function PlatformUsersPage({
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr
-                  key={user.id}
-                  style={{
-                    transition: "background var(--transition-default)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background =
-                      "var(--color-neutral-50)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
+                <tr key={user.id} className="hover-table-row">
                   <td
                     style={{
                       padding: "var(--space-md) var(--space-lg)",

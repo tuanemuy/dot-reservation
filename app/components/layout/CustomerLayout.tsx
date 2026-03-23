@@ -130,22 +130,12 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
           <div className="flex items-center" style={{ gap: "var(--space-sm)" }}>
             <Link
               to="/"
-              className="flex items-center justify-center"
+              className="hover-icon-button flex items-center justify-center"
               style={{
                 width: "40px",
                 height: "40px",
                 borderRadius: "var(--radius-md)",
                 color: "var(--color-neutral-500)",
-                transition:
-                  "background var(--transition-default), color var(--transition-default)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--color-neutral-200)";
-                e.currentTarget.style.color = "var(--color-neutral-800)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "var(--color-neutral-500)";
               }}
               aria-label="検索"
             >
@@ -167,7 +157,7 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center justify-center"
+              className="hover-icon-button flex items-center justify-center"
               style={{
                 width: "40px",
                 height: "40px",
@@ -176,16 +166,6 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
                 background: "transparent",
                 cursor: "pointer",
                 color: "var(--color-neutral-500)",
-                transition:
-                  "background var(--transition-default), color var(--transition-default)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--color-neutral-200)";
-                e.currentTarget.style.color = "var(--color-neutral-800)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "var(--color-neutral-500)";
               }}
               aria-label="ログアウト"
             >

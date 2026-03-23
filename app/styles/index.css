@@ -217,3 +217,79 @@ body {
   border-color: var(--color-neutral-400) !important;
   box-shadow: var(--shadow-sm);
 }
+
+/* ===== Hover: transparent -> neutral-200 background ===== */
+.hover-bg-neutral-200 {
+  transition: background var(--transition-default);
+}
+.hover-bg-neutral-200:hover {
+  background: var(--color-neutral-200);
+}
+
+/* ===== Hover: icon button (neutral-500 -> neutral-800 + neutral-200 bg) ===== */
+.hover-icon-button {
+  transition:
+    background var(--transition-default),
+    color var(--transition-default);
+}
+.hover-icon-button:hover {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-800);
+}
+
+/* ===== Hover: card border highlight ===== */
+.hover-card-highlight {
+  transition:
+    border-color var(--transition-default),
+    box-shadow var(--transition-default);
+}
+.hover-card-highlight:hover {
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Hover: table row background ===== */
+.hover-table-row {
+  transition: background var(--transition-default);
+}
+.hover-table-row:hover {
+  background: var(--color-neutral-50);
+}
+
+/* ===== Hover: action button (warning) ===== */
+.hover-action-warning {
+  transition:
+    background var(--transition-default),
+    color var(--transition-default),
+    transform var(--transition-fast);
+}
+.hover-action-warning:hover {
+  background: oklch(0.72 0.14 70 / 0.08);
+}
+
+/* ===== Hover: action button (error) ===== */
+.hover-action-error {
+  transition:
+    background var(--transition-default),
+    color var(--transition-default),
+    transform var(--transition-fast);
+}
+.hover-action-error:hover {
+  background: oklch(0.55 0.16 25 / 0.06);
+}
+
+/* ===== Hover: notification item (read) ===== */
+.hover-notification-read {
+  transition: background var(--transition-default);
+}
+.hover-notification-read:hover {
+  background: var(--color-neutral-50);
+}
+
+/* ===== Hover: notification item (unread) ===== */
+.hover-notification-unread {
+  transition: background var(--transition-default);
+}
+.hover-notification-unread:hover {
+  background: oklch(0.96 0.02 155 / 0.7);
+}
