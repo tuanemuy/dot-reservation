@@ -75,6 +75,8 @@
 - [x] typeFilters テスト追加 (617 tests)
 - [x] スタッフプロフィール未接続 file input 削除
 
-## 残存課題（低リスク・別タスク）
-- [ ] platform/users: lastLoginAt がスタブ（null）— AuthProvider ポートにセッション一覧メソッドが未定義のため取得不可
-- [ ] deleteAccount ハンドラーのパスワード検証未実装 — AuthProvider ポート拡張が必要
+## 未実装
+- [ ] platform/users: lastLoginAt の取得 — AuthProvider ポートにセッション一覧メソッドの追加が必要
+- [ ] deleteAccount 時のパスワード検証 — AuthProvider ポートにパスワード検証メソッドの追加が必要
+- [ ] StorageManager アダプター（テナント画像・スタッフプロフィール画像のアップロード）
+- [ ] EmailSender アダプター（招待メール・通知メール・認証メールの実送信）
