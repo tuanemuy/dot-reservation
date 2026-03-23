@@ -40,7 +40,7 @@
 - [x] shift (63 tests)
 - [x] reservation (104 tests)
 - [x] notification (62 tests)
-- [ ] auth (sessionValidation, authIntegration, cleanupAuthUserIfOrphaned)
+- [x] auth (cleanupAuthUserIfOrphaned: 6 tests, authIntegration: 4 tests)
 
 ## フロントエンド
 - [x] 公開ページ（顧客向け）
