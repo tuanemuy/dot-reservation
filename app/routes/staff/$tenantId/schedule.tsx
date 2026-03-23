@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { data, Link } from "react-router";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Tabs } from "@/components/ui/Tabs";
@@ -42,12 +42,12 @@ function formatDate(d: Date): string {
 function formatDateLabel(dateStr: string): string {
   const [_year, month, day] = dateStr.split("-");
   const d = new Date(
-    Number.parseInt(dateStr.split("-")[0]),
-    Number.parseInt(month) - 1,
-    Number.parseInt(day),
+    Number.parseInt(dateStr.split("-")[0], 10),
+    Number.parseInt(month, 10) - 1,
+    Number.parseInt(day, 10),
   );
   const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-  return `${Number.parseInt(month)}/${Number.parseInt(day)}(${dayNames[d.getDay()]})`;
+  return `${Number.parseInt(month, 10)}/${Number.parseInt(day, 10)}(${dayNames[d.getDay()]})`;
 }
 
 const viewTabs = [

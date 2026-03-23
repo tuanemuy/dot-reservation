@@ -40,7 +40,7 @@ const handlers = {
       );
       if (members.length === 0) throw redirect("/admin/login");
 
-      const memberId = members[0]!.id;
+      const memberId = members[0]?.id;
 
       await handleUseCase(() =>
         updateNotificationPreference({
@@ -95,7 +95,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   );
   if (members.length === 0) throw redirect("/admin/login");
 
-  const memberId = members[0]!.id;
+  const memberId = members[0]?.id;
 
   const result = await handleUseCase(() =>
     getNotificationPreferences({
@@ -136,7 +136,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   for (const pref of result.preferences) {
     if (seenTypes.has(pref.type)) continue;
     seenTypes.add(pref.type);
-    const channels = typeMap.get(pref.type)!;
+    const channels = typeMap.get(pref.type) as {
+      emailEnabled: boolean;
+      inAppEnabled: boolean;
+    };
     settings.push({
       type: pref.type,
       label: notificationTypeLabels[pref.type] ?? pref.type,
@@ -154,11 +157,7 @@ export default function AdminNotificationSettingsPage({
   const { settings } = loaderData;
   const fetcher = useCompositeAction<typeof handlers>();
 
-  fetcher.register("updateSetting", {
-    onSuccess: () => {
-      console.log("Setting updated");
-    },
-  });
+  fetcher.register("updateSetting", {});
 
   const handleToggle = (
     type: string,

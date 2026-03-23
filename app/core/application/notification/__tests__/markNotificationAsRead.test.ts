@@ -59,7 +59,7 @@ describe("markNotificationAsRead", () => {
       notificationId as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.isRead).toBe(true);
+    expect(saved?.isRead).toBe(true);
   });
 
   it("should succeed without error when notification is already read (idempotent)", async () => {

@@ -13,7 +13,7 @@ describe("listMemberTenants", () => {
     const container = getContainer();
 
     // Create first tenant
-    const tenant1 = await createTestTenant(container, {
+    const _tenant1 = await createTestTenant(container, {
       authUserId: "auth-member-1",
       creatorEmail: "member@example.com",
       urlPath: `tenant1-${Date.now()}`,
@@ -131,8 +131,8 @@ describe("listMemberTenants", () => {
     const staffTenant = result.items.find(
       (i) => i.tenantName === "Staff Tenant",
     );
-    expect(adminTenant!.role).toBe("admin");
-    expect(staffTenant!.role).toBe("staff");
+    expect(adminTenant?.role).toBe("admin");
+    expect(staffTenant?.role).toBe("staff");
   });
 
   it("should return empty items for non-existent authUserId", async () => {

@@ -9,7 +9,6 @@ import { Card, CardBody, CardFooter, CardHeader } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { Select } from "@/components/ui/Select";
 import { cancelReservation } from "@/core/application/reservation/cancelReservation";
-import type { GetReservationOutput } from "@/core/application/reservation/getReservation";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import { getTenant } from "@/core/application/tenant/getTenant";
 import {

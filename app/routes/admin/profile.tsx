@@ -1,7 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { type FormEvent, useRef, useState } from "react";
-import { data, redirect } from "react-router";
+import { redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
@@ -198,9 +198,6 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
   });
 
   fetcher.register("updateProfile", {
-    onSuccess: () => {
-      console.log("Profile updated");
-    },
     onHandlerError: ({ error: err }) => {
       console.error("Profile update failed:", err);
     },

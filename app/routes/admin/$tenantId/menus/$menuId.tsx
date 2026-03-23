@@ -54,7 +54,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            menuId: args.params.menuId!,
+            menuId: args.params.menuId as string,
             name: value.name,
             category: value.category || null,
             description: value.description || null,

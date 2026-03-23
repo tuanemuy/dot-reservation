@@ -49,7 +49,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             bookingWindowDays: value.bookingWindowDays,
             bookingDeadlineHours: value.bookingDeadlineHours,
             cancellationDeadlineHours: value.cancellationDeadlineHours,
@@ -140,7 +140,7 @@ export default function TenantReservationSettingsPage({
     },
   ];
 
-  const submitSettings = () => {
+  const _submitSettings = () => {
     // Submit is handled through the form
   };
 

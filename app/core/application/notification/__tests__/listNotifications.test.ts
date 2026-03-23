@@ -383,9 +383,9 @@ describe("listNotifications", () => {
 
     expect(result.items.length).toBe(3);
     // Newest first
-    expect(result.items[0]!.title).toBe("Newest");
-    expect(result.items[1]!.title).toBe("Middle");
-    expect(result.items[2]!.title).toBe("Oldest");
+    expect(result.items[0]?.title).toBe("Newest");
+    expect(result.items[1]?.title).toBe("Middle");
+    expect(result.items[2]?.title).toBe("Oldest");
   });
 
   it("should filter by typeFilters array returning only matching types", async () => {

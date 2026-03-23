@@ -1,14 +1,13 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data, Link, redirect, useParams } from "react-router";
+import { data, Link, useParams } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody, CardFooter, CardHeader } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { cancelReservation } from "@/core/application/reservation/cancelReservation";
-import type { GetReservationOutput } from "@/core/application/reservation/getReservation";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import {
   createCompositeAction,

@@ -165,9 +165,9 @@ describe("updateMenuSortOrders", () => {
     const menuAResult = result.items.find((m) => m.name === "Menu A");
     const menuCResult = result.items.find((m) => m.name === "Menu C");
 
-    expect(menuBResult!.sortOrder).toBe(2); // unchanged
-    expect(menuCResult!.sortOrder).toBe(4);
-    expect(menuAResult!.sortOrder).toBe(5);
+    expect(menuBResult?.sortOrder).toBe(2); // unchanged
+    expect(menuCResult?.sortOrder).toBe(4);
+    expect(menuAResult?.sortOrder).toBe(5);
   });
 
   it("should handle non-existent menuId gracefully (no error if DB allows)", async () => {

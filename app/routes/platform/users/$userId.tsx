@@ -40,7 +40,7 @@ const handlers = {
   suspend: defineHandler({
     schema: suspendSchema,
     handler: async (_value, args) => {
-      const userId = args.params.userId!;
+      const userId = args.params.userId as string;
       return handleUseCase(() =>
         suspendCustomer({
           container,
@@ -56,7 +56,7 @@ const handlers = {
   resume: defineHandler({
     schema: resumeSchema,
     handler: async (_value, args) => {
-      const userId = args.params.userId!;
+      const userId = args.params.userId as string;
       return handleUseCase(() =>
         reactivateCustomer({
           container,
@@ -75,7 +75,7 @@ const handlers = {
       if (value.confirmText !== "削除") {
         return error({ confirmText: ["「削除」と入力してください"] });
       }
-      const userId = args.params.userId!;
+      const userId = args.params.userId as string;
       return handleUseCase(() =>
         deleteCustomer({
           container,

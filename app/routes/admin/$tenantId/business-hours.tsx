@@ -84,7 +84,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             businessHours,
           },
         }),
@@ -102,7 +102,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             date: value.date,
             reason: value.reason || null,
           },
@@ -121,7 +121,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             date: value.date,
           },
         }),

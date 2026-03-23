@@ -5,8 +5,9 @@ import {
 } from "@/core/application/__tests__/helpers";
 import { ConflictError, NotFoundError } from "@/core/application/error";
 import { BusinessRuleError } from "@/core/domain/error";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { createInvitation } from "../createInvitation";
-import { addMemberToTenant, createTestTenant } from "./memberTestHelpers";
+import { createTestTenant } from "./memberTestHelpers";
 
 describe("createInvitation", () => {
   const getContainer = setupTestContainer();
@@ -33,7 +34,7 @@ describe("createInvitation", () => {
   it("should send invitation email", async () => {
     const container = getContainer();
     const sendInvitationEmail = vi.fn().mockResolvedValue(undefined);
-    (container as any).memberEmailSender = { sendInvitationEmail };
+    Object.assign(container, { memberEmailSender: { sendInvitationEmail } });
 
     const { tenantId, adminMemberId } = await createTestTenant(container);
 
@@ -69,14 +70,17 @@ describe("createInvitation", () => {
     // Verify expiry via repository
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(result.id as any);
+        return repos.invitationRepository.findById(
+          InvitationId.create(result.id),
+        );
       },
     );
 
     expect(invitation).not.toBeNull();
+    if (!invitation) throw new Error("expected invitation");
     const now = new Date();
     const diffDays =
-      (invitation!.expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+      (invitation.expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     expect(diffDays).toBeGreaterThan(6);
     expect(diffDays).toBeLessThanOrEqual(7);
   });
@@ -148,7 +152,9 @@ describe("createInvitation", () => {
 
     // Manually expire the invitation
     await container.unitOfWorkProvider.transaction(async (repos) => {
-      const inv = await repos.invitationRepository.findById(result.id as any);
+      const inv = await repos.invitationRepository.findById(
+        InvitationId.create(result.id),
+      );
       if (inv) {
         const expiredInv = {
           ...inv,
@@ -191,7 +197,9 @@ describe("createInvitation", () => {
 
     // Manually decline the invitation
     await container.unitOfWorkProvider.transaction(async (repos) => {
-      const inv = await repos.invitationRepository.findById(result.id as any);
+      const inv = await repos.invitationRepository.findById(
+        InvitationId.create(result.id),
+      );
       if (inv) {
         const declinedInv = {
           ...inv,

@@ -237,7 +237,7 @@ describe("createMenu", () => {
     );
     const createdMenu = menus.find((m) => m.id === result.id);
     expect(createdMenu).toBeDefined();
-    expect(createdMenu!.sortOrder).toBe(3);
+    expect(createdMenu?.sortOrder).toBe(3);
   });
 
   it("should set sortOrder to 1 when tenant has no menus", async () => {
@@ -255,7 +255,7 @@ describe("createMenu", () => {
     );
     const createdMenu = menus.find((m) => m.id === result.id);
     expect(createdMenu).toBeDefined();
-    expect(createdMenu!.sortOrder).toBe(1);
+    expect(createdMenu?.sortOrder).toBe(1);
   });
 
   it("should create a menu with price 0 (free menu)", async () => {

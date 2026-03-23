@@ -101,14 +101,14 @@ export const handlers = {
     handler: async (value, args) => {
       const memberId = await getAuthenticatedMemberId(
         args.request.headers,
-        args.params.tenantId!,
+        args.params.tenantId as string,
       );
       return handleUseCase(() =>
         createInvitation({
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             invitedByMemberId: memberId,
             email: value.email,
             role: value.role,
@@ -125,14 +125,14 @@ export const handlers = {
     handler: async (value, args) => {
       const memberId = await getAuthenticatedMemberId(
         args.request.headers,
-        args.params.tenantId!,
+        args.params.tenantId as string,
       );
       return handleUseCase(() =>
         changeMemberRole({
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             operatorMemberId: memberId,
             targetMemberId: value.memberId,
             newRole: value.role,
@@ -149,14 +149,14 @@ export const handlers = {
     handler: async (value, args) => {
       const memberId = await getAuthenticatedMemberId(
         args.request.headers,
-        args.params.tenantId!,
+        args.params.tenantId as string,
       );
       return handleUseCase(() =>
         removeMember({
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             operatorMemberId: memberId,
             targetMemberId: value.memberId,
           },

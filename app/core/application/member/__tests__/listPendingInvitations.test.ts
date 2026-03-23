@@ -3,6 +3,7 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { acceptInvitation } from "../acceptInvitation";
 import { cancelInvitation } from "../cancelInvitation";
 import { createInvitation } from "../createInvitation";
@@ -57,7 +58,7 @@ describe("listPendingInvitations", () => {
     // Manually expire
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({

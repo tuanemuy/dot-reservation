@@ -44,9 +44,9 @@ function formatDate(d: Date): string {
 
 function formatDateLabel(dateStr: string): string {
   const [_year, month, dayStr] = dateStr.split("-");
-  const m = Number.parseInt(month);
-  const d = Number.parseInt(dayStr);
-  const date = new Date(Number.parseInt(dateStr.split("-")[0]), m - 1, d);
+  const m = Number.parseInt(month, 10);
+  const d = Number.parseInt(dayStr, 10);
+  const date = new Date(Number.parseInt(dateStr.split("-")[0], 10), m - 1, d);
   const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
   return `${m}/${d}(${dayNames[date.getDay()]})`;
 }

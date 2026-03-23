@@ -111,7 +111,7 @@ export default function TenantMenusPage({
             <button
               key={category}
               type="button"
-              onClick={() => setCategoryFilter(category!)}
+              onClick={() => setCategoryFilter(category as string)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${
                 categoryFilter === category
                   ? "bg-gray-900 text-white"

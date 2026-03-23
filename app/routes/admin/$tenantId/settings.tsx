@@ -61,7 +61,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             name: value.name,
             category: value.category,
             urlPath: value.urlPath,
@@ -85,7 +85,7 @@ export const handlers = {
         deleteTenant({
           container,
           headers: args.request.headers,
-          input: { tenantId: args.params.tenantId! },
+          input: { tenantId: args.params.tenantId as string },
         }),
       ).match(
         () => success(),

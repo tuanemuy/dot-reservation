@@ -6,14 +6,14 @@ import {
 import { NotFoundError } from "@/core/application/error";
 import { BusinessRuleError } from "@/core/domain/error";
 import { updateMemberProfile } from "../updateMemberProfile";
-import { addMemberToTenant, createTestTenant } from "./memberTestHelpers";
+import { createTestTenant } from "./memberTestHelpers";
 
 describe("updateMemberProfile", () => {
   const getContainer = setupTestContainer();
 
   it("should update name and return updated profile", async () => {
     const container = getContainer();
-    const { tenantId, adminMemberId } = await createTestTenant(container);
+    const { adminMemberId } = await createTestTenant(container);
 
     const result = await updateMemberProfile({
       container,
@@ -32,7 +32,7 @@ describe("updateMemberProfile", () => {
 
   it("should update both name and phoneNumber", async () => {
     const container = getContainer();
-    const { tenantId, adminMemberId } = await createTestTenant(container);
+    const { adminMemberId } = await createTestTenant(container);
 
     const result = await updateMemberProfile({
       container,
@@ -50,7 +50,7 @@ describe("updateMemberProfile", () => {
 
   it("should clear phoneNumber when set to null", async () => {
     const container = getContainer();
-    const { tenantId, adminMemberId } = await createTestTenant(container);
+    const { adminMemberId } = await createTestTenant(container);
 
     // First set a phone number
     await updateMemberProfile({

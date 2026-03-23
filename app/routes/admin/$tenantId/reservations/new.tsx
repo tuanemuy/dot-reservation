@@ -69,7 +69,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             customerId: null,
             customerName: value.customerName,
             customerEmail: value.customerEmail || null,

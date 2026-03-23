@@ -1157,14 +1157,14 @@
   </div>
 
   <script>
-    function switchTab(tabName) {
+    function _switchTab(tabName) {
       // Update tab buttons
       document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); });
       event.target.classList.add('active');
 
       // Update tab content
       document.querySelectorAll('.tab-content').forEach(c => { c.classList.remove('active'); });
-      document.getElementById('tab-' + tabName).classList.add('active');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
     }
   </script>
 

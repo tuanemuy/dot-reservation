@@ -234,7 +234,8 @@ describe("updateStaffProfile", () => {
     const originalProfile = await container.staffProfileRepository.findById(
       staffProfileId as never,
     );
-    const originalUpdatedAt = originalProfile!.updatedAt;
+    if (!originalProfile) throw new Error("expected originalProfile");
+    const originalUpdatedAt = originalProfile.updatedAt;
 
     // Small delay to ensure timestamp difference
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -253,7 +254,7 @@ describe("updateStaffProfile", () => {
     const updatedProfile = await container.staffProfileRepository.findById(
       staffProfileId as never,
     );
-    expect(updatedProfile!.updatedAt.getTime()).toBeGreaterThanOrEqual(
+    expect(updatedProfile?.updatedAt.getTime()).toBeGreaterThanOrEqual(
       originalUpdatedAt.getTime(),
     );
   });

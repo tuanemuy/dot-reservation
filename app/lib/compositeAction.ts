@@ -81,7 +81,9 @@ export type RawActionHandler<TData = undefined> = {
  * ここでの `any` が利用側に漏洩することはない。
  */
 export type ActionHandler =
+  // biome-ignore lint/suspicious/noExplicitAny: existential type - TData must be covariant
   | ValidatedActionHandler<z.ZodTypeAny, any>
+  // biome-ignore lint/suspicious/noExplicitAny: existential type - TData must be covariant
   | RawActionHandler<any>;
 
 // ============================================================
@@ -191,6 +193,7 @@ export type CompositeError<TIntent extends string = string> =
 
 /** ハンドラーから TData を抽出する */
 type InferHandlerData<T extends ActionHandler> =
+  // biome-ignore lint/suspicious/noExplicitAny: required for conditional type inference
   T extends ValidatedActionHandler<any, infer D>
     ? D
     : T extends RawActionHandler<infer D>
@@ -279,7 +282,7 @@ export async function createCompositeAction<
     throw new Response(`Unknown intent: "${intent}"`, { status: 400 });
   }
 
-  const def = handlers[intent]!;
+  const def = handlers[intent] as ActionHandler;
   let result: ActionResult<unknown>;
   let source: ErrorSource | "handler";
 
@@ -398,9 +401,13 @@ export function useCompositeAction<
   // 型安全性は onDone のシグネチャ（Callbacks<I>）で担保する。
   // Map 内部では any で保持し、dispatch 時にキャストする。
   interface InternalCallbacks {
+    // biome-ignore lint/suspicious/noExplicitAny: internal storage uses any to bridge heterogeneous callback types
     onSuccess?: (data: any) => void;
+    // biome-ignore lint/suspicious/noExplicitAny: internal storage uses any to bridge heterogeneous callback types
     onValidationError?: (data: any) => void;
+    // biome-ignore lint/suspicious/noExplicitAny: internal storage uses any to bridge heterogeneous callback types
     onHandlerError?: (data: any) => void;
+    // biome-ignore lint/suspicious/noExplicitAny: internal storage uses any to bridge heterogeneous callback types
     onError?: (data: any) => void;
   }
 

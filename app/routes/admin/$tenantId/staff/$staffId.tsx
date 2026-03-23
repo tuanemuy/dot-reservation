@@ -70,7 +70,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            staffProfileId: args.params.staffId!,
+            staffProfileId: args.params.staffId as string,
             displayName: value.name,
             imageUrl: null,
             bio: value.bio || null,
@@ -91,7 +91,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            staffProfileId: args.params.staffId!,
+            staffProfileId: args.params.staffId as string,
             menuIds,
           },
         }),

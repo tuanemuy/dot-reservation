@@ -117,7 +117,7 @@ describe("updateMenu", () => {
 
     const updated = await container.menuRepository.findById(menu.id as never);
     expect(updated).not.toBeNull();
-    expect(updated!.name).toBe("New Name");
+    expect(updated?.name).toBe("New Name");
   });
 
   it("should update category and description", async () => {
@@ -139,8 +139,8 @@ describe("updateMenu", () => {
     });
 
     const updated = await container.menuRepository.findById(menu.id as never);
-    expect(updated!.category).toBe("Premium Hair");
-    expect(updated!.description).toBe("Premium haircut service");
+    expect(updated?.category).toBe("Premium Hair");
+    expect(updated?.description).toBe("Premium haircut service");
   });
 
   it("should clear category to null", async () => {
@@ -164,7 +164,7 @@ describe("updateMenu", () => {
     });
 
     const updated = await container.menuRepository.findById(menu.id as never);
-    expect(updated!.category).toBeNull();
+    expect(updated?.category).toBeNull();
   });
 
   it("should throw ConflictError when changing to a name that already exists in the same tenant", async () => {
@@ -273,7 +273,7 @@ describe("updateMenu", () => {
     expect(result.id).toBe(menu.id);
 
     const updated = await container.menuRepository.findById(menu.id as never);
-    expect(updated!.duration).toBe(15);
+    expect(updated?.duration).toBe(15);
   });
 
   it("should throw BusinessRuleError when price is negative", async () => {

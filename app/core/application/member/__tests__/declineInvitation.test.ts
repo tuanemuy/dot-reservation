@@ -8,6 +8,7 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "@/core/application/error";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { acceptInvitation } from "../acceptInvitation";
 import { cancelInvitation } from "../cancelInvitation";
 import { createInvitation } from "../createInvitation";
@@ -45,10 +46,12 @@ describe("declineInvitation", () => {
     // Verify status is declined
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
-    expect(invitation!.status).toBe("declined");
+    expect(invitation?.status).toBe("declined");
   });
 
   it("should throw ConflictError when invitation is expired", async () => {
@@ -69,7 +72,7 @@ describe("declineInvitation", () => {
     // Manually expire
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({

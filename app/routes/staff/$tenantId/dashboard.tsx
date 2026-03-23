@@ -1,4 +1,4 @@
-import { data, Link } from "react-router";
+import { Link } from "react-router";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import type { ReservationSummary } from "@/core/application/reservation/listReservations";
@@ -99,7 +99,7 @@ export default function StaffDashboardPage({
   loaderData,
 }: Route.ComponentProps) {
   const { todayReservations, todayShift } = loaderData;
-  const tenantId =
+  const _tenantId =
     typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
 
   return (

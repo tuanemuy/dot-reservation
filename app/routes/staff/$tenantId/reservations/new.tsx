@@ -14,7 +14,6 @@ import {
   createCompositeAction,
   defineHandler,
   error,
-  success,
   useCompositeAction,
 } from "@/lib/compositeAction";
 import { handleUseCase } from "@/lib/handleUseCase";
@@ -57,7 +56,7 @@ const handlers = {
         }),
       ).match(
         (result) => result,
-        (e) => null,
+        (_e) => null,
       );
 
       if (!result) {

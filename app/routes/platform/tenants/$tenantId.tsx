@@ -41,7 +41,7 @@ const handlers = {
   suspend: defineHandler({
     schema: suspendSchema,
     handler: async (_value, args) => {
-      const tenantId = args.params.tenantId!;
+      const tenantId = args.params.tenantId as string;
       return handleUseCase(() =>
         suspendTenant({
           container,
@@ -57,7 +57,7 @@ const handlers = {
   resume: defineHandler({
     schema: resumeSchema,
     handler: async (_value, args) => {
-      const tenantId = args.params.tenantId!;
+      const tenantId = args.params.tenantId as string;
       return handleUseCase(() =>
         reactivateTenant({
           container,
@@ -73,7 +73,7 @@ const handlers = {
   delete: defineHandler({
     schema: deleteSchema,
     handler: async (value, args) => {
-      const tenantId = args.params.tenantId!;
+      const tenantId = args.params.tenantId as string;
 
       const tenantResult = await handleUseCase(() =>
         getTenant({
@@ -127,7 +127,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     listMembers({
       container,
       headers: request.headers,
-      input: { tenantId: params.tenantId!, role: null },
+      input: { tenantId: params.tenantId, role: null },
     }),
   ).match(
     (result) => result,

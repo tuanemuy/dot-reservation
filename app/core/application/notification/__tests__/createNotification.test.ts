@@ -143,7 +143,7 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.title).toBe("Reminder");
+    expect(saved?.title).toBe("Reminder");
   });
 
   it("should send email when email preference is ON", async () => {
@@ -248,7 +248,7 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.recipientType).toBe("customer");
+    expect(saved?.recipientType).toBe("customer");
   });
 
   it("should create notification for member recipientType", async () => {
@@ -274,7 +274,7 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.recipientType).toBe("member");
+    expect(saved?.recipientType).toBe("member");
   });
 
   it("should create notification with referenceType and referenceId", async () => {
@@ -300,8 +300,8 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.referenceType).toBe("reservation");
-    expect(saved!.referenceId).toBe("res-123");
+    expect(saved?.referenceType).toBe("reservation");
+    expect(saved?.referenceId).toBe("res-123");
   });
 
   it("should create notification without reference entity (null)", async () => {
@@ -327,8 +327,8 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.referenceType).toBeNull();
-    expect(saved!.referenceId).toBeNull();
+    expect(saved?.referenceType).toBeNull();
+    expect(saved?.referenceId).toBeNull();
   });
 
   it("should force create in-app notification for important types even when in-app is OFF", async () => {
@@ -633,6 +633,6 @@ describe("createNotification", () => {
       result.id as never,
     );
     expect(saved).not.toBeNull();
-    expect(saved!.title).toBe(longTitle);
+    expect(saved?.title).toBe(longTitle);
   });
 });

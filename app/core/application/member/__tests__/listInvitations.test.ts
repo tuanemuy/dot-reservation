@@ -3,6 +3,7 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { createInvitation } from "../createInvitation";
 import { listInvitations } from "../listInvitations";
 import { createTestTenant } from "./memberTestHelpers";
@@ -63,7 +64,7 @@ describe("listInvitations", () => {
     // Manually expire the invitation
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({
@@ -102,7 +103,7 @@ describe("listInvitations", () => {
     // Manually change its status to declined
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({

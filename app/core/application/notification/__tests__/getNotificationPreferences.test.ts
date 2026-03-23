@@ -63,7 +63,7 @@ describe("getNotificationPreferences", () => {
       (p) => p.channel === "email" && p.type === "reservation_confirmed",
     );
     expect(emailConfirmed).toBeDefined();
-    expect(emailConfirmed!.enabled).toBe(false);
+    expect(emailConfirmed?.enabled).toBe(false);
   });
 
   it("should return all defaults when recipient has no customized settings", async () => {
@@ -117,7 +117,7 @@ describe("getNotificationPreferences", () => {
     const customized = result.preferences.find(
       (p) => p.channel === "in_app" && p.type === "reservation_reminder",
     );
-    expect(customized!.enabled).toBe(false);
+    expect(customized?.enabled).toBe(false);
 
     // Others should be default (true)
     const others = result.preferences.filter(

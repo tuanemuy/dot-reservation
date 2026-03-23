@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { data } from "react-router";
 import { z } from "zod";
 import { createShift } from "@/core/application/shift/createShift";
 import { deleteShift } from "@/core/application/shift/deleteShift";
@@ -111,7 +110,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             staffProfileId: value.staffId,
             date: value.date,
             startTime: value.startTime,

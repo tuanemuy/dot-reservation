@@ -31,7 +31,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            tenantId: args.params.tenantId!,
+            tenantId: args.params.tenantId as string,
             name: value.name,
             category: value.category || null,
             description: value.description || null,

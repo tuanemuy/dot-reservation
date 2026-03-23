@@ -119,14 +119,14 @@ describe("markAllNotificationsAsRead", () => {
     });
 
     expect(result.items.length).toBe(1);
-    expect(result.items[0]!.isRead).toBe(true);
+    expect(result.items[0]?.isRead).toBe(true);
   });
 
   it("should only update unread notifications, leaving already read ones unchanged", async () => {
     const container = getContainer();
     const recipientId = uuidv7();
 
-    const readId = await insertNotification(container.db, {
+    const _readId = await insertNotification(container.db, {
       recipientType: "customer",
       recipientId,
       isRead: true,

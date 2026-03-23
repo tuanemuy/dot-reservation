@@ -50,10 +50,13 @@ export async function createTestTenant(
     },
   );
   const adminMember = members.find((m) => m.tenantId === tenantResult.id);
+  if (!adminMember) {
+    throw new Error("Admin member not found after tenant creation");
+  }
 
   return {
     tenantId: tenantResult.id,
-    adminMemberId: adminMember!.id,
+    adminMemberId: adminMember.id,
   };
 }
 

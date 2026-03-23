@@ -48,7 +48,7 @@ export const handlers = {
         approveReservation({
           container,
           headers: args.request.headers,
-          input: { reservationId: args.params.reservationId! },
+          input: { reservationId: args.params.reservationId as string },
         }),
       ).match(
         () => success(),
@@ -64,7 +64,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            reservationId: args.params.reservationId!,
+            reservationId: args.params.reservationId as string,
             reason: value.reason,
           },
         }),
@@ -82,7 +82,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            reservationId: args.params.reservationId!,
+            reservationId: args.params.reservationId as string,
             reason: value.reason,
             cancelledBy: "admin",
           },

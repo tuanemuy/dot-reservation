@@ -78,7 +78,7 @@ export const handlers = {
           container,
           headers: args.request.headers,
           input: {
-            reservationId: args.params.reservationId!,
+            reservationId: args.params.reservationId as string,
             menuId: value.menuId,
             staffProfileId: value.staffId || null,
             date: value.date,

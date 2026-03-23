@@ -24,6 +24,6 @@ export default function App() {
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error: _error }: Route.ErrorBoundaryProps) {
   // Implement a custom error page here
 }

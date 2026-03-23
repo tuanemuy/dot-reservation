@@ -4,6 +4,7 @@ import {
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
 import { ConflictError, NotFoundError } from "@/core/application/error";
+import { InvitationId } from "@/core/domain/member/valueObject";
 import { acceptInvitation } from "../acceptInvitation";
 import { createInvitation } from "../createInvitation";
 import { declineInvitation } from "../declineInvitation";
@@ -37,10 +38,12 @@ describe("resendInvitation", () => {
     // Verify invitation still pending
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
-    expect(invitation!.status).toBe("pending");
+    expect(invitation?.status).toBe("pending");
   });
 
   it("should resend an expired invitation", async () => {
@@ -61,7 +64,7 @@ describe("resendInvitation", () => {
     // Manually expire
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({
@@ -81,11 +84,13 @@ describe("resendInvitation", () => {
     // Verify invitation is now pending with new expiry
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
-    expect(invitation!.status).toBe("pending");
-    expect(invitation!.expiresAt.getTime()).toBeGreaterThan(Date.now());
+    expect(invitation?.status).toBe("pending");
+    expect(invitation?.expiresAt.getTime()).toBeGreaterThan(Date.now());
   });
 
   it("should reset expiry to 7 days from now", async () => {
@@ -111,13 +116,16 @@ describe("resendInvitation", () => {
 
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(invResult.id as any);
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
 
+    if (!invitation) throw new Error("expected invitation");
     const now = new Date();
     const diffDays =
-      (invitation!.expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+      (invitation.expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     expect(diffDays).toBeGreaterThan(6);
     expect(diffDays).toBeLessThanOrEqual(7);
   });
@@ -125,7 +133,7 @@ describe("resendInvitation", () => {
   it("should send invitation email on resend", async () => {
     const container = getContainer();
     const sendInvitationEmail = vi.fn().mockResolvedValue(undefined);
-    (container as any).memberEmailSender = { sendInvitationEmail };
+    Object.assign(container, { memberEmailSender: { sendInvitationEmail } });
 
     const { tenantId, adminMemberId } = await createTestTenant(container);
 
@@ -238,7 +246,7 @@ describe("resendInvitation", () => {
     // Cancel the invitation via the use case
     await container.unitOfWorkProvider.transaction(async (repos) => {
       const inv = await repos.invitationRepository.findById(
-        invResult.id as any,
+        InvitationId.create(invResult.id),
       );
       if (inv) {
         await repos.invitationRepository.save({

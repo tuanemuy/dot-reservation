@@ -6,7 +6,6 @@ import { Card, CardBody } from "@/components/ui/Card";
 import { Pagination } from "@/components/ui/Pagination";
 import { Select } from "@/components/ui/Select";
 import { Tabs } from "@/components/ui/Tabs";
-import type { ReservationSummary } from "@/core/application/reservation/listReservations";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";

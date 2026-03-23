@@ -76,7 +76,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_reminder",
     );
-    expect(pref!.enabled).toBe(false);
+    expect(pref?.enabled).toBe(false);
   });
 
   it("should enable email notification when currently disabled", async () => {
@@ -115,7 +115,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_reminder",
     );
-    expect(pref!.enabled).toBe(true);
+    expect(pref?.enabled).toBe(true);
   });
 
   it("should disable in-app notification for non-important type", async () => {
@@ -154,7 +154,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "in_app" && p.type === "reservation_reminder",
     );
-    expect(pref!.enabled).toBe(false);
+    expect(pref?.enabled).toBe(false);
   });
 
   it("should enable in-app notification when currently disabled", async () => {
@@ -193,7 +193,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "in_app" && p.type === "reservation_reminder",
     );
-    expect(pref!.enabled).toBe(true);
+    expect(pref?.enabled).toBe(true);
   });
 
   it("should disable all email notification types", async () => {
@@ -307,7 +307,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_reminder",
     );
-    expect(pref!.enabled).toBe(false);
+    expect(pref?.enabled).toBe(false);
   });
 
   // ---- Edge cases ----
@@ -343,7 +343,7 @@ describe("updateNotificationPreference", () => {
     const pref = result.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_confirmed",
     );
-    expect(pref!.enabled).toBe(false);
+    expect(pref?.enabled).toBe(false);
   });
 
   it("should succeed when updating to the same value (idempotent)", async () => {
@@ -391,7 +391,7 @@ describe("updateNotificationPreference", () => {
     const prefBefore = before.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_reminder",
     );
-    expect(prefBefore!.enabled).toBe(true);
+    expect(prefBefore?.enabled).toBe(true);
 
     // Update
     await updateNotificationPreference({
@@ -419,6 +419,6 @@ describe("updateNotificationPreference", () => {
     const prefAfter = after.preferences.find(
       (p) => p.channel === "email" && p.type === "reservation_reminder",
     );
-    expect(prefAfter!.enabled).toBe(false);
+    expect(prefAfter?.enabled).toBe(false);
   });
 });
