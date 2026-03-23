@@ -1,9 +1,17 @@
 import type { DomainEvent } from "@/core/domain/common/event";
+import { BusinessRuleError } from "@/core/domain/error";
+import { MemberErrorCode } from "@/core/domain/member/errorCode";
 import { MemberEvents } from "@/core/domain/member/events";
 import type { TenantMembership } from "@/core/domain/member/services/memberPolicyService";
 import { MemberPolicyService } from "@/core/domain/member/services/memberPolicyService";
+import { Reservation } from "@/core/domain/reservation/entity";
 import { cleanupAuthUserIfOrphaned } from "../auth/cleanupAuthUserIfOrphaned";
-import { NotFoundError, NotFoundErrorCode } from "../error";
+import {
+  ConflictError,
+  ConflictErrorCode,
+  NotFoundError,
+  NotFoundErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 export type DeleteMemberAccountInput = {
@@ -43,15 +51,51 @@ export async function deleteMemberAccount({
       }),
     );
 
-    MemberPolicyService.canDeleteAccount(tenantMemberships);
+    try {
+      MemberPolicyService.canDeleteAccount(tenantMemberships);
+    } catch (error) {
+      if (
+        error instanceof BusinessRuleError &&
+        error.code === MemberErrorCode.LastAdminCannotDeleteAccount
+      ) {
+        throw new ConflictError(ConflictErrorCode.Conflict, error.message);
+      }
+      throw error;
+    }
 
     // Remove from all tenants
     const events: DomainEvent[] = [];
     for (const member of members) {
       // Delete StaffProfile if exists (FK constraint: staff_profiles.member_id -> members.id)
+      // Before deleting, unassign active reservations for this staff
       const staffProfile =
         await repositories.staffProfileRepository.findByMemberId(member.id);
       if (staffProfile) {
+        // Unassign active reservations (pending/confirmed) for this staff
+        const pendingReservations =
+          await repositories.reservationRepository.findByStaffProfileId(
+            staffProfile.id,
+            { status: "pending" },
+            { page: 1, limit: 10000 },
+          );
+        const confirmedReservations =
+          await repositories.reservationRepository.findByStaffProfileId(
+            staffProfile.id,
+            { status: "confirmed" },
+            { page: 1, limit: 10000 },
+          );
+        const reservationsToUnassign = [
+          ...pendingReservations.items,
+          ...confirmedReservations.items,
+        ];
+        for (const reservation of reservationsToUnassign) {
+          const { entity: updated } = Reservation.update(reservation, {
+            staffProfileId: null,
+            staffName: null,
+          });
+          await repositories.reservationRepository.save(updated);
+        }
+
         await repositories.staffProfileRepository.delete(staffProfile.id);
       }
 

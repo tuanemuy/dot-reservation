@@ -1,10 +1,13 @@
+import { v7 as uuidv7 } from "uuid";
 import { describe, expect, it } from "vitest";
+import * as reservationSchema from "@/core/adapters/drizzleSqlite/schema";
 import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
-import { NotFoundError } from "@/core/application/error";
-import { BusinessRuleError } from "@/core/domain/error";
+import { ConflictError, NotFoundError } from "@/core/application/error";
+import { MemberId } from "@/core/domain/member/valueObject";
+import { TenantId } from "@/core/domain/tenant/valueObject";
 import { deleteMemberAccount } from "../deleteMemberAccount";
 import { addMemberToTenant, createTestTenant } from "./memberTestHelpers";
 
@@ -43,7 +46,7 @@ describe("deleteMemberAccount", () => {
     expect(members).toHaveLength(0);
   });
 
-  it("should throw when member is sole admin of a tenant", async () => {
+  it("should throw ConflictError when member is sole admin of a tenant", async () => {
     const container = getContainer();
     await createTestTenant(container, {
       authUserId: "auth-sole-admin",
@@ -56,7 +59,7 @@ describe("deleteMemberAccount", () => {
         headers: createMockHeaders(),
         input: { authUserId: "auth-sole-admin" },
       }),
-    ).rejects.toThrow(BusinessRuleError);
+    ).rejects.toThrow(ConflictError);
   });
 
   it("should remove from all tenants", async () => {
@@ -205,5 +208,97 @@ describe("deleteMemberAccount", () => {
       },
     );
     expect(members).toHaveLength(0);
+  });
+
+  it("should unassign active reservations when deleting account with staff profile", async () => {
+    const container = getContainer();
+    const { tenantId, adminMemberId } = await createTestTenant(container, {
+      authUserId: "auth-admin-main",
+      creatorEmail: "admin-main@example.com",
+    });
+
+    // Add another admin so the first admin can be deleted
+    await addMemberToTenant(container, {
+      tenantId,
+      invitedByMemberId: adminMemberId,
+      email: "admin2@example.com",
+      role: "admin",
+      authUserId: "auth-admin-2",
+    });
+
+    // Add a staff member
+    const { memberId: staffMemberId } = await addMemberToTenant(container, {
+      tenantId,
+      invitedByMemberId: adminMemberId,
+      email: "staff@example.com",
+      role: "staff",
+      authUserId: "auth-staff-del",
+    });
+
+    // Get the staff profile
+    const staffProfile = await container.unitOfWorkProvider.transaction(
+      async (repos) => {
+        return repos.staffProfileRepository.findByMemberId(
+          MemberId.create(staffMemberId),
+        );
+      },
+    );
+    expect(staffProfile).not.toBeNull();
+
+    // Create a menu
+    const menuId = uuidv7();
+    await container.db.insert(reservationSchema.menus).values({
+      id: menuId,
+      tenantId,
+      name: "Test Menu",
+      category: "General",
+      duration: 60,
+      price: 5000,
+      sortOrder: 1,
+    });
+
+    // Create a confirmed reservation assigned to this staff
+    const reservationId = uuidv7();
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 7);
+    const dateStr = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, "0")}-${String(futureDate.getDate()).padStart(2, "0")}`;
+
+    await container.db.insert(reservationSchema.reservations).values({
+      id: reservationId,
+      tenantId,
+      menuId,
+      staffProfileId: staffProfile?.id ?? "",
+      date: dateStr,
+      startTime: "10:00",
+      endTime: "11:00",
+      status: "confirmed",
+      menuName: "Test Menu",
+      menuDuration: 60,
+      menuPrice: 5000,
+      staffName: "Test Staff",
+      createdBy: "admin",
+    });
+
+    // Delete the staff member's account
+    await deleteMemberAccount({
+      container,
+      headers: createMockHeaders(),
+      input: { authUserId: "auth-staff-del" },
+    });
+
+    // Verify the reservation's staffProfileId is now null
+    const reservation = await container.unitOfWorkProvider.transaction(
+      async (repos) => {
+        const result = await repos.reservationRepository.findByTenantId(
+          TenantId.create(tenantId),
+          {},
+          { page: 1, limit: 100 },
+        );
+        return result.items.find((r) => r.id === reservationId);
+      },
+    );
+    expect(reservation).toBeDefined();
+    expect(reservation?.staffProfileId).toBeNull();
+    expect(reservation?.staffName).toBeNull();
   });
 });
