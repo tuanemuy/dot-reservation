@@ -103,6 +103,7 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
           name,
           email,
           password,
+          callbackURL: "/admin/verify-email",
         })
         .then(({ data: signUpData, error: signUpError }) => {
           if (signUpError) {

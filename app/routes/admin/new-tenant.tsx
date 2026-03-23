@@ -1,6 +1,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
+import { redirect } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
@@ -14,6 +15,24 @@ import {
   useCompositeAction,
 } from "@/lib/compositeAction";
 import type { Route } from "./+types/new-tenant";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { container } = await import("@/core/di/server");
+
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    throw redirect("/admin/login");
+  }
+
+  const members = await container.memberRepository.findByAuthUserId(
+    session.user.id,
+  );
+  if (members.length === 0) {
+    throw redirect("/admin/setup");
+  }
+
+  return null;
+}
 
 const createTenantSchema = z.object({
   name: z.string().min(1, "テナント名を入力してください"),

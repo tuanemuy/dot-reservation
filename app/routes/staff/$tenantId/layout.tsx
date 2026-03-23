@@ -18,6 +18,11 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   const tenantId = params.tenantId;
 
+  const belongsToTenant = members.some((m) => m.tenantId === tenantId);
+  if (!belongsToTenant) {
+    throw redirect("/admin/tenants");
+  }
+
   return {
     tenantId,
     staffCount: members.length,
