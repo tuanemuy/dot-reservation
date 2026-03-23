@@ -82,19 +82,21 @@ const handlers = {
       );
       if (members.length === 0) throw redirect("/admin/login");
 
-      const memberId = members[0]!.id;
-
-      await handleUseCase(() =>
-        markAllNotificationsAsRead({
-          container,
-          headers: args.request.headers,
-          input: { recipientType: "member", recipientId: memberId },
-        }),
-      ).match(
-        () => undefined,
-        (e) => {
-          throw data({ message: e.message }, { status: e.status });
-        },
+      await Promise.all(
+        members.map((member) =>
+          handleUseCase(() =>
+            markAllNotificationsAsRead({
+              container,
+              headers: args.request.headers,
+              input: { recipientType: "member", recipientId: member.id },
+            }),
+          ).match(
+            () => undefined,
+            (e) => {
+              throw data({ message: e.message }, { status: e.status });
+            },
+          ),
+        ),
       );
       return success();
     },
@@ -114,8 +116,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   );
   if (members.length === 0) throw redirect("/admin/login");
 
-  const memberId = members[0]!.id;
-
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter") ?? "all";
   const page = Number(url.searchParams.get("page") ?? "1");
@@ -123,27 +123,41 @@ export async function loader({ request }: Route.LoaderArgs) {
   const typeFilters =
     filter === "all" ? null : (categoryToNotificationTypes[filter] ?? null);
 
-  const result = await handleUseCase(() =>
-    listNotifications({
-      container,
-      headers: request.headers,
-      input: {
-        recipientType: "member",
-        recipientId: memberId,
-        typeFilter: null,
-        typeFilters,
-        page,
-        limit: ITEMS_PER_PAGE,
-      },
-    }),
-  ).match(
-    (r) => r,
-    (e) => {
-      throw data({ message: e.message }, { status: e.status });
-    },
+  // Aggregate notifications across all member IDs (each member belongs to a different tenant)
+  const allResults = await Promise.all(
+    members.map((member) =>
+      handleUseCase(() =>
+        listNotifications({
+          container,
+          headers: request.headers,
+          input: {
+            recipientType: "member",
+            recipientId: member.id,
+            typeFilter: null,
+            typeFilters,
+            page: 1,
+            limit: ITEMS_PER_PAGE * page,
+          },
+        }),
+      ).match(
+        (r) => r,
+        (e) => {
+          throw data({ message: e.message }, { status: e.status });
+        },
+      ),
+    ),
   );
 
-  const notifications: NotificationItem[] = result.items.map((item) => ({
+  // Merge and sort all notifications by createdAt descending
+  const mergedItems = allResults
+    .flatMap((r) => r.items)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+  const totalCount = allResults.reduce((sum, r) => sum + r.totalCount, 0);
+  const offset = (page - 1) * ITEMS_PER_PAGE;
+  const paginatedItems = mergedItems.slice(offset, offset + ITEMS_PER_PAGE);
+
+  const notifications: NotificationItem[] = paginatedItems.map((item) => ({
     id: item.id,
     type: mapNotificationTypeToCategory(item.type),
     title: item.title,
@@ -156,7 +170,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         : null,
   }));
 
-  const totalPages = Math.max(1, Math.ceil(result.totalCount / ITEMS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(totalCount / ITEMS_PER_PAGE));
 
   return {
     notifications,

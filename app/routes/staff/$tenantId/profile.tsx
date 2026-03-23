@@ -153,30 +153,20 @@ export default function StaffProfilePage({ loaderData }: Route.ComponentProps) {
                 />
               </FormField>
 
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="profileImage"
-                  className="block text-sm font-medium text-text"
-                >
-                  プロフィール画像
-                </label>
-                {profile.profileImageUrl && (
-                  <div className="mb-2">
+              {profile.profileImageUrl && (
+                <div className="space-y-1.5">
+                  <span className="block text-sm font-medium text-text">
+                    プロフィール画像
+                  </span>
+                  <div>
                     <img
                       src={profile.profileImageUrl}
                       alt="プロフィール画像"
                       className="h-20 w-20 rounded-full object-cover"
                     />
                   </div>
-                )}
-                <input
-                  type="file"
-                  id="profileImage"
-                  name="profileImage"
-                  accept="image/*"
-                  className="block w-full text-sm text-text-secondary file:mr-3 file:rounded-md file:border-0 file:bg-surface-secondary file:px-3 file:py-2 file:text-sm file:font-medium file:text-text hover:file:bg-border"
-                />
-              </div>
+                </div>
+              )}
 
               <FormField label="自己紹介文" htmlFor={profileFields.bio.id}>
                 <textarea

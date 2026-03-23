@@ -387,4 +387,88 @@ describe("listNotifications", () => {
     expect(result.items[1]!.title).toBe("Middle");
     expect(result.items[2]!.title).toBe("Oldest");
   });
+
+  it("should filter by typeFilters array returning only matching types", async () => {
+    const container = getContainer();
+    const recipientId = uuidv7();
+
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "reservation_confirmed",
+    });
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "reservation_cancelled",
+    });
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "reservation_reminder",
+    });
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "member_joined",
+    });
+
+    const result = await listNotifications({
+      container,
+      headers: createMockHeaders(),
+      input: {
+        recipientType: "customer",
+        recipientId,
+        typeFilter: null,
+        typeFilters: ["reservation_confirmed", "reservation_cancelled"],
+        page: 1,
+        limit: 10,
+      },
+    });
+
+    expect(result.items.length).toBe(2);
+    expect(result.totalCount).toBe(2);
+    const types = result.items.map((item) => item.type);
+    expect(types).toContain("reservation_confirmed");
+    expect(types).toContain("reservation_cancelled");
+    expect(types).not.toContain("reservation_reminder");
+    expect(types).not.toContain("member_joined");
+  });
+
+  it("should return all notifications when typeFilters is an empty array", async () => {
+    const container = getContainer();
+    const recipientId = uuidv7();
+
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "reservation_confirmed",
+    });
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "reservation_cancelled",
+    });
+    await insertNotification(container.db, {
+      recipientType: "customer",
+      recipientId,
+      type: "member_joined",
+    });
+
+    const result = await listNotifications({
+      container,
+      headers: createMockHeaders(),
+      input: {
+        recipientType: "customer",
+        recipientId,
+        typeFilter: null,
+        typeFilters: [],
+        page: 1,
+        limit: 10,
+      },
+    });
+
+    expect(result.items.length).toBe(3);
+    expect(result.totalCount).toBe(3);
+  });
 });

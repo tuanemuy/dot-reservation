@@ -133,10 +133,11 @@ export default function ReservationsIndexPage({
                       <p className="font-medium text-text">
                         {reservation.menuName}
                       </p>
-                      <p className="mt-1 text-sm text-text-secondary">
-                        {reservation.menuName}
-                        {reservation.staffName && ` / ${reservation.staffName}`}
-                      </p>
+                      {reservation.staffName && (
+                        <p className="mt-1 text-sm text-text-secondary">
+                          {reservation.staffName}
+                        </p>
+                      )}
                     </div>
                     <div className="ml-4 text-right text-sm text-text-secondary">
                       <p>
