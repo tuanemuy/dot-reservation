@@ -17,6 +17,8 @@
 | postalCode | string | ✓ | 郵便番号 |
 | address | { prefecture, city, street } | ✓ | 住所 |
 | phoneNumber | string | ✓ | 電話番号 |
+| creatorName | string | ✓ | 作成者の氏名 |
+| creatorEmail | string | ✓ | 作成者のメールアドレス |
 
 ### 出力DTO
 

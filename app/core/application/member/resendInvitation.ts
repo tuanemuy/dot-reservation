@@ -31,7 +31,7 @@ export async function resendInvitation({
     }
 
     // Only pending or expired invitations can be resent
-    if (invitation.status !== "pending") {
+    if (invitation.status !== "pending" && invitation.status !== "expired") {
       throw new ConflictError(
         ConflictErrorCode.Conflict,
         "Only pending or expired invitations can be resent",

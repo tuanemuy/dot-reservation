@@ -5,6 +5,7 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
+import { NotFoundError, ValidationError } from "@/core/application/error";
 import { createNotification } from "../createNotification";
 
 describe("createNotification", () => {
@@ -415,78 +416,98 @@ describe("createNotification", () => {
     expect(sendSpy).not.toHaveBeenCalled();
   });
 
-  it("should not throw when recipientId does not exist (email resolution returns null)", async () => {
+  it("should throw NotFoundError when recipientId does not exist", async () => {
     const container = getContainer();
     const nonExistentId = uuidv7();
 
     const sendSpy = vi.fn();
-    const result = await createNotification({
-      container: {
-        ...container,
-        notificationEmailSender: { sendNotificationEmail: sendSpy },
-      },
-      headers: createMockHeaders(),
-      input: {
-        recipientType: "customer",
-        recipientId: nonExistentId,
-        type: "reservation_reminder",
-        title: "Reminder",
-        message: "Message",
-        referenceType: null,
-        referenceId: null,
-      },
-    });
-
-    // Notification is created (defaults are enabled) but email not sent (no customer found)
-    expect(result.id).toBeTruthy();
-    expect(sendSpy).not.toHaveBeenCalled();
+    await expect(
+      createNotification({
+        container: {
+          ...container,
+          notificationEmailSender: { sendNotificationEmail: sendSpy },
+        },
+        headers: createMockHeaders(),
+        input: {
+          recipientType: "customer",
+          recipientId: nonExistentId,
+          type: "reservation_reminder",
+          title: "Reminder",
+          message: "Message",
+          referenceType: null,
+          referenceId: null,
+        },
+      }),
+    ).rejects.toThrow(NotFoundError);
   });
 
   // ---- Edge cases ----
 
-  it("should skip email when email is ON but recipient has no email address", async () => {
+  it("should throw NotFoundError when member recipientId does not exist", async () => {
     const container = getContainer();
-    // Customer always has email, so use member without matching email
-    // Actually, resolveRecipientEmail returns null if customer/member not found
-    // Let's test with a member scenario where member doesn't exist in DB
     const fakeRecipientId = uuidv7();
 
-    // Set email preference ON, in_app OFF
-    await insertPreference(container.db, {
-      recipientType: "member",
-      recipientId: fakeRecipientId,
-      channel: "email",
-      type: "reservation_reminder",
-      enabled: true,
-    });
-    await insertPreference(container.db, {
-      recipientType: "member",
-      recipientId: fakeRecipientId,
-      channel: "in_app",
-      type: "reservation_reminder",
-      enabled: false,
-    });
-
     const sendSpy = vi.fn();
-    const result = await createNotification({
-      container: {
-        ...container,
-        notificationEmailSender: { sendNotificationEmail: sendSpy },
-      },
-      headers: createMockHeaders(),
-      input: {
-        recipientType: "member",
-        recipientId: fakeRecipientId,
-        type: "reservation_reminder",
-        title: "Reminder",
-        message: "Message",
-        referenceType: null,
-        referenceId: null,
-      },
-    });
+    await expect(
+      createNotification({
+        container: {
+          ...container,
+          notificationEmailSender: { sendNotificationEmail: sendSpy },
+        },
+        headers: createMockHeaders(),
+        input: {
+          recipientType: "member",
+          recipientId: fakeRecipientId,
+          type: "reservation_reminder",
+          title: "Reminder",
+          message: "Message",
+          referenceType: null,
+          referenceId: null,
+        },
+      }),
+    ).rejects.toThrow(NotFoundError);
+  });
 
-    // Email skipped because member not found (no email)
-    expect(sendSpy).not.toHaveBeenCalled();
+  it("should throw ValidationError when message is empty", async () => {
+    const container = getContainer();
+    const customerId = await insertCustomer(container.db);
+
+    await expect(
+      createNotification({
+        container,
+        headers: createMockHeaders(),
+        input: {
+          recipientType: "customer",
+          recipientId: customerId,
+          type: "reservation_reminder",
+          title: "Reminder",
+          message: "",
+          referenceType: null,
+          referenceId: null,
+        },
+      }),
+    ).rejects.toThrow(ValidationError);
+  });
+
+  it("should throw ValidationError when message is whitespace only", async () => {
+    const container = getContainer();
+    const customerId = await insertCustomer(container.db);
+
+    await expect(
+      createNotification({
+        container,
+        headers: createMockHeaders(),
+        input: {
+          recipientType: "customer",
+          recipientId: customerId,
+          type: "reservation_reminder",
+          title: "Reminder",
+          message: "   ",
+          referenceType: null,
+          referenceId: null,
+        },
+      }),
+    ).rejects.toThrow(ValidationError);
   });
 
   it("should force create in-app and send email when important, in-app OFF, email ON", async () => {

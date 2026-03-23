@@ -56,8 +56,8 @@
 |---|---|---|
 | TenantId | string (branded) | UUID形式 |
 | TenantName | string (branded) | 1〜100文字 |
-| TenantCategory | string (branded) | 定義済みカテゴリーに含まれること |
-| TenantUrlPath | string (branded) | 英数字・ハイフン、3〜50文字、一意 |
+| TenantCategory | string (branded) | 1〜50文字 |
+| TenantUrlPath | string (branded) | 小文字英数字・ハイフン、3〜50文字、一意 |
 | TenantDescription | string (branded) | 最大5000文字 |
 | TenantStatus | "active" \| "suspended" | — |
 | PostalCode | string (branded) | 郵便番号形式 |

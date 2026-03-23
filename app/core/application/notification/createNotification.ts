@@ -6,6 +6,12 @@ import type {
   RecipientType,
 } from "@/core/domain/notification/valueObject";
 import type { Container } from "../container/server";
+import {
+  NotFoundError,
+  NotFoundErrorCode,
+  ValidationError,
+  ValidationErrorCode,
+} from "../error";
 import type { ServiceArgs } from "../types";
 
 /**
@@ -37,8 +43,38 @@ export async function createNotification({
   container,
   input,
 }: ServiceArgs<CreateNotificationInput>): Promise<CreateNotificationOutput> {
+  if (input.message.trim() === "") {
+    throw new ValidationError(
+      ValidationErrorCode.InvalidInput,
+      "Notification message cannot be empty",
+    );
+  }
+
   const recipientType = input.recipientType as RecipientType;
   const notificationType = input.type as NotificationTypeVO;
+
+  // Verify recipient exists
+  if (recipientType === "customer") {
+    const customer = await container.customerRepository.findById(
+      CustomerId.create(input.recipientId),
+    );
+    if (!customer) {
+      throw new NotFoundError(
+        NotFoundErrorCode.NotFound,
+        "Recipient customer not found",
+      );
+    }
+  } else {
+    const member = await container.memberRepository.findById(
+      MemberId.create(input.recipientId),
+    );
+    if (!member) {
+      throw new NotFoundError(
+        NotFoundErrorCode.NotFound,
+        "Recipient member not found",
+      );
+    }
+  }
 
   const isImportant = IMPORTANT_NOTIFICATION_TYPES.has(notificationType);
 

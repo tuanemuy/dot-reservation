@@ -87,6 +87,7 @@
 | invitation.created | invitationId, tenantId, email | 招待作成時 |
 | invitation.accepted | invitationId, tenantId | 招待承認時 |
 | invitation.declined | invitationId, tenantId | 招待辞退時 |
+| invitation.resent | invitationId, tenantId, email | 招待再送信時 |
 
 ## ポート
 

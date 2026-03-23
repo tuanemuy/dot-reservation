@@ -38,7 +38,9 @@ describe("cancelInvitation", () => {
     // Verify status changed to cancelled
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(InvitationId.create(invResult.id));
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
     expect(invitation?.status).toBe("cancelled");
@@ -180,7 +182,9 @@ describe("cancelInvitation", () => {
     // Verify status changed to cancelled
     const invitation = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.invitationRepository.findById(InvitationId.create(invResult.id));
+        return repos.invitationRepository.findById(
+          InvitationId.create(invResult.id),
+        );
       },
     );
     expect(invitation?.status).toBe("cancelled");

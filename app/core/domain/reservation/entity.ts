@@ -167,6 +167,7 @@ const Reservation = {
   cancel: (
     reservation: Reservation,
     reason: string | null,
+    cancelledBy: CreatedBy,
   ): WithEvents<Reservation, ReservationEvent> => {
     if (
       reservation.status !== "confirmed" &&
@@ -192,7 +193,7 @@ const Reservation = {
           updated.id,
           updated.tenantId,
           updated.customerId,
-          updated.createdBy,
+          cancelledBy,
           reason,
         ),
       ],

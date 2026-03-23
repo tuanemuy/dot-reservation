@@ -222,7 +222,7 @@ const Invitation = {
     invitation: Invitation,
     newExpiresAt: Date,
   ): WithEvents<Invitation, MemberEvent> => {
-    if (invitation.status !== "pending") {
+    if (invitation.status !== "pending" && invitation.status !== "expired") {
       throw new BusinessRuleError(
         MemberErrorCode.InvitationNotResendable,
         "Only pending or expired invitations can be resent",

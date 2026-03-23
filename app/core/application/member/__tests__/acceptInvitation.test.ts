@@ -76,7 +76,9 @@ describe("acceptInvitation", () => {
     // Verify member exists in the tenant
     const member = await container.unitOfWorkProvider.transaction(
       async (repos) => {
-        return repos.memberRepository.findById(MemberId.create(result.memberId));
+        return repos.memberRepository.findById(
+          MemberId.create(result.memberId),
+        );
       },
     );
     expect(member).not.toBeNull();

@@ -69,6 +69,7 @@ export async function cancelReservation({
     const { entity: cancelled, events } = Reservation.cancel(
       reservation,
       input.reason,
+      input.cancelledBy,
     );
 
     await repositories.reservationRepository.save(cancelled);
