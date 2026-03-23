@@ -1,3 +1,5 @@
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { Link } from "react-router";
 import { z } from "zod";
@@ -15,35 +17,44 @@ const forgotPasswordSchema = z.object({
 });
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; form?: string }>({});
   const [isPending, setIsPending] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrors({});
-
-    const result = forgotPasswordSchema.safeParse({ email });
-    if (!result.success) {
-      const fieldErrors: { email?: string } = {};
-      for (const issue of result.error.issues) {
-        if (issue.path[0] === "email") {
-          fieldErrors.email = issue.message;
-        }
+  const [form, fields] = useForm({
+    id: "customer-forgot-password-form",
+    constraint: getZodConstraint(forgotPasswordSchema),
+    shouldValidate: "onSubmit",
+    shouldRevalidate: "onBlur",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: forgotPasswordSchema });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const parsed = parseWithZod(formData, {
+        schema: forgotPasswordSchema,
+      });
+      if (parsed.status !== "success") {
+        return;
       }
-      setErrors(fieldErrors);
-      return;
-    }
 
-    setIsPending(true);
-    await authClient.requestPasswordReset({
-      email: result.data.email,
-      redirectTo: "/customer/reset-password",
-    });
-    setIsPending(false);
-    setIsSubmitted(true);
-  };
+      setIsPending(true);
+
+      authClient
+        .requestPasswordReset({
+          email: parsed.value.email,
+          redirectTo: "/customer/reset-password",
+        })
+        .then(() => {
+          setIsPending(false);
+          setIsSubmitted(true);
+        })
+        .catch(() => {
+          setIsPending(false);
+          setIsSubmitted(true);
+        });
+    },
+  });
 
   if (isSubmitted) {
     return (
@@ -77,25 +88,21 @@ export default function ForgotPasswordPage() {
       title="パスワードリセット"
       description="ご登録のメールアドレスを入力してください"
     >
-      <form onSubmit={handleSubmit} noValidate>
+      <form method="post" {...getFormProps(form)}>
         <FormField
           label="メールアドレス"
-          htmlFor="customer-forgot-password-email"
-          error={errors.email ? [errors.email] : undefined}
+          htmlFor={fields.email.id}
+          error={fields.email.errors}
         >
           <Input
-            id="customer-forgot-password-email"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...getInputProps(fields.email, { type: "email" })}
             placeholder="example@email.com"
             autoComplete="email"
-            error={errors.email}
+            error={fields.email.errors?.[0]}
           />
         </FormField>
 
-        {errors.form && (
+        {form.errors && (
           <p
             style={{
               fontSize: "var(--text-sm)",
@@ -103,7 +110,7 @@ export default function ForgotPasswordPage() {
               marginBottom: "var(--space-lg)",
             }}
           >
-            {errors.form}
+            {form.errors}
           </p>
         )}
 

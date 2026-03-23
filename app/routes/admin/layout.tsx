@@ -1,4 +1,4 @@
-import { Outlet, redirect } from "react-router";
+import { Outlet, redirect, useLoaderData } from "react-router";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import type { Route } from "./+types/layout";
 
@@ -22,8 +22,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function AdminCommonLayout(_props: Route.ComponentProps) {
+  const { user } = useLoaderData<typeof loader>();
   return (
-    <AdminLayout>
+    <AdminLayout displayName={user.name}>
       <Outlet />
     </AdminLayout>
   );

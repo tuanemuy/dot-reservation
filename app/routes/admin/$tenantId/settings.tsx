@@ -356,7 +356,7 @@ function UrlPathIndicator({
 
   if (status === "available") {
     return (
-      <p className="mt-[var(--space-xs)] flex items-center gap-1 text-[length:var(--text-xs)] text-green-600">
+      <p className="mt-[var(--space-xs)] flex items-center gap-1 text-[length:var(--text-xs)] text-success">
         <svg
           className="h-3.5 w-3.5"
           fill="none"

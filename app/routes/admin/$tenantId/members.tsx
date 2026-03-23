@@ -621,7 +621,7 @@ export default function TenantMembersPage({
             <button
               type="submit"
               disabled={isPendingRemove}
-              className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-destructive px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+              className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-destructive px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:opacity-90 disabled:opacity-50"
             >
               {isPendingRemove ? "削除中..." : "削除する"}
             </button>
