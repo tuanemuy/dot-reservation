@@ -70,5 +70,11 @@
 - [x] パスワード変更をクライアントサイド実装 (authClient.changePassword())
 - [x] 予約ページ認証修正 (shop.$urlPath.reserve.tsx の authProvider 統合)
 
+- [x] 管理画面通知マルチテナント集約 (全テナントメンバーシップの通知を横断表示)
+- [x] 予約一覧 menuName 重複表示修正
+- [x] typeFilters テスト追加 (617 tests)
+- [x] スタッフプロフィール未接続 file input 削除
+
 ## 残存課題（低リスク・別タスク）
 - [ ] platform/users: lastLoginAt がスタブ（null）— AuthProvider ポートにセッション一覧メソッドが未定義のため取得不可
+- [ ] deleteAccount ハンドラーのパスワード検証未実装 — AuthProvider ポート拡張が必要
