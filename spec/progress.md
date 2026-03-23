@@ -16,6 +16,8 @@
 - [x] drizzleSqlite (スキーマ + リポジトリ)
 - [x] betterAuth (AuthProvider 実装, better-auth 設定, Drizzle アダプター)
 - [x] drizzleSqlite スキーマ更新 (better-auth テーブル: users, sessions, accounts, verifications)
+- [x] nodemailer (AuthEmailSender, MemberEmailSender, NotificationEmailSender)
+- [x] s3 (StorageManager — 画像アップロード・削除)
 
 ## ユースケース
 - [x] customer
@@ -30,6 +32,11 @@
 - [x] customer 更新 (deleteCustomer → cleanupAuthUserIfOrphaned)
 - [x] member 更新 (deleteMemberAccount → cleanupAuthUserIfOrphaned)
 - [x] Container 型更新 (authProvider 追加)
+- [x] Container 型更新 (storageManager, outboxRepository 追加)
+- [x] Event Relay Worker (Outbox イベント処理ワーカー)
+- [x] removeMember / deleteMemberAccount — 担当予約の「担当者未定」処理
+- [x] createProxyReservation — スタッフ権限チェック + 過去日付バリデーション
+- [x] changeMemberRole — ConflictError への変換
 
 ## テスト
 - [x] customer (54 tests)
@@ -41,6 +48,7 @@
 - [x] reservation (104 tests)
 - [x] notification (62 tests)
 - [x] auth (cleanupAuthUserIfOrphaned: 6 tests, authIntegration: 4 tests)
+- [x] 追加テスト: removeMember 予約解除 + changeMemberRole ConflictError + createProxyReservation 権限・過去日付 (623 tests)
 
 ## フロントエンド
 - [x] 公開ページ（顧客向け）
@@ -74,9 +82,10 @@
 - [x] 予約一覧 menuName 重複表示修正
 - [x] typeFilters テスト追加 (617 tests)
 - [x] スタッフプロフィール未接続 file input 削除
+- [x] Layout TODO 解消 (認証状態リンク切り替え、ユーザー情報表示、ログアウトボタン)
+- [x] Lint warnings 全修正 (135件 → 0件)
+- [x] console.log 削除 (admin/profile.tsx, admin/notifications/settings.tsx)
 
 ## 未実装
 - [ ] platform/users: lastLoginAt の取得 — AuthProvider ポートにセッション一覧メソッドの追加が必要
 - [ ] deleteAccount 時のパスワード検証 — AuthProvider ポートにパスワード検証メソッドの追加が必要
-- [ ] StorageManager アダプター（テナント画像・スタッフプロフィール画像のアップロード）
-- [ ] EmailSender アダプター（招待メール・通知メール・認証メールの実送信）
