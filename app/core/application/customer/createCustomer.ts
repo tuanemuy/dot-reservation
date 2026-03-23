@@ -24,7 +24,7 @@ export async function createCustomer({
   container,
   input,
 }: ServiceArgs<CreateCustomerInput>): Promise<CreateCustomerOutput> {
-  if (!input.authUserId) {
+  if (input.authUserId === "") {
     throw new ValidationError(
       ValidationErrorCode.InvalidInput,
       "authUserId is required",

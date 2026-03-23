@@ -9,6 +9,7 @@ import { createInvitation } from "@/core/application/member/createInvitation";
 import { listInvitations } from "@/core/application/member/listInvitations";
 import { listMembers } from "@/core/application/member/listMembers";
 import { removeMember } from "@/core/application/member/removeMember";
+import { resendInvitation } from "@/core/application/member/resendInvitation";
 import { container } from "@/core/di/server";
 import {
   createCompositeAction,
@@ -183,10 +184,19 @@ export const handlers = {
   }),
   resendInvitation: defineHandler({
     schema: resendInvitationSchema,
-    handler: async (_value, _args) => {
-      // 再送信は既存の招待をキャンセルして新しく作り直す必要があるが、
-      // 現在のユースケースでは直接サポートされていないため、成功を返す
-      return success();
+    handler: async (value, args) => {
+      return handleUseCase(() =>
+        resendInvitation({
+          container,
+          headers: args.request.headers,
+          input: {
+            invitationId: value.invitationId,
+          },
+        }),
+      ).match(
+        () => success(),
+        (e) => error({ "": [e.message] }),
+      );
     },
   }),
 };
