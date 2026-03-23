@@ -4,12 +4,20 @@ import {
   createMockHeaders,
   setupTestContainer,
 } from "@/core/application/__tests__/helpers";
-import { ConflictError, NotFoundError } from "@/core/application/error";
+import {
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  ValidationError,
+} from "@/core/application/error";
 import { createProxyReservation } from "../createProxyReservation";
 import { getReservation } from "../getReservation";
 import {
+  assignMenuToStaff,
   formatDate,
+  insertMenu,
   insertReservation,
+  pastDate,
   setupReservationScenario,
 } from "./helpers";
 
@@ -425,5 +433,135 @@ describe("createProxyReservation", () => {
     });
     expect(reservation.customerId).toBeNull();
     expect(reservation.customerEmail).toBeNull();
+  });
+
+  it("過去の日付を指定するとValidationErrorが発生する", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+    const yesterday = pastDate(1);
+
+    await expect(
+      createProxyReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: null,
+          customerName: "Customer",
+          customerEmail: null,
+          customerPhoneNumber: null,
+          menuId: scenario.menuId,
+          staffProfileId: scenario.staffProfileId,
+          date: formatDate(yesterday),
+          startTime: "10:00",
+          note: null,
+          createdBy: "admin",
+        },
+      }),
+    ).rejects.toThrow(ValidationError);
+  });
+
+  it("スタッフが自分の担当外のメニューを指定するとForbiddenErrorが発生する", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+
+    // Create another menu not assigned to the staff
+    const unassignedMenuId = await insertMenu(container.db, scenario.tenantId, {
+      name: "Unassigned Menu",
+      duration: 30,
+      price: 3000,
+      sortOrder: 2,
+    });
+
+    await expect(
+      createProxyReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: null,
+          customerName: "Customer",
+          customerEmail: null,
+          customerPhoneNumber: null,
+          menuId: unassignedMenuId,
+          staffProfileId: scenario.staffProfileId,
+          date: formatDate(scenario.reservationDate),
+          startTime: "10:00",
+          note: null,
+          createdBy: "staff",
+        },
+      }),
+    ).rejects.toThrow(ForbiddenError);
+  });
+
+  it("管理者は担当外のメニューでも代理登録できる", async () => {
+    const container = getContainer();
+    const scenario = await setupReservationScenario(container.db);
+
+    // Create another menu not assigned to the staff
+    const unassignedMenuId = await insertMenu(container.db, scenario.tenantId, {
+      name: "Unassigned Menu",
+      duration: 30,
+      price: 3000,
+      sortOrder: 2,
+    });
+
+    // Assign the menu to the staff for availability check to pass
+    // (the availability service checks shift, not menu assignment)
+    await assignMenuToStaff(
+      container.db,
+      scenario.staffProfileId,
+      unassignedMenuId,
+    );
+
+    const result = await createProxyReservation({
+      container,
+      headers,
+      input: {
+        tenantId: scenario.tenantId,
+        customerId: null,
+        customerName: "Customer",
+        customerEmail: null,
+        customerPhoneNumber: null,
+        menuId: unassignedMenuId,
+        staffProfileId: scenario.staffProfileId,
+        date: formatDate(scenario.reservationDate),
+        startTime: "10:00",
+        note: null,
+        createdBy: "admin",
+      },
+    });
+
+    expect(result.id).toBeDefined();
+  });
+
+  it("スタッフが自分のシフト外の時間を指定するとForbiddenErrorが発生する", async () => {
+    const container = getContainer();
+    // Create scenario with narrow shift: 10:00 - 12:00
+    const scenario = await setupReservationScenario(container.db, {
+      shiftStartTime: "10:00",
+      shiftEndTime: "12:00",
+    });
+
+    // Try to book at 14:00 (outside shift)
+    await expect(
+      createProxyReservation({
+        container,
+        headers,
+        input: {
+          tenantId: scenario.tenantId,
+          customerId: null,
+          customerName: "Customer",
+          customerEmail: null,
+          customerPhoneNumber: null,
+          menuId: scenario.menuId,
+          staffProfileId: scenario.staffProfileId,
+          date: formatDate(scenario.reservationDate),
+          startTime: "14:00",
+          note: null,
+          createdBy: "staff",
+        },
+      }),
+    ).rejects.toThrow(ForbiddenError);
   });
 });

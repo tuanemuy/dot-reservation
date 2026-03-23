@@ -3,13 +3,18 @@ import { CustomerId } from "@/core/domain/customer/valueObject";
 import { MenuId } from "@/core/domain/menu/valueObject";
 import { Reservation } from "@/core/domain/reservation/entity";
 import { AvailabilityService } from "@/core/domain/reservation/services/availabilityService";
+import { StaffProfile } from "@/core/domain/staff/entity";
 import { StaffProfileId } from "@/core/domain/staff/valueObject";
 import { TenantId } from "@/core/domain/tenant/valueObject";
 import {
   ConflictError,
   ConflictErrorCode,
+  ForbiddenError,
+  ForbiddenErrorCode,
   NotFoundError,
   NotFoundErrorCode,
+  ValidationError,
+  ValidationErrorCode,
 } from "../error";
 import type { ServiceArgs } from "../types";
 
@@ -60,6 +65,16 @@ export async function createProxyReservation({
     ? CustomerId.create(input.customerId)
     : null;
 
+  // Validate past date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (date < today) {
+    throw new ValidationError(
+      ValidationErrorCode.InvalidInput,
+      "Cannot create a reservation for a past date",
+    );
+  }
+
   const result = await container.unitOfWorkProvider.transaction(
     async (repositories) => {
       // Fetch tenant
@@ -88,6 +103,38 @@ export async function createProxyReservation({
           NotFoundErrorCode.NotFound,
           "Staff profile not found",
         );
+      }
+
+      // Staff permission check: staff can only create for their own assigned menus and shifts
+      if (input.createdBy === "staff") {
+        // Check menu assignment
+        if (!StaffProfile.canHandleMenu(staffProfile, menuId)) {
+          throw new ForbiddenError(
+            ForbiddenErrorCode.InsufficientPermissions,
+            "Staff is not assigned to this menu",
+          );
+        }
+
+        // Check shift coverage
+        const staffShifts =
+          await repositories.shiftRepository.findByStaffProfileIdAndDateRange(
+            staffProfileId,
+            date,
+            date,
+          );
+        const hasShiftCoverage = staffShifts.some((shift) => {
+          const shiftStartMinutes = timeOfDayToMinutes(shift.timeRange.start);
+          const shiftEndMinutes = timeOfDayToMinutes(shift.timeRange.end);
+          return (
+            startMinutes >= shiftStartMinutes && endMinutes <= shiftEndMinutes
+          );
+        });
+        if (!hasShiftCoverage) {
+          throw new ForbiddenError(
+            ForbiddenErrorCode.InsufficientPermissions,
+            "Reservation time is outside staff shift hours",
+          );
+        }
       }
 
       // Get shifts and reservations for availability check
