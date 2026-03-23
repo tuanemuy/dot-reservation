@@ -165,13 +165,16 @@ export default function TenantSettingsPage({
   const isPendingDelete = fetcher.isPending("deleteTenant");
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">テナント設定</h1>
+    <div>
+      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        テナント設定
+      </h1>
 
-      <div className="max-w-2xl space-y-8">
-        {/* テナント情報編集 */}
-        <section className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">基本情報</h2>
+      <div className="max-w-2xl space-y-[var(--space-xl)]">
+        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            基本情報
+          </h2>
           <fetcher.Form
             method="post"
             {...getFormProps(updateForm)}
@@ -182,16 +185,16 @@ export default function TenantSettingsPage({
             <div>
               <label
                 htmlFor={updateFields.name.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 テナント名
               </label>
               <input
                 {...getInputProps(updateFields.name, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
               {updateFields.name.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {updateFields.name.errors}
                 </p>
               )}
@@ -200,13 +203,13 @@ export default function TenantSettingsPage({
             <div>
               <label
                 htmlFor={updateFields.category.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 カテゴリー
               </label>
               <select
                 {...getInputProps(updateFields.category, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
                 <option value="hair">美容室</option>
                 <option value="nail">ネイルサロン</option>
@@ -215,7 +218,7 @@ export default function TenantSettingsPage({
                 <option value="other">その他</option>
               </select>
               {updateFields.category.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {updateFields.category.errors}
                 </p>
               )}
@@ -224,16 +227,16 @@ export default function TenantSettingsPage({
             <div>
               <label
                 htmlFor={updateFields.urlPath.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 URLパス
               </label>
               <input
                 {...getInputProps(updateFields.urlPath, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
               {updateFields.urlPath.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {updateFields.urlPath.errors}
                 </p>
               )}
@@ -242,49 +245,49 @@ export default function TenantSettingsPage({
             <div>
               <label
                 htmlFor={updateFields.address.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 住所
               </label>
               <input
                 {...getInputProps(updateFields.address, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
             <div>
               <label
                 htmlFor={updateFields.phone.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 電話番号
               </label>
               <input
                 {...getInputProps(updateFields.phone, { type: "tel" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
             <div>
               <label
                 htmlFor={updateFields.description.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 紹介文
               </label>
               <textarea
                 {...getTextareaProps(updateFields.description)}
                 rows={4}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
             <div>
-              <span className="block text-sm font-medium text-gray-700">
+              <span className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700">
                 店舗画像
               </span>
-              <div className="mt-1 rounded-md border-2 border-dashed border-gray-300 p-6 text-center">
-                <p className="text-sm text-gray-500">
+              <div className="mt-1 rounded-[var(--radius-md)] border-2 border-dashed border-neutral-300 p-[var(--space-lg)] text-center">
+                <p className="text-[length:var(--text-sm)] text-neutral-500">
                   画像をドラッグ&ドロップまたはクリックしてアップロード（最大10枚）
                 </p>
               </div>
@@ -294,7 +297,7 @@ export default function TenantSettingsPage({
               <button
                 type="submit"
                 disabled={isPendingUpdate}
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPendingUpdate ? "更新中..." : "更新する"}
               </button>
@@ -303,11 +306,11 @@ export default function TenantSettingsPage({
         </section>
 
         {/* テナント削除 */}
-        <section className="rounded-lg border border-red-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-red-600">
+        <section className="rounded-[var(--radius-lg)] border border-error bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-error">
             テナント削除
           </h2>
-          <p className="mb-4 text-sm text-gray-600">
+          <p className="mb-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-600">
             テナントを削除すると、すべてのデータ（メニュー、スタッフ、予約など）が完全に削除されます。この操作は取り消せません。
           </p>
 
@@ -321,7 +324,7 @@ export default function TenantSettingsPage({
               <div>
                 <label
                   htmlFor={deleteFields.confirmName.id}
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   確認のためテナント名「{tenant.name}」を入力
                 </label>
@@ -329,10 +332,10 @@ export default function TenantSettingsPage({
                   {...getInputProps(deleteFields.confirmName, { type: "text" })}
                   value={deleteConfirmName}
                   onChange={(e) => setDeleteConfirmName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] focus:border-error focus:outline-2 focus:outline-offset-2 focus:outline-error"
                 />
                 {deleteFields.confirmName.errors && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-[length:var(--text-xs)] text-error">
                     {deleteFields.confirmName.errors}
                   </p>
                 )}
@@ -343,7 +346,7 @@ export default function TenantSettingsPage({
                   disabled={
                     isPendingDelete || deleteConfirmName !== tenant.name
                   }
-                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-error transition-[background,color] hover:bg-error hover:text-white disabled:opacity-50"
                 >
                   {isPendingDelete ? "削除中..." : "テナントを削除"}
                 </button>
@@ -353,7 +356,7 @@ export default function TenantSettingsPage({
                     setShowDeleteConfirm(false);
                     setDeleteConfirmName("");
                   }}
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
                 >
                   キャンセル
                 </button>
@@ -363,7 +366,7 @@ export default function TenantSettingsPage({
             <button
               type="button"
               onClick={() => setShowDeleteConfirm(true)}
-              className="rounded-md border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-error transition-[background,color] hover:bg-error hover:text-white"
             >
               テナントを削除する
             </button>

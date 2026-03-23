@@ -40,7 +40,7 @@ export function AdminLayout({ children, tenantId }: AdminLayoutProps) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-60 shrink-0 border-r border-border bg-white md:flex md:flex-col">
+      <aside className="hidden w-64 shrink-0 border-r border-border bg-white md:flex md:flex-col">
         <div className="flex h-16 items-center border-b border-border px-4">
           <Link to="/admin/tenants" className="text-lg font-bold text-primary">
             管理画面
@@ -54,7 +54,7 @@ export function AdminLayout({ children, tenantId }: AdminLayoutProps) {
               className={({ isActive }) =>
                 `block rounded-md px-3 py-2 text-sm ${
                   isActive
-                    ? "bg-primary/10 font-medium text-primary"
+                    ? "bg-primary-lighter font-medium text-primary"
                     : "text-text-secondary hover:bg-surface-secondary hover:text-text"
                 }`
               }

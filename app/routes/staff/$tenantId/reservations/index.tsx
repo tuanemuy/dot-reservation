@@ -1,22 +1,9 @@
 import { useState } from "react";
-import { data, Link, useSearchParams } from "react-router";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
+import { data, Link, useParams, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
-import { Select } from "@/components/ui/Select";
-import { Tabs } from "@/components/ui/Tabs";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
-
-type BadgeVariant =
-  | "default"
-  | "primary"
-  | "accent"
-  | "success"
-  | "warning"
-  | "destructive";
 
 const statusLabels: Record<string, string> = {
   confirmed: "確定",
@@ -26,13 +13,34 @@ const statusLabels: Record<string, string> = {
   rejected: "却下",
 };
 
-const statusBadgeVariants: Record<string, BadgeVariant> = {
-  pending: "warning",
-  confirmed: "success",
-  completed: "default",
-  cancelled: "destructive",
-  rejected: "destructive",
-};
+function StatusBadge({ status }: { status: string }) {
+  const statusStyles: Record<string, string> = {
+    confirmed: "bg-[oklch(0.55_0.12_145/0.1)] text-success",
+    pending: "bg-[oklch(0.72_0.14_70/0.12)] text-accent-dark",
+    cancelled: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
+    completed: "bg-surface-secondary text-text-secondary",
+    rejected: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
+  };
+
+  const dotStyles: Record<string, string> = {
+    confirmed: "bg-success",
+    pending: "bg-warning",
+    cancelled: "bg-error",
+    completed: "bg-text-muted",
+    rejected: "bg-error",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${statusStyles[status] ?? "bg-surface-secondary text-text-secondary"}`}
+    >
+      <span
+        className={`h-1.5 w-1.5 rounded-full ${dotStyles[status] ?? "bg-text-muted"}`}
+      />
+      {statusLabels[status] ?? status}
+    </span>
+  );
+}
 
 function formatToday(): string {
   const now = new Date();
@@ -41,11 +49,6 @@ function formatToday(): string {
   const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
-const viewTabs = [
-  { id: "list", label: "リスト" },
-  { id: "calendar", label: "カレンダー" },
-];
 
 const ITEMS_PER_PAGE = 20;
 
@@ -91,8 +94,9 @@ export default function StaffReservationsPage({
   loaderData,
 }: Route.ComponentProps) {
   const { reservations, pagination } = loaderData;
-  const [viewMode, setViewMode] = useState("list");
+  const { tenantId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [_viewMode, _setViewMode] = useState("list");
 
   const currentStatus = searchParams.get("status") ?? "";
 
@@ -108,116 +112,132 @@ export default function StaffReservationsPage({
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-text">予約管理</h1>
-        <Link to="new">
-          <Button size="sm">代理予約登録</Button>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
+          予約管理
+        </h1>
+        <Link
+          to={`/staff/${tenantId}/reservations/new`}
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border-none bg-primary px-6 text-sm font-medium tracking-wide text-white no-underline transition-colors duration-150 hover:bg-primary-dark active:scale-[0.99]"
+        >
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            viewBox="0 0 24 24"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          代理予約登録
         </Link>
       </div>
 
-      {/* フィルター */}
-      <div className="flex gap-3">
-        <div className="w-48">
-          <Select
-            value={currentStatus}
-            onChange={(e) => handleStatusChange(e.target.value)}
-          >
-            <option value="">すべてのステータス</option>
-            <option value="confirmed">確定</option>
-            <option value="completed">完了</option>
-            <option value="cancelled">キャンセル済み</option>
-          </Select>
-        </div>
+      {/* Filters */}
+      <div className="mb-6 flex items-center gap-4">
+        <select
+          value={currentStatus}
+          onChange={(e) => handleStatusChange(e.target.value)}
+          className="h-11 appearance-none rounded-[10px] border border-border bg-white px-4 pr-10 font-body text-base text-text transition-colors duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%238E8B87'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E\")",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 12px center",
+            backgroundSize: "14px",
+          }}
+        >
+          <option value="">すべてのステータス</option>
+          <option value="confirmed">確定</option>
+          <option value="pending">承認待ち</option>
+          <option value="cancelled">キャンセル</option>
+          <option value="completed">完了</option>
+        </select>
       </div>
 
-      <Tabs tabs={viewTabs} activeTab={viewMode} onTabChange={setViewMode}>
-        {viewMode === "list" ? (
-          <Card>
-            <CardBody className="p-0">
-              {reservations.length === 0 ? (
-                <p className="p-8 text-center text-sm text-text-muted">
-                  予約がありません
-                </p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead className="border-b border-border bg-surface-secondary">
-                      <tr>
-                        <th className="px-4 py-3 font-medium text-text-secondary">
-                          ステータス
-                        </th>
-                        <th className="px-4 py-3 font-medium text-text-secondary">
-                          顧客名
-                        </th>
-                        <th className="px-4 py-3 font-medium text-text-secondary">
-                          メニュー
-                        </th>
-                        <th className="px-4 py-3 font-medium text-text-secondary">
-                          日時
-                        </th>
-                        <th className="px-4 py-3" />
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {reservations.map((r) => (
-                        <tr
-                          key={r.id}
-                          className="hover:bg-surface-secondary/50"
-                        >
-                          <td className="px-4 py-3">
-                            <Badge
-                              variant={
-                                statusBadgeVariants[r.status] ?? "default"
-                              }
-                            >
-                              {statusLabels[r.status] ?? r.status}
-                            </Badge>
-                          </td>
-                          <td className="px-4 py-3 text-text">
-                            {r.customerName ?? "-"}
-                          </td>
-                          <td className="px-4 py-3 text-text-secondary">
-                            {r.menuName}
-                          </td>
-                          <td className="px-4 py-3 text-text-secondary">
-                            {r.date} {r.startTime}
-                          </td>
-                          <td className="px-4 py-3 text-right">
-                            <Link
-                              to={r.id}
-                              className="text-sm font-medium text-primary hover:text-primary-dark"
-                            >
-                              詳細
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </CardBody>
-          </Card>
+      {/* Reservation Table */}
+      <div className="mb-6 overflow-hidden rounded-[14px] border border-border bg-white">
+        {reservations.length === 0 ? (
+          <p className="py-12 text-center text-sm text-text-muted">
+            予約がありません
+          </p>
         ) : (
-          <Card>
-            <CardBody>
-              <div className="flex min-h-96 items-center justify-center text-sm text-text-muted">
-                週表示カレンダー（自分の予約のみ）
-              </div>
-            </CardBody>
-          </Card>
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface">
+                <th className="px-6 py-3 text-xs font-medium text-text-secondary">
+                  予約日時
+                </th>
+                <th className="px-6 py-3 text-xs font-medium text-text-secondary">
+                  顧客名
+                </th>
+                <th className="px-6 py-3 text-xs font-medium text-text-secondary">
+                  メニュー名
+                </th>
+                <th className="px-6 py-3 text-xs font-medium text-text-secondary">
+                  ステータス
+                </th>
+                <th className="px-6 py-3" />
+              </tr>
+            </thead>
+            <tbody>
+              {reservations.map((r) => (
+                <tr
+                  key={r.id}
+                  className="border-b border-surface-secondary last:border-b-0 hover:bg-surface/50"
+                >
+                  <td className="px-6 py-4 font-medium text-text">
+                    {r.date} {r.startTime}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-secondary-lighter to-secondary-light text-xs font-medium text-secondary">
+                        {(r.customerName ?? "?").charAt(0)}
+                      </span>
+                      <span className="font-medium text-text">
+                        {r.customerName ?? "-"}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-text-secondary">
+                    {r.menuName}
+                  </td>
+                  <td className="px-6 py-4">
+                    <StatusBadge status={r.status} />
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      to={`/staff/${tenantId}/reservations/${r.id}`}
+                      className="text-sm font-medium text-primary no-underline transition-colors duration-150 hover:text-primary-dark"
+                    >
+                      詳細
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
-      </Tabs>
 
-      {viewMode === "list" && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
-          baseUrl=""
-          searchParams={searchParams}
-        />
-      )}
+        {/* Pagination */}
+        {reservations.length > 0 && (
+          <div className="border-t border-surface-secondary px-6 py-4">
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              baseUrl=""
+              searchParams={searchParams}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

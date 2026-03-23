@@ -29,18 +29,20 @@ export default function TenantStaffPage({
   const tenantId = params.tenantId;
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">スタッフ管理</h1>
+    <div className="">
+      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        スタッフ管理
+      </h1>
 
       {staff.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-          <p className="text-gray-500">スタッフが登録されていません</p>
-          <p className="mt-2 text-sm text-gray-400">
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-12 text-center">
+          <p className="text-neutral-500">スタッフが登録されていません</p>
+          <p className="mt-2 text-sm text-neutral-500">
             メンバー管理からメンバーを招待し、スタッフとして登録してください。
           </p>
           <Link
             to={`/admin/${tenantId}/members`}
-            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="mt-4 inline-block text-sm font-medium text-primary hover:text-primary"
           >
             メンバー管理へ
           </Link>
@@ -51,10 +53,10 @@ export default function TenantStaffPage({
             <Link
               key={member.id}
               to={`/admin/${tenantId}/staff/${member.id}`}
-              className="group rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md"
+              className="group rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)] transition-shadow hover:shadow-md"
             >
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-gray-500">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-border text-neutral-500">
                   {member.imageUrl ? (
                     <img
                       src={member.imageUrl}
@@ -79,7 +81,7 @@ export default function TenantStaffPage({
                   )}
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800 group-hover:text-primary">
                     {member.displayName}
                   </h2>
                 </div>

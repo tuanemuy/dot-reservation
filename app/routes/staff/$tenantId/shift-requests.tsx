@@ -1,10 +1,8 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { data, redirect } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody, CardHeader } from "@/components/ui/Card";
-import { Select } from "@/components/ui/Select";
 import type { ShiftRequestDetail } from "@/core/application/shift/listShiftRequests";
 import { listShiftRequests } from "@/core/application/shift/listShiftRequests";
 import { submitShiftRequests } from "@/core/application/shift/submitShiftRequests";
@@ -22,10 +20,8 @@ import type { Route } from "./+types/shift-requests";
 function getNextWeekRange(): { start: string; end: string } {
   const now = new Date();
   const day = now.getDay();
-  // Start of next week (Monday)
   const nextMonday = new Date(now);
   nextMonday.setDate(now.getDate() + ((8 - day) % 7 || 7));
-  // End of next week (Sunday)
   const nextSunday = new Date(nextMonday);
   nextSunday.setDate(nextMonday.getDate() + 6);
 
@@ -112,7 +108,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const tenantId = params.tenantId;
   const targetPeriod = getNextWeekRange();
 
-  // Get authenticated staff profile
   const session = await container.authProvider.getSession(request.headers);
   if (!session) {
     throw redirect("/admin/login");
@@ -141,7 +136,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   const staffProfileId = myProfile.id;
 
-  // Get existing shift requests
   const existingRequests = staffProfileId
     ? await handleUseCase(() =>
         listShiftRequests({
@@ -213,37 +207,52 @@ export default function StaffShiftRequestsPage({
 
   fetcher.register("submitShiftRequests", {
     onSuccess: () => {
-      // Shift requests submitted
+      toast.success("シフト希望を提出しました");
     },
     onHandlerError: ({ error: err }) => {
-      console.error("Shift request submission failed:", err);
+      toast.error(err?.[""]?.[0] ?? "提出に失敗しました");
     },
   });
 
   const isPending = fetcher.isPending("submitShiftRequests");
 
+  const periodLabel = (() => {
+    const s = targetPeriod.start.split("-").map(Number);
+    return `${s[0]}年${s[1]}月のシフト希望`;
+  })();
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold text-text">シフト希望提出</h1>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
+            シフト希望
+          </h1>
+          <p className="mt-1 text-sm text-text-muted">{periodLabel}</p>
+        </div>
+        {isSubmitted ? (
+          <span className="inline-flex items-center gap-1 rounded-full bg-[oklch(0.55_0.12_145/0.1)] px-3 py-1 text-xs font-medium text-success">
+            <span className="h-1.5 w-1.5 rounded-full bg-success" />
+            提出済み
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1 rounded-full bg-[oklch(0.72_0.14_70/0.12)] px-3 py-1 text-xs font-medium text-accent-dark">
+            <span className="h-1.5 w-1.5 rounded-full bg-warning" />
+            未提出
+          </span>
+        )}
+      </div>
 
-      {isSubmitted && (
-        <Card className="border-success/30">
-          <CardBody>
-            <p className="text-sm text-success">
-              シフト希望は提出済みです。
-              {canEdit && "提出期限前であれば修正できます。"}
-            </p>
-          </CardBody>
-        </Card>
-      )}
-
-      <Card>
-        <CardHeader>
-          <p className="text-sm font-medium text-text-secondary">
+      {/* Shift Request Card */}
+      <div className="rounded-[14px] border border-border bg-white">
+        <div className="px-6 pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight text-text">
             対象期間: {targetPeriod.start} 〜 {targetPeriod.end}
-          </p>
-        </CardHeader>
-        <CardBody>
+          </h2>
+        </div>
+
+        <div className="p-6">
           <fetcher.Form
             method="post"
             {...getFormProps(submitForm)}
@@ -251,7 +260,6 @@ export default function StaffShiftRequestsPage({
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
 
-              // Collect shift request data from form fields
               const requests = shiftRequests.map((req) => {
                 const type =
                   (formData.get(`type-${req.date}`) as string) ?? "work";
@@ -273,7 +281,6 @@ export default function StaffShiftRequestsPage({
                 };
               });
 
-              // Submit via fetcher
               const submitData = new FormData();
               submitData.set("intent", "submitShiftRequests");
               submitData.set("staffProfileId", staffProfileId);
@@ -293,73 +300,91 @@ export default function StaffShiftRequestsPage({
                 対象期間のシフト希望データがありません。
               </p>
             ) : (
-              <div className="divide-y divide-border">
+              <div className="divide-y divide-surface-secondary">
                 {shiftRequests.map((req) => (
                   <div
                     key={req.date}
-                    className="flex flex-wrap items-center gap-3 py-3"
+                    className="flex flex-wrap items-center gap-4 py-4"
                   >
                     <span className="w-24 shrink-0 text-sm font-medium text-text">
                       {formatDateLabel(req.date)}
                     </span>
-                    <div className="w-28">
-                      <Select
-                        name={`type-${req.date}`}
-                        defaultValue={req.type}
-                        disabled={!canEdit}
-                      >
-                        <option value="work">勤務希望</option>
-                        <option value="off">休み希望</option>
-                      </Select>
+                    <div className="flex items-center gap-4">
+                      <label className="flex cursor-pointer items-center gap-1.5 text-sm text-text">
+                        <input
+                          type="radio"
+                          name={`type-${req.date}`}
+                          value="work"
+                          defaultChecked={req.type === "work"}
+                          disabled={!canEdit}
+                          className="h-4 w-4 accent-primary"
+                        />
+                        勤務希望
+                      </label>
+                      <label className="flex cursor-pointer items-center gap-1.5 text-sm text-text">
+                        <input
+                          type="radio"
+                          name={`type-${req.date}`}
+                          value="off"
+                          defaultChecked={req.type === "off"}
+                          disabled={!canEdit}
+                          className="h-4 w-4 accent-primary"
+                        />
+                        休み希望
+                      </label>
                     </div>
-                    <input
-                      type="time"
-                      name={`startTime-${req.date}`}
-                      defaultValue={req.startTime ?? ""}
-                      disabled={!canEdit}
-                      className="w-28 rounded-md border border-border bg-white px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-surface-secondary disabled:opacity-70"
-                    />
-                    <span className="text-text-muted">-</span>
-                    <input
-                      type="time"
-                      name={`endTime-${req.date}`}
-                      defaultValue={req.endTime ?? ""}
-                      disabled={!canEdit}
-                      className="w-28 rounded-md border border-border bg-white px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-surface-secondary disabled:opacity-70"
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="time"
+                        name={`startTime-${req.date}`}
+                        defaultValue={req.startTime ?? ""}
+                        disabled={!canEdit}
+                        className="h-9 w-20 rounded-[10px] border border-border bg-white px-2 font-body text-sm text-text transition-colors duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary disabled:bg-surface-secondary disabled:opacity-70"
+                      />
+                      <span className="text-sm text-text-muted">-</span>
+                      <input
+                        type="time"
+                        name={`endTime-${req.date}`}
+                        defaultValue={req.endTime ?? ""}
+                        disabled={!canEdit}
+                        className="h-9 w-20 rounded-[10px] border border-border bg-white px-2 font-body text-sm text-text transition-colors duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary disabled:bg-surface-secondary disabled:opacity-70"
+                      />
+                    </div>
                     <input
                       type="text"
                       name={`note-${req.date}`}
                       defaultValue={req.note}
                       placeholder="備考"
                       disabled={!canEdit}
-                      className="min-w-0 flex-1 rounded-md border border-border bg-white px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-surface-secondary disabled:opacity-70"
+                      className="h-9 min-w-0 flex-1 rounded-[10px] border border-border bg-white px-2 font-body text-sm text-text transition-colors duration-150 placeholder:text-text-muted hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-primary disabled:bg-surface-secondary disabled:opacity-70"
                     />
                   </div>
                 ))}
               </div>
             )}
 
+            {submitForm.errors && (
+              <p className="mt-2 text-xs text-error">{submitForm.errors}</p>
+            )}
+
             {canEdit && (
-              <div className="flex justify-end pt-4">
-                <Button type="submit" disabled={isPending}>
+              <div className="mt-8 flex justify-end">
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border-none bg-primary px-8 text-sm font-medium tracking-wide text-white transition-colors duration-150 hover:bg-primary-dark active:scale-[0.99] disabled:opacity-60"
+                >
                   {isPending
                     ? "提出中..."
                     : isSubmitted
-                      ? "再提出"
+                      ? "再提出する"
                       : "提出する"}
-                </Button>
+                </button>
               </div>
             )}
-
-            {submitForm.errors && (
-              <p className="mt-2 text-xs text-destructive">
-                {submitForm.errors}
-              </p>
-            )}
           </fetcher.Form>
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

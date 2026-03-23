@@ -35,18 +35,65 @@ export default function ResetPasswordPage() {
 
   if (!token) {
     return (
-      <AuthLayout title="無効なリンク">
-        <div className="text-center">
-          <p className="mb-6 text-sm text-destructive">
-            パスワードリセットリンクが無効です。
-          </p>
-          <Link
-            to="/customer/forgot-password"
-            className="text-sm font-medium text-primary hover:underline"
+      <AuthLayout title="新しいパスワードの設定">
+        <div
+          className="flex items-start"
+          role="alert"
+          style={{
+            gap: "var(--space-sm)",
+            padding: "var(--space-md)",
+            background: "var(--color-error-bg)",
+            border: "1px solid var(--color-error-border)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--space-lg)",
+            fontSize: "var(--text-sm)",
+            color: "var(--color-error)",
+            lineHeight: "var(--leading-normal)",
+          }}
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            className="shrink-0"
+            style={{ width: "18px", height: "18px", marginTop: "2px" }}
           >
-            パスワードリセットを再送信
-          </Link>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+            />
+          </svg>
+          <span>
+            リセットリンクの有効期限が切れています。お手数ですが、再度パスワードリセットをリクエストしてください。
+          </span>
         </div>
+
+        <FormField label="新しいパスワード" htmlFor="disabled-pw">
+          <Input
+            id="disabled-pw"
+            type="password"
+            placeholder="8文字以上"
+            autoComplete="new-password"
+            disabled
+          />
+        </FormField>
+
+        <FormField label="パスワード（確認）" htmlFor="disabled-pw-confirm">
+          <Input
+            id="disabled-pw-confirm"
+            type="password"
+            placeholder="パスワードを再入力"
+            autoComplete="new-password"
+            disabled
+          />
+        </FormField>
+
+        <Button type="button" disabled className="w-full">
+          パスワードを変更する
+        </Button>
       </AuthLayout>
     );
   }
@@ -95,68 +142,104 @@ export default function ResetPasswordPage() {
         title="パスワード再設定完了"
         description="パスワードが正常に変更されました。新しいパスワードでログインしてください。"
       >
-        <div className="text-center">
-          <Link to="/customer/login">
-            <Button>ログインページへ</Button>
-          </Link>
-        </div>
+        <Link
+          to="/customer/login"
+          className="inline-flex w-full items-center justify-center font-medium no-underline"
+          style={{
+            height: "44px",
+            padding: "0 var(--space-xl)",
+            background: "var(--color-primary)",
+            color: "#FFFFFF",
+            borderRadius: "var(--radius-md)",
+            fontSize: "var(--text-base)",
+            letterSpacing: "var(--tracking-wide)",
+          }}
+        >
+          ログインページへ
+        </Link>
       </AuthLayout>
     );
   }
 
   return (
-    <AuthLayout
-      title="パスワード再設定"
-      description="新しいパスワードを入力してください。"
-    >
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-5">
-          <FormField
-            label="新しいパスワード"
-            htmlFor="customer-reset-password"
-            error={errors.password ? [errors.password] : undefined}
-            required
+    <AuthLayout title="新しいパスワードの設定">
+      {errors.form && (
+        <div
+          className="flex items-start"
+          role="alert"
+          style={{
+            gap: "var(--space-sm)",
+            padding: "var(--space-md)",
+            background: "var(--color-error-bg)",
+            border: "1px solid var(--color-error-border)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--space-lg)",
+            fontSize: "var(--text-sm)",
+            color: "var(--color-error)",
+            lineHeight: "var(--leading-normal)",
+          }}
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            className="shrink-0"
+            style={{ width: "18px", height: "18px", marginTop: "2px" }}
           >
-            <Input
-              id="customer-reset-password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="8文字以上"
-              error={errors.password}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
             />
-          </FormField>
-
-          <FormField
-            label="新しいパスワード（確認）"
-            htmlFor="customer-reset-password-confirmation"
-            error={
-              errors.passwordConfirmation
-                ? [errors.passwordConfirmation]
-                : undefined
-            }
-            required
-          >
-            <Input
-              id="customer-reset-password-confirmation"
-              type="password"
-              name="passwordConfirmation"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              placeholder="パスワードを再入力"
-              error={errors.passwordConfirmation}
-            />
-          </FormField>
-
-          {errors.form && (
-            <p className="text-xs text-destructive">{errors.form}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "設定中..." : "パスワードを再設定"}
-          </Button>
+          </svg>
+          <span>{errors.form}</span>
         </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate>
+        <FormField
+          label="新しいパスワード"
+          htmlFor="customer-reset-password"
+          error={errors.password ? [errors.password] : undefined}
+        >
+          <Input
+            id="customer-reset-password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="8文字以上"
+            autoComplete="new-password"
+            error={errors.password}
+          />
+        </FormField>
+
+        <FormField
+          label="パスワード（確認）"
+          htmlFor="customer-reset-password-confirmation"
+          error={
+            errors.passwordConfirmation
+              ? [errors.passwordConfirmation]
+              : undefined
+          }
+        >
+          <Input
+            id="customer-reset-password-confirmation"
+            type="password"
+            name="passwordConfirmation"
+            value={passwordConfirmation}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            placeholder="パスワードを再入力"
+            autoComplete="new-password"
+            error={errors.passwordConfirmation}
+          />
+        </FormField>
+
+        <Button type="submit" disabled={isPending} className="w-full">
+          {isPending ? "設定中..." : "パスワードを変更する"}
+        </Button>
       </form>
     </AuthLayout>
   );

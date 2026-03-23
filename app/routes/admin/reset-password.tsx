@@ -80,18 +80,48 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
 
   if (!token) {
     return (
-      <AuthLayout title="無効なリンク">
-        <div className="text-center">
-          <p className="mb-6 text-sm text-destructive">
-            パスワードリセットリンクが無効です。
-          </p>
-          <Link
-            to="/admin/forgot-password"
-            className="text-sm font-medium text-primary hover:underline"
+      <AuthLayout badge="管理画面" title="新しいパスワードを設定">
+        <div
+          className="flex items-start"
+          role="alert"
+          style={{
+            gap: "var(--space-sm)",
+            padding: "var(--space-md)",
+            background: "var(--color-error-bg)",
+            border: "1px solid var(--color-error-border)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--space-lg)",
+            fontSize: "var(--text-sm)",
+            color: "var(--color-error)",
+            lineHeight: "var(--leading-normal)",
+          }}
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            className="shrink-0"
+            style={{ width: "18px", height: "18px", marginTop: "2px" }}
           >
-            パスワードリセットを再送信
-          </Link>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+            />
+          </svg>
+          <span>
+            リセットリンクの有効期限が切れています。お手数ですが、再度パスワードリセットをリクエストしてください。
+          </span>
         </div>
+        <Link
+          to="/admin/forgot-password"
+          className="block text-center font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+        >
+          パスワードリセットを再送信
+        </Link>
       </AuthLayout>
     );
   }
@@ -99,70 +129,120 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
   if (isCompleted) {
     return (
       <AuthLayout
+        badge="管理画面"
         title="パスワード再設定完了"
         description="パスワードが正常に変更されました。新しいパスワードでログインしてください。"
       >
-        <div className="text-center">
-          <Link to="/admin/login">
-            <Button>ログインページへ</Button>
-          </Link>
-        </div>
+        <Link
+          to="/admin/login"
+          className="inline-flex w-full items-center justify-center font-medium no-underline"
+          style={{
+            height: "44px",
+            padding: "0 var(--space-xl)",
+            background: "var(--color-primary)",
+            color: "#FFFFFF",
+            borderRadius: "var(--radius-md)",
+            fontSize: "var(--text-base)",
+            letterSpacing: "var(--tracking-wide)",
+          }}
+        >
+          ログインページへ
+        </Link>
       </AuthLayout>
     );
   }
 
   return (
     <AuthLayout
-      title="新しいパスワードの設定"
+      badge="管理画面"
+      title="新しいパスワードを設定"
       description="新しいパスワードを入力してください。"
     >
-      <form method="post" {...getFormProps(form)}>
-        <div className="space-y-5">
-          <FormField
-            label="新しいパスワード"
-            htmlFor={fields.password.id}
-            error={fields.password.errors}
-            required
+      {formError && (
+        <div
+          className="flex items-start"
+          role="alert"
+          style={{
+            gap: "var(--space-sm)",
+            padding: "var(--space-md)",
+            background: "var(--color-error-bg)",
+            border: "1px solid var(--color-error-border)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--space-lg)",
+            fontSize: "var(--text-sm)",
+            color: "var(--color-error)",
+            lineHeight: "var(--leading-normal)",
+          }}
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            className="shrink-0"
+            style={{ width: "18px", height: "18px", marginTop: "2px" }}
           >
-            <Input
-              {...getInputProps(fields.password, { type: "password" })}
-              placeholder="8文字以上"
-              error={fields.password.errors?.[0]}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
             />
-          </FormField>
-
-          <FormField
-            label="新しいパスワード（確認）"
-            htmlFor={fields.passwordConfirmation.id}
-            error={fields.passwordConfirmation.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.passwordConfirmation, {
-                type: "password",
-              })}
-              placeholder="パスワードを再入力"
-              error={fields.passwordConfirmation.errors?.[0]}
-            />
-          </FormField>
-
-          {formError && <p className="text-xs text-destructive">{formError}</p>}
-
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "設定中..." : "パスワードを設定"}
-          </Button>
+          </svg>
+          <span>{formError}</span>
         </div>
-      </form>
+      )}
 
-      <p className="mt-6 text-center text-sm">
-        <Link to="/admin/login" className="text-text-secondary hover:underline">
-          ログインページへ戻る
-        </Link>
-      </p>
+      <form method="post" {...getFormProps(form)}>
+        <FormField
+          label="新しいパスワード"
+          htmlFor={fields.password.id}
+          error={fields.password.errors}
+        >
+          <Input
+            {...getInputProps(fields.password, { type: "password" })}
+            placeholder="8文字以上で入力"
+            autoComplete="new-password"
+            error={fields.password.errors?.[0]}
+          />
+        </FormField>
+
+        <FormField
+          label="パスワード確認"
+          htmlFor={fields.passwordConfirmation.id}
+          error={fields.passwordConfirmation.errors}
+        >
+          <Input
+            {...getInputProps(fields.passwordConfirmation, {
+              type: "password",
+            })}
+            placeholder="パスワードを再入力"
+            autoComplete="new-password"
+            error={fields.passwordConfirmation.errors?.[0]}
+          />
+        </FormField>
+
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {form.errors}
+          </p>
+        )}
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "設定中..." : "パスワードを変更"}
+        </Button>
+      </form>
     </AuthLayout>
   );
 }

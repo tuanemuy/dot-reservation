@@ -60,70 +60,106 @@ export default function CustomerLoginPage() {
 
   return (
     <AuthLayout title="ログイン">
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-5">
-          <FormField
-            label="メールアドレス"
-            htmlFor="customer-login-email"
-            error={errors.email ? [errors.email] : undefined}
-            required
+      {errors.form && (
+        <div
+          className="flex items-center"
+          role="alert"
+          style={{
+            gap: "var(--space-sm)",
+            padding: "var(--space-md)",
+            background: "var(--color-error-bg)",
+            border: "1px solid var(--color-error-border)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--space-lg)",
+            fontSize: "var(--text-sm)",
+            color: "var(--color-error)",
+          }}
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            className="shrink-0"
+            style={{ width: "18px", height: "18px" }}
           >
-            <Input
-              id="customer-login-email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@email.com"
-              error={errors.email}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
             />
-          </FormField>
-
-          <FormField
-            label="パスワード"
-            htmlFor="customer-login-password"
-            error={errors.password ? [errors.password] : undefined}
-            required
-          >
-            <Input
-              id="customer-login-password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="パスワード"
-              error={errors.password}
-            />
-          </FormField>
-
-          {errors.form && (
-            <p className="text-xs text-destructive">{errors.form}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "ログイン中..." : "ログイン"}
-          </Button>
+          </svg>
+          {errors.form}
         </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate>
+        <FormField
+          label="メールアドレス"
+          htmlFor="customer-login-email"
+          error={errors.email ? [errors.email] : undefined}
+        >
+          <Input
+            id="customer-login-email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@email.com"
+            autoComplete="email"
+            error={errors.email}
+          />
+        </FormField>
+
+        <FormField
+          label="パスワード"
+          htmlFor="customer-login-password"
+          error={errors.password ? [errors.password] : undefined}
+        >
+          <Input
+            id="customer-login-password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="パスワードを入力"
+            autoComplete="current-password"
+            error={errors.password}
+          />
+        </FormField>
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "ログイン中..." : "ログイン"}
+        </Button>
       </form>
 
-      <div className="mt-6 space-y-3 text-center text-sm">
-        <p>
-          <Link
-            to="/customer/forgot-password"
-            className="text-text-secondary hover:underline"
-          >
-            パスワードをお忘れですか？
-          </Link>
-        </p>
-        <p className="text-text-secondary">
-          アカウントをお持ちでないですか？{" "}
-          <Link
-            to="/customer/register"
-            className="font-medium text-primary hover:underline"
-          >
-            新規登録
-          </Link>
-        </p>
+      <div
+        className="flex flex-col items-center"
+        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
+      >
+        <Link
+          to="/customer/forgot-password"
+          className="no-underline"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-500)",
+          }}
+        >
+          パスワードをお忘れの方
+        </Link>
+        <Link
+          to="/customer/register"
+          className="font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+        >
+          新規会員登録はこちら
+        </Link>
       </div>
     </AuthLayout>
   );

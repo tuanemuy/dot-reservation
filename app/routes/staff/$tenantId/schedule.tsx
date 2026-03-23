@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
-import { Tabs } from "@/components/ui/Tabs";
+import { Link, useParams } from "react-router";
 import type { ReservationSummary } from "@/core/application/reservation/listReservations";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import type { ShiftDetail } from "@/core/application/shift/listShifts";
@@ -39,21 +36,22 @@ function formatDate(d: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-function formatDateLabel(dateStr: string): string {
-  const [_year, month, day] = dateStr.split("-");
-  const d = new Date(
-    Number.parseInt(dateStr.split("-")[0], 10),
-    Number.parseInt(month, 10) - 1,
-    Number.parseInt(day, 10),
-  );
-  const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-  return `${Number.parseInt(month, 10)}/${Number.parseInt(day, 10)}(${dayNames[d.getDay()]})`;
+const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+
+function formatWeekHeaderDate(dateStr: string): { day: string; date: number } {
+  const parts = dateStr.split("-").map(Number);
+  const d = new Date(parts[0], parts[1] - 1, parts[2]);
+  return {
+    day: dayNames[d.getDay()],
+    date: d.getDate(),
+  };
 }
 
-const viewTabs = [
-  { id: "week", label: "週表示" },
-  { id: "month", label: "月表示" },
-];
+function formatWeekPeriod(start: string, end: string): string {
+  const s = start.split("-").map(Number);
+  const e = end.split("-").map(Number);
+  return `${s[0]}年${s[1]}月${s[2]}日 - ${e[1]}月${e[2]}日`;
+}
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
@@ -63,7 +61,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const weekRange = getWeekRange(now);
   const monthRange = getMonthRange(now);
 
-  // Use the wider range to cover both views
   const startDate =
     weekRange.start < monthRange.start ? weekRange.start : monthRange.start;
   const endDate =
@@ -107,7 +104,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     shifts: shiftsResult,
     reservations: reservationsResult,
     weekRange,
-    monthRange,
   };
 }
 
@@ -115,9 +111,9 @@ export default function StaffSchedulePage({
   loaderData,
 }: Route.ComponentProps) {
   const { shifts, reservations, weekRange } = loaderData;
-  const [viewMode, setViewMode] = useState("week");
+  const { tenantId } = useParams();
+  const [viewMode, setViewMode] = useState<"week" | "month">("week");
 
-  // Generate week days from weekRange
   const weekDays: string[] = [];
   const startParts = weekRange.start.split("-").map(Number);
   const weekStart = new Date(startParts[0], startParts[1] - 1, startParts[2]);
@@ -129,145 +125,258 @@ export default function StaffSchedulePage({
 
   const today = formatDate(new Date());
 
-  // Hours for the time grid (7:00 - 21:00)
-  const hours = Array.from({ length: 15 }, (_, i) => i + 7);
+  const hours = Array.from({ length: 12 }, (_, i) => i + 8);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-text">スケジュール</h1>
-        <Link to="../shift-requests">
-          <Button variant="outline" size="sm">
-            シフト希望提出
-          </Button>
-        </Link>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
+            スケジュール
+          </h1>
+          <p className="mt-1 text-sm text-text-muted">
+            シフトと予約のスケジュールを確認できます
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link
+            to={`/staff/${tenantId}/shift-requests`}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary no-underline transition-colors duration-150 hover:text-primary-dark"
+          >
+            <svg
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            シフト希望を提出
+          </Link>
+          <div className="inline-flex overflow-hidden rounded-[10px] border border-border">
+            <button
+              type="button"
+              onClick={() => setViewMode("week")}
+              className={`border-none px-4 py-2 font-body text-sm font-medium transition-colors duration-150 ${
+                viewMode === "week"
+                  ? "bg-primary text-white"
+                  : "bg-white text-text-secondary hover:bg-surface-secondary"
+              }`}
+            >
+              週
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("month")}
+              className={`border-l border-border px-4 py-2 font-body text-sm font-medium transition-colors duration-150 ${
+                viewMode === "month"
+                  ? "bg-primary text-white"
+                  : "bg-white text-text-secondary hover:bg-surface-secondary"
+              }`}
+            >
+              月
+            </button>
+          </div>
+        </div>
       </div>
 
-      <Tabs tabs={viewTabs} activeTab={viewMode} onTabChange={setViewMode}>
-        {viewMode === "week" ? (
-          <Card>
-            <CardBody className="overflow-x-auto p-0">
-              <table className="w-full min-w-[640px] border-collapse text-sm">
-                <thead>
-                  <tr>
-                    <th className="w-16 border-b border-r border-border bg-surface-secondary px-2 py-2 text-xs font-medium text-text-secondary">
-                      時間
-                    </th>
-                    {weekDays.map((day) => (
-                      <th
-                        key={day}
-                        className={`border-b border-r border-border px-2 py-2 text-center text-xs font-medium last:border-r-0 ${
-                          day === today
-                            ? "bg-primary/5 text-primary"
-                            : "bg-surface-secondary text-text-secondary"
-                        }`}
-                      >
-                        {formatDateLabel(day)}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {hours.map((hour) => (
-                    <tr key={hour}>
-                      <td className="border-b border-r border-border px-2 py-3 text-center text-xs text-text-muted">
-                        {String(hour).padStart(2, "0")}:00
-                      </td>
-                      {weekDays.map((day) => {
-                        const dayShifts = shifts.filter((s) => s.date === day);
-                        const dayReservations = reservations.filter(
-                          (r) => r.date === day,
-                        );
+      {/* Calendar Controls */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <span className="font-heading text-lg font-semibold tracking-tight text-text">
+            {formatWeekPeriod(weekRange.start, weekRange.end)}
+          </span>
+        </div>
+      </div>
 
-                        const hourStr = `${String(hour).padStart(2, "0")}:00`;
-                        const isInShift = dayShifts.some(
-                          (s) => s.startTime <= hourStr && s.endTime > hourStr,
-                        );
-                        const hourReservation = dayReservations.find(
-                          (r) => r.startTime <= hourStr && r.endTime > hourStr,
-                        );
-
-                        return (
-                          <td
-                            key={`${day}-${hour}`}
-                            className={`relative border-b border-r border-border px-1 py-1 last:border-r-0 ${
-                              day === today ? "bg-primary/5" : ""
-                            } ${isInShift ? "bg-primary/10" : ""}`}
-                          >
-                            {hourReservation && (
-                              <div className="rounded bg-primary/20 px-1 py-0.5 text-xs text-primary-dark">
-                                <span className="font-medium">
-                                  {hourReservation.customerName ?? "予約"}
-                                </span>
-                              </div>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </CardBody>
-          </Card>
-        ) : (
-          <Card>
-            <CardBody>
-              <div className="grid grid-cols-7 gap-px bg-border">
-                {["月", "火", "水", "木", "金", "土", "日"].map((dayName) => (
-                  <div
-                    key={dayName}
-                    className="bg-surface-secondary px-2 py-1.5 text-center text-xs font-medium text-text-secondary"
+      {viewMode === "week" ? (
+        <div className="overflow-hidden rounded-[14px] border border-border bg-white">
+          {/* Weekly Header */}
+          <div className="grid grid-cols-[50px_repeat(7,1fr)] border-b border-border">
+            <div className="border-r border-border" />
+            {weekDays.map((day) => {
+              const info = formatWeekHeaderDate(day);
+              const isToday = day === today;
+              return (
+                <div
+                  key={day}
+                  className={`px-1 py-2 text-center text-xs font-medium ${isToday ? "text-primary" : "text-text-muted"}`}
+                >
+                  {info.day}
+                  <span
+                    className={`mt-0.5 block font-heading text-lg font-semibold tracking-tight ${
+                      isToday
+                        ? "mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-lighter text-primary"
+                        : "text-text"
+                    }`}
                   >
-                    {dayName}
-                  </div>
-                ))}
+                    {info.date}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
 
-                {/* Month calendar cells would go here */}
-                {Array.from({ length: 35 }, (_, i) => {
-                  const monthStart = new Date();
-                  monthStart.setDate(1);
-                  const startDay = (monthStart.getDay() + 6) % 7;
-                  const cellDate = new Date(monthStart);
-                  cellDate.setDate(1 - startDay + i);
-                  const cellDateStr = formatDate(cellDate);
-                  const isCurrentMonth =
-                    cellDate.getMonth() === new Date().getMonth();
-                  const dayShifts = shifts.filter(
-                    (s) => s.date === cellDateStr,
-                  );
-                  const dayReservations = reservations.filter(
-                    (r) => r.date === cellDateStr,
-                  );
+          {/* Weekly Body */}
+          <div className="grid grid-cols-[50px_repeat(7,1fr)]">
+            {/* Time Column */}
+            <div className="border-r border-border">
+              {hours.map((hour, i) => (
+                <div
+                  key={hour}
+                  className={`flex h-12 items-start justify-end pr-2 pt-0.5 text-xs font-medium text-text-muted ${i > 0 ? "border-t border-surface-secondary" : ""}`}
+                >
+                  {String(hour).padStart(2, "0")}:00
+                </div>
+              ))}
+            </div>
 
-                  return (
+            {/* Day Columns */}
+            {weekDays.map((day) => {
+              const dayShifts = shifts.filter((s) => s.date === day);
+              const dayReservations = reservations.filter(
+                (r) => r.date === day,
+              );
+
+              return (
+                <div
+                  key={day}
+                  className="relative border-r border-surface-secondary last:border-r-0"
+                >
+                  {hours.map((hour, i) => (
                     <div
-                      key={`month-${cellDateStr}`}
-                      className={`min-h-16 bg-white p-1.5 ${
-                        !isCurrentMonth ? "opacity-40" : ""
-                      } ${cellDateStr === today ? "ring-1 ring-inset ring-primary" : ""}`}
-                    >
-                      <span className="text-xs text-text-secondary">
-                        {cellDate.getDate()}
-                      </span>
-                      {dayShifts.length > 0 && (
-                        <div className="mt-0.5 text-xs text-primary">
-                          {dayShifts[0].startTime}-{dayShifts[0].endTime}
-                        </div>
-                      )}
-                      {dayReservations.length > 0 && (
-                        <div className="mt-0.5 text-xs text-text-muted">
-                          予約 {dayReservations.length}件
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      key={`${day}-${hour}`}
+                      className={`h-12 ${i > 0 ? "border-t border-surface-secondary" : ""}`}
+                    />
+                  ))}
+
+                  {/* Shift blocks */}
+                  {dayShifts.map((shift) => {
+                    const startHour =
+                      Number.parseInt(shift.startTime.split(":")[0], 10) - 8;
+                    const startMin = Number.parseInt(
+                      shift.startTime.split(":")[1],
+                      10,
+                    );
+                    const endHour =
+                      Number.parseInt(shift.endTime.split(":")[0], 10) - 8;
+                    const endMin = Number.parseInt(
+                      shift.endTime.split(":")[1],
+                      10,
+                    );
+                    const top = (startHour * 60 + startMin) * (48 / 60);
+                    const height =
+                      ((endHour - startHour) * 60 + (endMin - startMin)) *
+                      (48 / 60);
+
+                    return (
+                      <div
+                        key={shift.id}
+                        className="absolute left-0.5 right-0.5 rounded-[6px] bg-primary-lighter"
+                        style={{ top: `${top}px`, height: `${height}px` }}
+                      />
+                    );
+                  })}
+
+                  {/* Reservation blocks */}
+                  {dayReservations.map((res) => {
+                    const startHour =
+                      Number.parseInt(res.startTime.split(":")[0], 10) - 8;
+                    const startMin = Number.parseInt(
+                      res.startTime.split(":")[1],
+                      10,
+                    );
+                    const endHour =
+                      Number.parseInt(res.endTime.split(":")[0], 10) - 8;
+                    const endMin = Number.parseInt(
+                      res.endTime.split(":")[1],
+                      10,
+                    );
+                    const top = (startHour * 60 + startMin) * (48 / 60);
+                    const height =
+                      ((endHour - startHour) * 60 + (endMin - startMin)) *
+                      (48 / 60);
+
+                    return (
+                      <Link
+                        key={res.id}
+                        to={`/staff/${tenantId}/reservations/${res.id}`}
+                        className="absolute left-1 right-1 z-10 overflow-hidden rounded-[6px] border border-border bg-white px-1 py-0.5 text-xs no-underline transition-all duration-150 hover:border-primary-light hover:shadow-sm"
+                        style={{ top: `${top}px`, height: `${height}px` }}
+                      >
+                        <span className="block overflow-hidden text-ellipsis whitespace-nowrap font-medium text-text">
+                          {res.customerName ?? "予約"}
+                        </span>
+                        <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-text-muted">
+                          {res.menuName}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-[14px] border border-border bg-white">
+          <div className="grid grid-cols-7 gap-px bg-border">
+            {["月", "火", "水", "木", "金", "土", "日"].map((d) => (
+              <div
+                key={d}
+                className="bg-surface-secondary px-2 py-1.5 text-center text-xs font-medium text-text-secondary"
+              >
+                {d}
               </div>
-            </CardBody>
-          </Card>
-        )}
-      </Tabs>
+            ))}
+
+            {Array.from({ length: 35 }, (_, i) => {
+              const monthStart = new Date();
+              monthStart.setDate(1);
+              const startDay = (monthStart.getDay() + 6) % 7;
+              const cellDate = new Date(monthStart);
+              cellDate.setDate(1 - startDay + i);
+              const cellDateStr = formatDate(cellDate);
+              const isCurrentMonth =
+                cellDate.getMonth() === new Date().getMonth();
+              const dayShifts = shifts.filter((s) => s.date === cellDateStr);
+              const dayReservations = reservations.filter(
+                (r) => r.date === cellDateStr,
+              );
+
+              return (
+                <div
+                  key={`month-${cellDateStr}`}
+                  className={`min-h-16 bg-white p-1.5 ${
+                    !isCurrentMonth ? "opacity-40" : ""
+                  } ${cellDateStr === today ? "ring-1 ring-inset ring-primary" : ""}`}
+                >
+                  <span className="text-xs text-text-secondary">
+                    {cellDate.getDate()}
+                  </span>
+                  {dayShifts.length > 0 && (
+                    <div className="mt-0.5 text-xs text-primary">
+                      {dayShifts[0].startTime}-{dayShifts[0].endTime}
+                    </div>
+                  )}
+                  {dayReservations.length > 0 && (
+                    <div className="mt-0.5 text-xs text-text-muted">
+                      予約 {dayReservations.length}件
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

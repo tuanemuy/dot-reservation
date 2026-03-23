@@ -156,118 +156,174 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
   if (isSubmitted) {
     return (
       <AuthLayout
+        badge="管理画面"
         title="確認メールを送信しました"
         description="ご入力いただいたメールアドレスに確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。"
       >
-        <div className="text-center">
-          <p className="mb-6 text-sm text-text-secondary">
-            メールが届かない場合は、迷惑メールフォルダをご確認ください。
-          </p>
-          <Link
-            to="/admin/login"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            ログインページへ
-          </Link>
-        </div>
+        <p
+          className="text-center"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-600)",
+            marginBottom: "var(--space-lg)",
+          }}
+        >
+          メールが届かない場合は、迷惑メールフォルダをご確認ください。
+        </p>
+        <Link
+          to="/admin/login"
+          className="block text-center font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+        >
+          ログインページへ
+        </Link>
       </AuthLayout>
     );
   }
 
   return (
-    <AuthLayout
-      title="管理画面アカウント登録"
-      description="新しいアカウントを作成します"
-    >
+    <AuthLayout badge="管理画面" title="管理画面アカウント登録">
       <form method="post" {...getFormProps(form)}>
-        <div className="space-y-5">
-          <FormField
-            label="氏名"
-            htmlFor={fields.name.id}
-            error={fields.name.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.name, { type: "text" })}
-              placeholder="山田 太郎"
-              error={fields.name.errors?.[0]}
-            />
-          </FormField>
+        <FormField
+          label="氏名"
+          htmlFor={fields.name.id}
+          error={fields.name.errors}
+        >
+          <Input
+            {...getInputProps(fields.name, { type: "text" })}
+            placeholder="山田 太郎"
+            autoComplete="name"
+            error={fields.name.errors?.[0]}
+          />
+        </FormField>
 
-          <FormField
-            label="メールアドレス"
-            htmlFor={fields.email.id}
-            error={fields.email.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.email, { type: "email" })}
-              placeholder="example@email.com"
-              error={fields.email.errors?.[0]}
-            />
-          </FormField>
+        <FormField
+          label="メールアドレス"
+          htmlFor={fields.email.id}
+          error={fields.email.errors}
+        >
+          <Input
+            {...getInputProps(fields.email, { type: "email" })}
+            placeholder="example@email.com"
+            autoComplete="email"
+            error={fields.email.errors?.[0]}
+          />
+        </FormField>
 
-          <FormField
-            label="パスワード"
-            htmlFor={fields.password.id}
-            error={fields.password.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.password, { type: "password" })}
-              placeholder="8文字以上"
-              error={fields.password.errors?.[0]}
-            />
-          </FormField>
+        <FormField
+          label="パスワード"
+          htmlFor={fields.password.id}
+          error={fields.password.errors}
+        >
+          <Input
+            {...getInputProps(fields.password, { type: "password" })}
+            placeholder="8文字以上で入力"
+            autoComplete="new-password"
+            error={fields.password.errors?.[0]}
+          />
+        </FormField>
 
-          <FormField
-            label="パスワード（確認）"
-            htmlFor={fields.passwordConfirmation.id}
-            error={fields.passwordConfirmation.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.passwordConfirmation, {
-                type: "password",
-              })}
-              placeholder="パスワードを再入力"
-              error={fields.passwordConfirmation.errors?.[0]}
-            />
-          </FormField>
+        <FormField
+          label="パスワード確認"
+          htmlFor={fields.passwordConfirmation.id}
+          error={fields.passwordConfirmation.errors}
+        >
+          <Input
+            {...getInputProps(fields.passwordConfirmation, {
+              type: "password",
+            })}
+            placeholder="パスワードを再入力"
+            autoComplete="new-password"
+            error={fields.passwordConfirmation.errors?.[0]}
+          />
+        </FormField>
 
-          {formError && (
-            <div className="text-xs text-destructive">
-              <p>{formError}</p>
-              {formError.includes("既に登録されています") && (
+        {formError && (
+          <div style={{ marginBottom: "var(--space-lg)" }}>
+            <div
+              className="flex items-center"
+              role="alert"
+              style={{
+                gap: "var(--space-sm)",
+                padding: "var(--space-md)",
+                background: "var(--color-error-bg)",
+                border: "1px solid var(--color-error-border)",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-sm)",
+                color: "var(--color-error)",
+              }}
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                className="shrink-0"
+                style={{ width: "18px", height: "18px" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                />
+              </svg>
+              {formError}
+            </div>
+            {formError.includes("既に登録されています") && (
+              <div
+                className="text-center"
+                style={{ marginTop: "var(--space-sm)" }}
+              >
                 <Link
                   to="/admin/login"
-                  className="mt-1 inline-block font-medium text-primary hover:underline"
+                  className="font-medium no-underline"
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--color-primary)",
+                  }}
                 >
                   ログインページへ
                 </Link>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
+        )}
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {form.errors}
+          </p>
+        )}
 
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "登録中..." : "アカウントを登録"}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "登録中..." : "アカウントを作成"}
+        </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-text-secondary">
-        既にアカウントをお持ちですか？{" "}
+      <div
+        className="flex flex-col items-center"
+        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
+      >
         <Link
           to="/admin/login"
-          className="font-medium text-primary hover:underline"
+          className="font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
         >
-          ログイン
+          既にアカウントをお持ちの方
         </Link>
-      </p>
+      </div>
     </AuthLayout>
   );
 }

@@ -146,21 +146,37 @@ export default function TenantStaffDetailPage({
   const isPendingMenus = fetcher.isPending("updateMenus");
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
+    <div>
+      <div className="mb-[var(--space-xl)]">
         <Link
           to={`/admin/${tenantId}/staff`}
-          className="text-sm text-gray-500 hover:text-gray-700"
+          className="inline-flex items-center gap-[var(--space-xs)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-500 transition-colors hover:text-primary"
         >
-          &larr; スタッフ一覧に戻る
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+          スタッフ一覧に戻る
         </Link>
-        <h1 className="mt-2 text-2xl font-bold text-gray-900">スタッフ詳細</h1>
+        <h1 className="mt-[var(--space-sm)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+          スタッフ詳細
+        </h1>
       </div>
 
-      <div className="max-w-2xl space-y-8">
+      <div className="max-w-2xl space-y-[var(--space-xl)]">
         {/* プロフィール編集 */}
-        <section className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">
+        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
             プロフィール
           </h2>
           <fetcher.Form
@@ -173,63 +189,41 @@ export default function TenantStaffDetailPage({
             <div>
               <label
                 htmlFor={profileFields.name.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
               >
                 スタッフ表示名
               </label>
               <input
                 {...getInputProps(profileFields.name, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
               {profileFields.name.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {profileFields.name.errors}
                 </p>
               )}
             </div>
 
-            <div>
-              <span className="block text-sm font-medium text-gray-700">
-                プロフィール画像
-              </span>
-              <div className="mt-1 flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-200 text-gray-500">
-                  {staff.imageUrl ? (
-                    <img
-                      src={staff.imageUrl}
-                      alt={staff.displayName}
-                      className="h-16 w-16 rounded-full object-cover"
-                    />
-                  ) : (
-                    <svg
-                      className="h-8 w-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  )}
-                </div>
-                <button
-                  type="button"
-                  className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  画像を変更
-                </button>
+            <div className="flex items-center gap-[var(--space-md)]">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary-lighter text-secondary">
+                {staff.imageUrl ? (
+                  <img
+                    src={staff.imageUrl}
+                    alt={staff.displayName}
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="text-[length:var(--text-xl)] font-[var(--weight-medium)]">
+                    {staff.displayName.charAt(0)}
+                  </span>
+                )}
               </div>
             </div>
 
             <div>
               <label
                 htmlFor={profileFields.bio.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
               >
                 自己紹介文
               </label>
@@ -238,7 +232,7 @@ export default function TenantStaffDetailPage({
                 name={profileFields.bio.name}
                 rows={3}
                 defaultValue={staff.bio ?? ""}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
@@ -246,7 +240,7 @@ export default function TenantStaffDetailPage({
               <button
                 type="submit"
                 disabled={isPendingProfile}
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPendingProfile ? "更新中..." : "プロフィールを更新"}
               </button>
@@ -255,8 +249,8 @@ export default function TenantStaffDetailPage({
         </section>
 
         {/* 担当メニュー設定 */}
-        <section className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">
+        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
             担当メニュー
           </h2>
           <fetcher.Form method="post">
@@ -273,30 +267,32 @@ export default function TenantStaffDetailPage({
               {assignedMenus.map((menu) => (
                 <label
                   key={menu.id}
-                  className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-50"
+                  className="flex cursor-pointer items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] px-[var(--space-md)] py-[var(--space-sm)] transition-colors hover:bg-neutral-50"
                 >
                   <input
                     type="checkbox"
                     checked={menu.isAssigned}
                     onChange={() => toggleMenu(menu.id)}
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="h-4 w-4 rounded border-neutral-300 text-primary accent-primary focus:ring-primary"
                   />
-                  <span className="text-sm text-gray-900">{menu.name}</span>
+                  <span className="text-[length:var(--text-sm)] text-neutral-800">
+                    {menu.name}
+                  </span>
                 </label>
               ))}
             </div>
 
             {assignedMenus.length === 0 && (
-              <p className="text-sm text-gray-500">
+              <p className="text-[length:var(--text-sm)] text-neutral-500">
                 メニューが登録されていません。先にメニューを登録してください。
               </p>
             )}
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-[var(--space-lg)] flex justify-end">
               <button
                 type="submit"
                 disabled={isPendingMenus}
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPendingMenus ? "保存中..." : "担当メニューを保存"}
               </button>

@@ -13,9 +13,9 @@ export function Header() {
 
   return (
     <header className="border-b border-border bg-white">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold text-primary">
-          dot-reservation
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+        <Link to="/" className="text-xl font-semibold text-text">
+          <span className="text-primary">dot.</span>reservation
         </Link>
 
         <nav className="flex items-center gap-4">

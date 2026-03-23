@@ -110,38 +110,40 @@ export default function TenantMenuEditPage({
   const isPending = fetcher.isPending("updateMenu");
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="mb-8">
         <Link
           to={`/admin/${tenantId}/menus`}
-          className="text-sm text-gray-500 hover:text-gray-700"
+          className="text-sm text-neutral-500 hover:text-neutral-600"
         >
           &larr; メニュー一覧に戻る
         </Link>
-        <h1 className="mt-2 text-2xl font-bold text-gray-900">メニュー編集</h1>
+        <h1 className="mt-2 text-2xl font-bold text-neutral-800">
+          メニュー編集
+        </h1>
       </div>
 
       <div className="max-w-2xl">
         <fetcher.Form
           method="post"
           {...getFormProps(form)}
-          className="rounded-lg border border-gray-200 bg-white p-6"
+          className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]"
         >
           <input type="hidden" name="intent" value="updateMenu" />
           <div className="space-y-4">
             <div>
               <label
                 htmlFor={fields.name.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 メニュー名
               </label>
               <input
                 {...getInputProps(fields.name, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
               {fields.name.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {fields.name.errors}
                 </p>
               )}
@@ -150,20 +152,20 @@ export default function TenantMenuEditPage({
             <div>
               <label
                 htmlFor={fields.category.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 カテゴリー
               </label>
               <input
                 {...getInputProps(fields.category, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
             <div>
               <label
                 htmlFor={fields.description.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 説明文
               </label>
@@ -172,7 +174,7 @@ export default function TenantMenuEditPage({
                 name={fields.description.name}
                 rows={3}
                 defaultValue={menu.description ?? ""}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 
@@ -180,17 +182,17 @@ export default function TenantMenuEditPage({
               <div>
                 <label
                   htmlFor={fields.duration.id}
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   所要時間（分）
                 </label>
                 <input
                   {...getInputProps(fields.duration, { type: "number" })}
                   min={1}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 />
                 {fields.duration.errors && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-[length:var(--text-xs)] text-error">
                     {fields.duration.errors}
                   </p>
                 )}
@@ -199,17 +201,17 @@ export default function TenantMenuEditPage({
               <div>
                 <label
                   htmlFor={fields.price.id}
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   料金（円）
                 </label>
                 <input
                   {...getInputProps(fields.price, { type: "number" })}
                   min={0}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 />
                 {fields.price.errors && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-[length:var(--text-xs)] text-error">
                     {fields.price.errors}
                   </p>
                 )}
@@ -219,14 +221,14 @@ export default function TenantMenuEditPage({
             <div className="flex justify-end gap-3 pt-4">
               <Link
                 to={`/admin/${tenantId}/menus`}
-                className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
               >
                 キャンセル
               </Link>
               <button
                 type="submit"
                 disabled={isPending}
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPending ? "更新中..." : "メニューを更新"}
               </button>

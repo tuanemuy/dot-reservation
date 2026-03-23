@@ -1,11 +1,9 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data, useNavigate } from "react-router";
+import { data, Link, useNavigate } from "react-router";
 import { z } from "zod";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -136,7 +134,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     }),
   );
 
-  // Resolve tenant names for recent reservations
   const uniqueTenantIds = [
     ...new Set(reservationsResult.items.map((r) => r.tenantId)),
   ];
@@ -158,7 +155,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     id: r.id,
     tenantName: tenantNames.get(r.tenantId) ?? "",
     menuName: r.menuName,
-    dateTime: `${r.date} ${r.startTime}`,
+    date: r.date,
     status: r.status,
   }));
 
@@ -170,9 +167,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       phone: customerResult.phoneNumber ?? "",
       status: customerResult.status as "active" | "suspended",
       createdAt: customerResult.createdAt.toLocaleDateString("ja-JP"),
-      // lastLoginAt is not available: AuthProvider port does not expose session
-      // listing per user. To implement this, add a listSessionsByUserId method
-      // to AuthProvider and the better-auth adapter.
       lastLoginAt: null as string | null,
     },
     reservationStats: {
@@ -187,9 +181,11 @@ const statusLabels: Record<string, string> = {
   suspended: "停止中",
 };
 
-const statusBadgeVariant: Record<string, "success" | "destructive"> = {
-  active: "success",
-  suspended: "destructive",
+const reservationStatusLabels: Record<string, string> = {
+  confirmed: "確定",
+  completed: "完了",
+  cancelled: "キャンセル",
+  pending: "承認待ち",
 };
 
 export default function PlatformUserDetailPage({
@@ -234,17 +230,11 @@ export default function PlatformUserDetailPage({
     onSuccess: () => {
       setShowSuspendModal(false);
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Suspend failed:", err);
-    },
   });
 
   fetcher.register("resume", {
     onSuccess: () => {
       setShowResumeModal(false);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Resume failed:", err);
     },
   });
 
@@ -252,136 +242,231 @@ export default function PlatformUserDetailPage({
     onSuccess: () => {
       navigate("/platform/users");
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Delete failed:", err);
-    },
   });
 
   const isPendingSuspend = fetcher.isPending("suspend");
   const isPendingResume = fetcher.isPending("resume");
   const isPendingDelete = fetcher.isPending("delete");
 
+  const isActive = user.status === "active";
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">{user.name}</h1>
-        <Badge variant={statusBadgeVariant[user.status] ?? "default"}>
-          {statusLabels[user.status] ?? user.status}
-        </Badge>
+    <div>
+      {/* Breadcrumb */}
+      <nav
+        className="flex items-center"
+        style={{
+          gap: "var(--space-sm)",
+          marginBottom: "var(--space-lg)",
+          fontSize: "var(--text-sm)",
+        }}
+      >
+        <Link
+          to="/platform/users"
+          className="no-underline"
+          style={{
+            color: "var(--color-neutral-500)",
+            transition: "color var(--transition-default)",
+          }}
+        >
+          ユーザー管理
+        </Link>
+        <span
+          style={{
+            color: "var(--color-neutral-500)",
+            fontSize: "var(--text-xs)",
+          }}
+        >
+          /
+        </span>
+        <span
+          style={{
+            color: "var(--color-neutral-800)",
+            fontWeight: 500,
+          }}
+        >
+          {user.name}
+        </span>
+      </nav>
+
+      {/* Page Header */}
+      <div
+        className="flex items-center"
+        style={{ gap: "var(--space-md)", marginBottom: "var(--space-xl)" }}
+      >
+        <h1
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-2xl)",
+            fontWeight: 600,
+            color: "var(--color-neutral-900)",
+            letterSpacing: "var(--tracking-tight)",
+            lineHeight: "var(--leading-tight)",
+          }}
+        >
+          {user.name}
+        </h1>
+        <StatusBadge status={user.status} />
       </div>
 
-      {/* 基本情報 */}
-      <Card>
-        <CardBody>
-          <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
-          <dl className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                ユーザー名
-              </dt>
-              <dd className="mt-1 text-sm text-text">{user.name}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                メールアドレス
-              </dt>
-              <dd className="mt-1 text-sm text-text">{user.email}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                電話番号
-              </dt>
-              <dd className="mt-1 text-sm text-text">{user.phone || "-"}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                登録日
-              </dt>
-              <dd className="mt-1 text-sm text-text">{user.createdAt}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                最終ログイン
-              </dt>
-              <dd className="mt-1 text-sm text-text">
-                {user.lastLoginAt ?? "-"}
-              </dd>
-            </div>
-          </dl>
-        </CardBody>
-      </Card>
+      {/* User Info */}
+      <SectionCard title="ユーザー情報">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "0",
+            padding: "0 var(--space-lg) var(--space-lg)",
+          }}
+        >
+          <InfoItem
+            label="顧客名"
+            value={user.name}
+            position="odd"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="メールアドレス"
+            value={user.email}
+            position="even"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="電話番号"
+            value={user.phone || "-"}
+            position="odd"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="ステータス"
+            value={statusLabels[user.status] ?? user.status}
+            position="even"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="登録日"
+            value={user.createdAt}
+            position="odd"
+            isLastRow
+          />
+          <InfoItem
+            label="最終ログイン"
+            value={user.lastLoginAt ?? "-"}
+            position="even"
+            isLastRow
+          />
+        </div>
+      </SectionCard>
 
-      {/* 予約履歴 */}
-      <Card>
-        <CardBody>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-text">予約履歴</h2>
-            <p className="text-sm text-text-secondary">
-              総予約数: {reservationStats.totalCount.toLocaleString()}件
-            </p>
-          </div>
+      {/* Reservation History */}
+      <SectionCard title="予約履歴">
+        <div
+          style={{
+            padding: "0 var(--space-lg)",
+            marginBottom: "var(--space-md)",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: "var(--text-xl)",
+              fontWeight: 600,
+              color: "var(--color-neutral-900)",
+              letterSpacing: "var(--tracking-tight)",
+            }}
+          >
+            {reservationStats.totalCount}
+          </span>
+          <span
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-neutral-500)",
+              marginLeft: "var(--space-xs)",
+            }}
+          >
+            総予約数
+          </span>
+        </div>
+        <div style={{ padding: "0 var(--space-lg) var(--space-lg)" }}>
           {reservationStats.recentReservations.length === 0 ? (
-            <p className="text-sm text-text-muted">予約履歴がありません</p>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--color-neutral-500)",
+              }}
+            >
+              予約履歴がありません
+            </p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-border">
-                  <tr>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      店舗
-                    </th>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      メニュー
-                    </th>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      日時
-                    </th>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      ステータス
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {reservationStats.recentReservations.map((reservation) => (
-                    <tr key={reservation.id}>
-                      <td className="py-2 text-text">
-                        {reservation.tenantName}
-                      </td>
-                      <td className="py-2 text-text-secondary">
-                        {reservation.menuName}
-                      </td>
-                      <td className="py-2 text-text-secondary">
-                        {reservation.dateTime}
-                      </td>
-                      <td className="py-2">
-                        <Badge>{reservation.status}</Badge>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            reservationStats.recentReservations.map((reservation, index) => (
+              <div
+                key={reservation.id}
+                className="grid items-center"
+                style={{
+                  gridTemplateColumns: "120px 1fr 1fr 100px",
+                  gap: "var(--space-md)",
+                  padding: "var(--space-md) 0",
+                  borderBottom:
+                    index < reservationStats.recentReservations.length - 1
+                      ? "1px solid var(--color-neutral-200)"
+                      : "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    fontWeight: 500,
+                    color: "var(--color-neutral-800)",
+                  }}
+                >
+                  {reservation.date}
+                </div>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--color-neutral-700)",
+                  }}
+                >
+                  {reservation.tenantName}
+                </div>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--color-neutral-600)",
+                  }}
+                >
+                  {reservation.menuName}
+                </div>
+                <ReservationStatusBadge status={reservation.status} />
+              </div>
+            ))
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </SectionCard>
 
-      {/* アクション */}
-      <div className="flex gap-3">
-        {user.status === "active" ? (
-          <Button variant="outline" onClick={() => setShowSuspendModal(true)}>
-            アカウントを停止
-          </Button>
+      {/* Actions */}
+      <div className="flex" style={{ gap: "var(--space-md)" }}>
+        {isActive ? (
+          <ActionButton
+            variant="warning"
+            onClick={() => setShowSuspendModal(true)}
+          >
+            アカウントを停止する
+          </ActionButton>
         ) : (
-          <Button variant="outline" onClick={() => setShowResumeModal(true)}>
-            アカウントを再開
-          </Button>
+          <ActionButton
+            variant="warning"
+            onClick={() => setShowResumeModal(true)}
+          >
+            アカウントを再開する
+          </ActionButton>
         )}
-        <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
-          アカウントを削除
-        </Button>
+        <ActionButton variant="error" onClick={() => setShowDeleteModal(true)}>
+          アカウントを削除する
+        </ActionButton>
       </div>
 
-      {/* 停止モーダル */}
+      {/* Suspend Modal */}
       <Modal
         open={showSuspendModal}
         onClose={() => setShowSuspendModal(false)}
@@ -418,7 +503,7 @@ export default function PlatformUserDetailPage({
         </fetcher.Form>
       </Modal>
 
-      {/* 再開モーダル */}
+      {/* Resume Modal */}
       <Modal
         open={showResumeModal}
         onClose={() => setShowResumeModal(false)}
@@ -444,7 +529,7 @@ export default function PlatformUserDetailPage({
         </fetcher.Form>
       </Modal>
 
-      {/* 削除モーダル */}
+      {/* Delete Modal */}
       <Modal
         open={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
@@ -491,5 +576,225 @@ export default function PlatformUserDetailPage({
         </fetcher.Form>
       </Modal>
     </div>
+  );
+}
+
+function SectionCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        background: "var(--color-bg-card)",
+        border: "1px solid var(--color-neutral-300)",
+        borderRadius: "var(--radius-lg)",
+        marginBottom: "var(--space-xl)",
+      }}
+    >
+      <div
+        className="flex items-center justify-between"
+        style={{
+          padding: "var(--space-lg) var(--space-lg) 0",
+          marginBottom: "var(--space-md)",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-lg)",
+            fontWeight: 600,
+            color: "var(--color-neutral-800)",
+            letterSpacing: "var(--tracking-tight)",
+          }}
+        >
+          {title}
+        </h2>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function InfoItem({
+  label,
+  value,
+  position,
+  isLastRow,
+}: {
+  label: string;
+  value: string;
+  position: "odd" | "even";
+  isLastRow: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "var(--space-md) 0",
+        borderBottom: isLastRow ? "none" : "1px solid var(--color-neutral-200)",
+        ...(position === "odd"
+          ? { paddingRight: "var(--space-xl)" }
+          : {
+              paddingLeft: "var(--space-xl)",
+              borderLeft: "1px solid var(--color-neutral-200)",
+            }),
+      }}
+    >
+      <div
+        style={{
+          fontSize: "var(--text-xs)",
+          fontWeight: 500,
+          color: "var(--color-neutral-500)",
+          letterSpacing: "var(--tracking-wide)",
+          marginBottom: "var(--space-xs)",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontSize: "var(--text-base)",
+          color: "var(--color-neutral-800)",
+          fontWeight: 400,
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const isActive = status === "active";
+  return (
+    <span
+      className="inline-flex items-center whitespace-nowrap"
+      style={{
+        gap: "4px",
+        padding: "4px 12px",
+        borderRadius: "var(--radius-full)",
+        fontSize: "var(--text-xs)",
+        fontWeight: 500,
+        background: isActive
+          ? "oklch(0.55 0.12 145 / 0.1)"
+          : "oklch(0.55 0.16 25 / 0.08)",
+        color: isActive ? "var(--color-success)" : "var(--color-error)",
+      }}
+    >
+      <span
+        style={{
+          width: "6px",
+          height: "6px",
+          borderRadius: "var(--radius-full)",
+          background: isActive ? "var(--color-success)" : "var(--color-error)",
+        }}
+      />
+      {statusLabels[status] ?? status}
+    </span>
+  );
+}
+
+function ReservationStatusBadge({ status }: { status: string }) {
+  const styleMap: Record<
+    string,
+    { bg: string; color: string; dotColor: string }
+  > = {
+    confirmed: {
+      bg: "oklch(0.55 0.12 145 / 0.1)",
+      color: "var(--color-success)",
+      dotColor: "var(--color-success)",
+    },
+    completed: {
+      bg: "var(--color-neutral-200)",
+      color: "var(--color-neutral-600)",
+      dotColor: "var(--color-neutral-500)",
+    },
+    cancelled: {
+      bg: "oklch(0.55 0.16 25 / 0.08)",
+      color: "var(--color-error)",
+      dotColor: "var(--color-error)",
+    },
+    pending: {
+      bg: "oklch(0.72 0.14 70 / 0.1)",
+      color: "var(--color-warning)",
+      dotColor: "var(--color-warning)",
+    },
+  };
+
+  const s = styleMap[status] ?? styleMap.completed;
+
+  return (
+    <span
+      className="inline-flex items-center whitespace-nowrap"
+      style={{
+        gap: "4px",
+        padding: "4px 12px",
+        borderRadius: "var(--radius-full)",
+        fontSize: "var(--text-xs)",
+        fontWeight: 500,
+        background: s.bg,
+        color: s.color,
+      }}
+    >
+      <span
+        style={{
+          width: "6px",
+          height: "6px",
+          borderRadius: "var(--radius-full)",
+          background: s.dotColor,
+        }}
+      />
+      {reservationStatusLabels[status] ?? status}
+    </span>
+  );
+}
+
+function ActionButton({
+  variant,
+  onClick,
+  children,
+}: {
+  variant: "warning" | "error";
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const isWarning = variant === "warning";
+  const color = isWarning ? "var(--color-warning)" : "var(--color-error)";
+  const hoverBg = isWarning
+    ? "oklch(0.72 0.14 70 / 0.08)"
+    : "oklch(0.55 0.16 25 / 0.06)";
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex cursor-pointer items-center justify-center"
+      style={{
+        gap: "var(--space-sm)",
+        height: "44px",
+        padding: "0 var(--space-lg)",
+        background: "var(--color-bg-page)",
+        color,
+        border: `1px solid ${color}`,
+        borderRadius: "var(--radius-md)",
+        fontFamily: "var(--font-body)",
+        fontSize: "var(--text-sm)",
+        fontWeight: 500,
+        letterSpacing: "var(--tracking-wide)",
+        transition:
+          "background var(--transition-default), color var(--transition-default), transform var(--transition-fast)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = hoverBg;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "var(--color-bg-page)";
+      }}
+    >
+      {children}
+    </button>
   );
 }

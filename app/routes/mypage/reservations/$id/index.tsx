@@ -3,9 +3,6 @@ import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { data, Link } from "react-router";
 import { z } from "zod";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody, CardFooter, CardHeader } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { Select } from "@/components/ui/Select";
 import { cancelReservation } from "@/core/application/reservation/cancelReservation";
@@ -29,20 +26,27 @@ const statusLabels: Record<string, string> = {
   rejected: "却下",
 };
 
-type BadgeVariant =
-  | "default"
-  | "primary"
-  | "accent"
-  | "success"
-  | "warning"
-  | "destructive";
-
-const statusBadgeVariants: Record<string, BadgeVariant> = {
-  pending: "warning",
-  confirmed: "success",
-  completed: "default",
-  cancelled: "destructive",
-  rejected: "destructive",
+const statusBadgeStyles: Record<string, React.CSSProperties> = {
+  pending: {
+    background: "oklch(0.72 0.14 70 / 0.1)",
+    color: "var(--color-warning)",
+  },
+  confirmed: {
+    background: "oklch(0.55 0.12 145 / 0.1)",
+    color: "var(--color-success)",
+  },
+  completed: {
+    background: "var(--color-neutral-200)",
+    color: "var(--color-neutral-600)",
+  },
+  cancelled: {
+    background: "oklch(0.55 0.16 25 / 0.1)",
+    color: "var(--color-error)",
+  },
+  rejected: {
+    background: "oklch(0.55 0.16 25 / 0.1)",
+    color: "var(--color-error)",
+  },
 };
 
 const cancelReasonSchema = z.object({
@@ -95,7 +99,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
-  // テナント情報を取得して canModify/canCancel を判定
   const tenantResult = await handleUseCase(() =>
     getTenant({
       container,
@@ -133,8 +136,23 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       ...reservation,
       canModify,
       canCancel,
+      tenantName: tenantResult?.name ?? null,
+      tenantUrlPath: tenantResult?.urlPath ?? null,
     },
   };
+}
+
+function formatReservationDateTime(
+  dateStr: string,
+  startTime: string,
+  endTime: string,
+): string {
+  const d = new Date(dateStr);
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
+  return `${year}年${month}月${day}日（${dayOfWeek}） ${startTime} - ${endTime}`;
 }
 
 export default function ReservationDetailPage({
@@ -165,81 +183,308 @@ export default function ReservationDetailPage({
 
   const isCancelling = fetcher.isPending("cancelReservation");
 
-  const detailRows: { label: string; value: string | null }[] = [
-    { label: "メニュー", value: reservation.menuName },
+  type DetailRow = {
+    label: string;
+    value: string | null;
+    isPrice?: boolean;
+    isLink?: boolean;
+    linkHref?: string;
+    isNote?: boolean;
+  };
+
+  const detailRows: DetailRow[] = [
+    {
+      label: "店舗名",
+      value: reservation.tenantName,
+      isLink: !!reservation.tenantUrlPath,
+      linkHref: reservation.tenantUrlPath
+        ? `/shop/${reservation.tenantUrlPath}`
+        : undefined,
+    },
+    { label: "メニュー名", value: reservation.menuName },
     { label: "所要時間", value: `${reservation.menuDuration}分` },
-    { label: "料金", value: `${reservation.menuPrice.toLocaleString()}円` },
+    {
+      label: "料金",
+      value: `\u00a5${reservation.menuPrice.toLocaleString()}`,
+      isPrice: true,
+    },
     { label: "担当スタッフ", value: reservation.staffName ?? "指名なし" },
     {
       label: "予約日時",
-      value: `${new Date(reservation.date).toLocaleDateString("ja-JP")} ${reservation.startTime} - ${reservation.endTime}`,
+      value: formatReservationDateTime(
+        reservation.date,
+        reservation.startTime,
+        reservation.endTime,
+      ),
     },
-    { label: "備考", value: reservation.note },
+    { label: "備考", value: reservation.note, isNote: true },
     { label: "キャンセル理由", value: reservation.cancellationReason },
     { label: "却下理由", value: reservation.rejectionReason },
   ];
 
   return (
     <div>
-      <div className="mb-6">
-        <Link
-          to="/mypage/reservations"
-          className="text-sm text-text-secondary hover:text-text"
+      {/* Page Header */}
+      <div
+        className="flex items-center"
+        style={{ gap: "var(--space-md)", marginBottom: "var(--space-xl)" }}
+      >
+        <h1
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-2xl)",
+            fontWeight: "var(--weight-semibold)",
+            color: "var(--color-neutral-900)",
+            letterSpacing: "var(--tracking-tight)",
+            lineHeight: "var(--leading-tight)",
+          }}
         >
-          予約一覧に戻る
-        </Link>
+          予約詳細
+        </h1>
+        <span
+          className="inline-flex items-center"
+          style={{
+            padding: "var(--space-xs) var(--space-sm)",
+            fontSize: "var(--text-sm)",
+            fontWeight: "var(--weight-medium)",
+            borderRadius: "var(--radius-sm)",
+            letterSpacing: "var(--tracking-wide)",
+            ...(statusBadgeStyles[reservation.status] ?? {}),
+          }}
+        >
+          {statusLabels[reservation.status] ?? reservation.status}
+        </span>
       </div>
 
-      <Card>
-        <CardHeader className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-text">予約詳細</h1>
-          <Badge variant={statusBadgeVariants[reservation.status] ?? "default"}>
-            {statusLabels[reservation.status] ?? reservation.status}
-          </Badge>
-        </CardHeader>
-
-        <CardBody>
-          <dl className="divide-y divide-border">
-            {detailRows
-              .filter((row) => row.value !== null)
-              .map((row) => (
-                <div key={row.label} className="flex py-3">
-                  <dt className="w-32 shrink-0 text-sm text-text-secondary">
-                    {row.label}
-                  </dt>
-                  <dd className="text-sm text-text">{row.value}</dd>
-                </div>
-              ))}
-          </dl>
-        </CardBody>
-
-        {(reservation.canModify ||
-          reservation.canCancel ||
-          reservation.status === "completed") && (
-          <CardFooter className="flex gap-3">
-            {reservation.canModify && (
-              <Link to={`/mypage/reservations/${reservation.id}/edit`}>
-                <Button variant="outline" size="md">
-                  予約を変更
-                </Button>
-              </Link>
-            )}
-            {reservation.canCancel && (
-              <Button
-                variant="destructive"
-                size="md"
-                onClick={() => setShowCancelDialog(true)}
+      {/* Detail Card */}
+      <div
+        style={{
+          background: "var(--color-bg-card)",
+          border: "1px solid var(--color-neutral-300)",
+          borderRadius: "var(--radius-lg)",
+          padding: "var(--space-xl)",
+          marginBottom: "var(--space-lg)",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-lg)",
+            fontWeight: "var(--weight-semibold)",
+            color: "var(--color-neutral-800)",
+            letterSpacing: "var(--tracking-tight)",
+            marginBottom: "var(--space-lg)",
+            paddingBottom: "var(--space-sm)",
+            borderBottom: "1px solid var(--color-neutral-200)",
+          }}
+        >
+          予約情報
+        </h2>
+        <div className="flex flex-col" style={{ gap: "var(--space-md)" }}>
+          {detailRows
+            .filter((row) => row.value !== null)
+            .map((row) => (
+              <div
+                key={row.label}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "160px 1fr",
+                  gap: "var(--space-md)",
+                  alignItems: "baseline",
+                }}
               >
-                キャンセル
-              </Button>
-            )}
-            {reservation.status === "completed" && (
-              <Button size="md">再予約</Button>
-            )}
-          </CardFooter>
-        )}
-      </Card>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    fontWeight: "var(--weight-medium)",
+                    color: "var(--color-neutral-500)",
+                    letterSpacing: "var(--tracking-wide)",
+                  }}
+                >
+                  {row.label}
+                </div>
+                <div>
+                  {row.isLink && row.linkHref ? (
+                    <Link
+                      to={row.linkHref}
+                      style={{
+                        color: "var(--color-primary)",
+                        textDecoration: "none",
+                        fontWeight: "var(--weight-medium)",
+                        fontSize: "var(--text-base)",
+                      }}
+                    >
+                      {row.value}
+                    </Link>
+                  ) : row.isPrice ? (
+                    <span
+                      style={{
+                        fontSize: "var(--text-lg)",
+                        fontWeight: "var(--weight-semibold)",
+                        color: "var(--color-accent-dark)",
+                      }}
+                    >
+                      {row.value}{" "}
+                      <span
+                        style={{
+                          fontSize: "var(--text-xs)",
+                          fontWeight: "var(--weight-normal)",
+                          color: "var(--color-neutral-500)",
+                        }}
+                      >
+                        (税込)
+                      </span>
+                    </span>
+                  ) : row.isNote ? (
+                    <div
+                      style={{
+                        fontSize: "var(--text-sm)",
+                        color: "var(--color-neutral-600)",
+                        lineHeight: "var(--leading-relaxed)",
+                        background: "var(--color-neutral-100)",
+                        padding: "var(--space-md)",
+                        borderRadius: "var(--radius-md)",
+                      }}
+                    >
+                      {row.value}
+                    </div>
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: "var(--text-base)",
+                        color: "var(--color-neutral-800)",
+                      }}
+                    >
+                      {row.value}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
 
+      {/* Action Buttons */}
+      {(reservation.canModify ||
+        reservation.canCancel ||
+        reservation.status === "completed") && (
+        <div
+          className="flex"
+          style={{ gap: "var(--space-md)", marginTop: "var(--space-xl)" }}
+        >
+          {reservation.canModify && (
+            <Link
+              to={`/mypage/reservations/${reservation.id}/edit`}
+              className="inline-flex items-center justify-center"
+              style={{
+                gap: "var(--space-sm)",
+                height: "44px",
+                padding: "0 var(--space-lg)",
+                background: "var(--color-bg-card)",
+                border: "1px solid var(--color-neutral-300)",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-neutral-700)",
+                textDecoration: "none",
+                transition:
+                  "background var(--transition-default), border-color var(--transition-default)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "var(--color-neutral-100)";
+                e.currentTarget.style.borderColor = "var(--color-neutral-400)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "var(--color-bg-card)";
+                e.currentTarget.style.borderColor = "var(--color-neutral-300)";
+              }}
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                style={{ width: "16px", height: "16px" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"
+                />
+              </svg>
+              予約を変更する
+            </Link>
+          )}
+          {reservation.canCancel && (
+            <button
+              type="button"
+              className="inline-flex items-center justify-center"
+              onClick={() => setShowCancelDialog(true)}
+              style={{
+                gap: "var(--space-sm)",
+                height: "44px",
+                padding: "0 var(--space-lg)",
+                background: "var(--color-bg-card)",
+                border: "1px solid var(--color-error)",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-error)",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                transition: "background var(--transition-default)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "oklch(0.55 0.16 25 / 0.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "var(--color-bg-card)";
+              }}
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                style={{ width: "16px", height: "16px" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              予約をキャンセルする
+            </button>
+          )}
+          {reservation.status === "completed" && reservation.tenantUrlPath && (
+            <Link
+              to={`/shop/${reservation.tenantUrlPath}/reserve`}
+              className="inline-flex items-center justify-center"
+              style={{
+                gap: "var(--space-sm)",
+                height: "44px",
+                padding: "0 var(--space-lg)",
+                background: "var(--color-bg-card)",
+                border: "1px solid var(--color-neutral-300)",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-neutral-700)",
+                textDecoration: "none",
+                transition:
+                  "background var(--transition-default), border-color var(--transition-default)",
+              }}
+            >
+              再予約する
+            </Link>
+          )}
+        </div>
+      )}
+
+      {/* Cancel Modal */}
       <Modal
         open={showCancelDialog}
         onClose={() => setShowCancelDialog(false)}
@@ -248,10 +493,16 @@ export default function ReservationDetailPage({
         <fetcher.Form method="post" {...getFormProps(cancelForm)}>
           <input type="hidden" name="intent" value="cancelReservation" />
           <input type="hidden" name="reservationId" value={reservation.id} />
-          <div className="mb-4 space-y-1.5">
+          <div style={{ marginBottom: "var(--space-lg)" }}>
             <label
               htmlFor="cancel-reason"
-              className="block text-sm font-medium text-text"
+              className="block"
+              style={{
+                fontSize: "var(--text-sm)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-neutral-700)",
+                marginBottom: "var(--space-sm)",
+              }}
             >
               キャンセル理由（任意）
             </label>
@@ -263,17 +514,57 @@ export default function ReservationDetailPage({
               <option value="other">その他</option>
             </Select>
           </div>
-          <div className="flex justify-end gap-3">
-            <Button
+          {cancelForm.errors && (
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--color-error)",
+                marginBottom: "var(--space-md)",
+              }}
+            >
+              {cancelForm.errors}
+            </p>
+          )}
+          <div className="flex justify-end" style={{ gap: "var(--space-md)" }}>
+            <button
               type="button"
-              variant="outline"
               onClick={() => setShowCancelDialog(false)}
+              className="inline-flex items-center justify-center"
+              style={{
+                height: "44px",
+                padding: "0 var(--space-lg)",
+                background: "var(--color-bg-card)",
+                border: "1px solid var(--color-neutral-300)",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-neutral-700)",
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
             >
               戻る
-            </Button>
-            <Button type="submit" variant="destructive" disabled={isCancelling}>
+            </button>
+            <button
+              type="submit"
+              disabled={isCancelling}
+              className="inline-flex items-center justify-center"
+              style={{
+                height: "44px",
+                padding: "0 var(--space-lg)",
+                background: "var(--color-error)",
+                border: "none",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--weight-medium)",
+                color: "#FFFFFF",
+                cursor: isCancelling ? "not-allowed" : "pointer",
+                fontFamily: "inherit",
+                opacity: isCancelling ? 0.5 : 1,
+              }}
+            >
               {isCancelling ? "キャンセル中..." : "キャンセルする"}
-            </Button>
+            </button>
           </div>
         </fetcher.Form>
       </Modal>

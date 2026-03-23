@@ -206,18 +206,24 @@ export async function action(args: Route.ActionArgs) {
 }
 
 const roleLabels: Record<string, { text: string; className: string }> = {
-  admin: { text: "管理者", className: "bg-purple-100 text-purple-800" },
-  staff: { text: "スタッフ", className: "bg-blue-100 text-blue-800" },
+  admin: {
+    text: "管理者",
+    className: "bg-secondary-lighter text-secondary-dark",
+  },
+  staff: {
+    text: "スタッフ",
+    className: "bg-primary-lighter text-primary-dark",
+  },
 };
 
 const invitationStatusLabels: Record<
   string,
   { text: string; className: string }
 > = {
-  pending: { text: "未対応", className: "bg-yellow-100 text-yellow-800" },
-  accepted: { text: "承認済み", className: "bg-green-100 text-green-800" },
-  declined: { text: "辞退", className: "bg-red-100 text-red-800" },
-  cancelled: { text: "取消済み", className: "bg-gray-100 text-gray-800" },
+  pending: { text: "未対応", className: "bg-warning/10 text-warning" },
+  accepted: { text: "承認済み", className: "bg-success/10 text-success" },
+  declined: { text: "辞退", className: "bg-destructive/10 text-destructive" },
+  cancelled: { text: "取消済み", className: "bg-neutral-200 text-neutral-800" },
 };
 
 export default function TenantMembersPage({
@@ -254,13 +260,13 @@ export default function TenantMembersPage({
   const isPendingChangeRole = fetcher.isPending("changeRole");
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">メンバー管理</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">メンバー管理</h1>
         <button
           type="button"
           onClick={() => setShowInviteForm(true)}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
         >
           メンバーを招待
         </button>
@@ -268,8 +274,8 @@ export default function TenantMembersPage({
 
       {/* 招待フォーム */}
       {showInviteForm && (
-        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">
+        <div className="mb-6 rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
             メンバー招待
           </h2>
           <fetcher.Form
@@ -281,17 +287,17 @@ export default function TenantMembersPage({
             <div className="flex-1">
               <label
                 htmlFor={inviteFields.email.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 メールアドレス
               </label>
               <input
                 {...getInputProps(inviteFields.email, { type: "email" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 placeholder="email@example.com"
               />
               {inviteFields.email.errors && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
                   {inviteFields.email.errors}
                 </p>
               )}
@@ -299,13 +305,13 @@ export default function TenantMembersPage({
             <div className="w-40">
               <label
                 htmlFor={inviteFields.role.id}
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 ロール
               </label>
               <select
                 {...getInputProps(inviteFields.role, { type: "text" })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
                 <option value="staff">スタッフ</option>
                 <option value="admin">管理者</option>
@@ -314,14 +320,14 @@ export default function TenantMembersPage({
             <button
               type="submit"
               disabled={isPendingInvite}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
             >
               {isPendingInvite ? "送信中..." : "招待を送信"}
             </button>
             <button
               type="button"
               onClick={() => setShowInviteForm(false)}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
             >
               キャンセル
             </button>
@@ -330,15 +336,15 @@ export default function TenantMembersPage({
       )}
 
       {/* タブ */}
-      <div className="mb-6 border-b border-gray-200">
+      <div className="mb-6 border-b border-neutral-300">
         <nav className="flex gap-4">
           <button
             type="button"
             onClick={() => setActiveTab("members")}
             className={`border-b-2 px-1 pb-3 text-sm font-medium ${
               activeTab === "members"
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                ? "border-primary text-primary"
+                : "border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-600"
             }`}
           >
             メンバー ({members.length})
@@ -348,8 +354,8 @@ export default function TenantMembersPage({
             onClick={() => setActiveTab("invitations")}
             className={`border-b-2 px-1 pb-3 text-sm font-medium ${
               activeTab === "invitations"
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                ? "border-primary text-primary"
+                : "border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-600"
             }`}
           >
             招待 ({invitations.length})
@@ -359,39 +365,39 @@ export default function TenantMembersPage({
 
       {/* メンバー一覧 */}
       {activeTab === "members" && (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-neutral-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   名前
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   メールアドレス
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   ロール
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   参加日
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-neutral-500">
                   操作
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {members.map((member) => {
                 const role = roleLabels[member.role] ?? {
                   text: member.role,
-                  className: "bg-gray-100 text-gray-800",
+                  className: "bg-neutral-200 text-neutral-800",
                 };
                 return (
                   <tr key={member.id}>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-800">
                       {member.name}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                       {member.email}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
@@ -401,7 +407,7 @@ export default function TenantMembersPage({
                         {role.text}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                       {new Date(member.joinedAt).toLocaleDateString("ja-JP")}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
@@ -420,7 +426,7 @@ export default function TenantMembersPage({
                             const form = e.target.closest("form");
                             if (form) form.requestSubmit();
                           }}
-                          className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700"
+                          className="rounded border border-neutral-300 px-2 py-1 text-xs text-neutral-600"
                         >
                           <option value="admin">管理者</option>
                           <option value="staff">スタッフ</option>
@@ -437,47 +443,47 @@ export default function TenantMembersPage({
 
       {/* 招待一覧 */}
       {activeTab === "invitations" && (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
           {invitations.length === 0 ? (
-            <div className="p-8 text-center text-sm text-gray-500">
+            <div className="p-8 text-center text-sm text-neutral-500">
               招待はありません
             </div>
           ) : (
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="bg-neutral-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     メールアドレス
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     ロール
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     ステータス
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     招待日
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-neutral-500">
                     操作
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-border">
                 {invitations.map((invitation) => {
                   const statusLabel = invitationStatusLabels[
                     invitation.status
                   ] ?? {
                     text: invitation.status,
-                    className: "bg-gray-100 text-gray-800",
+                    className: "bg-neutral-200 text-neutral-800",
                   };
                   const invitationRole = roleLabels[invitation.role] ?? {
                     text: invitation.role,
-                    className: "bg-gray-100 text-gray-800",
+                    className: "bg-neutral-200 text-neutral-800",
                   };
                   return (
                     <tr key={invitation.id}>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                         {invitation.email}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
@@ -494,7 +500,7 @@ export default function TenantMembersPage({
                           {statusLabel.text}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                         {new Date(invitation.createdAt).toLocaleDateString(
                           "ja-JP",
                         )}
@@ -515,7 +521,7 @@ export default function TenantMembersPage({
                               />
                               <button
                                 type="submit"
-                                className="text-sm font-medium text-blue-600 hover:text-blue-500 disabled:opacity-50"
+                                className="text-sm font-medium text-primary hover:text-primary disabled:opacity-50"
                               >
                                 再送信
                               </button>
@@ -533,7 +539,7 @@ export default function TenantMembersPage({
                               />
                               <button
                                 type="submit"
-                                className="text-sm font-medium text-red-600 hover:text-red-500 disabled:opacity-50"
+                                className="text-sm font-medium text-destructive hover:text-destructive disabled:opacity-50"
                               >
                                 取消
                               </button>

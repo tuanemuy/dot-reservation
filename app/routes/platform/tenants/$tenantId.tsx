@@ -1,11 +1,9 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data, useNavigate } from "react-router";
+import { data, Link, useNavigate } from "react-router";
 import { z } from "zod";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -186,8 +184,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     members: membersResult.items.map((m) => ({
       id: m.id,
       name: m.name,
-      email: m.email,
       role: m.role,
+      joinedAt: m.joinedAt,
     })),
     stats: {
       menuCount: menusResult.items.length,
@@ -202,9 +200,10 @@ const statusLabels: Record<string, string> = {
   suspended: "停止中",
 };
 
-const statusBadgeVariant: Record<string, "success" | "destructive"> = {
-  active: "success",
-  suspended: "destructive",
+const roleLabels: Record<string, string> = {
+  owner: "オーナー",
+  admin: "管理者",
+  member: "メンバー",
 };
 
 export default function PlatformTenantDetailPage({
@@ -249,17 +248,11 @@ export default function PlatformTenantDetailPage({
     onSuccess: () => {
       setShowSuspendModal(false);
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Suspend failed:", err);
-    },
   });
 
   fetcher.register("resume", {
     onSuccess: () => {
       setShowResumeModal(false);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Resume failed:", err);
     },
   });
 
@@ -267,158 +260,273 @@ export default function PlatformTenantDetailPage({
     onSuccess: () => {
       navigate("/platform/tenants");
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Delete failed:", err);
-    },
   });
 
   const isPendingSuspend = fetcher.isPending("suspend");
   const isPendingResume = fetcher.isPending("resume");
   const isPendingDelete = fetcher.isPending("delete");
 
+  const isActive = tenant.status === "active";
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">{tenant.name}</h1>
-        <Badge variant={statusBadgeVariant[tenant.status] ?? "default"}>
-          {statusLabels[tenant.status] ?? tenant.status}
-        </Badge>
+    <div>
+      {/* Breadcrumb */}
+      <nav
+        className="flex items-center"
+        style={{
+          gap: "var(--space-sm)",
+          marginBottom: "var(--space-lg)",
+          fontSize: "var(--text-sm)",
+        }}
+      >
+        <Link
+          to="/platform/tenants"
+          className="no-underline"
+          style={{
+            color: "var(--color-neutral-500)",
+            transition: "color var(--transition-default)",
+          }}
+        >
+          テナント管理
+        </Link>
+        <span
+          style={{
+            color: "var(--color-neutral-500)",
+            fontSize: "var(--text-xs)",
+          }}
+        >
+          /
+        </span>
+        <span
+          style={{
+            color: "var(--color-neutral-800)",
+            fontWeight: 500,
+          }}
+        >
+          {tenant.name}
+        </span>
+      </nav>
+
+      {/* Page Header */}
+      <div
+        className="flex items-center"
+        style={{ gap: "var(--space-md)", marginBottom: "var(--space-xl)" }}
+      >
+        <h1
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-2xl)",
+            fontWeight: 600,
+            color: "var(--color-neutral-900)",
+            letterSpacing: "var(--tracking-tight)",
+            lineHeight: "var(--leading-tight)",
+          }}
+        >
+          {tenant.name}
+        </h1>
+        <StatusBadge status={tenant.status} />
       </div>
 
-      {/* 基本情報 */}
-      <Card>
-        <CardBody>
-          <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
-          <dl className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                テナント名
-              </dt>
-              <dd className="mt-1 text-sm text-text">{tenant.name}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                カテゴリー
-              </dt>
-              <dd className="mt-1 text-sm text-text">{tenant.category}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                URLパス
-              </dt>
-              <dd className="mt-1 text-sm text-text">{tenant.urlPath}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">住所</dt>
-              <dd className="mt-1 text-sm text-text">{tenant.address}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                電話番号
-              </dt>
-              <dd className="mt-1 text-sm text-text">{tenant.phone}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-text-secondary">
-                登録日
-              </dt>
-              <dd className="mt-1 text-sm text-text">{tenant.createdAt}</dd>
-            </div>
-          </dl>
-        </CardBody>
-      </Card>
+      {/* Basic Info */}
+      <SectionCard title="基本情報">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "0",
+            padding: "0 var(--space-lg) var(--space-lg)",
+          }}
+        >
+          <InfoItem
+            label="テナント名"
+            value={tenant.name}
+            position="odd"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="カテゴリー"
+            value={tenant.category}
+            position="even"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="URL"
+            value={tenant.urlPath}
+            position="odd"
+            isLastRow={false}
+            isLink
+          />
+          <InfoItem
+            label="住所"
+            value={tenant.address || "-"}
+            position="even"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="電話番号"
+            value={tenant.phone || "-"}
+            position="odd"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="ステータス"
+            value={statusLabels[tenant.status] ?? tenant.status}
+            position="even"
+            isLastRow={false}
+          />
+          <InfoItem
+            label="登録日"
+            value={tenant.createdAt}
+            position="odd"
+            isLastRow
+          />
+          <InfoItem label="" value="" position="even" isLastRow />
+        </div>
+      </SectionCard>
 
-      {/* 統計情報 */}
-      <Card>
-        <CardBody>
-          <h2 className="mb-4 text-lg font-semibold text-text">統計情報</h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div>
-              <p className="text-xs font-medium text-text-secondary">
-                メニュー数
-              </p>
-              <p className="mt-1 text-lg font-bold text-text">
-                {stats.menuCount}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-text-secondary">
-                総予約数
-              </p>
-              <p className="mt-1 text-lg font-bold text-text">
-                {stats.totalReservations.toLocaleString()}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-text-secondary">
-                今月の予約数
-              </p>
-              <p className="mt-1 text-lg font-bold text-text">
-                {stats.monthlyReservations.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-
-      {/* メンバー一覧 */}
-      <Card>
-        <CardBody>
-          <h2 className="mb-4 text-lg font-semibold text-text">メンバー一覧</h2>
-          {members.length === 0 ? (
-            <p className="text-sm text-text-muted">メンバーがいません</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-border">
-                  <tr>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      名前
-                    </th>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      メールアドレス
-                    </th>
-                    <th className="pb-2 font-medium text-text-secondary">
-                      ロール
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {members.map((member) => (
-                    <tr key={member.id}>
-                      <td className="py-2 text-text">{member.name}</td>
-                      <td className="py-2 text-text-secondary">
-                        {member.email}
-                      </td>
-                      <td className="py-2">
-                        <Badge>{member.role}</Badge>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardBody>
-      </Card>
-
-      {/* アクション */}
-      <div className="flex gap-3">
-        {tenant.status === "active" ? (
-          <Button variant="outline" onClick={() => setShowSuspendModal(true)}>
-            テナントを停止
-          </Button>
+      {/* Members */}
+      <SectionCard title="メンバー一覧">
+        {members.length === 0 ? (
+          <p
+            style={{
+              padding: "0 var(--space-lg) var(--space-lg)",
+              fontSize: "var(--text-sm)",
+              color: "var(--color-neutral-500)",
+            }}
+          >
+            メンバーがいません
+          </p>
         ) : (
-          <Button variant="outline" onClick={() => setShowResumeModal(true)}>
-            テナントを再開
-          </Button>
+          <table className="w-full" style={{ borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                {["名前", "役割", "参加日"].map((header) => (
+                  <th
+                    key={header}
+                    className="text-left"
+                    style={{
+                      padding: "var(--space-sm) var(--space-lg)",
+                      fontSize: "var(--text-xs)",
+                      fontWeight: 500,
+                      color: "var(--color-neutral-500)",
+                      letterSpacing: "var(--tracking-wide)",
+                      borderBottom: "1px solid var(--color-neutral-300)",
+                      background: "var(--color-neutral-50)",
+                    }}
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {members.map((member, index) => (
+                <tr
+                  key={member.id}
+                  style={{
+                    transition: "background var(--transition-default)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background =
+                      "var(--color-neutral-50)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  <td
+                    style={{
+                      padding: "var(--space-sm) var(--space-lg)",
+                      fontSize: "var(--text-sm)",
+                      color: "var(--color-neutral-700)",
+                      borderBottom:
+                        index < members.length - 1
+                          ? "1px solid var(--color-neutral-200)"
+                          : "none",
+                    }}
+                  >
+                    {member.name}
+                  </td>
+                  <td
+                    style={{
+                      padding: "var(--space-sm) var(--space-lg)",
+                      fontSize: "var(--text-sm)",
+                      borderBottom:
+                        index < members.length - 1
+                          ? "1px solid var(--color-neutral-200)"
+                          : "none",
+                    }}
+                  >
+                    <RoleBadge role={member.role} />
+                  </td>
+                  <td
+                    style={{
+                      padding: "var(--space-sm) var(--space-lg)",
+                      fontSize: "var(--text-sm)",
+                      color: "var(--color-neutral-700)",
+                      borderBottom:
+                        index < members.length - 1
+                          ? "1px solid var(--color-neutral-200)"
+                          : "none",
+                    }}
+                  >
+                    {member.joinedAt}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
-        <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
-          テナントを削除
-        </Button>
+      </SectionCard>
+
+      {/* Statistics */}
+      <SectionCard title="統計情報">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "var(--space-md)",
+            padding: "0 var(--space-lg) var(--space-lg)",
+          }}
+        >
+          <StatItem
+            value={stats.menuCount.toLocaleString()}
+            label="メニュー数"
+          />
+          <StatItem
+            value={stats.totalReservations.toLocaleString()}
+            label="総予約数"
+          />
+          <StatItem
+            value={stats.monthlyReservations.toLocaleString()}
+            label="今月の予約"
+          />
+        </div>
+      </SectionCard>
+
+      {/* Actions */}
+      <div className="flex" style={{ gap: "var(--space-md)" }}>
+        {isActive ? (
+          <ActionButton
+            variant="warning"
+            onClick={() => setShowSuspendModal(true)}
+          >
+            テナントを停止する
+          </ActionButton>
+        ) : (
+          <ActionButton
+            variant="warning"
+            onClick={() => setShowResumeModal(true)}
+          >
+            テナントを再開する
+          </ActionButton>
+        )}
+        <ActionButton variant="error" onClick={() => setShowDeleteModal(true)}>
+          テナントを削除する
+        </ActionButton>
       </div>
 
-      {/* 停止モーダル */}
+      {/* Suspend Modal */}
       <Modal
         open={showSuspendModal}
         onClose={() => setShowSuspendModal(false)}
@@ -455,7 +563,7 @@ export default function PlatformTenantDetailPage({
         </fetcher.Form>
       </Modal>
 
-      {/* 再開モーダル */}
+      {/* Resume Modal */}
       <Modal
         open={showResumeModal}
         onClose={() => setShowResumeModal(false)}
@@ -481,7 +589,7 @@ export default function PlatformTenantDetailPage({
         </fetcher.Form>
       </Modal>
 
-      {/* 削除モーダル */}
+      {/* Delete Modal */}
       <Modal
         open={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
@@ -528,5 +636,230 @@ export default function PlatformTenantDetailPage({
         </fetcher.Form>
       </Modal>
     </div>
+  );
+}
+
+function SectionCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        background: "var(--color-bg-card)",
+        border: "1px solid var(--color-neutral-300)",
+        borderRadius: "var(--radius-lg)",
+        marginBottom: "var(--space-xl)",
+      }}
+    >
+      <div
+        className="flex items-center justify-between"
+        style={{
+          padding: "var(--space-lg) var(--space-lg) 0",
+          marginBottom: "var(--space-md)",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "var(--text-lg)",
+            fontWeight: 600,
+            color: "var(--color-neutral-800)",
+            letterSpacing: "var(--tracking-tight)",
+          }}
+        >
+          {title}
+        </h2>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function InfoItem({
+  label,
+  value,
+  position,
+  isLastRow,
+  isLink,
+}: {
+  label: string;
+  value: string;
+  position: "odd" | "even";
+  isLastRow: boolean;
+  isLink?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "var(--space-md) 0",
+        borderBottom: isLastRow ? "none" : "1px solid var(--color-neutral-200)",
+        ...(position === "odd"
+          ? { paddingRight: "var(--space-xl)" }
+          : {
+              paddingLeft: "var(--space-xl)",
+              borderLeft: "1px solid var(--color-neutral-200)",
+            }),
+      }}
+    >
+      <div
+        style={{
+          fontSize: "var(--text-xs)",
+          fontWeight: 500,
+          color: "var(--color-neutral-500)",
+          letterSpacing: "var(--tracking-wide)",
+          marginBottom: "var(--space-xs)",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontSize: "var(--text-base)",
+          color: isLink ? "var(--color-primary)" : "var(--color-neutral-800)",
+          fontWeight: 400,
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function StatItem({ value, label }: { value: string; label: string }) {
+  return (
+    <div
+      className="text-center"
+      style={{
+        padding: "var(--space-lg)",
+        background: "var(--color-neutral-50)",
+        borderRadius: "var(--radius-md)",
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: "var(--text-2xl)",
+          fontWeight: 600,
+          color: "var(--color-neutral-900)",
+          letterSpacing: "var(--tracking-tight)",
+          lineHeight: "var(--leading-tight)",
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontSize: "var(--text-xs)",
+          color: "var(--color-neutral-500)",
+          marginTop: "var(--space-xs)",
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const isActive = status === "active";
+  return (
+    <span
+      className="inline-flex items-center whitespace-nowrap"
+      style={{
+        gap: "4px",
+        padding: "4px 12px",
+        borderRadius: "var(--radius-full)",
+        fontSize: "var(--text-xs)",
+        fontWeight: 500,
+        background: isActive
+          ? "oklch(0.55 0.12 145 / 0.1)"
+          : "oklch(0.55 0.16 25 / 0.08)",
+        color: isActive ? "var(--color-success)" : "var(--color-error)",
+      }}
+    >
+      <span
+        style={{
+          width: "6px",
+          height: "6px",
+          borderRadius: "var(--radius-full)",
+          background: isActive ? "var(--color-success)" : "var(--color-error)",
+        }}
+      />
+      {statusLabels[status] ?? status}
+    </span>
+  );
+}
+
+function RoleBadge({ role }: { role: string }) {
+  const isOwner = role === "owner" || role === "admin";
+  return (
+    <span
+      className="inline-flex items-center"
+      style={{
+        padding: "2px 8px",
+        borderRadius: "var(--radius-full)",
+        fontSize: "var(--text-xs)",
+        fontWeight: 500,
+        background: isOwner
+          ? "var(--color-accent-lighter)"
+          : "var(--color-neutral-200)",
+        color: isOwner
+          ? "var(--color-accent-dark)"
+          : "var(--color-neutral-600)",
+      }}
+    >
+      {roleLabels[role] ?? role}
+    </span>
+  );
+}
+
+function ActionButton({
+  variant,
+  onClick,
+  children,
+}: {
+  variant: "warning" | "error";
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const isWarning = variant === "warning";
+  const color = isWarning ? "var(--color-warning)" : "var(--color-error)";
+  const hoverBg = isWarning
+    ? "oklch(0.72 0.14 70 / 0.08)"
+    : "oklch(0.55 0.16 25 / 0.06)";
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex cursor-pointer items-center justify-center"
+      style={{
+        gap: "var(--space-sm)",
+        height: "44px",
+        padding: "0 var(--space-lg)",
+        background: "var(--color-bg-page)",
+        color,
+        border: `1px solid ${color}`,
+        borderRadius: "var(--radius-md)",
+        fontFamily: "var(--font-body)",
+        fontSize: "var(--text-sm)",
+        fontWeight: 500,
+        letterSpacing: "var(--tracking-wide)",
+        transition:
+          "background var(--transition-default), color var(--transition-default), transform var(--transition-fast)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = hoverBg;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "var(--color-bg-page)";
+      }}
+    >
+      {children}
+    </button>
   );
 }

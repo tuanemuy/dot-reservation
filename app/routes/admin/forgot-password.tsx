@@ -60,61 +60,100 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
   if (isSubmitted) {
     return (
       <AuthLayout
+        badge="管理画面"
         title="リセットメールを送信しました"
         description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
       >
-        <div className="text-center">
-          <p className="mb-6 text-sm text-text-secondary">
-            メールが届かない場合は、迷惑メールフォルダをご確認ください。
-          </p>
-          <Link
-            to="/admin/login"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            ログインページへ戻る
-          </Link>
-        </div>
+        <p
+          className="text-center"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-600)",
+            marginBottom: "var(--space-lg)",
+          }}
+        >
+          メールが届かない場合は、迷惑メールフォルダをご確認ください。
+        </p>
+        <Link
+          to="/admin/login"
+          className="block text-center font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+        >
+          ログインページへ戻る
+        </Link>
       </AuthLayout>
     );
   }
 
   return (
     <AuthLayout
+      badge="管理画面"
       title="パスワードリセット"
-      description="登録済みのメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。"
+      description="ご登録のメールアドレスを入力してください。パスワード再設定用のリンクをお送りします。"
     >
       <form method="post" {...getFormProps(form)}>
-        <div className="space-y-5">
-          <FormField
-            label="メールアドレス"
-            htmlFor={fields.email.id}
-            error={fields.email.errors}
-            required
+        <FormField
+          label="メールアドレス"
+          htmlFor={fields.email.id}
+          error={fields.email.errors}
+        >
+          <Input
+            {...getInputProps(fields.email, { type: "email" })}
+            placeholder="example@email.com"
+            autoComplete="email"
+            error={fields.email.errors?.[0]}
+          />
+        </FormField>
+
+        {formError && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
           >
-            <Input
-              {...getInputProps(fields.email, { type: "email" })}
-              placeholder="example@email.com"
-              error={fields.email.errors?.[0]}
-            />
-          </FormField>
+            {formError}
+          </p>
+        )}
 
-          {formError && <p className="text-xs text-destructive">{formError}</p>}
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {form.errors}
+          </p>
+        )}
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "送信中..." : "リセットメールを送信"}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "送信中..." : "リセットリンクを送信"}
+        </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm">
-        <Link to="/admin/login" className="text-text-secondary hover:underline">
-          ログインページへ戻る
+      <div
+        className="flex flex-col items-center"
+        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
+      >
+        <Link
+          to="/admin/login"
+          className="no-underline"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-500)",
+          }}
+        >
+          ログインに戻る
         </Link>
-      </p>
+      </div>
     </AuthLayout>
   );
 }

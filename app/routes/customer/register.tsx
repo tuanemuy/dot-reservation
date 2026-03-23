@@ -157,112 +157,176 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
         title="確認メールを送信しました"
         description="メールに記載されたリンクをクリックして、アカウントを有効化してください。"
       >
-        <div className="text-center">
-          <p className="mb-6 text-sm text-text-secondary">
-            メールが届かない場合は、迷惑メールフォルダをご確認ください。
-          </p>
-          <Link
-            to="/customer/login"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            ログインページへ
-          </Link>
-        </div>
+        <p
+          className="text-center"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-600)",
+            marginBottom: "var(--space-lg)",
+          }}
+        >
+          メールが届かない場合は、迷惑メールフォルダをご確認ください。
+        </p>
+        <AuthLink to="/customer/login">ログインページへ</AuthLink>
       </AuthLayout>
     );
   }
 
   return (
-    <AuthLayout title="新規登録">
+    <AuthLayout title="新規会員登録">
       <form id={form.id} onSubmit={handleSubmit} noValidate>
-        <div className="space-y-5">
-          <FormField
-            label="表示名"
-            htmlFor={fields.displayName.id}
-            error={fields.displayName.errors}
-            required
+        <FormField
+          label="表示名"
+          htmlFor={fields.displayName.id}
+          error={fields.displayName.errors}
+        >
+          <Input
+            {...getInputProps(fields.displayName, { type: "text" })}
+            placeholder="例: 田中 太郎"
+            autoComplete="name"
+            error={fields.displayName.errors?.[0]}
+          />
+        </FormField>
+
+        <FormField
+          label="メールアドレス"
+          htmlFor={fields.email.id}
+          error={fields.email.errors}
+        >
+          <Input
+            {...getInputProps(fields.email, { type: "email" })}
+            placeholder="example@email.com"
+            autoComplete="email"
+            error={fields.email.errors?.[0]}
+          />
+        </FormField>
+
+        <FormField
+          label="パスワード"
+          htmlFor={fields.password.id}
+          error={fields.password.errors}
+        >
+          <Input
+            {...getInputProps(fields.password, { type: "password" })}
+            placeholder="8文字以上"
+            autoComplete="new-password"
+            error={fields.password.errors?.[0]}
+          />
+        </FormField>
+
+        <FormField
+          label="パスワード（確認）"
+          htmlFor={fields.passwordConfirmation.id}
+          error={fields.passwordConfirmation.errors}
+        >
+          <Input
+            {...getInputProps(fields.passwordConfirmation, {
+              type: "password",
+            })}
+            placeholder="パスワードを再入力"
+            autoComplete="new-password"
+            error={fields.passwordConfirmation.errors?.[0]}
+          />
+        </FormField>
+
+        {formError && (
+          <div style={{ marginBottom: "var(--space-lg)" }}>
+            <AlertError message={formError} />
+            {formError.includes("既に登録されています") && (
+              <div
+                className="text-center"
+                style={{ marginTop: "var(--space-sm)" }}
+              >
+                <AuthLink to="/customer/login">ログインページへ</AuthLink>
+              </div>
+            )}
+          </div>
+        )}
+
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
           >
-            <Input
-              {...getInputProps(fields.displayName, { type: "text" })}
-              placeholder="山田 太郎"
-              error={fields.displayName.errors?.[0]}
-            />
-          </FormField>
+            {form.errors}
+          </p>
+        )}
 
-          <FormField
-            label="メールアドレス"
-            htmlFor={fields.email.id}
-            error={fields.email.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.email, { type: "email" })}
-              placeholder="example@email.com"
-              error={fields.email.errors?.[0]}
-            />
-          </FormField>
-
-          <FormField
-            label="パスワード"
-            htmlFor={fields.password.id}
-            error={fields.password.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.password, { type: "password" })}
-              placeholder="8文字以上"
-              error={fields.password.errors?.[0]}
-            />
-          </FormField>
-
-          <FormField
-            label="パスワード（確認）"
-            htmlFor={fields.passwordConfirmation.id}
-            error={fields.passwordConfirmation.errors}
-            required
-          >
-            <Input
-              {...getInputProps(fields.passwordConfirmation, {
-                type: "password",
-              })}
-              placeholder="パスワードを再入力"
-              error={fields.passwordConfirmation.errors?.[0]}
-            />
-          </FormField>
-
-          {formError && (
-            <div className="space-y-2">
-              <p className="text-xs text-destructive">{formError}</p>
-              {formError.includes("既に登録されています") && (
-                <Link
-                  to="/customer/login"
-                  className="block text-sm font-medium text-primary hover:underline"
-                >
-                  ログインページへ
-                </Link>
-              )}
-            </div>
-          )}
-
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "登録中..." : "新規登録"}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "登録中..." : "登録する"}
+        </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-text-secondary">
-        すでにアカウントをお持ちですか？{" "}
-        <Link
-          to="/customer/login"
-          className="font-medium text-primary hover:underline"
-        >
-          ログイン
-        </Link>
-      </p>
+      <AuthLink to="/customer/login" style={{ marginTop: "var(--space-lg)" }}>
+        アカウントをお持ちの方はこちら
+      </AuthLink>
     </AuthLayout>
+  );
+}
+
+function AlertError({ message }: { message: string }) {
+  return (
+    <div
+      className="flex items-center"
+      role="alert"
+      style={{
+        gap: "var(--space-sm)",
+        padding: "var(--space-md)",
+        background: "var(--color-error-bg)",
+        border: "1px solid var(--color-error-border)",
+        borderRadius: "var(--radius-md)",
+        fontSize: "var(--text-sm)",
+        color: "var(--color-error)",
+      }}
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        className="shrink-0"
+        style={{ width: "18px", height: "18px" }}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+        />
+      </svg>
+      {message}
+    </div>
+  );
+}
+
+function AuthLink({
+  to,
+  children,
+  style: extraStyle,
+}: {
+  to: string;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <Link
+      to={to}
+      className="block text-center font-medium no-underline"
+      style={{
+        fontSize: "var(--text-sm)",
+        color: "var(--color-primary)",
+        ...extraStyle,
+      }}
+    >
+      {children}
+    </Link>
   );
 }

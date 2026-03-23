@@ -190,14 +190,18 @@ export default function TenantBusinessHoursPage({
   const isPendingAddClosed = fetcher.isPending("addSpecialClosedDay");
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">営業設定</h1>
+    <div className="">
+      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        営業設定
+      </h1>
 
       <div className="max-w-2xl space-y-8">
         {/* 営業時間 */}
-        <section className="rounded-lg border border-gray-200 bg-white p-6">
+        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">営業時間</h2>
+            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              営業時間
+            </h2>
             {editingSection === "hours" ? (
               <div className="flex gap-2">
                 <fetcher.Form method="post">
@@ -214,7 +218,7 @@ export default function TenantBusinessHoursPage({
                   <button
                     type="submit"
                     disabled={isPendingHours}
-                    className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-dark disabled:opacity-50"
                   >
                     {isPendingHours ? "保存中..." : "保存"}
                   </button>
@@ -222,7 +226,7 @@ export default function TenantBusinessHoursPage({
                 <button
                   type="button"
                   onClick={() => setEditingSection(null)}
-                  className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-200"
                 >
                   キャンセル
                 </button>
@@ -231,7 +235,7 @@ export default function TenantBusinessHoursPage({
               <button
                 type="button"
                 onClick={() => setEditingSection("hours")}
-                className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                className="text-sm font-medium text-primary hover:text-primary"
               >
                 編集
               </button>
@@ -245,7 +249,7 @@ export default function TenantBusinessHoursPage({
                 String(hour.dayKey);
               return (
                 <div key={hour.dayKey} className="flex items-center gap-4">
-                  <div className="w-20 text-sm font-medium text-gray-700">
+                  <div className="w-20 text-sm font-medium text-neutral-600">
                     {dayLabel}
                   </div>
                   {editingSection === "hours" ? (
@@ -254,7 +258,7 @@ export default function TenantBusinessHoursPage({
                         type="button"
                         onClick={() => toggleDay(index)}
                         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ${
-                          hour.isOpen ? "bg-blue-600" : "bg-gray-200"
+                          hour.isOpen ? "bg-primary" : "bg-border"
                         }`}
                       >
                         <span
@@ -271,22 +275,22 @@ export default function TenantBusinessHoursPage({
                             onChange={(e) =>
                               updateTime(index, "openTime", e.target.value)
                             }
-                            className="rounded-md border border-gray-300 px-2 py-1 text-sm"
+                            className="rounded-md border border-neutral-300 px-2 py-1 text-sm"
                           />
-                          <span className="text-gray-400">-</span>
+                          <span className="text-neutral-500">-</span>
                           <input
                             type="time"
                             value={hour.closeTime}
                             onChange={(e) =>
                               updateTime(index, "closeTime", e.target.value)
                             }
-                            className="rounded-md border border-gray-300 px-2 py-1 text-sm"
+                            className="rounded-md border border-neutral-300 px-2 py-1 text-sm"
                           />
                         </div>
                       )}
                     </>
                   ) : (
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-neutral-600">
                       {hour.isOpen
                         ? `${hour.openTime} - ${hour.closeTime}`
                         : "休業"}
@@ -299,9 +303,11 @@ export default function TenantBusinessHoursPage({
         </section>
 
         {/* 臨時休業日 */}
-        <section className="rounded-lg border border-gray-200 bg-white p-6">
+        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">臨時休業日</h2>
+            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              臨時休業日
+            </h2>
           </div>
 
           {/* 追加フォーム */}
@@ -310,7 +316,7 @@ export default function TenantBusinessHoursPage({
             <div>
               <label
                 htmlFor="closedDate"
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 日付
               </label>
@@ -319,13 +325,13 @@ export default function TenantBusinessHoursPage({
                 name="date"
                 type="date"
                 required
-                className="mt-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="mt-1 rounded-md border border-neutral-300 px-3 py-2 text-sm"
               />
             </div>
             <div className="flex-1">
               <label
                 htmlFor="closedReason"
-                className="block text-sm font-medium text-gray-700"
+                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
               >
                 理由
               </label>
@@ -333,14 +339,14 @@ export default function TenantBusinessHoursPage({
                 id="closedReason"
                 name="reason"
                 type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
                 placeholder="例: 臨時休業"
               />
             </div>
             <button
               type="submit"
               disabled={isPendingAddClosed}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
             >
               追加
             </button>
@@ -348,7 +354,7 @@ export default function TenantBusinessHoursPage({
 
           {/* 一覧 */}
           {tenant.temporaryHolidays.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-neutral-500">
               臨時休業日は設定されていません
             </p>
           ) : (
@@ -359,14 +365,14 @@ export default function TenantBusinessHoursPage({
                 return (
                   <div
                     key={day.date}
-                    className="flex items-center justify-between rounded-md bg-gray-50 px-4 py-3"
+                    className="flex items-center justify-between rounded-md bg-neutral-200 px-4 py-3"
                   >
                     <div>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-neutral-800">
                         {dateStr}
                       </span>
                       {day.reason && (
-                        <span className="ml-3 text-sm text-gray-500">
+                        <span className="ml-3 text-sm text-neutral-500">
                           {day.reason}
                         </span>
                       )}
@@ -380,7 +386,7 @@ export default function TenantBusinessHoursPage({
                       <input type="hidden" name="date" value={isoDate} />
                       <button
                         type="submit"
-                        className="text-sm text-red-600 hover:text-red-500"
+                        className="text-sm text-destructive hover:text-destructive"
                       >
                         削除
                       </button>

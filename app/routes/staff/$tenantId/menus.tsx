@@ -1,9 +1,4 @@
-import { useState } from "react";
 import { data, redirect } from "react-router";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
-import { Modal } from "@/components/ui/Modal";
 import type { MenuDetail } from "@/core/application/menu/listMenus";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { getStaffProfileByMemberId } from "@/core/application/staff/getStaffProfileByMemberId";
@@ -23,7 +18,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
   const tenantId = params.tenantId;
 
-  // Get authenticated staff profile
   const session = await container.authProvider.getSession(request.headers);
   if (!session) {
     throw redirect("/admin/login");
@@ -50,7 +44,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
-  // Get all menus for the tenant
   const allMenusResult = await handleUseCase(() =>
     listMenus({
       container,
@@ -62,7 +55,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     () => [] as MenuDetail[],
   );
 
-  // Filter to only assigned menus
   const assignedMenuIds = new Set(myProfile.assignedMenus.map((m) => m.id));
 
   const menus: AssignedMenu[] = allMenusResult
@@ -81,116 +73,111 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
 export default function StaffMenusPage({ loaderData }: Route.ComponentProps) {
   const { menus } = loaderData;
-  const [selectedMenu, setSelectedMenu] = useState<AssignedMenu | null>(null);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold text-text">担当メニュー</h1>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
+          担当メニュー
+        </h1>
+        <p className="mt-1 text-sm text-text-muted">
+          現在担当しているメニューの一覧です
+        </p>
+      </div>
 
       {menus.length === 0 ? (
-        <Card>
-          <CardBody className="py-8 text-center">
-            <p className="text-sm text-text-secondary">
-              担当メニューが設定されていません。
-            </p>
-            <p className="mt-1 text-xs text-text-muted">
-              管理者にお問い合わせください。
-            </p>
-          </CardBody>
-        </Card>
+        <div className="rounded-[14px] border border-border bg-white p-8 text-center">
+          <p className="text-sm text-text-secondary">
+            担当メニューが設定されていません。
+          </p>
+          <p className="mt-1 text-xs text-text-muted">
+            管理者にお問い合わせください。
+          </p>
+        </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-8 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
           {menus.map((menu) => (
-            <button
+            <div
               key={menu.id}
-              type="button"
-              onClick={() => setSelectedMenu(menu)}
-              className="text-left"
+              className="rounded-[14px] border border-border bg-white p-6 transition-all duration-150 hover:border-neutral-400 hover:shadow-sm"
             >
-              <Card className="h-full transition-colors hover:border-primary/30">
-                <CardBody>
-                  <div className="mb-2 flex items-start justify-between">
-                    <h3 className="text-sm font-semibold text-text">
-                      {menu.name}
-                    </h3>
-                    {menu.category && <Badge>{menu.category}</Badge>}
-                  </div>
-                  {menu.description && (
-                    <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-text-secondary">
-                      {menu.description}
-                    </p>
-                  )}
-                  <div className="flex items-center gap-3 text-xs text-text-secondary">
-                    <span>{menu.duration}分</span>
-                    <span>&yen;{menu.price.toLocaleString()}</span>
-                  </div>
-                </CardBody>
-              </Card>
-            </button>
+              <div className="mb-4 flex items-start justify-between">
+                <h3 className="font-heading text-lg font-semibold tracking-tight text-neutral-900">
+                  {menu.name}
+                </h3>
+                {menu.category && (
+                  <span className="inline-flex items-center whitespace-nowrap rounded-full bg-primary-lighter px-2.5 py-0.5 text-xs font-medium text-primary">
+                    {menu.category}
+                  </span>
+                )}
+              </div>
+              <div className="mb-4 flex gap-6">
+                <div className="flex items-center gap-1 text-sm text-text-secondary">
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 text-text-muted"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                  {menu.duration}分
+                </div>
+                <div className="flex items-center gap-1 text-sm font-semibold text-accent-dark">
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 text-text-muted"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                  {menu.price.toLocaleString()}円
+                </div>
+              </div>
+              {menu.description && (
+                <p className="text-sm leading-[1.9] text-text-secondary">
+                  {menu.description}
+                </p>
+              )}
+            </div>
           ))}
         </div>
       )}
 
-      <Modal
-        open={selectedMenu !== null}
-        onClose={() => setSelectedMenu(null)}
-        title={selectedMenu?.name ?? "メニュー詳細"}
-      >
-        {selectedMenu && (
-          <div className="space-y-4">
-            {selectedMenu.category && (
-              <div>
-                <span className="text-xs font-medium text-text-secondary">
-                  カテゴリー
-                </span>
-                <p className="mt-0.5 text-sm text-text">
-                  {selectedMenu.category}
-                </p>
-              </div>
-            )}
-
-            {selectedMenu.description && (
-              <div>
-                <span className="text-xs font-medium text-text-secondary">
-                  説明
-                </span>
-                <p className="mt-0.5 text-sm text-text">
-                  {selectedMenu.description}
-                </p>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <span className="text-xs font-medium text-text-secondary">
-                  所要時間
-                </span>
-                <p className="mt-0.5 text-sm text-text">
-                  {selectedMenu.duration}分
-                </p>
-              </div>
-              <div>
-                <span className="text-xs font-medium text-text-secondary">
-                  料金
-                </span>
-                <p className="mt-0.5 text-sm text-text">
-                  &yen;{selectedMenu.price.toLocaleString()}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setSelectedMenu(null)}
-              >
-                閉じる
-              </Button>
-            </div>
-          </div>
-        )}
-      </Modal>
+      {/* Info Note */}
+      <div className="flex items-center gap-2 rounded-[14px] border border-border bg-surface px-6 py-4">
+        <svg
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+          className="h-[18px] w-[18px] shrink-0 text-info"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+          />
+        </svg>
+        <span className="text-sm text-text-secondary">
+          担当メニューの変更は管理者にお問い合わせください
+        </span>
+      </div>
     </div>
   );
 }

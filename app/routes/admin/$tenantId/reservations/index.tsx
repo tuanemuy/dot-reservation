@@ -58,11 +58,14 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 }
 
 const statusLabels: Record<string, { text: string; className: string }> = {
-  pending: { text: "承認待ち", className: "bg-yellow-100 text-yellow-800" },
-  confirmed: { text: "確定", className: "bg-green-100 text-green-800" },
-  cancelled: { text: "キャンセル", className: "bg-red-100 text-red-800" },
-  completed: { text: "完了", className: "bg-gray-100 text-gray-800" },
-  rejected: { text: "却下", className: "bg-red-100 text-red-800" },
+  pending: { text: "承認待ち", className: "bg-warning/10 text-warning" },
+  confirmed: { text: "確定", className: "bg-success/10 text-success" },
+  cancelled: {
+    text: "キャンセル",
+    className: "bg-destructive/10 text-destructive",
+  },
+  completed: { text: "完了", className: "bg-neutral-200 text-neutral-800" },
+  rejected: { text: "却下", className: "bg-destructive/10 text-destructive" },
 };
 
 export default function TenantReservationsPage({
@@ -77,12 +80,12 @@ export default function TenantReservationsPage({
   const statusFilter = searchParams.get("status") || "all";
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">予約管理</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">予約管理</h1>
         <Link
           to={`/admin/${tenantId}/reservations/new`}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
         >
           代理予約を登録
         </Link>
@@ -90,9 +93,9 @@ export default function TenantReservationsPage({
 
       {/* 承認待ちバナー */}
       {pendingCount > 0 && (
-        <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+        <div className="mb-6 rounded-lg border border-warning/20 bg-warning/10 p-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-yellow-800">
+            <p className="text-sm font-medium text-warning">
               承認待ちの予約が {pendingCount} 件あります
             </p>
             <button
@@ -101,7 +104,7 @@ export default function TenantReservationsPage({
                 searchParams.set("status", "pending");
                 setSearchParams(searchParams);
               }}
-              className="text-sm font-medium text-yellow-800 underline hover:text-yellow-900"
+              className="text-sm font-medium text-warning underline hover:text-warning"
             >
               表示する
             </button>
@@ -113,14 +116,14 @@ export default function TenantReservationsPage({
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           {/* 表示切替 */}
-          <div className="flex rounded-md border border-gray-300">
+          <div className="flex rounded-md border border-neutral-300">
             <button
               type="button"
               onClick={() => setViewMode("list")}
               className={`px-3 py-1.5 text-sm font-medium ${
                 viewMode === "list"
-                  ? "bg-gray-900 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  ? "bg-text text-white"
+                  : "bg-white text-neutral-600 hover:bg-neutral-200"
               } rounded-l-md`}
             >
               リスト
@@ -130,8 +133,8 @@ export default function TenantReservationsPage({
               onClick={() => setViewMode("calendar")}
               className={`px-3 py-1.5 text-sm font-medium ${
                 viewMode === "calendar"
-                  ? "bg-gray-900 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  ? "bg-text text-white"
+                  : "bg-white text-neutral-600 hover:bg-neutral-200"
               } rounded-r-md`}
             >
               カレンダー
@@ -149,7 +152,7 @@ export default function TenantReservationsPage({
               }
               setSearchParams(searchParams);
             }}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600"
           >
             <option value="all">すべてのステータス</option>
             <option value="pending">承認待ち</option>
@@ -164,39 +167,39 @@ export default function TenantReservationsPage({
       {/* リスト表示 */}
       {viewMode === "list" ? (
         reservations.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-            <p className="text-gray-500">予約はありません</p>
+          <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-12 text-center">
+            <p className="text-neutral-500">予約はありません</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="bg-neutral-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     ステータス
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     顧客名
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     メニュー
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     担当スタッフ
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                     予約日時
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-border">
                 {reservations.map((reservation) => {
                   const status = statusLabels[reservation.status] ?? {
                     text: reservation.status,
-                    className: "bg-gray-100 text-gray-800",
+                    className: "bg-neutral-200 text-neutral-800",
                   };
                   return (
-                    <tr key={reservation.id} className="hover:bg-gray-50">
+                    <tr key={reservation.id} className="hover:bg-neutral-200">
                       <td className="whitespace-nowrap px-6 py-4">
                         <span
                           className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${status.className}`}
@@ -204,21 +207,21 @@ export default function TenantReservationsPage({
                           {status.text}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-800">
                         <Link
                           to={`/admin/${tenantId}/reservations/${reservation.id}`}
-                          className="hover:text-blue-600"
+                          className="hover:text-primary"
                         >
                           {reservation.customerName ?? "-"}
                         </Link>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                         {reservation.menuName}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                         {reservation.staffName ?? "-"}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                         {reservation.date} {reservation.startTime}
                       </td>
                     </tr>
@@ -230,8 +233,8 @@ export default function TenantReservationsPage({
         )
       ) : (
         /* カレンダー表示 */
-        <div className="rounded-lg border border-gray-200 bg-white p-8">
-          <div className="flex min-h-96 items-center justify-center text-gray-400">
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-8">
+          <div className="flex min-h-96 items-center justify-center text-neutral-500">
             <p>週表示の予約カレンダーがここに表示されます</p>
           </div>
         </div>

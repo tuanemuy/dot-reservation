@@ -170,13 +170,13 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
       : shifts.filter((s) => s.staffProfileId === staffFilter);
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">シフト管理</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">シフト管理</h1>
         <button
           type="button"
           onClick={() => setShowAddForm(true)}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
         >
           シフトを追加
         </button>
@@ -184,8 +184,8 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
 
       {/* シフト追加フォーム */}
       {showAddForm && (
-        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">
+        <div className="mb-6 rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
             シフト登録
           </h2>
           <fetcher.Form method="post" className="space-y-4">
@@ -195,7 +195,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
               <div>
                 <label
                   htmlFor="shiftStaff"
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   スタッフ
                 </label>
@@ -203,7 +203,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                   id="shiftStaff"
                   name="staffId"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 >
                   <option value="">選択してください</option>
                   {staffList.map((staff) => (
@@ -217,7 +217,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
               <div>
                 <label
                   htmlFor="shiftDate"
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   日付
                 </label>
@@ -226,7 +226,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                   name="date"
                   type="date"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 />
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
               <div>
                 <label
                   htmlFor="shiftStartTime"
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   開始時刻
                 </label>
@@ -244,14 +244,14 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                   name="startTime"
                   type="time"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="shiftEndTime"
-                  className="block text-sm font-medium text-gray-700"
+                  className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
                 >
                   終了時刻
                 </label>
@@ -260,7 +260,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                   name="endTime"
                   type="time"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 />
               </div>
             </div>
@@ -270,9 +270,9 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                 <input
                   type="checkbox"
                   name="isRecurring"
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-gray-700">繰り返しシフト</span>
+                <span className="text-sm text-neutral-600">繰り返しシフト</span>
               </label>
             </div>
 
@@ -280,14 +280,14 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
               >
                 キャンセル
               </button>
               <button
                 type="submit"
                 disabled={isPendingAdd}
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPendingAdd ? "登録中..." : "シフトを登録"}
               </button>
@@ -300,14 +300,14 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           {/* 表示切替 */}
-          <div className="flex rounded-md border border-gray-300">
+          <div className="flex rounded-md border border-neutral-300">
             <button
               type="button"
               onClick={() => setViewMode("week")}
               className={`px-3 py-1.5 text-sm font-medium ${
                 viewMode === "week"
-                  ? "bg-gray-900 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  ? "bg-text text-white"
+                  : "bg-white text-neutral-600 hover:bg-neutral-200"
               } rounded-l-md`}
             >
               週表示
@@ -317,8 +317,8 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
               onClick={() => setViewMode("month")}
               className={`px-3 py-1.5 text-sm font-medium ${
                 viewMode === "month"
-                  ? "bg-gray-900 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  ? "bg-text text-white"
+                  : "bg-white text-neutral-600 hover:bg-neutral-200"
               } rounded-r-md`}
             >
               月表示
@@ -329,7 +329,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
           <select
             value={staffFilter}
             onChange={(e) => setStaffFilter(e.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600"
           >
             <option value="all">全スタッフ</option>
             {staffList.map((staff) => (
@@ -343,44 +343,44 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
 
       {/* シフト一覧 */}
       {filteredShifts.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-8">
-          <div className="flex min-h-48 items-center justify-center text-gray-400">
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-8">
+          <div className="flex min-h-48 items-center justify-center text-neutral-500">
             <p>表示するシフトがありません</p>
           </div>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-neutral-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   日付
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   スタッフ
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   時間
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-neutral-500">
                   操作
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {filteredShifts.map((shift) => {
                 const staffName =
                   staffList.find((s) => s.id === shift.staffProfileId)
                     ?.displayName ?? "-";
                 return (
-                  <tr key={shift.id} className="hover:bg-gray-50">
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                  <tr key={shift.id} className="hover:bg-neutral-200">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {shift.date}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {staffName}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                       {shift.startTime} - {shift.endTime}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
@@ -398,7 +398,7 @@ export default function TenantShiftsPage({ loaderData }: Route.ComponentProps) {
                         />
                         <button
                           type="submit"
-                          className="font-medium text-red-600 hover:text-red-500"
+                          className="font-medium text-destructive hover:text-destructive"
                         >
                           削除
                         </button>

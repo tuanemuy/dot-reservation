@@ -54,11 +54,23 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 }
 
 const statusLabels: Record<string, { text: string; className: string }> = {
-  pending: { text: "承認待ち", className: "bg-yellow-100 text-yellow-800" },
-  confirmed: { text: "確定", className: "bg-green-100 text-green-800" },
-  cancelled: { text: "キャンセル", className: "bg-red-100 text-red-800" },
-  completed: { text: "完了", className: "bg-gray-100 text-gray-800" },
-  rejected: { text: "却下", className: "bg-red-100 text-red-800" },
+  pending: {
+    text: "承認待ち",
+    className: "bg-[var(--color-warning-bg)] text-warning",
+  },
+  confirmed: {
+    text: "確定",
+    className: "bg-[var(--color-success-bg)] text-success",
+  },
+  cancelled: {
+    text: "キャンセル",
+    className: "bg-[var(--color-error-bg)] text-error",
+  },
+  completed: { text: "完了", className: "bg-neutral-200 text-neutral-600" },
+  rejected: {
+    text: "却下",
+    className: "bg-[var(--color-error-bg)] text-error",
+  },
 };
 
 export default function TenantDashboardPage({
@@ -69,19 +81,36 @@ export default function TenantDashboardPage({
   const tenantId = params.tenantId;
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">ダッシュボード</h1>
+    <div>
+      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        ダッシュボード
+      </h1>
 
-      {/* 通知バナー */}
       {pendingCount > 0 && (
-        <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+        <div className="mb-[var(--space-lg)] rounded-[var(--radius-lg)] border border-[var(--color-warning-border)] bg-[var(--color-warning-bg)] px-[var(--space-xl)] py-[var(--space-md)]">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-yellow-800">
-              承認待ちの予約が {pendingCount} 件あります
-            </p>
+            <div className="flex items-center gap-[var(--space-sm)]">
+              <svg
+                className="h-5 w-5 text-warning"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                />
+              </svg>
+              <p className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-warning">
+                承認待ちの予約が {pendingCount} 件あります
+              </p>
+            </div>
             <Link
               to={`/admin/${tenantId}/reservations?status=pending`}
-              className="text-sm font-medium text-yellow-800 underline hover:text-yellow-900"
+              className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-warning underline"
             >
               確認する
             </Link>
@@ -89,67 +118,77 @@ export default function TenantDashboardPage({
         </div>
       )}
 
-      {/* 当日の予約サマリー */}
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">本日の予約</h2>
+        <div className="mb-[var(--space-md)] flex items-center justify-between">
+          <h2 className="font-[var(--font-heading)] text-[length:var(--text-xl)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            本日の予約
+          </h2>
           <Link
             to={`/admin/${tenantId}/reservations`}
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-primary transition-colors hover:text-primary-dark"
           >
             すべての予約を見る
           </Link>
         </div>
 
         {todayReservations.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-            <p className="text-gray-500">本日の予約はありません</p>
+          <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-3xl)] text-center">
+            <p className="text-[length:var(--text-base)] text-neutral-500">
+              本日の予約はありません
+            </p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+            <table className="w-full border-collapse">
+              <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
                     時間
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
                     顧客名
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
                     メニュー
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
                     担当
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
                     ステータス
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {todayReservations.map((reservation) => {
+              <tbody>
+                {todayReservations.map((reservation, i) => {
                   const status = statusLabels[reservation.status] ?? {
                     text: reservation.status,
-                    className: "bg-gray-100 text-gray-800",
+                    className: "bg-neutral-200 text-neutral-600",
                   };
                   return (
-                    <tr key={reservation.id} className="hover:bg-gray-50">
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                    <tr
+                      key={reservation.id}
+                      className={`transition-colors hover:bg-neutral-50 ${
+                        i < todayReservations.length - 1
+                          ? "border-b border-neutral-200"
+                          : ""
+                      }`}
+                    >
+                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
                         {reservation.startTime}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
                         {reservation.customerName ?? "-"}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
                         {reservation.menuName}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
                         {reservation.staffName ?? "-"}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">
+                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)]">
                         <span
-                          className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${status.className}`}
+                          className={`inline-flex rounded-full px-2.5 py-1 text-[length:var(--text-xs)] font-[var(--weight-medium)] ${status.className}`}
                         >
                           {status.text}
                         </span>

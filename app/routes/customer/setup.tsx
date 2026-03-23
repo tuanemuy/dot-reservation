@@ -107,40 +107,51 @@ export default function CustomerSetupPage({
       <fetcher.Form method="post" {...getFormProps(form)}>
         <input type="hidden" name="intent" value="setup" />
 
-        <div className="space-y-5">
-          <FormField label="メールアドレス" htmlFor="setup-email-display">
-            <Input
-              id="setup-email-display"
-              type="email"
-              value={email}
-              disabled
-            />
-            <p className="mt-1 text-xs text-text-secondary">
-              認証アカウントのメールアドレスが使用されます
-            </p>
-          </FormField>
-
-          <FormField
-            label="表示名"
-            htmlFor={fields.displayName.id}
-            error={fields.displayName.errors}
-            required
+        <FormField label="メールアドレス" htmlFor="setup-email-display">
+          <Input id="setup-email-display" type="email" value={email} disabled />
+          <p
+            style={{
+              marginTop: "var(--space-xs)",
+              fontSize: "var(--text-xs)",
+              color: "var(--color-neutral-500)",
+            }}
           >
-            <Input
-              {...getInputProps(fields.displayName, { type: "text" })}
-              placeholder="山田 太郎"
-              error={fields.displayName.errors?.[0]}
-            />
-          </FormField>
+            認証アカウントのメールアドレスが使用されます
+          </p>
+        </FormField>
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
+        <FormField
+          label="表示名"
+          htmlFor={fields.displayName.id}
+          error={fields.displayName.errors}
+        >
+          <Input
+            {...getInputProps(fields.displayName, { type: "text" })}
+            placeholder="山田 太郎"
+            error={fields.displayName.errors?.[0]}
+          />
+        </FormField>
 
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "作成中..." : "プロフィールを作成"}
-          </Button>
-        </div>
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {form.errors}
+          </p>
+        )}
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "作成中..." : "プロフィールを作成"}
+        </Button>
       </fetcher.Form>
     </AuthLayout>
   );

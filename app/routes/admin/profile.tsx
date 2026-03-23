@@ -3,10 +3,6 @@ import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { type FormEvent, useRef, useState } from "react";
 import { redirect } from "react-router";
 import { z } from "zod";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
-import { FormField } from "@/components/ui/FormField";
-import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { deleteMemberAccount } from "@/core/application/member/deleteMemberAccount";
 import { updateMemberProfile } from "@/core/application/member/updateMemberProfile";
@@ -197,20 +193,13 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
     },
   });
 
-  fetcher.register("updateProfile", {
-    onHandlerError: ({ error: err }) => {
-      console.error("Profile update failed:", err);
-    },
-  });
+  fetcher.register("updateProfile", {});
 
   fetcher.register("deleteAccount", {
     onSuccess: async () => {
       const { authClient } = await import("@/lib/authClient");
       await authClient.signOut();
       window.location.href = "/admin/login";
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Account deletion failed:", err);
     },
   });
 
@@ -252,206 +241,290 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
   const isPendingDelete = fetcher.isPending("deleteAccount");
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="mb-6 text-2xl font-bold text-text">プロフィール設定</h1>
+    <div>
+      <div className="mb-[var(--space-xl)]">
+        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+          プロフィール設定
+        </h1>
+        <p className="mt-[var(--space-xs)] text-[length:var(--text-sm)] text-neutral-500">
+          メンバーアカウントの情報を管理します
+        </p>
+      </div>
 
-        <Card>
-          <CardBody>
-            <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
+      <div className="space-y-[var(--space-xl)]">
+        {/* Profile Section */}
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
+            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              基本情報
+            </h2>
+          </div>
+          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
             <fetcher.Form method="post" {...getFormProps(profileForm)}>
               <input type="hidden" name="intent" value="updateProfile" />
-
-              <div className="space-y-5">
-                <FormField
-                  label="氏名"
-                  htmlFor={profileFields.name.id}
-                  error={profileFields.name.errors}
-                  required
-                >
-                  <Input
+              <div className="grid grid-cols-2 gap-[var(--space-lg)]">
+                <div>
+                  <label
+                    htmlFor={profileFields.name.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    氏名
+                  </label>
+                  <input
                     {...getInputProps(profileFields.name, { type: "text" })}
-                    error={profileFields.name.errors?.[0]}
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
-                </FormField>
+                  {profileFields.name.errors && (
+                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                      {profileFields.name.errors}
+                    </p>
+                  )}
+                </div>
 
-                <FormField
-                  label="メールアドレス"
-                  htmlFor={profileFields.email.id}
-                  error={profileFields.email.errors}
-                  required
-                >
-                  <Input
+                <div>
+                  <label
+                    htmlFor={profileFields.email.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    メールアドレス
+                  </label>
+                  <input
                     {...getInputProps(profileFields.email, { type: "email" })}
-                    error={profileFields.email.errors?.[0]}
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
-                </FormField>
+                  {profileFields.email.errors && (
+                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                      {profileFields.email.errors}
+                    </p>
+                  )}
+                </div>
 
-                <FormField
-                  label="電話番号"
-                  htmlFor={profileFields.phoneNumber.id}
-                >
-                  <Input
+                <div className="col-span-2">
+                  <label
+                    htmlFor={profileFields.phoneNumber.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    電話番号
+                  </label>
+                  <input
                     {...getInputProps(profileFields.phoneNumber, {
                       type: "tel",
                     })}
                     placeholder="090-1234-5678"
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
-                </FormField>
-
-                {profileForm.errors && (
-                  <p className="text-xs text-destructive">
-                    {profileForm.errors}
-                  </p>
-                )}
-
-                <Button type="submit" disabled={isPendingProfile}>
-                  {isPendingProfile ? "更新中..." : "更新する"}
-                </Button>
+                </div>
               </div>
+
+              {profileForm.errors && (
+                <p className="mt-2 text-[length:var(--text-xs)] text-error">
+                  {profileForm.errors}
+                </p>
+              )}
             </fetcher.Form>
-          </CardBody>
-        </Card>
-      </div>
+          </div>
+          <div className="flex justify-end gap-[var(--space-sm)] border-t border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)]">
+            <button
+              type="submit"
+              form="admin-profile-form"
+              disabled={isPendingProfile}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+            >
+              {isPendingProfile ? "更新中..." : "保存する"}
+            </button>
+          </div>
+        </div>
 
-      <Card>
-        <CardBody>
-          <h2 className="mb-4 text-lg font-semibold text-text">
-            パスワード変更
-          </h2>
-          <form
-            ref={passwordFormRef}
-            {...getFormProps(passwordForm)}
-            onSubmit={handlePasswordSubmit}
-          >
-            <div className="space-y-5">
-              <FormField
-                label="現在のパスワード"
-                htmlFor={passwordFields.currentPassword.id}
-                error={passwordFields.currentPassword.errors}
-                required
-              >
-                <Input
-                  {...getInputProps(passwordFields.currentPassword, {
-                    type: "password",
-                  })}
-                  error={passwordFields.currentPassword.errors?.[0]}
-                />
-              </FormField>
+        {/* Password Section */}
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
+            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              パスワード変更
+            </h2>
+          </div>
+          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
+            <form
+              ref={passwordFormRef}
+              {...getFormProps(passwordForm)}
+              onSubmit={handlePasswordSubmit}
+            >
+              <div className="grid grid-cols-2 gap-[var(--space-lg)]">
+                <div className="col-span-2">
+                  <label
+                    htmlFor={passwordFields.currentPassword.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    現在のパスワード
+                  </label>
+                  <input
+                    {...getInputProps(passwordFields.currentPassword, {
+                      type: "password",
+                    })}
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  />
+                  {passwordFields.currentPassword.errors && (
+                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                      {passwordFields.currentPassword.errors}
+                    </p>
+                  )}
+                </div>
 
-              <FormField
-                label="新しいパスワード"
-                htmlFor={passwordFields.newPassword.id}
-                error={passwordFields.newPassword.errors}
-                required
-              >
-                <Input
-                  {...getInputProps(passwordFields.newPassword, {
-                    type: "password",
-                  })}
-                  placeholder="8文字以上"
-                  error={passwordFields.newPassword.errors?.[0]}
-                />
-              </FormField>
+                <div>
+                  <label
+                    htmlFor={passwordFields.newPassword.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    新しいパスワード
+                  </label>
+                  <input
+                    {...getInputProps(passwordFields.newPassword, {
+                      type: "password",
+                    })}
+                    placeholder="8文字以上"
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  />
+                  {passwordFields.newPassword.errors && (
+                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                      {passwordFields.newPassword.errors}
+                    </p>
+                  )}
+                </div>
 
-              <FormField
-                label="新しいパスワード（確認）"
-                htmlFor={passwordFields.newPasswordConfirmation.id}
-                error={passwordFields.newPasswordConfirmation.errors}
-                required
-              >
-                <Input
-                  {...getInputProps(passwordFields.newPasswordConfirmation, {
-                    type: "password",
-                  })}
-                  error={passwordFields.newPasswordConfirmation.errors?.[0]}
-                />
-              </FormField>
+                <div>
+                  <label
+                    htmlFor={passwordFields.newPasswordConfirmation.id}
+                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                  >
+                    新しいパスワード（確認）
+                  </label>
+                  <input
+                    {...getInputProps(passwordFields.newPasswordConfirmation, {
+                      type: "password",
+                    })}
+                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  />
+                  {passwordFields.newPasswordConfirmation.errors && (
+                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                      {passwordFields.newPasswordConfirmation.errors}
+                    </p>
+                  )}
+                </div>
+              </div>
 
               {passwordError && (
-                <p className="text-xs text-destructive">{passwordError}</p>
+                <p className="mt-2 text-[length:var(--text-xs)] text-error">
+                  {passwordError}
+                </p>
               )}
-
               {passwordSuccess && (
-                <p className="text-xs text-green-600">
+                <p className="mt-2 text-[length:var(--text-xs)] text-success">
                   パスワードを変更しました
                 </p>
               )}
-
               {passwordForm.errors && (
-                <p className="text-xs text-destructive">
+                <p className="mt-2 text-[length:var(--text-xs)] text-error">
                   {passwordForm.errors}
                 </p>
               )}
+            </form>
+          </div>
+          <div className="flex justify-end gap-[var(--space-sm)] border-t border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)]">
+            <button
+              type="submit"
+              form="admin-password-form"
+              disabled={isPendingPassword}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+            >
+              {isPendingPassword ? "変更中..." : "パスワードを変更"}
+            </button>
+          </div>
+        </div>
 
-              <Button type="submit" disabled={isPendingPassword}>
-                {isPendingPassword ? "変更中..." : "パスワードを変更"}
-              </Button>
+        {/* Danger Zone */}
+        <div className="rounded-[var(--radius-lg)] border border-error bg-white">
+          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
+            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-error">
+              アカウント削除
+            </h2>
+          </div>
+          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
+            <div className="mb-[var(--space-lg)] flex items-start gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-[var(--color-error-bg)] p-[var(--space-md)] text-[length:var(--text-sm)] leading-[var(--leading-normal)] text-error">
+              <svg
+                className="mt-0.5 h-[18px] w-[18px] shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                />
+              </svg>
+              アカウントを削除すると、すべてのデータが完全に削除されます。この操作は取り消せません。唯一の管理者の場合は削除できません。
             </div>
-          </form>
-        </CardBody>
-      </Card>
-
-      <Card className="border-destructive/30">
-        <CardBody>
-          <h2 className="mb-2 text-lg font-semibold text-destructive">
-            アカウント削除
-          </h2>
-          <p className="mb-4 text-sm text-text-secondary">
-            アカウントを削除すると、すべてのデータが完全に削除されます。この操作は取り消せません。唯一の管理者の場合は削除できません。
-          </p>
-          <Button
-            variant="destructive"
-            onClick={() => setShowDeleteDialog(true)}
-          >
-            アカウントを削除する
-          </Button>
-        </CardBody>
-      </Card>
+            <button
+              type="button"
+              onClick={() => setShowDeleteDialog(true)}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-error transition-[background,color,transform] duration-[0.15s] ease-[ease] hover:bg-error hover:text-white active:scale-[0.99]"
+            >
+              アカウントを削除する
+            </button>
+          </div>
+        </div>
+      </div>
 
       <Modal
         open={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}
         title="本当にアカウントを削除しますか？"
       >
-        <p className="mb-4 text-sm text-text-secondary">
+        <p className="mb-4 text-[length:var(--text-sm)] text-neutral-600">
           この操作は取り消せません。確認のためパスワードを入力してください。
         </p>
         <fetcher.Form method="post" {...getFormProps(deleteForm)}>
           <input type="hidden" name="intent" value="deleteAccount" />
           <div className="mb-4">
-            <FormField
-              label="パスワード"
+            <label
               htmlFor={deleteFields.password.id}
-              error={deleteFields.password.errors}
-              required
+              className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
             >
-              <Input
-                {...getInputProps(deleteFields.password, {
-                  type: "password",
-                })}
-                error={deleteFields.password.errors?.[0]}
-              />
-            </FormField>
+              パスワード
+            </label>
+            <input
+              {...getInputProps(deleteFields.password, {
+                type: "password",
+              })}
+              className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color] duration-[0.15s] ease-[ease] focus:border-error focus:outline-2 focus:outline-offset-2 focus:outline-error"
+            />
+            {deleteFields.password.errors && (
+              <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                {deleteFields.password.errors}
+              </p>
+            )}
           </div>
           {deleteForm.errors && (
-            <p className="mb-4 text-xs text-destructive">{deleteForm.errors}</p>
+            <p className="mb-4 text-[length:var(--text-xs)] text-error">
+              {deleteForm.errors}
+            </p>
           )}
           <div className="flex justify-end gap-3">
-            <Button
+            <button
               type="button"
-              variant="outline"
               onClick={() => setShowDeleteDialog(false)}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
             >
               キャンセル
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
-              variant="destructive"
               disabled={isPendingDelete}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-error transition-[background,color] hover:bg-error hover:text-white disabled:opacity-50"
             >
               {isPendingDelete ? "削除中..." : "削除する"}
-            </Button>
+            </button>
           </div>
         </fetcher.Form>
       </Modal>

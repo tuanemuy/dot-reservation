@@ -61,30 +61,29 @@
 - [x] プラットフォーム管理画面
 - [x] better-auth クライアント設定 (authClient 初期化)
 - [x] better-auth API ルート (app/routes/api.auth.$.ts)
-- [x] 顧客プロフィール作成ページ (/customer/setup) — クロス登録用
-- [x] 管理画面プロフィール作成ページ (/admin/setup) — クロス登録用
-- [x] 顧客認証ページ更新 (signUp/signIn/signOut/forgetPassword/resetPassword 実装)
+- [x] 顧客プロフィール作成ページ (/customer/setup)
+- [x] 管理画面プロフィール作成ページ (/admin/setup)
+- [x] 顧客認証ページ更新 (signUp/signIn/signOut/forgetPassword/resetPassword)
 - [x] 管理画面認証ページ更新 (同上)
 - [x] プラットフォーム認証ページ更新 (同上)
 - [x] ルートローダー更新 (authProvider.getSession によるセッション検証)
 - [x] 登録ページ更新 (メール登録済み時のログイン誘導)
 - [x] プラットフォーム管理画面ユースケース接続 (dashboard/users/tenants)
 - [x] 管理画面共通ページユースケース接続 (tenants/new-tenant/invitations/profile/notifications/members)
-- [x] スタッフルート認証修正 (items[0] → 認証メンバーのスタッフプロフィール取得)
-- [x] 顧客マイページ認証修正 (x-customer-id ヘッダー → authProvider.getSession)
-- [x] プラットフォーム管理画面スタブ解消 (memberCount, stats, createdAt を実データに)
-- [x] 管理画面通知フィルター修正 (サーバーサイドフィルタリング + 正しいページネーション)
-- [x] 管理画面招待者名修正 (inviterName をメンバーリポジトリから取得)
-- [x] パスワード変更をクライアントサイド実装 (authClient.changePassword())
-- [x] 予約ページ認証修正 (shop.$urlPath.reserve.tsx の authProvider 統合)
-
-- [x] 管理画面通知マルチテナント集約 (全テナントメンバーシップの通知を横断表示)
+- [x] スタッフルート認証修正
+- [x] 顧客マイページ認証修正
+- [x] プラットフォーム管理画面スタブ解消
+- [x] 管理画面通知フィルター修正
+- [x] 管理画面招待者名修正
+- [x] パスワード変更をクライアントサイド実装
+- [x] 予約ページ認証修正
+- [x] 管理画面通知マルチテナント集約
 - [x] 予約一覧 menuName 重複表示修正
-- [x] typeFilters テスト追加 (617 tests)
 - [x] スタッフプロフィール未接続 file input 削除
-- [x] Layout TODO 解消 (認証状態リンク切り替え、ユーザー情報表示、ログアウトボタン)
-- [x] Lint warnings 全修正 (135件 → 0件)
-- [x] console.log 削除 (admin/profile.tsx, admin/notifications/settings.tsx)
+- [x] Layout (認証状態リンク切り替え、ユーザー情報表示、ログアウトボタン)
+- [x] CSSトークン修正 (oklch, Inter font, Secondary/Accent, radius)
+- [x] レイアウトコンポーネント修正 (ロゴ、サイドバー幅、ナビアイコン、active state)
+- [x] 管理画面カラートークン置換 (17ファイル)
 
 ## 未実装
 - [ ] platform/users: lastLoginAt の取得 — AuthProvider ポートにセッション一覧メソッドの追加が必要

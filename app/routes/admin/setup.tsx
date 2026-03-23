@@ -93,55 +93,64 @@ export default function AdminSetupPage({ loaderData }: Route.ComponentProps) {
     onSuccess: () => {
       window.location.href = "/admin/tenants";
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Member account creation failed:", err);
-    },
   });
 
   const isPending = fetcher.isPending("setup");
 
   return (
     <AuthLayout
+      badge="管理画面"
       title="プロフィール作成"
       description="管理画面を利用するために、メンバーアカウントを作成してください。"
     >
       <fetcher.Form method="post" {...getFormProps(form)}>
         <input type="hidden" name="intent" value="setup" />
 
-        <div className="space-y-5">
-          <FormField label="メールアドレス" htmlFor="setup-email-display">
-            <Input
-              id="setup-email-display"
-              type="email"
-              value={email}
-              disabled
-            />
-            <p className="mt-1 text-xs text-text-secondary">
-              認証アカウントのメールアドレスが使用されます
-            </p>
-          </FormField>
-
-          <FormField
-            label="氏名"
-            htmlFor={fields.name.id}
-            error={fields.name.errors}
-            required
+        <FormField label="メールアドレス" htmlFor="setup-email-display">
+          <Input id="setup-email-display" type="email" value={email} disabled />
+          <p
+            style={{
+              marginTop: "var(--space-xs)",
+              fontSize: "var(--text-xs)",
+              color: "var(--color-neutral-500)",
+            }}
           >
-            <Input
-              {...getInputProps(fields.name, { type: "text" })}
-              placeholder="山田 太郎"
-              error={fields.name.errors?.[0]}
-            />
-          </FormField>
+            認証アカウントのメールアドレスが使用されます
+          </p>
+        </FormField>
 
-          {form.errors && (
-            <p className="text-xs text-destructive">{form.errors}</p>
-          )}
+        <FormField
+          label="氏名"
+          htmlFor={fields.name.id}
+          error={fields.name.errors}
+        >
+          <Input
+            {...getInputProps(fields.name, { type: "text" })}
+            placeholder="山田 太郎"
+            error={fields.name.errors?.[0]}
+          />
+        </FormField>
 
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "作成中..." : "メンバーアカウントを作成"}
-          </Button>
-        </div>
+        {form.errors && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {form.errors}
+          </p>
+        )}
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full"
+          style={{ marginTop: "var(--space-xl)" }}
+        >
+          {isPending ? "作成中..." : "メンバーアカウントを作成"}
+        </Button>
       </fetcher.Form>
     </AuthLayout>
   );

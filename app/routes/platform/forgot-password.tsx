@@ -48,66 +48,83 @@ export default function PlatformForgotPasswordPage() {
   if (isSubmitted) {
     return (
       <AuthLayout
+        badge="プラットフォーム管理"
         title="リセットメールを送信しました"
         description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
       >
-        <div className="text-center">
-          <p className="mb-6 text-sm text-text-secondary">
-            メールが届かない場合は、迷惑メールフォルダをご確認ください。
-          </p>
-          <Link
-            to="/platform/login"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            ログインに戻る
-          </Link>
-        </div>
+        <p
+          className="text-center"
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--color-neutral-600)",
+            marginBottom: "var(--space-lg)",
+          }}
+        >
+          メールが届かない場合は、迷惑メールフォルダをご確認ください。
+        </p>
+        <Link
+          to="/platform/login"
+          className="block text-center font-medium no-underline"
+          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+        >
+          ログインに戻る
+        </Link>
       </AuthLayout>
     );
   }
 
   return (
     <AuthLayout
+      badge="プラットフォーム管理"
       title="パスワードリセット"
-      description="登録済みのメールアドレスを入力してください"
+      description="ご登録のメールアドレスを入力してください"
     >
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-5">
-          <FormField
-            label="メールアドレス"
-            htmlFor="platform-forgot-password-email"
-            error={errors.email ? [errors.email] : undefined}
-            required
+      <form onSubmit={handleSubmit} noValidate>
+        <FormField
+          label="メールアドレス"
+          htmlFor="platform-forgot-password-email"
+          error={errors.email ? [errors.email] : undefined}
+        >
+          <Input
+            id="platform-forgot-password-email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@email.com"
+            autoComplete="email"
+            error={errors.email}
+          />
+        </FormField>
+
+        {errors.form && (
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--color-error)",
+              marginBottom: "var(--space-lg)",
+            }}
           >
-            <Input
-              id="platform-forgot-password-email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@email.com"
-              error={errors.email}
-            />
-          </FormField>
+            {errors.form}
+          </p>
+        )}
 
-          {errors.form && (
-            <p className="text-xs text-destructive">{errors.form}</p>
-          )}
-
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? "送信中..." : "リセットメールを送信"}
-          </Button>
-        </div>
+        <Button type="submit" disabled={isPending} className="w-full">
+          {isPending ? "送信中..." : "リセットメールを送信"}
+        </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm">
-        <Link
-          to="/platform/login"
-          className="text-text-secondary hover:underline"
-        >
-          ログインに戻る
-        </Link>
-      </p>
+      <Link
+        to="/platform/login"
+        className="block text-center font-medium no-underline"
+        style={{
+          marginTop: "var(--space-lg)",
+          fontSize: "var(--text-sm)",
+          color: "var(--color-primary)",
+        }}
+      >
+        ログインに戻る
+      </Link>
     </AuthLayout>
   );
 }

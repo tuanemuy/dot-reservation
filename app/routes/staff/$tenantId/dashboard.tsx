@@ -1,6 +1,4 @@
-import { Link } from "react-router";
-import { Badge } from "@/components/ui/Badge";
-import { Card, CardBody, CardHeader } from "@/components/ui/Card";
+import { Link, useParams } from "react-router";
 import type { ReservationSummary } from "@/core/application/reservation/listReservations";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import type { ShiftDetail } from "@/core/application/shift/listShifts";
@@ -16,13 +14,11 @@ function formatToday(): string {
   return `${year}-${month}-${day}`;
 }
 
-type BadgeVariant =
-  | "default"
-  | "primary"
-  | "accent"
-  | "success"
-  | "warning"
-  | "destructive";
+function formatTodayLabel(): string {
+  const now = new Date();
+  const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+  return `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日（${dayNames[now.getDay()]}）`;
+}
 
 const statusLabels: Record<string, string> = {
   confirmed: "確定",
@@ -32,21 +28,40 @@ const statusLabels: Record<string, string> = {
   rejected: "却下",
 };
 
-const statusBadgeVariants: Record<string, BadgeVariant> = {
-  pending: "warning",
-  confirmed: "success",
-  completed: "default",
-  cancelled: "destructive",
-  rejected: "destructive",
-};
+function StatusBadge({ status }: { status: string }) {
+  const statusStyles: Record<string, string> = {
+    confirmed: "bg-[oklch(0.55_0.12_145/0.1)] text-success",
+    pending: "bg-[oklch(0.72_0.14_70/0.12)] text-accent-dark",
+    cancelled: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
+    completed: "bg-surface-secondary text-text-secondary",
+    rejected: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
+  };
+
+  const dotStyles: Record<string, string> = {
+    confirmed: "bg-success",
+    pending: "bg-warning",
+    cancelled: "bg-error",
+    completed: "bg-text-muted",
+    rejected: "bg-error",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${statusStyles[status] ?? "bg-surface-secondary text-text-secondary"}`}
+    >
+      <span
+        className={`h-1.5 w-1.5 rounded-full ${dotStyles[status] ?? "bg-text-muted"}`}
+      />
+      {statusLabels[status] ?? status}
+    </span>
+  );
+}
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
   const tenantId = params.tenantId;
   const today = formatToday();
 
-  // For staff dashboard, we need the staff profile ID.
-  // In a real app, this would come from auth. For now, load shifts and reservations for the tenant.
   const todayShiftsResult = await handleUseCase(() =>
     listShifts({
       container,
@@ -99,74 +114,118 @@ export default function StaffDashboardPage({
   loaderData,
 }: Route.ComponentProps) {
   const { todayReservations, todayShift } = loaderData;
-  const _tenantId =
-    typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
+  const { tenantId } = useParams();
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold text-text">ダッシュボード</h1>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
+          ダッシュボード
+        </h1>
+        <p className="mt-1 text-sm text-text-muted">{formatTodayLabel()}</p>
+      </div>
 
-      {/* 今日のシフト */}
-      <Card>
-        <CardHeader>
-          <h2 className="text-base font-semibold text-text">今日のシフト</h2>
-        </CardHeader>
-        <CardBody>
-          {todayShift ? (
-            <p className="text-sm text-text-secondary">
-              {todayShift.startTime} - {todayShift.endTime}
+      {/* Today's Timeline */}
+      <div className="mb-8 rounded-[14px] border border-border bg-white">
+        <div className="flex items-center justify-between px-6 pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight text-text">
+            本日のタイムライン
+          </h2>
+          {todayShift && (
+            <span className="text-sm text-text-muted">
+              シフト: {todayShift.startTime} - {todayShift.endTime}
+            </span>
+          )}
+        </div>
+        <div className="px-6 pb-6 pt-4">
+          {!todayShift ? (
+            <p className="py-8 text-center text-sm text-text-muted">
+              今日のシフトはありません
+            </p>
+          ) : todayReservations.length === 0 ? (
+            <p className="py-8 text-center text-sm text-text-muted">
+              今日の予約はありません
             </p>
           ) : (
-            <p className="text-sm text-text-muted">今日のシフトはありません</p>
+            <div className="space-y-0">
+              {todayReservations.map((reservation) => (
+                <div
+                  key={reservation.id}
+                  className="grid grid-cols-[50px_1fr] border-t border-surface-secondary"
+                >
+                  <div className="pr-4 pt-1 text-right font-heading text-xs font-medium text-text-muted">
+                    {reservation.startTime}
+                  </div>
+                  <div className="min-h-[60px] border-t border-surface-secondary py-2">
+                    <Link
+                      to={`/staff/${tenantId}/reservations/${reservation.id}`}
+                      className="block rounded-[10px] border border-border bg-white px-4 py-2 no-underline transition-shadow duration-150 hover:shadow-sm"
+                    >
+                      <span className="text-xs font-medium text-text-muted">
+                        {reservation.startTime} - {reservation.endTime}
+                      </span>
+                      <p className="mt-0.5 text-sm font-medium text-text">
+                        {reservation.customerName ?? "顧客"}
+                      </p>
+                      <p className="mt-0.5 text-xs text-text-secondary">
+                        {reservation.menuName}
+                      </p>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
 
-      {/* 今日の予約一覧 */}
-      <Card>
-        <CardHeader className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-text">今日の予約</h2>
+      {/* Today's Reservations List */}
+      <div className="rounded-[14px] border border-border bg-white">
+        <div className="flex items-center justify-between px-6 pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight text-text">
+            今日の予約
+          </h2>
           <Link
-            to="reservations"
-            className="text-sm font-medium text-primary hover:text-primary-dark"
+            to={`/staff/${tenantId}/reservations`}
+            className="text-sm font-medium text-primary no-underline transition-colors duration-150 hover:text-primary-dark"
           >
             すべて見る
           </Link>
-        </CardHeader>
-        <CardBody>
+        </div>
+        <div className="px-6 pb-6">
           {todayReservations.length === 0 ? (
-            <p className="text-sm text-text-muted">今日の予約はありません</p>
+            <p className="py-8 text-center text-sm text-text-muted">
+              今日の予約はありません
+            </p>
           ) : (
-            <ul className="divide-y divide-border">
+            <div>
               {todayReservations.map((reservation) => (
-                <li
+                <div
                   key={reservation.id}
-                  className="flex items-center gap-4 py-3"
+                  className="grid grid-cols-[80px_1fr_180px_100px] items-center gap-4 border-b border-surface-secondary py-4 last:border-b-0"
                 >
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-text">
+                  <span className="font-heading text-base font-semibold tracking-tight text-text">
+                    {reservation.startTime}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-secondary-lighter to-secondary-light text-xs font-medium text-secondary">
+                      {(reservation.customerName ?? "?").charAt(0)}
+                    </span>
+                    <span className="text-base font-medium text-text">
                       {reservation.customerName ?? "顧客"}
-                    </p>
-                    <p className="text-xs text-text-secondary">
-                      {reservation.menuName}
-                    </p>
+                    </span>
                   </div>
-                  <p className="text-sm text-text-secondary">
-                    {reservation.startTime} - {reservation.endTime}
-                  </p>
-                  <Badge
-                    variant={
-                      statusBadgeVariants[reservation.status] ?? "default"
-                    }
-                  >
-                    {statusLabels[reservation.status] ?? reservation.status}
-                  </Badge>
-                </li>
+                  <span className="text-sm text-text-secondary">
+                    {reservation.menuName}
+                  </span>
+                  <StatusBadge status={reservation.status} />
+                </div>
               ))}
-            </ul>
+            </div>
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

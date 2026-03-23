@@ -1,11 +1,8 @@
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
-import { data, redirect } from "react-router";
+import { data, Link, redirect } from "react-router";
 import { z } from "zod";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { acceptInvitation } from "@/core/application/member/acceptInvitation";
 import { declineInvitation } from "@/core/application/member/declineInvitation";
@@ -143,12 +140,35 @@ export async function loader({ request }: Route.LoaderArgs) {
         tenantName: tenantResult?.name ?? "不明なテナント",
         inviterName: inviterMember?.name ?? "不明",
         role: item.role,
-        invitedAt: new Date(item.createdAt).toLocaleDateString("ja-JP"),
+        invitedAt: new Date(item.createdAt).toLocaleDateString("ja-JP", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
     }),
   );
 
   return { invitations };
+}
+
+function getRoleBadge(role: string): { label: string; className: string } {
+  switch (role) {
+    case "admin":
+      return { label: "管理者", className: "bg-primary-lighter text-primary" };
+    case "staff":
+      return {
+        label: "スタッフ",
+        className: "bg-secondary-lighter text-secondary-dark",
+      };
+    default:
+      return {
+        label: role,
+        className: "bg-surface-secondary text-text-secondary",
+      };
+  }
 }
 
 export default function AdminInvitationsPage({
@@ -184,18 +204,12 @@ export default function AdminInvitationsPage({
       setConfirmingId(null);
       setConfirmAction(null);
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Accept invitation failed:", err);
-    },
   });
 
   fetcher.register("decline", {
     onSuccess: () => {
       setConfirmingId(null);
       setConfirmAction(null);
-    },
-    onHandlerError: ({ error: err }) => {
-      console.error("Decline invitation failed:", err);
     },
   });
 
@@ -207,57 +221,121 @@ export default function AdminInvitationsPage({
   );
 
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-bold text-text">招待一覧</h1>
-
-      {invitations.length === 0 ? (
-        <div className="rounded-lg border border-border bg-white p-12 text-center">
-          <p className="text-text-secondary">未対応の招待はありません</p>
+    <div className="flex flex-1 justify-center px-[var(--space-xl)] py-[var(--space-3xl)]">
+      <div className="w-full max-w-[640px]">
+        <div className="mb-[var(--space-xl)] flex items-center justify-between">
+          <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+            招待一覧
+          </h1>
+          <Link
+            to="/admin/tenants"
+            className="inline-flex items-center gap-[var(--space-xs)] rounded-[var(--radius-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-500 transition-colors duration-[0.15s] ease-[ease] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
+            </svg>
+            テナント選択に戻る
+          </Link>
         </div>
-      ) : (
-        <div className="space-y-4">
-          {invitations.map((invitation) => (
-            <Card key={invitation.id}>
-              <CardBody>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h2 className="text-lg font-semibold text-text">
-                      {invitation.tenantName}
-                    </h2>
-                    <p className="mt-1 text-sm text-text-secondary">
-                      招待者: {invitation.inviterName}
-                    </p>
-                    <p className="mt-1 text-sm text-text-secondary">
-                      招待日: {invitation.invitedAt}
-                    </p>
-                    <Badge className="mt-2">{invitation.role}</Badge>
-                  </div>
 
-                  <div className="flex gap-2">
-                    <Button
+        {invitations.length === 0 ? (
+          <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-3xl)] text-center">
+            <div className="mx-auto mb-[var(--space-lg)] flex h-14 w-14 items-center justify-center rounded-full bg-neutral-200">
+              <svg
+                className="h-6 w-6 text-neutral-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                />
+              </svg>
+            </div>
+            <p className="text-[length:var(--text-base)] text-neutral-500">
+              招待はありません
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-[var(--space-md)]">
+            {invitations.map((invitation) => {
+              const role = getRoleBadge(invitation.role);
+              return (
+                <div
+                  key={invitation.id}
+                  className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white px-[var(--space-xl)] py-[var(--space-lg)]"
+                >
+                  <div className="mb-[var(--space-md)] flex items-center justify-between">
+                    <span className="text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+                      {invitation.tenantName}
+                    </span>
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-[length:var(--text-xs)] font-[var(--weight-medium)] ${role.className}`}
+                    >
+                      {role.label}
+                    </span>
+                  </div>
+                  <div className="mb-[var(--space-lg)] flex gap-[var(--space-xl)]">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[length:var(--text-xs)] tracking-[var(--tracking-wide)] text-neutral-500">
+                        招待日時
+                      </span>
+                      <span className="text-[length:var(--text-sm)] text-neutral-700">
+                        {invitation.invitedAt}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[length:var(--text-xs)] tracking-[var(--tracking-wide)] text-neutral-500">
+                        招待者
+                      </span>
+                      <span className="text-[length:var(--text-sm)] text-neutral-700">
+                        {invitation.inviterName}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-[var(--space-sm)]">
+                    <button
+                      type="button"
                       onClick={() => {
                         setConfirmingId(invitation.id);
                         setConfirmAction("accept");
                       }}
+                      className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
-                      承認
-                    </Button>
-                    <Button
-                      variant="outline"
+                      承認する
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => {
                         setConfirmingId(invitation.id);
                         setConfirmAction("decline");
                       }}
+                      className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-600 transition-[background,border-color,color,transform] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:bg-neutral-200 hover:text-neutral-800 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
-                      辞退
-                    </Button>
+                      辞退する
+                    </button>
                   </div>
                 </div>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       <Modal
         open={confirmingId !== null}
@@ -267,21 +345,22 @@ export default function AdminInvitationsPage({
         }}
         title={confirmAction === "accept" ? "招待の承認" : "招待の辞退"}
       >
-        <p className="mb-4 text-sm text-text-secondary">
+        <p className="mb-4 text-[length:var(--text-sm)] text-neutral-600">
           {confirmAction === "accept"
             ? `${confirmingInvitation?.tenantName ?? ""}への招待を承認しますか？`
             : `${confirmingInvitation?.tenantName ?? ""}への招待を辞退しますか？`}
         </p>
         <div className="flex justify-end gap-3">
-          <Button
-            variant="outline"
+          <button
+            type="button"
             onClick={() => {
               setConfirmingId(null);
               setConfirmAction(null);
             }}
+            className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
           >
             キャンセル
-          </Button>
+          </button>
           {confirmAction === "accept" ? (
             <fetcher.Form method="post" {...getFormProps(acceptForm)}>
               <input type="hidden" name="intent" value="accept" />
@@ -290,9 +369,13 @@ export default function AdminInvitationsPage({
                 name="invitationId"
                 value={confirmingId ?? ""}
               />
-              <Button type="submit" disabled={isPendingAccept}>
+              <button
+                type="submit"
+                disabled={isPendingAccept}
+                className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
+              >
                 {isPendingAccept ? "処理中..." : "承認する"}
-              </Button>
+              </button>
             </fetcher.Form>
           ) : (
             <fetcher.Form method="post" {...getFormProps(declineForm)}>
@@ -302,13 +385,13 @@ export default function AdminInvitationsPage({
                 name="invitationId"
                 value={confirmingId ?? ""}
               />
-              <Button
+              <button
                 type="submit"
-                variant="destructive"
                 disabled={isPendingDecline}
+                className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-destructive px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-destructive/90 disabled:opacity-50"
               >
                 {isPendingDecline ? "処理中..." : "辞退する"}
-              </Button>
+              </button>
             </fetcher.Form>
           )}
         </div>

@@ -82,12 +82,12 @@ export default function TenantMenusPage({
   const isPendingDelete = fetcher.isPending("deleteMenu");
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">メニュー管理</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">メニュー管理</h1>
         <Link
           to={`/admin/${tenantId}/menus/new`}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
         >
           メニューを追加
         </Link>
@@ -101,8 +101,8 @@ export default function TenantMenusPage({
             onClick={() => setCategoryFilter("all")}
             className={`rounded-full px-4 py-1.5 text-sm font-medium ${
               categoryFilter === "all"
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-text text-white"
+                : "bg-neutral-200 text-neutral-600 hover:bg-border"
             }`}
           >
             すべて
@@ -114,8 +114,8 @@ export default function TenantMenusPage({
               onClick={() => setCategoryFilter(category as string)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${
                 categoryFilter === category
-                  ? "bg-gray-900 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-text text-white"
+                  : "bg-neutral-200 text-neutral-600 hover:bg-border"
               }`}
             >
               {category}
@@ -126,62 +126,62 @@ export default function TenantMenusPage({
 
       {/* メニュー一覧 */}
       {filteredMenus.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-          <p className="text-gray-500">メニューが登録されていません</p>
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-12 text-center">
+          <p className="text-neutral-500">メニューが登録されていません</p>
           <Link
             to={`/admin/${tenantId}/menus/new`}
-            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="mt-4 inline-block text-sm font-medium text-primary hover:text-primary"
           >
             メニューを追加する
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-neutral-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   メニュー名
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   カテゴリー
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   所要時間
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
                   料金
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-neutral-500">
                   操作
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {filteredMenus.map((menu) => (
-                <tr key={menu.id} className="hover:bg-gray-50">
-                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                <tr key={menu.id} className="hover:bg-neutral-200">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-800">
                     <Link
                       to={`/admin/${tenantId}/menus/${menu.id}`}
-                      className="hover:text-blue-600"
+                      className="hover:text-primary"
                     >
                       {menu.name}
                     </Link>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                     {menu.category ?? "-"}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                     {menu.duration}分
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                     &yen;{menu.price.toLocaleString()}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
                     <div className="flex justify-end gap-3">
                       <Link
                         to={`/admin/${tenantId}/menus/${menu.id}`}
-                        className="font-medium text-blue-600 hover:text-blue-500"
+                        className="font-medium text-primary hover:text-primary"
                       >
                         編集
                       </Link>
@@ -201,7 +201,7 @@ export default function TenantMenusPage({
                             <button
                               type="submit"
                               disabled={isPendingDelete}
-                              className="font-medium text-red-600 hover:text-red-500 disabled:opacity-50"
+                              className="font-medium text-destructive hover:text-destructive disabled:opacity-50"
                             >
                               削除する
                             </button>
@@ -209,7 +209,7 @@ export default function TenantMenusPage({
                           <button
                             type="button"
                             onClick={() => setDeletingId(null)}
-                            className="font-medium text-gray-500 hover:text-gray-400"
+                            className="font-medium text-neutral-500 hover:text-neutral-500"
                           >
                             取消
                           </button>
@@ -218,7 +218,7 @@ export default function TenantMenusPage({
                         <button
                           type="button"
                           onClick={() => setDeletingId(menu.id)}
-                          className="font-medium text-red-600 hover:text-red-500"
+                          className="font-medium text-destructive hover:text-destructive"
                         >
                           削除
                         </button>

@@ -3,11 +3,6 @@ import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router";
 import { z } from "zod";
-import { Button } from "@/components/ui/Button";
-import { Card, CardBody } from "@/components/ui/Card";
-import { FormField } from "@/components/ui/FormField";
-import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
 import { createTenant } from "@/core/application/tenant/createTenant";
 import {
   createCompositeAction,
@@ -93,6 +88,14 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
+const stepLabels = ["基本情報", "所在地・連絡先", "確認"];
+
+const inputClass =
+  "h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] font-[var(--font-body)] text-[length:var(--text-base)] text-neutral-800 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary";
+
+const labelClass =
+  "mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700";
+
 export default function AdminNewTenantPage(_props: Route.ComponentProps) {
   const navigate = useNavigate();
   const fetcher = useCompositeAction<typeof handlers>();
@@ -116,334 +119,380 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
     onSuccess: ({ data: result }) => {
       navigate(`/admin/${result.tenantId}/dashboard`);
     },
-    onHandlerError: ({ error: err }) => {
-      console.error("Tenant creation failed:", err);
-    },
   });
 
   const isPending = fetcher.isPending("createTenant");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-12">
-      <div className="w-full max-w-lg space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-text">テナント新規登録</h1>
-          <p className="mt-2 text-sm text-text-secondary">
-            新しい店舗を登録します
-          </p>
-        </div>
+    <div className="mx-auto w-full max-w-[680px] flex-1 px-[var(--space-2xl)] py-[var(--space-3xl)]">
+      <div className="mb-[var(--space-3xl)] text-center">
+        <h1 className="mb-[var(--space-sm)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+          テナント登録
+        </h1>
+        <p className="text-[length:var(--text-sm)] text-neutral-500">
+          店舗情報を入力して、予約管理を始めましょう
+        </p>
+      </div>
 
-        {/* ステップインジケーター */}
-        <div className="flex items-center justify-center gap-2">
-          {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center">
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
-                  s === step
-                    ? "bg-primary text-white"
-                    : s < step
-                      ? "bg-primary/20 text-primary"
-                      : "bg-surface-secondary text-text-muted"
-                }`}
-              >
-                {s}
-              </div>
-              {s < 3 && (
-                <div
-                  className={`mx-2 h-0.5 w-12 ${
-                    s < step ? "bg-primary" : "bg-surface-secondary"
+      {/* Step Indicator */}
+      <div className="mb-[var(--space-2xl)] flex items-center justify-center">
+        {stepLabels.map((label, i) => {
+          const stepNum = i + 1;
+          const isActive = stepNum <= step;
+          return (
+            <div key={label} className="flex items-center">
+              <div className="flex items-center gap-[var(--space-sm)]">
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-[var(--font-heading)] text-[length:var(--text-sm)] font-[var(--weight-semibold)] ${
+                    isActive
+                      ? "bg-primary text-white"
+                      : "bg-neutral-200 text-neutral-500"
                   }`}
-                />
+                >
+                  {stepNum}
+                </span>
+                <span
+                  className={`text-[length:var(--text-sm)] font-[var(--weight-medium)] ${
+                    isActive ? "text-neutral-800" : "text-neutral-500"
+                  }`}
+                >
+                  {label}
+                </span>
+              </div>
+              {i < stepLabels.length - 1 && (
+                <div className="mx-[var(--space-md)] h-px w-12 bg-neutral-300" />
               )}
             </div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
-        {/* ステップ1: 基本情報 */}
-        {step === 1 && (
-          <Card>
-            <CardBody>
-              <h2 className="mb-4 text-lg font-semibold text-text">基本情報</h2>
-              <div className="space-y-5">
-                <FormField
-                  label="テナント名"
-                  htmlFor={fields.name.id}
-                  error={fields.name.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.name, { type: "text" })}
-                    placeholder="例: ヘアサロン dot"
-                    error={fields.name.errors?.[0]}
-                  />
-                </FormField>
+      {/* Step 1: Basic Info */}
+      {step === 1 && (
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-2xl)]">
+          <h2 className="mb-[var(--space-lg)] border-b border-neutral-200 pb-[var(--space-lg)] font-[var(--font-heading)] text-[length:var(--text-xl)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            基本情報
+          </h2>
 
-                <FormField
-                  label="カテゴリー"
-                  htmlFor={fields.category.id}
-                  error={fields.category.errors}
-                  required
-                >
-                  <Select
-                    {...getInputProps(fields.category, { type: "text" })}
-                    error={fields.category.errors?.[0]}
-                  >
-                    <option value="">選択してください</option>
-                    <option value="hair">美容室</option>
-                    <option value="nail">ネイルサロン</option>
-                    <option value="esthetic">エステサロン</option>
-                    <option value="clinic">クリニック</option>
-                    <option value="other">その他</option>
-                  </Select>
-                </FormField>
-
-                <FormField
-                  label="URLパス"
-                  htmlFor={fields.urlPath.id}
-                  error={fields.urlPath.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.urlPath, { type: "text" })}
-                    placeholder="例: hair-salon-dot"
-                    error={fields.urlPath.errors?.[0]}
-                  />
-                  <p className="mt-1 text-xs text-text-muted">
-                    公開ページのURLに使用されます
-                  </p>
-                </FormField>
-
-                <div className="flex justify-end">
-                  <Button type="button" onClick={() => setStep(2)}>
-                    次へ
-                  </Button>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        )}
-
-        {/* ステップ2: 所在地・連絡先 */}
-        {step === 2 && (
-          <Card>
-            <CardBody>
-              <h2 className="mb-4 text-lg font-semibold text-text">
-                所在地・連絡先
-              </h2>
-              <div className="space-y-5">
-                <FormField
-                  label="郵便番号"
-                  htmlFor={fields.postalCode.id}
-                  error={fields.postalCode.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.postalCode, { type: "text" })}
-                    placeholder="123-4567"
-                    className="w-48"
-                    error={fields.postalCode.errors?.[0]}
-                  />
-                </FormField>
-
-                <FormField
-                  label="都道府県"
-                  htmlFor={fields.prefecture.id}
-                  error={fields.prefecture.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.prefecture, { type: "text" })}
-                    placeholder="東京都"
-                    error={fields.prefecture.errors?.[0]}
-                  />
-                </FormField>
-
-                <FormField
-                  label="市区町村"
-                  htmlFor={fields.city.id}
-                  error={fields.city.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.city, { type: "text" })}
-                    placeholder="渋谷区"
-                    error={fields.city.errors?.[0]}
-                  />
-                </FormField>
-
-                <FormField
-                  label="番地"
-                  htmlFor={fields.street.id}
-                  error={fields.street.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.street, { type: "text" })}
-                    placeholder="神南1-2-3"
-                    error={fields.street.errors?.[0]}
-                  />
-                </FormField>
-
-                <FormField
-                  label="電話番号"
-                  htmlFor={fields.phone.id}
-                  error={fields.phone.errors}
-                  required
-                >
-                  <Input
-                    {...getInputProps(fields.phone, { type: "tel" })}
-                    placeholder="03-1234-5678"
-                    error={fields.phone.errors?.[0]}
-                  />
-                </FormField>
-
-                <div className="flex justify-between">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setStep(1)}
-                  >
-                    戻る
-                  </Button>
-                  <Button type="button" onClick={() => setStep(3)}>
-                    次へ
-                  </Button>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        )}
-
-        {/* ステップ3: 確認 */}
-        {step === 3 && (
-          <Card>
-            <CardBody>
-              <h2 className="mb-4 text-lg font-semibold text-text">
-                入力内容の確認
-              </h2>
-              <dl className="space-y-3">
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    テナント名
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {fields.name.value || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    カテゴリー
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {fields.category.value || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    URLパス
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {fields.urlPath.value || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    郵便番号
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {fields.postalCode.value || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    住所
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {[
-                      fields.prefecture.value,
-                      fields.city.value,
-                      fields.street.value,
-                    ]
-                      .filter(Boolean)
-                      .join("") || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-text-secondary">
-                    電話番号
-                  </dt>
-                  <dd className="mt-1 text-sm text-text">
-                    {fields.phone.value || "-"}
-                  </dd>
-                </div>
-              </dl>
-
-              {form.errors && (
-                <p className="mt-4 text-xs text-destructive">{form.errors}</p>
+          <div className="space-y-[var(--space-lg)]">
+            <div>
+              <label htmlFor={fields.name.id} className={labelClass}>
+                テナント名
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.name, { type: "text" })}
+                placeholder="例: リラクゼーションサロン Calm"
+                className={inputClass}
+              />
+              {fields.name.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.name.errors}
+                </p>
               )}
+            </div>
 
-              <fetcher.Form
-                method="post"
-                {...getFormProps(form)}
-                className="mt-6"
+            <div>
+              <label htmlFor={fields.category.id} className={labelClass}>
+                カテゴリー
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <select
+                {...getInputProps(fields.category, { type: "text" })}
+                className={`${inputClass} cursor-pointer appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23B8B5B1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E")] bg-[length:16px] bg-[right_12px_center] bg-no-repeat pr-10`}
               >
-                <input type="hidden" name="intent" value="createTenant" />
-                <input
-                  type="hidden"
-                  name="name"
-                  value={fields.name.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="category"
-                  value={fields.category.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="urlPath"
-                  value={fields.urlPath.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="postalCode"
-                  value={fields.postalCode.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="prefecture"
-                  value={fields.prefecture.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="city"
-                  value={fields.city.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="street"
-                  value={fields.street.value ?? ""}
-                />
-                <input
-                  type="hidden"
-                  name="phone"
-                  value={fields.phone.value ?? ""}
-                />
+                <option value="" disabled>
+                  カテゴリーを選択
+                </option>
+                <option value="seitai">整体院</option>
+                <option value="gym">ジム</option>
+                <option value="biyoin">美容院</option>
+                <option value="nail">ネイルサロン</option>
+                <option value="esthe">エステサロン</option>
+                <option value="relaxation">リラクゼーションサロン</option>
+                <option value="other">その他</option>
+              </select>
+              {fields.category.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.category.errors}
+                </p>
+              )}
+            </div>
 
-                <div className="flex justify-between">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setStep(2)}
-                  >
-                    戻る
-                  </Button>
-                  <Button type="submit" disabled={isPending}>
-                    {isPending ? "登録中..." : "テナントを登録"}
-                  </Button>
-                </div>
-              </fetcher.Form>
-            </CardBody>
-          </Card>
+            <div>
+              <label htmlFor={fields.urlPath.id} className={labelClass}>
+                URLパス
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <div className="flex items-center overflow-hidden rounded-[var(--radius-md)] border border-neutral-300 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus-within:border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
+                <span className="flex h-11 shrink-0 items-center border-r border-neutral-300 bg-neutral-100 px-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-500">
+                  dot-reservation.com/
+                </span>
+                <input
+                  {...getInputProps(fields.urlPath, { type: "text" })}
+                  placeholder="salon-calm"
+                  className="h-11 min-w-0 flex-1 border-none bg-white px-[var(--space-md)] font-[var(--font-body)] text-[length:var(--text-base)] text-neutral-800 placeholder:text-neutral-500 focus:outline-none"
+                />
+              </div>
+              <p className="mt-[var(--space-xs)] text-[length:var(--text-xs)] text-neutral-500">
+                英数字とハイフンのみ使用できます。公開ページのURLになります。
+              </p>
+              {fields.urlPath.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.urlPath.errors}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 2: Location */}
+      {step === 2 && (
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-2xl)]">
+          <h2 className="mb-[var(--space-lg)] border-b border-neutral-200 pb-[var(--space-lg)] font-[var(--font-heading)] text-[length:var(--text-xl)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            所在地・連絡先
+          </h2>
+
+          <div className="space-y-[var(--space-lg)]">
+            <div>
+              <label htmlFor={fields.postalCode.id} className={labelClass}>
+                郵便番号
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.postalCode, { type: "text" })}
+                placeholder="123-4567"
+                className={`${inputClass} w-48`}
+              />
+              {fields.postalCode.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.postalCode.errors}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={fields.prefecture.id} className={labelClass}>
+                都道府県
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.prefecture, { type: "text" })}
+                placeholder="東京都"
+                className={inputClass}
+              />
+              {fields.prefecture.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.prefecture.errors}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={fields.city.id} className={labelClass}>
+                市区町村
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.city, { type: "text" })}
+                placeholder="渋谷区"
+                className={inputClass}
+              />
+              {fields.city.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.city.errors}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={fields.street.id} className={labelClass}>
+                番地
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.street, { type: "text" })}
+                placeholder="神南1-2-3"
+                className={inputClass}
+              />
+              {fields.street.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.street.errors}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={fields.phone.id} className={labelClass}>
+                電話番号
+                <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-[var(--weight-medium)] text-error">
+                  必須
+                </span>
+              </label>
+              <input
+                {...getInputProps(fields.phone, { type: "tel" })}
+                placeholder="03-1234-5678"
+                className={inputClass}
+              />
+              {fields.phone.errors && (
+                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                  {fields.phone.errors}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: Confirm */}
+      {step === 3 && (
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-2xl)]">
+          <h2 className="mb-[var(--space-lg)] border-b border-neutral-200 pb-[var(--space-lg)] font-[var(--font-heading)] text-[length:var(--text-xl)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            入力内容の確認
+          </h2>
+
+          <dl className="space-y-[var(--space-md)]">
+            {[
+              { label: "テナント名", value: fields.name.value },
+              { label: "カテゴリー", value: fields.category.value },
+              { label: "URLパス", value: fields.urlPath.value },
+              { label: "郵便番号", value: fields.postalCode.value },
+              {
+                label: "住所",
+                value: [
+                  fields.prefecture.value,
+                  fields.city.value,
+                  fields.street.value,
+                ]
+                  .filter(Boolean)
+                  .join(""),
+              },
+              { label: "電話番号", value: fields.phone.value },
+            ].map((item) => (
+              <div key={item.label}>
+                <dt className="text-[length:var(--text-xs)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  {item.label}
+                </dt>
+                <dd className="mt-0.5 text-[length:var(--text-sm)] text-neutral-800">
+                  {item.value || "-"}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {form.errors && (
+            <p className="mt-4 text-[length:var(--text-xs)] text-error">
+              {form.errors}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Form Actions */}
+      <div className="mt-[var(--space-2xl)] flex items-center justify-between">
+        <button
+          type="button"
+          disabled={step === 1}
+          onClick={() => setStep((s) => s - 1)}
+          className="inline-flex h-11 items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-transparent px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-[color,background] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 disabled:opacity-30"
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+          戻る
+        </button>
+
+        {step < 3 ? (
+          <button
+            type="button"
+            onClick={() => setStep((s) => s + 1)}
+            className="inline-flex h-11 items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-primary px-[var(--space-xl)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99]"
+          >
+            次へ
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+              />
+            </svg>
+          </button>
+        ) : (
+          <fetcher.Form method="post" {...getFormProps(form)}>
+            <input type="hidden" name="intent" value="createTenant" />
+            <input type="hidden" name="name" value={fields.name.value ?? ""} />
+            <input
+              type="hidden"
+              name="category"
+              value={fields.category.value ?? ""}
+            />
+            <input
+              type="hidden"
+              name="urlPath"
+              value={fields.urlPath.value ?? ""}
+            />
+            <input
+              type="hidden"
+              name="postalCode"
+              value={fields.postalCode.value ?? ""}
+            />
+            <input
+              type="hidden"
+              name="prefecture"
+              value={fields.prefecture.value ?? ""}
+            />
+            <input type="hidden" name="city" value={fields.city.value ?? ""} />
+            <input
+              type="hidden"
+              name="street"
+              value={fields.street.value ?? ""}
+            />
+            <input
+              type="hidden"
+              name="phone"
+              value={fields.phone.value ?? ""}
+            />
+            <button
+              type="submit"
+              disabled={isPending}
+              className="inline-flex h-11 items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-primary px-[var(--space-xl)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+            >
+              {isPending ? "登録中..." : "テナントを登録"}
+            </button>
+          </fetcher.Form>
         )}
       </div>
     </div>

@@ -2,9 +2,7 @@ import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { data, redirect, useSearchParams } from "react-router";
 import { z } from "zod";
-import { Button } from "@/components/ui/Button";
 import { Pagination } from "@/components/ui/Pagination";
-import { Tabs } from "@/components/ui/Tabs";
 import { listNotifications } from "@/core/application/notification/listNotifications";
 import { markAllNotificationsAsRead } from "@/core/application/notification/markAllNotificationsAsRead";
 import { container } from "@/core/di/server";
@@ -25,12 +23,6 @@ type NotificationItem = {
   isRead: boolean;
   createdAt: string;
   referenceUrl: string | null;
-};
-
-const notificationTypeLabels: Record<NotificationItem["type"], string> = {
-  reservation: "予約",
-  member: "メンバー",
-  announcement: "お知らせ",
 };
 
 function mapNotificationTypeToCategory(type: string): NotificationItem["type"] {
@@ -123,7 +115,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   const typeFilters =
     filter === "all" ? null : (categoryToNotificationTypes[filter] ?? null);
 
-  // Aggregate notifications across all member IDs (each member belongs to a different tenant)
   const allResults = await Promise.all(
     members.map((member) =>
       handleUseCase(() =>
@@ -148,7 +139,6 @@ export async function loader({ request }: Route.LoaderArgs) {
     ),
   );
 
-  // Merge and sort all notifications by createdAt descending
   const mergedItems = allResults
     .flatMap((r) => r.items)
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -181,6 +171,75 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
+function NotificationIcon({ type }: { type: NotificationItem["type"] }) {
+  switch (type) {
+    case "reservation":
+      return (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[oklch(0.55_0.12_145/0.1)] text-success">
+          <svg
+            className="h-[18px] w-[18px]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+            />
+          </svg>
+        </div>
+      );
+    case "member":
+      return (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[oklch(0.55_0.1_240/0.1)] text-info">
+          <svg
+            className="h-[18px] w-[18px]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+            />
+          </svg>
+        </div>
+      );
+    case "announcement":
+      return (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-accent-lighter text-accent-dark">
+          <svg
+            className="h-[18px] w-[18px]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+            />
+          </svg>
+        </div>
+      );
+  }
+}
+
+const filterTabs = [
+  { id: "all", label: "すべて" },
+  { id: "reservation", label: "予約関連" },
+  { id: "member", label: "メンバー関連" },
+  { id: "announcement", label: "お知らせ" },
+];
+
 export default function AdminNotificationsPage({
   loaderData,
 }: Route.ComponentProps) {
@@ -211,77 +270,103 @@ export default function AdminNotificationsPage({
 
   const isMarkingAll = fetcher.isPending("markAllAsRead");
 
-  const tabs = [
-    { id: "all", label: "すべて" },
-    { id: "reservation", label: "予約関連" },
-    { id: "member", label: "メンバー関連" },
-    { id: "announcement", label: "お知らせ" },
-  ];
-
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">通知</h1>
+      <div className="mb-[var(--space-xl)] flex items-center justify-between">
+        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+          通知
+        </h1>
         {unreadCount > 0 && (
           <fetcher.Form method="post" {...getFormProps(markAllForm)}>
             <input type="hidden" name="intent" value="markAllAsRead" />
-            <Button
+            <button
               type="submit"
-              variant="ghost"
-              size="sm"
               disabled={isMarkingAll}
+              className="inline-flex h-9 items-center gap-[var(--space-xs)] rounded-[var(--radius-md)] bg-transparent px-[var(--space-md)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 disabled:opacity-50"
             >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
               {isMarkingAll ? "処理中..." : "すべて既読にする"}
-            </Button>
+            </button>
           </fetcher.Form>
         )}
       </div>
 
-      <Tabs tabs={tabs} activeTab={filter} onTabChange={handleFilterChange}>
-        {notifications.length === 0 ? (
-          <p className="py-12 text-center text-sm text-text-muted">
+      {/* Filter Tabs */}
+      <div className="mb-[var(--space-xl)] flex w-fit gap-0.5 rounded-[var(--radius-md)] bg-neutral-200 p-[3px]">
+        {filterTabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => handleFilterChange(tab.id)}
+            className={`whitespace-nowrap rounded-[var(--radius-sm)] px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] transition-[background,color] duration-[0.15s] ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+              filter === tab.id
+                ? "bg-white text-neutral-900 shadow-sm"
+                : "bg-transparent text-neutral-600 hover:text-neutral-800"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Notification List */}
+      {notifications.length === 0 ? (
+        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white py-12 text-center">
+          <p className="text-[length:var(--text-sm)] text-neutral-500">
             通知はありません
           </p>
-        ) : (
-          <div className="space-y-2">
-            {notifications.map((notification) => (
-              <a
-                key={notification.id}
-                href={notification.referenceUrl ?? "#"}
-                className={`block rounded-lg border p-4 transition-colors ${
-                  notification.isRead
-                    ? "border-border bg-white"
-                    : "border-border bg-surface-secondary"
-                } hover:bg-surface-secondary`}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-1 flex items-center gap-2">
-                      {!notification.isRead && (
-                        <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-                      )}
-                      <span className="text-xs text-text-muted">
-                        {notificationTypeLabels[notification.type]}
-                      </span>
-                    </div>
-                    <p
-                      className={`text-sm ${notification.isRead ? "text-text-secondary" : "font-medium text-text"}`}
-                    >
-                      {notification.title}
-                    </p>
-                    <p className="mt-1 text-sm text-text-muted">
-                      {notification.message}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-xs text-text-muted">
-                    {notification.createdAt}
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-      </Tabs>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          {notifications.map((notification, i) => (
+            <a
+              key={notification.id}
+              href={notification.referenceUrl ?? "#"}
+              className={`flex items-start gap-[var(--space-md)] px-[var(--space-lg)] py-[var(--space-lg)] transition-colors duration-[0.15s] ease-[ease] ${
+                i < notifications.length - 1
+                  ? "border-b border-neutral-200"
+                  : ""
+              } ${
+                notification.isRead
+                  ? "hover:bg-neutral-50"
+                  : "bg-accent-lighter hover:bg-[oklch(0.97_0.02_75/0.7)]"
+              }`}
+            >
+              <NotificationIcon type={notification.type} />
+              <div className="min-w-0 flex-1">
+                <p
+                  className={`text-[length:var(--text-base)] leading-[var(--leading-normal)] ${
+                    notification.isRead
+                      ? "font-[var(--weight-normal)] text-neutral-800"
+                      : "font-[var(--weight-medium)] text-neutral-800"
+                  }`}
+                >
+                  {notification.title}
+                </p>
+                <p className="mt-[var(--space-xs)] text-[length:var(--text-xs)] text-neutral-500">
+                  {notification.createdAt}
+                </p>
+              </div>
+              {!notification.isRead && (
+                <div className="mt-[var(--space-sm)] h-2 w-2 shrink-0 rounded-full bg-accent" />
+              )}
+            </a>
+          ))}
+        </div>
+      )}
 
       <div className="mt-6">
         <Pagination

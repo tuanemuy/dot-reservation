@@ -1,6 +1,5 @@
 import { data, redirect } from "react-router";
 import { z } from "zod";
-import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
 import { updateNotificationPreference } from "@/core/application/notification/updateNotificationPreference";
 import { container } from "@/core/di/server";
@@ -16,6 +15,7 @@ import type { Route } from "./+types/settings";
 type NotificationSetting = {
   type: string;
   label: string;
+  description: string;
   emailEnabled: boolean;
   inAppEnabled: boolean;
 };
@@ -69,21 +69,66 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-const notificationTypeLabels: Record<string, string> = {
-  new_reservation: "新規予約",
-  reservation_confirmed: "予約確認",
-  reservation_updated: "予約変更",
-  reservation_cancelled: "予約キャンセル",
-  reservation_reminder: "予約リマインダー",
-  reservation_pending: "予約承認待ち",
-  reservation_approved: "予約承認",
-  reservation_rejected: "予約拒否",
-  reservation_updated_by_customer: "顧客による予約変更",
-  reservation_cancelled_by_customer: "顧客による予約キャンセル",
-  invitation_received: "招待受信",
-  member_joined: "メンバー参加",
-  member_left: "メンバー退出",
-  shift_request_submitted: "シフト申請",
+const notificationTypeInfo: Record<
+  string,
+  { label: string; description: string }
+> = {
+  new_reservation: {
+    label: "新規予約",
+    description: "新しい予約が入った際に通知を受け取ります",
+  },
+  reservation_confirmed: {
+    label: "予約確認",
+    description: "予約が確認された際に通知を受け取ります",
+  },
+  reservation_updated: {
+    label: "予約変更",
+    description: "予約内容が変更された際に通知を受け取ります",
+  },
+  reservation_cancelled: {
+    label: "予約キャンセル",
+    description: "予約がキャンセルされた際に通知を受け取ります",
+  },
+  reservation_reminder: {
+    label: "予約リマインダー",
+    description: "予約の事前リマインダーを受け取ります",
+  },
+  reservation_pending: {
+    label: "予約承認待ち",
+    description: "承認待ちの予約が発生した際に通知を受け取ります",
+  },
+  reservation_approved: {
+    label: "予約承認",
+    description: "予約が承認された際に通知を受け取ります",
+  },
+  reservation_rejected: {
+    label: "予約拒否",
+    description: "予約が拒否された際に通知を受け取ります",
+  },
+  reservation_updated_by_customer: {
+    label: "顧客による予約変更",
+    description: "顧客が予約を変更した際に通知を受け取ります",
+  },
+  reservation_cancelled_by_customer: {
+    label: "顧客による予約キャンセル",
+    description: "顧客が予約をキャンセルした際に通知を受け取ります",
+  },
+  invitation_received: {
+    label: "招待受信",
+    description: "新しい招待を受信した際に通知を受け取ります",
+  },
+  member_joined: {
+    label: "メンバー参加",
+    description: "新しいメンバーが参加した際に通知を受け取ります",
+  },
+  member_left: {
+    label: "メンバー退出",
+    description: "メンバーが退出した際に通知を受け取ります",
+  },
+  shift_request_submitted: {
+    label: "シフト申請",
+    description: "シフト希望が提出された際に通知を受け取ります",
+  },
 };
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -113,7 +158,6 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
-  // Group preferences by type, combining email and in_app channels
   const typeMap = new Map<
     string,
     { emailEnabled: boolean; inAppEnabled: boolean }
@@ -140,15 +184,43 @@ export async function loader({ request }: Route.LoaderArgs) {
       emailEnabled: boolean;
       inAppEnabled: boolean;
     };
+    const info = notificationTypeInfo[pref.type] ?? {
+      label: pref.type,
+      description: "",
+    };
     settings.push({
       type: pref.type,
-      label: notificationTypeLabels[pref.type] ?? pref.type,
+      label: info.label,
+      description: info.description,
       emailEnabled: channels.emailEnabled,
       inAppEnabled: channels.inAppEnabled,
     });
   }
 
   return { settings };
+}
+
+function ToggleSwitch({
+  checked,
+  onChange,
+  ariaLabel,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  ariaLabel: string;
+}) {
+  return (
+    <label className="relative inline-block h-6 w-11 cursor-pointer">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="peer h-0 w-0 opacity-0"
+        aria-label={ariaLabel}
+      />
+      <span className="absolute inset-0 rounded-full bg-neutral-300 transition-colors duration-[0.15s] ease-[ease] before:absolute before:bottom-[3px] before:left-[3px] before:h-[18px] before:w-[18px] before:rounded-full before:bg-white before:shadow-sm before:transition-transform before:duration-[0.15s] before:ease-[ease] peer-checked:bg-primary peer-checked:before:translate-x-5 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary" />
+    </label>
+  );
 }
 
 export default function AdminNotificationSettingsPage({
@@ -174,72 +246,73 @@ export default function AdminNotificationSettingsPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-text">通知設定</h1>
+      <div className="mb-[var(--space-xl)]">
+        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+          通知設定
+        </h1>
+        <p className="mt-[var(--space-xs)] text-[length:var(--text-sm)] text-neutral-500">
+          通知の受信方法を設定します
+        </p>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <div className="grid grid-cols-[1fr_80px_80px] items-center gap-4">
-            <span className="text-sm font-medium text-text">通知種別</span>
-            <span className="text-center text-sm font-medium text-text">
-              メール
-            </span>
-            <span className="text-center text-sm font-medium text-text">
-              アプリ内
-            </span>
-          </div>
-        </CardHeader>
-
-        <CardBody className="pt-0">
-          <div className="divide-y divide-border">
-            {settings.map((setting) => (
-              <div
+      <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                通知カテゴリ
+              </th>
+              <th className="w-[140px] border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-center text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                メール通知
+              </th>
+              <th className="w-[140px] border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-center text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                アプリ内通知
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {settings.map((setting, i) => (
+              <tr
                 key={setting.type}
-                className="grid grid-cols-[1fr_80px_80px] items-center gap-4 py-4"
+                className={`transition-colors duration-[0.15s] ease-[ease] hover:bg-neutral-50 ${
+                  i < settings.length - 1 ? "border-b border-neutral-200" : ""
+                }`}
               >
-                <span className="text-sm text-text">{setting.label}</span>
-                <div className="flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() =>
+                <td className="px-[var(--space-lg)] py-[var(--space-md)]">
+                  <div className="text-[length:var(--text-base)] font-[var(--weight-medium)] text-neutral-800">
+                    {setting.label}
+                  </div>
+                  {setting.description && (
+                    <div className="mt-0.5 text-[length:var(--text-xs)] text-neutral-500">
+                      {setting.description}
+                    </div>
+                  )}
+                </td>
+                <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+                  <ToggleSwitch
+                    checked={setting.emailEnabled}
+                    onChange={() =>
                       handleToggle(setting.type, "email", setting.emailEnabled)
                     }
-                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                      setting.emailEnabled ? "bg-primary" : "bg-border"
-                    }`}
-                    aria-label={`${setting.label}のメール通知を${setting.emailEnabled ? "オフ" : "オン"}にする`}
-                  >
-                    <span
-                      className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                        setting.emailEnabled ? "translate-x-5" : "translate-x-0"
-                      }`}
-                    />
-                  </button>
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() =>
+                    ariaLabel={`${setting.label}のメール通知を${setting.emailEnabled ? "オフ" : "オン"}にする`}
+                  />
+                </td>
+                <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+                  <ToggleSwitch
+                    checked={setting.inAppEnabled}
+                    onChange={() =>
                       handleToggle(setting.type, "in_app", setting.inAppEnabled)
                     }
-                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                      setting.inAppEnabled ? "bg-primary" : "bg-border"
-                    }`}
-                    aria-label={`${setting.label}のアプリ内通知を${setting.inAppEnabled ? "オフ" : "オン"}にする`}
-                  >
-                    <span
-                      className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                        setting.inAppEnabled ? "translate-x-5" : "translate-x-0"
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
+                    ariaLabel={`${setting.label}のアプリ内通知を${setting.inAppEnabled ? "オフ" : "オン"}にする`}
+                  />
+                </td>
+              </tr>
             ))}
-          </div>
-        </CardBody>
-      </Card>
+          </tbody>
+        </table>
+      </div>
 
-      <p className="mt-4 text-sm text-text-muted">
+      <p className="mt-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-500">
         設定はトグルを切り替えると自動的に保存されます。
       </p>
     </div>
