@@ -2,6 +2,7 @@ import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { data, redirect } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 import { cancelInvitation } from "@/core/application/member/cancelInvitation";
 import { changeMemberRole } from "@/core/application/member/changeMemberRole";
@@ -252,7 +253,7 @@ export default function TenantMembersPage({
       setShowInviteForm(false);
     },
     onHandlerError: ({ error: err }) => {
-      console.error(err?.[""]?.[0] ?? "招待に失敗しました");
+      toast.error(err?.[""]?.[0] ?? "招待に失敗しました");
     },
   });
 

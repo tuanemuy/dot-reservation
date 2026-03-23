@@ -375,28 +375,15 @@ export default function ReservationDetailPage({
           {reservation.canModify && (
             <Link
               to={`/mypage/reservations/${reservation.id}/edit`}
-              className="inline-flex items-center justify-center"
+              className="inline-flex items-center justify-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[background,border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:bg-neutral-100"
               style={{
                 gap: "var(--space-sm)",
                 height: "44px",
                 padding: "0 var(--space-lg)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-neutral-300)",
                 borderRadius: "var(--radius-md)",
                 fontSize: "var(--text-base)",
                 fontWeight: "var(--weight-medium)",
                 color: "var(--color-neutral-700)",
-                textDecoration: "none",
-                transition:
-                  "background var(--transition-default), border-color var(--transition-default)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--color-neutral-100)";
-                e.currentTarget.style.borderColor = "var(--color-neutral-400)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "var(--color-bg-card)";
-                e.currentTarget.style.borderColor = "var(--color-neutral-300)";
               }}
             >
               <svg
@@ -419,27 +406,18 @@ export default function ReservationDetailPage({
           {reservation.canCancel && (
             <button
               type="button"
-              className="inline-flex items-center justify-center"
+              className="inline-flex items-center justify-center border border-error bg-[var(--color-bg-card)] transition-[background] duration-[0.15s] ease-[ease] hover:bg-[var(--color-error-bg)]"
               onClick={() => setShowCancelDialog(true)}
               style={{
                 gap: "var(--space-sm)",
                 height: "44px",
                 padding: "0 var(--space-lg)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-error)",
                 borderRadius: "var(--radius-md)",
                 fontSize: "var(--text-base)",
                 fontWeight: "var(--weight-medium)",
                 color: "var(--color-error)",
                 cursor: "pointer",
                 fontFamily: "inherit",
-                transition: "background var(--transition-default)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "oklch(0.55 0.16 25 / 0.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "var(--color-bg-card)";
               }}
             >
               <svg

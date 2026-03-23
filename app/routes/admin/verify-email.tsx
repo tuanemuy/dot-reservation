@@ -64,7 +64,7 @@ export default function AdminVerifyEmailPage() {
             width: "64px",
             height: "64px",
             borderRadius: "var(--radius-full)",
-            background: "oklch(0.55 0.12 145 / 0.1)",
+            background: "var(--color-success-bg)",
             marginBottom: "var(--space-lg)",
           }}
         >

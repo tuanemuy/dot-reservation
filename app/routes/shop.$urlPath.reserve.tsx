@@ -830,8 +830,8 @@ function MenuSelectStep({
   return (
     <div className="flex flex-col" style={{ gap: "var(--space-md)" }}>
       {menus.map((menu) => (
-        // biome-ignore lint/a11y/noStaticElementInteractions: interactive card
-        <div
+        <button
+          type="button"
           key={menu.id}
           className={`grid cursor-pointer items-center border bg-[var(--color-bg-card)] transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:shadow-[var(--shadow-sm)] ${
             selectedMenuId === menu.id ? "border-primary" : "border-neutral-300"
@@ -841,11 +841,10 @@ function MenuSelectStep({
             gap: "var(--space-xl)",
             padding: "var(--space-lg) var(--space-xl)",
             borderRadius: "var(--radius-lg)",
+            fontFamily: "inherit",
+            textAlign: "left",
           }}
           onClick={() => onSelect(menu.id)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") onSelect(menu.id);
-          }}
         >
           <div className="flex flex-col" style={{ gap: "var(--space-sm)" }}>
             <div
@@ -907,7 +906,7 @@ function MenuSelectStep({
               (税込)
             </span>
           </div>
-        </div>
+        </button>
       ))}
     </div>
   );

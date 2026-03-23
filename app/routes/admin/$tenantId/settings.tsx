@@ -7,6 +7,7 @@ import {
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { useState } from "react";
 import { data, redirect } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 import { deleteTenant } from "@/core/application/tenant/deleteTenant";
 import { getTenant } from "@/core/application/tenant/getTenant";
@@ -151,13 +152,13 @@ export default function TenantSettingsPage({
 
   fetcher.register("updateTenant", {
     onHandlerError: ({ error: err }) => {
-      console.error(err?.[""]?.[0] ?? "更新に失敗しました");
+      toast.error(err?.[""]?.[0] ?? "更新に失敗しました");
     },
   });
 
   fetcher.register("deleteTenant", {
     onHandlerError: ({ error: err }) => {
-      console.error(err?.[""]?.[0] ?? "削除に失敗しました");
+      toast.error(err?.[""]?.[0] ?? "削除に失敗しました");
     },
   });
 
@@ -278,7 +279,7 @@ export default function TenantSettingsPage({
               <textarea
                 {...getTextareaProps(updateFields.description)}
                 rows={4}
-                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                className="min-h-[88px] w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 

@@ -7,7 +7,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 export function Input({ className = "", error, ...props }: InputProps) {
   return (
     <input
-      className={`w-full transition-colors focus:outline-none disabled:cursor-not-allowed ${className}`}
+      className={`w-full transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed ${className}`}
       style={{
         height: "44px",
         padding: "0 var(--space-md)",

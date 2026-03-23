@@ -15,20 +15,34 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variantStyles: Record<
   ButtonVariant,
-  { background: string; color: string; border?: string }
+  { background: string; color: string; border?: string; hoverClass: string }
 > = {
-  primary: { background: "var(--color-primary)", color: "#FFFFFF" },
+  primary: {
+    background: "var(--color-primary)",
+    color: "#FFFFFF",
+    hoverClass: "hover:bg-primary-dark active:scale-[0.99]",
+  },
   secondary: {
     background: "var(--color-neutral-200)",
     color: "var(--color-neutral-800)",
+    hoverClass: "hover:bg-neutral-300 active:scale-[0.99]",
   },
   outline: {
     background: "transparent",
     color: "var(--color-neutral-800)",
     border: "1px solid var(--color-neutral-300)",
+    hoverClass: "hover:bg-neutral-100 active:scale-[0.99]",
   },
-  ghost: { background: "transparent", color: "var(--color-neutral-800)" },
-  destructive: { background: "var(--color-error)", color: "#FFFFFF" },
+  ghost: {
+    background: "transparent",
+    color: "var(--color-neutral-800)",
+    hoverClass: "hover:bg-neutral-100 active:scale-[0.99]",
+  },
+  destructive: {
+    background: "var(--color-error)",
+    color: "#FFFFFF",
+    hoverClass: "hover:opacity-90 active:scale-[0.99]",
+  },
 };
 
 const sizeHeights: Record<ButtonSize, string> = {
@@ -49,7 +63,7 @@ export function Button({
 
   return (
     <button
-      className={`inline-flex items-center justify-center font-medium transition-colors ${className}`}
+      className={`inline-flex items-center justify-center font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${vs.hoverClass} ${className}`}
       disabled={disabled}
       style={{
         height: sizeHeights[size],

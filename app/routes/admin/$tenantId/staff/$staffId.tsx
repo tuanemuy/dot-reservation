@@ -232,7 +232,7 @@ export default function TenantStaffDetailPage({
                 name={profileFields.bio.name}
                 rows={3}
                 defaultValue={staff.bio ?? ""}
-                className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                className="min-h-[88px] w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               />
             </div>
 

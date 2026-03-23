@@ -1,6 +1,7 @@
 import { data, Link, redirect, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
 import { listReservations } from "@/core/application/reservation/listReservations";
+import { getTenant } from "@/core/application/tenant/getTenant";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
@@ -67,8 +68,27 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
+  const tenantUrlPaths: Record<string, string> = {};
+  const uniqueTenantIds = [...new Set(result.items.map((r) => r.tenantId))];
+  for (const tenantId of uniqueTenantIds) {
+    const tenant = await handleUseCase(() =>
+      getTenant({
+        container,
+        headers: request.headers,
+        input: { tenantId },
+      }),
+    ).match(
+      (r) => r,
+      () => null,
+    );
+    if (tenant) {
+      tenantUrlPaths[tenantId] = tenant.urlPath;
+    }
+  }
+
   return {
     reservations: result.items,
+    tenantUrlPaths,
     tab,
     page,
     totalPages: Math.ceil(result.totalCount / ITEMS_PER_PAGE),
@@ -87,7 +107,7 @@ function formatReservationDate(dateStr: string, startTime: string): string {
 export default function ReservationsIndexPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { reservations, tab, page, totalPages } = loaderData;
+  const { reservations, tenantUrlPaths, tab, page, totalPages } = loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleTabChange = (newTab: string) => {
@@ -173,28 +193,14 @@ export default function ReservationsIndexPage({
             <Link
               key={reservation.id}
               to={`/mypage/reservations/${reservation.id}`}
+              className="grid items-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:shadow-[var(--shadow-sm)]"
               style={{
-                display: "grid",
                 gridTemplateColumns: "1fr auto",
-                alignItems: "center",
                 gap: "var(--space-xl)",
                 padding: "var(--space-lg) var(--space-xl)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-neutral-300)",
                 borderRadius: "var(--radius-lg)",
-                transition:
-                  "border-color var(--transition-default), box-shadow var(--transition-default)",
-                textDecoration: "none",
                 color: "inherit",
                 cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--color-neutral-400)";
-                e.currentTarget.style.boxShadow = "var(--shadow-sm)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "var(--color-neutral-300)";
-                e.currentTarget.style.boxShadow = "none";
               }}
             >
               <div className="flex flex-col" style={{ gap: "var(--space-sm)" }}>
@@ -308,22 +314,43 @@ export default function ReservationsIndexPage({
                 </div>
               </div>
 
-              {/* Arrow */}
-              <div style={{ color: "var(--color-neutral-500)" }}>
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  style={{ width: "20px", height: "20px" }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+              {/* Arrow + Re-reserve */}
+              <div
+                className="flex flex-col items-end"
+                style={{ gap: "var(--space-sm)" }}
+              >
+                <div style={{ color: "var(--color-neutral-500)" }}>
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    style={{ width: "20px", height: "20px" }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </div>
+                {reservation.status === "completed" &&
+                  tenantUrlPaths[reservation.tenantId] && (
+                    <Link
+                      to={`/shop/${tenantUrlPaths[reservation.tenantId]}/reserve`}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        fontSize: "var(--text-xs)",
+                        fontWeight: "var(--weight-medium)",
+                        color: "var(--color-primary)",
+                        textDecoration: "none",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      再予約
+                    </Link>
+                  )}
               </div>
             </Link>
           ))}
