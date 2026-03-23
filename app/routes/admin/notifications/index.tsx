@@ -200,11 +200,7 @@ export default function AdminNotificationsPage({
     },
   });
 
-  fetcher.register("markAllAsRead", {
-    onSuccess: () => {
-      console.log("All marked as read");
-    },
-  });
+  fetcher.register("markAllAsRead", {});
 
   const handleFilterChange = (newFilter: string) => {
     const params = new URLSearchParams(searchParams);
