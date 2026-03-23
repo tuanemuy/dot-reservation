@@ -60,3 +60,13 @@
 - [x] プラットフォーム認証ページ更新 (同上)
 - [x] ルートローダー更新 (authProvider.getSession によるセッション検証)
 - [x] 登録ページ更新 (メール登録済み時のログイン誘導)
+- [x] プラットフォーム管理画面ユースケース接続 (dashboard/users/tenants)
+- [x] 管理画面共通ページユースケース接続 (tenants/new-tenant/invitations/profile/notifications/members)
+
+## 残存課題（低リスク・別タスク）
+- [ ] platform/users: lastLoginAt がスタブ（null）— ログイン履歴取得のユースケースが未定義
+- [ ] platform/tenants: memberCount がスタブ（0）— テナント一覧での集計が未実装
+- [ ] platform/tenants/$tenantId: stats（メニュー数・予約数）がスタブ（0）
+- [ ] admin/profile: changePassword が server-side 未実装（client-side authClient.changePassword() を推奨）
+- [ ] admin/notifications: フィルター適用時の totalPages 計算がフィルタ前の totalCount ベース
+- [ ] admin/invitations: inviterName が空文字（招待者の名前取得が未実装）
