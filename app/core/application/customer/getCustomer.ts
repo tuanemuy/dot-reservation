@@ -14,6 +14,7 @@ export type GetCustomerInput = {
 
 export type GetCustomerOutput = {
   id: string;
+  authUserId: string;
   displayName: string;
   email: string;
   phoneNumber: string | null;
@@ -46,6 +47,7 @@ export async function getCustomer({
 
   return {
     id: customer.id,
+    authUserId: customer.authUserId,
     displayName: customer.displayName,
     email: customer.email,
     phoneNumber: customer.phoneNumber,

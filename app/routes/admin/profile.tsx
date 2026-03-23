@@ -90,7 +90,7 @@ const handlers = {
   }),
   deleteAccount: defineHandler({
     schema: deleteAccountSchema,
-    handler: async (_value, args) => {
+    handler: async (value, args) => {
       const { container } = await import("@/core/di/server");
 
       const session = await container.authProvider.getSession(
@@ -98,6 +98,14 @@ const handlers = {
       );
       if (!session) {
         throw redirect("/admin/login");
+      }
+
+      const isValid = await container.authProvider.verifyPassword(
+        session.user.id,
+        value.password,
+      );
+      if (!isValid) {
+        return error({ password: ["パスワードが正しくありません"] });
       }
 
       return handleUseCase(() =>

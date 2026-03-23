@@ -1,43 +1,12 @@
-import type React from "react";
 import { data, Link, redirect, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { getTenant } from "@/core/application/tenant/getTenant";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/index";
 
 const ITEMS_PER_PAGE = 10;
-
-const statusLabels: Record<string, string> = {
-  pending: "承認待ち",
-  confirmed: "確定",
-  completed: "完了",
-  cancelled: "キャンセル",
-  rejected: "却下",
-};
-
-const statusBadgeStyles: Record<string, React.CSSProperties> = {
-  pending: {
-    background: "oklch(0.72 0.14 70 / 0.1)",
-    color: "var(--color-warning)",
-  },
-  confirmed: {
-    background: "oklch(0.55 0.12 145 / 0.1)",
-    color: "var(--color-success)",
-  },
-  completed: {
-    background: "var(--color-neutral-200)",
-    color: "var(--color-neutral-600)",
-  },
-  cancelled: {
-    background: "oklch(0.55 0.16 25 / 0.1)",
-    color: "var(--color-error)",
-  },
-  rejected: {
-    background: "oklch(0.55 0.16 25 / 0.1)",
-    color: "var(--color-error)",
-  },
-};
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { container } = await import("@/core/di/server");
@@ -221,20 +190,25 @@ export default function ReservationsIndexPage({
                   className="flex items-center"
                   style={{ gap: "var(--space-sm)" }}
                 >
-                  <span
-                    className="inline-flex items-center"
+                  <StatusBadge
+                    status={reservation.status}
+                    variant="reservation"
+                  />
+                </div>
+
+                {/* Tenant Name */}
+                {reservation.tenantName && (
+                  <div
                     style={{
-                      padding: "2px var(--space-sm)",
-                      fontSize: "var(--text-xs)",
+                      fontSize: "var(--text-sm)",
                       fontWeight: "var(--weight-medium)",
-                      borderRadius: "var(--radius-sm)",
+                      color: "var(--color-neutral-500)",
                       letterSpacing: "var(--tracking-wide)",
-                      ...(statusBadgeStyles[reservation.status] ?? {}),
                     }}
                   >
-                    {statusLabels[reservation.status] ?? reservation.status}
-                  </span>
-                </div>
+                    {reservation.tenantName}
+                  </div>
+                )}
 
                 {/* Menu Name */}
                 <div

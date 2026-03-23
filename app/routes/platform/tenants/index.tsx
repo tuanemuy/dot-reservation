@@ -1,5 +1,6 @@
 import { data, Form, Link, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listTenants } from "@/core/application/tenant/listTenants";
 import { container } from "@/core/di/server";
 import { TenantId } from "@/core/domain/tenant/valueObject";
@@ -13,11 +14,6 @@ type TenantSummary = {
   status: string;
   memberCount: number;
   createdAt: string;
-};
-
-const statusLabels: Record<string, string> = {
-  active: "アクティブ",
-  suspended: "停止中",
 };
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -317,7 +313,7 @@ export default function PlatformTenantsPage({
                           : "none",
                     }}
                   >
-                    <StatusBadge status={tenant.status} />
+                    <StatusBadge status={tenant.status} variant="tenant" />
                   </td>
                   <td
                     style={{
@@ -367,35 +363,5 @@ export default function PlatformTenantsPage({
         )}
       </div>
     </div>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "active";
-  return (
-    <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: isActive
-          ? "oklch(0.55 0.12 145 / 0.1)"
-          : "oklch(0.55 0.16 25 / 0.08)",
-        color: isActive ? "var(--color-success)" : "var(--color-error)",
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: isActive ? "var(--color-success)" : "var(--color-error)",
-        }}
-      />
-      {statusLabels[status] ?? status}
-    </span>
   );
 }

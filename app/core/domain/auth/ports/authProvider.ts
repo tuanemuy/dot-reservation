@@ -7,4 +7,6 @@ export interface AuthProvider {
   deleteUser(userId: string): Promise<void>;
   banUser(userId: string, reason?: string): Promise<void>;
   unbanUser(userId: string): Promise<void>;
+  getLastLoginAt(userId: string): Promise<Date | null>;
+  verifyPassword(userId: string, password: string): Promise<boolean>;
 }

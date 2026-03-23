@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { data, Link } from "react-router";
 import { z } from "zod";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { approveReservation } from "@/core/application/reservation/approveReservation";
 import { cancelReservation } from "@/core/application/reservation/cancelReservation";
 import { getReservation } from "@/core/application/reservation/getReservation";
@@ -99,17 +100,6 @@ export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
 
-const statusLabels: Record<string, { text: string; className: string }> = {
-  pending: { text: "承認待ち", className: "bg-warning/10 text-warning" },
-  confirmed: { text: "確定", className: "bg-success/10 text-success" },
-  cancelled: {
-    text: "キャンセル",
-    className: "bg-destructive/10 text-destructive",
-  },
-  completed: { text: "完了", className: "bg-neutral-200 text-neutral-800" },
-  rejected: { text: "却下", className: "bg-destructive/10 text-destructive" },
-};
-
 export default function TenantReservationDetailPage({
   loaderData,
   params,
@@ -119,11 +109,6 @@ export default function TenantReservationDetailPage({
   const fetcher = useCompositeAction<typeof handlers>();
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [showCancelForm, setShowCancelForm] = useState(false);
-
-  const status = statusLabels[reservation.status] ?? {
-    text: reservation.status,
-    className: "bg-neutral-200 text-neutral-800",
-  };
 
   const isPendingApprove = fetcher.isPending("approve");
   const isPendingReject = fetcher.isPending("reject");
@@ -148,11 +133,7 @@ export default function TenantReservationDetailPage({
             <span className="text-sm font-medium text-neutral-500">
               ステータス:
             </span>
-            <span
-              className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${status.className}`}
-            >
-              {status.text}
-            </span>
+            <StatusBadge status={reservation.status} variant="reservation" />
           </div>
 
           <div className="flex gap-2">

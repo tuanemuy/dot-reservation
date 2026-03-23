@@ -74,6 +74,21 @@ const handlers = {
     handler: async (value, args) => {
       const { container } = await import("@/core/di/server");
 
+      const session = await container.authProvider.getSession(
+        args.request.headers,
+      );
+      if (!session) {
+        return error({ "": ["認証情報が取得できませんでした"] });
+      }
+
+      const isValid = await container.authProvider.verifyPassword(
+        session.user.id,
+        value.password,
+      );
+      if (!isValid) {
+        return error({ password: ["パスワードが正しくありません"] });
+      }
+
       return handleUseCase(() =>
         deleteCustomer({
           container,

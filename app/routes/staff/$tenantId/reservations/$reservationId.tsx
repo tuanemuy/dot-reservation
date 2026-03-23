@@ -5,6 +5,7 @@ import { data, Link, useParams } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Modal } from "@/components/ui/Modal";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { cancelReservation } from "@/core/application/reservation/cancelReservation";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import {
@@ -16,43 +17,6 @@ import {
 } from "@/lib/compositeAction";
 import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/$reservationId";
-
-const statusLabels: Record<string, string> = {
-  confirmed: "確定",
-  pending: "承認待ち",
-  cancelled: "キャンセル",
-  completed: "完了",
-  rejected: "却下",
-};
-
-function StatusBadge({ status }: { status: string }) {
-  const statusStyles: Record<string, string> = {
-    confirmed: "bg-[oklch(0.55_0.12_145/0.1)] text-success",
-    pending: "bg-[oklch(0.72_0.14_70/0.12)] text-accent-dark",
-    cancelled: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
-    completed: "bg-surface-secondary text-text-secondary",
-    rejected: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
-  };
-
-  const dotStyles: Record<string, string> = {
-    confirmed: "bg-success",
-    pending: "bg-warning",
-    cancelled: "bg-error",
-    completed: "bg-text-muted",
-    rejected: "bg-error",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${statusStyles[status] ?? "bg-surface-secondary text-text-secondary"}`}
-    >
-      <span
-        className={`h-1.5 w-1.5 rounded-full ${dotStyles[status] ?? "bg-text-muted"}`}
-      />
-      {statusLabels[status] ?? status}
-    </span>
-  );
-}
 
 const cancelSchema = z.object({
   reservationId: z.string().min(1),
@@ -103,8 +67,11 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   );
 
+  const { customerEmail: _excluded, ...reservationWithoutEmail } =
+    reservationResult;
+
   return {
-    reservation: reservationResult,
+    reservation: reservationWithoutEmail,
   };
 }
 
@@ -183,7 +150,7 @@ export default function StaffReservationDetailPage({
         <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900">
           予約詳細
         </h1>
-        <StatusBadge status={reservation.status} />
+        <StatusBadge status={reservation.status} variant="reservation" />
       </div>
 
       {/* Detail Card */}

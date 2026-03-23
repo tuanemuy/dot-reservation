@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { deleteCustomer } from "@/core/application/customer/deleteCustomer";
 import { getCustomer } from "@/core/application/customer/getCustomer";
 import { reactivateCustomer } from "@/core/application/customer/reactivateCustomer";
@@ -88,6 +89,11 @@ const handlers = {
   }),
 };
 
+const statusLabels: Record<string, string> = {
+  active: "アクティブ",
+  suspended: "停止中",
+};
+
 export async function action(args: Route.ActionArgs) {
   return createCompositeAction(args, handlers);
 }
@@ -159,6 +165,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     status: r.status,
   }));
 
+  const lastLogin = await container.authProvider.getLastLoginAt(
+    customerResult.authUserId,
+  );
+
   return {
     user: {
       id: customerResult.id,
@@ -167,7 +177,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       phone: customerResult.phoneNumber ?? "",
       status: customerResult.status as "active" | "suspended",
       createdAt: customerResult.createdAt.toLocaleDateString("ja-JP"),
-      lastLoginAt: null as string | null,
+      lastLoginAt: lastLogin ? lastLogin.toLocaleDateString("ja-JP") : null,
     },
     reservationStats: {
       totalCount: reservationsResult.totalCount,
@@ -175,18 +185,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     },
   };
 }
-
-const statusLabels: Record<string, string> = {
-  active: "アクティブ",
-  suspended: "停止中",
-};
-
-const reservationStatusLabels: Record<string, string> = {
-  confirmed: "確定",
-  completed: "完了",
-  cancelled: "キャンセル",
-  pending: "承認待ち",
-};
 
 export default function PlatformUserDetailPage({
   loaderData,
@@ -306,7 +304,7 @@ export default function PlatformUserDetailPage({
         >
           {user.name}
         </h1>
-        <StatusBadge status={user.status} />
+        <StatusBadge status={user.status} variant="customer" />
       </div>
 
       {/* User Info */}
@@ -437,7 +435,10 @@ export default function PlatformUserDetailPage({
                 >
                   {reservation.menuName}
                 </div>
-                <ReservationStatusBadge status={reservation.status} />
+                <StatusBadge
+                  status={reservation.status}
+                  variant="reservation"
+                />
               </div>
             ))
           )}
@@ -664,91 +665,6 @@ function InfoItem({
         {value}
       </div>
     </div>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "active";
-  return (
-    <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: isActive
-          ? "oklch(0.55 0.12 145 / 0.1)"
-          : "oklch(0.55 0.16 25 / 0.08)",
-        color: isActive ? "var(--color-success)" : "var(--color-error)",
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: isActive ? "var(--color-success)" : "var(--color-error)",
-        }}
-      />
-      {statusLabels[status] ?? status}
-    </span>
-  );
-}
-
-function ReservationStatusBadge({ status }: { status: string }) {
-  const styleMap: Record<
-    string,
-    { bg: string; color: string; dotColor: string }
-  > = {
-    confirmed: {
-      bg: "oklch(0.55 0.12 145 / 0.1)",
-      color: "var(--color-success)",
-      dotColor: "var(--color-success)",
-    },
-    completed: {
-      bg: "var(--color-neutral-200)",
-      color: "var(--color-neutral-600)",
-      dotColor: "var(--color-neutral-500)",
-    },
-    cancelled: {
-      bg: "oklch(0.55 0.16 25 / 0.08)",
-      color: "var(--color-error)",
-      dotColor: "var(--color-error)",
-    },
-    pending: {
-      bg: "oklch(0.72 0.14 70 / 0.1)",
-      color: "var(--color-warning)",
-      dotColor: "var(--color-warning)",
-    },
-  };
-
-  const s = styleMap[status] ?? styleMap.completed;
-
-  return (
-    <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: s.bg,
-        color: s.color,
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: s.dotColor,
-        }}
-      />
-      {reservationStatusLabels[status] ?? status}
-    </span>
   );
 }
 

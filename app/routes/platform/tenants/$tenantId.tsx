@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listMembers } from "@/core/application/member/listMembers";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { deleteTenant } from "@/core/application/tenant/deleteTenant";
@@ -324,7 +325,7 @@ export default function PlatformTenantDetailPage({
         >
           {tenant.name}
         </h1>
-        <StatusBadge status={tenant.status} />
+        <StatusBadge status={tenant.status} variant="tenant" />
       </div>
 
       {/* Basic Info */}
@@ -749,36 +750,6 @@ function StatItem({ value, label }: { value: string; label: string }) {
         {label}
       </div>
     </div>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "active";
-  return (
-    <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: isActive
-          ? "oklch(0.55 0.12 145 / 0.1)"
-          : "oklch(0.55 0.16 25 / 0.08)",
-        color: isActive ? "var(--color-success)" : "var(--color-error)",
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: isActive ? "var(--color-success)" : "var(--color-error)",
-        }}
-      />
-      {statusLabels[status] ?? status}
-    </span>
   );
 }
 

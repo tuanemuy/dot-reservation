@@ -75,6 +75,8 @@ React Router v7 application code using:
     - `app/components/**/*`: Other reusable components
 - Pages and Routes
     - `app/routes/`: Route components using React Router v7 Framework mode
+- Presentation Logic
+    - `app/presentation/${domain}/`: Presentation logic for each domain, such as types, utilities and hooks
 - Styles
     - `app/styles/index.css`: Entry point for global styles
 - Server Actions

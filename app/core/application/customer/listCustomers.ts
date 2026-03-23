@@ -11,6 +11,7 @@ export type ListCustomersInput = {
 
 export type CustomerSummary = {
   id: string;
+  authUserId: string;
   displayName: string;
   email: string;
   phoneNumber: string | null;
@@ -40,6 +41,7 @@ export async function listCustomers({
   return {
     items: result.items.map((customer) => ({
       id: customer.id,
+      authUserId: customer.authUserId,
       displayName: customer.displayName,
       email: customer.email,
       phoneNumber: customer.phoneNumber,

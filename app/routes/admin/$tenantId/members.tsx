@@ -4,6 +4,7 @@ import { useState } from "react";
 import { data, redirect } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { cancelInvitation } from "@/core/application/member/cancelInvitation";
 import { changeMemberRole } from "@/core/application/member/changeMemberRole";
 import { createInvitation } from "@/core/application/member/createInvitation";
@@ -215,16 +216,6 @@ const roleLabels: Record<string, { text: string; className: string }> = {
     text: "スタッフ",
     className: "bg-primary-lighter text-primary-dark",
   },
-};
-
-const invitationStatusLabels: Record<
-  string,
-  { text: string; className: string }
-> = {
-  pending: { text: "未対応", className: "bg-warning/10 text-warning" },
-  accepted: { text: "承認済み", className: "bg-success/10 text-success" },
-  declined: { text: "辞退", className: "bg-destructive/10 text-destructive" },
-  cancelled: { text: "取消済み", className: "bg-neutral-200 text-neutral-800" },
 };
 
 export default function TenantMembersPage({
@@ -472,12 +463,6 @@ export default function TenantMembersPage({
               </thead>
               <tbody className="divide-y divide-border">
                 {invitations.map((invitation) => {
-                  const statusLabel = invitationStatusLabels[
-                    invitation.status
-                  ] ?? {
-                    text: invitation.status,
-                    className: "bg-neutral-200 text-neutral-800",
-                  };
                   const invitationRole = roleLabels[invitation.role] ?? {
                     text: invitation.role,
                     className: "bg-neutral-200 text-neutral-800",
@@ -495,11 +480,10 @@ export default function TenantMembersPage({
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${statusLabel.className}`}
-                        >
-                          {statusLabel.text}
-                        </span>
+                        <StatusBadge
+                          status={invitation.status}
+                          variant="invitation"
+                        />
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                         {new Date(invitation.createdAt).toLocaleDateString(

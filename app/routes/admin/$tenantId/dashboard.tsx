@@ -1,4 +1,5 @@
 import { data, Link } from "react-router";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import { container } from "@/core/di/server";
 import { handleUseCase } from "@/lib/handleUseCase";
@@ -52,26 +53,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     pendingCount: pendingReservationsResult.totalCount,
   };
 }
-
-const statusLabels: Record<string, { text: string; className: string }> = {
-  pending: {
-    text: "承認待ち",
-    className: "bg-[var(--color-warning-bg)] text-warning",
-  },
-  confirmed: {
-    text: "確定",
-    className: "bg-[var(--color-success-bg)] text-success",
-  },
-  cancelled: {
-    text: "キャンセル",
-    className: "bg-[var(--color-error-bg)] text-error",
-  },
-  completed: { text: "完了", className: "bg-neutral-200 text-neutral-600" },
-  rejected: {
-    text: "却下",
-    className: "bg-[var(--color-error-bg)] text-error",
-  },
-};
 
 export default function TenantDashboardPage({
   loaderData,
@@ -160,42 +141,35 @@ export default function TenantDashboardPage({
                 </tr>
               </thead>
               <tbody>
-                {todayReservations.map((reservation, i) => {
-                  const status = statusLabels[reservation.status] ?? {
-                    text: reservation.status,
-                    className: "bg-neutral-200 text-neutral-600",
-                  };
-                  return (
-                    <tr
-                      key={reservation.id}
-                      className={`transition-colors hover:bg-neutral-50 ${
-                        i < todayReservations.length - 1
-                          ? "border-b border-neutral-200"
-                          : ""
-                      }`}
-                    >
-                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
-                        {reservation.startTime}
-                      </td>
-                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
-                        {reservation.customerName ?? "-"}
-                      </td>
-                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
-                        {reservation.menuName}
-                      </td>
-                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
-                        {reservation.staffName ?? "-"}
-                      </td>
-                      <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)]">
-                        <span
-                          className={`inline-flex rounded-full px-2.5 py-1 text-[length:var(--text-xs)] font-[var(--weight-medium)] ${status.className}`}
-                        >
-                          {status.text}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {todayReservations.map((reservation, i) => (
+                  <tr
+                    key={reservation.id}
+                    className={`transition-colors hover:bg-neutral-50 ${
+                      i < todayReservations.length - 1
+                        ? "border-b border-neutral-200"
+                        : ""
+                    }`}
+                  >
+                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                      {reservation.startTime}
+                    </td>
+                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                      {reservation.customerName ?? "-"}
+                    </td>
+                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                      {reservation.menuName}
+                    </td>
+                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                      {reservation.staffName ?? "-"}
+                    </td>
+                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)]">
+                      <StatusBadge
+                        status={reservation.status}
+                        variant="reservation"
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

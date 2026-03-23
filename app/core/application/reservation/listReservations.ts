@@ -1,8 +1,10 @@
 import { CustomerId } from "@/core/domain/customer/valueObject";
+import type { Reservation } from "@/core/domain/reservation/entity";
 import { ReservationStatus } from "@/core/domain/reservation/valueObject";
 import { StaffProfileId } from "@/core/domain/staff/valueObject";
 import { TenantId } from "@/core/domain/tenant/valueObject";
 import type { ServiceArgs } from "../types";
+import type { Repositories } from "../unitOfWork";
 
 export type ListReservationsInput = {
   tenantId?: string;
@@ -18,6 +20,7 @@ export type ListReservationsInput = {
 export type ReservationSummary = {
   id: string;
   tenantId: string;
+  tenantName: string | null;
   customerId: string | null;
   menuName: string;
   menuDuration: number;
@@ -49,25 +52,29 @@ function formatDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-function toReservationSummary(reservation: {
-  id: string;
-  tenantId: string;
-  customerId: string | null;
-  menuName: string;
-  menuDuration: number;
-  menuPrice: number;
-  staffName: string | null;
-  date: Date;
-  startTime: string;
-  endTime: string;
-  status: string;
-  customerName: string | null;
-  createdBy: string;
-  createdAt: Date;
-}): ReservationSummary {
+function toReservationSummary(
+  reservation: {
+    id: string;
+    tenantId: string;
+    customerId: string | null;
+    menuName: string;
+    menuDuration: number;
+    menuPrice: number;
+    staffName: string | null;
+    date: Date;
+    startTime: string;
+    endTime: string;
+    status: string;
+    customerName: string | null;
+    createdBy: string;
+    createdAt: Date;
+  },
+  tenantName: string | null,
+): ReservationSummary {
   return {
     id: reservation.id,
     tenantId: reservation.tenantId,
+    tenantName,
     customerId: reservation.customerId,
     menuName: reservation.menuName,
     menuDuration: reservation.menuDuration,
@@ -81,6 +88,29 @@ function toReservationSummary(reservation: {
     createdBy: reservation.createdBy,
     createdAt: reservation.createdAt,
   };
+}
+
+async function buildTenantNameMap(
+  items: readonly Reservation[],
+  repositories: Repositories,
+): Promise<ReadonlyMap<string, string>> {
+  const uniqueTenantIds = [...new Set(items.map((item) => item.tenantId))];
+  const results = await Promise.all(
+    uniqueTenantIds.map(async (tenantId) => {
+      const tenant = await repositories.tenantRepository.findById(tenantId);
+      return {
+        tenantId: tenantId as string,
+        name: tenant?.name as string | undefined,
+      };
+    }),
+  );
+  const map = new Map<string, string>();
+  for (const { tenantId, name } of results) {
+    if (name !== undefined) {
+      map.set(tenantId, name);
+    }
+  }
+  return map;
 }
 
 export async function listReservations({
@@ -98,41 +128,51 @@ export async function listReservations({
     limit: input.limit,
   };
 
-  const result = await container.unitOfWorkProvider.transaction(
-    async (repositories) => {
+  const { result, tenantNameMap } =
+    await container.unitOfWorkProvider.transaction(async (repositories) => {
       if (input.customerId) {
         const customerId = CustomerId.create(input.customerId);
-        return repositories.reservationRepository.findByCustomerId(
+        const r = await repositories.reservationRepository.findByCustomerId(
           customerId,
           filter,
           pagination,
         );
+        const nameMap = await buildTenantNameMap(r.items, repositories);
+        return { result: r, tenantNameMap: nameMap };
       }
 
       if (input.staffProfileId) {
         const staffProfileId = StaffProfileId.create(input.staffProfileId);
-        return repositories.reservationRepository.findByStaffProfileId(
+        const r = await repositories.reservationRepository.findByStaffProfileId(
           staffProfileId,
           filter,
           pagination,
         );
+        const nameMap = await buildTenantNameMap(r.items, repositories);
+        return { result: r, tenantNameMap: nameMap };
       }
 
       if (input.tenantId) {
         const tenantId = TenantId.create(input.tenantId);
-        return repositories.reservationRepository.findByTenantId(
+        const r = await repositories.reservationRepository.findByTenantId(
           tenantId,
           filter,
           pagination,
         );
+        const nameMap = await buildTenantNameMap(r.items, repositories);
+        return { result: r, tenantNameMap: nameMap };
       }
 
-      return { items: [] as const, total: 0 };
-    },
-  );
+      return {
+        result: { items: [] as const, total: 0 },
+        tenantNameMap: new Map<string, string>(),
+      };
+    });
 
   return {
-    items: result.items.map(toReservationSummary),
+    items: result.items.map((item) =>
+      toReservationSummary(item, tenantNameMap.get(item.tenantId) ?? null),
+    ),
     totalCount: result.total,
   };
 }

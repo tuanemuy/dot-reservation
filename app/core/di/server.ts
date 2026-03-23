@@ -100,7 +100,7 @@ function createDependencies(config: ServerConfig) {
       maxSessionsPerUser: 3,
     },
     unitOfWorkProvider,
-    authProvider: new BetterAuthProvider(auth),
+    authProvider: new BetterAuthProvider(auth, db),
     customerRepository: new DrizzleSqliteCustomerRepository(db),
     tenantRepository: new DrizzleSqliteTenantRepository(db),
     memberRepository: new DrizzleSqliteMemberRepository(db),

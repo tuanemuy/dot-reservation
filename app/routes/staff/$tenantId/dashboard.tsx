@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { ReservationSummary } from "@/core/application/reservation/listReservations";
 import { listReservations } from "@/core/application/reservation/listReservations";
 import type { ShiftDetail } from "@/core/application/shift/listShifts";
@@ -18,43 +19,6 @@ function formatTodayLabel(): string {
   const now = new Date();
   const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
   return `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日（${dayNames[now.getDay()]}）`;
-}
-
-const statusLabels: Record<string, string> = {
-  confirmed: "確定",
-  pending: "承認待ち",
-  cancelled: "キャンセル",
-  completed: "完了",
-  rejected: "却下",
-};
-
-function StatusBadge({ status }: { status: string }) {
-  const statusStyles: Record<string, string> = {
-    confirmed: "bg-[oklch(0.55_0.12_145/0.1)] text-success",
-    pending: "bg-[oklch(0.72_0.14_70/0.12)] text-accent-dark",
-    cancelled: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
-    completed: "bg-surface-secondary text-text-secondary",
-    rejected: "bg-[oklch(0.55_0.16_25/0.1)] text-error",
-  };
-
-  const dotStyles: Record<string, string> = {
-    confirmed: "bg-success",
-    pending: "bg-warning",
-    cancelled: "bg-error",
-    completed: "bg-text-muted",
-    rejected: "bg-error",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${statusStyles[status] ?? "bg-surface-secondary text-text-secondary"}`}
-    >
-      <span
-        className={`h-1.5 w-1.5 rounded-full ${dotStyles[status] ?? "bg-text-muted"}`}
-      />
-      {statusLabels[status] ?? status}
-    </span>
-  );
 }
 
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -219,7 +183,10 @@ export default function StaffDashboardPage({
                   <span className="text-sm text-text-secondary">
                     {reservation.menuName}
                   </span>
-                  <StatusBadge status={reservation.status} />
+                  <StatusBadge
+                    status={reservation.status}
+                    variant="reservation"
+                  />
                 </div>
               ))}
             </div>

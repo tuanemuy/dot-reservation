@@ -1,5 +1,6 @@
 import { data, Form, Link, useSearchParams } from "react-router";
 import { Pagination } from "@/components/ui/Pagination";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { listCustomers } from "@/core/application/customer/listCustomers";
 import { container } from "@/core/di/server";
 import { handleUseCase } from "@/lib/handleUseCase";
@@ -12,11 +13,6 @@ type UserSummary = {
   status: string;
   createdAt: string;
   lastLoginAt: string | null;
-};
-
-const statusLabels: Record<string, string> = {
-  active: "アクティブ",
-  suspended: "停止中",
 };
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -39,14 +35,23 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
-  const users: UserSummary[] = result.items.map((item) => ({
-    id: item.id,
-    name: item.displayName,
-    email: item.email,
-    status: item.status,
-    createdAt: item.createdAt.toLocaleDateString("ja-JP"),
-    lastLoginAt: null,
-  }));
+  const lastLoginDates = await Promise.all(
+    result.items.map((item) =>
+      container.authProvider.getLastLoginAt(item.authUserId),
+    ),
+  );
+
+  const users: UserSummary[] = result.items.map((item, index) => {
+    const lastLogin = lastLoginDates[index];
+    return {
+      id: item.id,
+      name: item.displayName,
+      email: item.email,
+      status: item.status,
+      createdAt: item.createdAt.toLocaleDateString("ja-JP"),
+      lastLoginAt: lastLogin ? lastLogin.toLocaleDateString("ja-JP") : null,
+    };
+  });
 
   return {
     users,
@@ -259,7 +264,7 @@ export default function PlatformUsersPage({
                           : "none",
                     }}
                   >
-                    <StatusBadge status={user.status} />
+                    <StatusBadge status={user.status} variant="customer" />
                   </td>
                   <td
                     style={{
@@ -309,35 +314,5 @@ export default function PlatformUsersPage({
         )}
       </div>
     </div>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "active";
-  return (
-    <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: isActive
-          ? "oklch(0.55 0.12 145 / 0.1)"
-          : "oklch(0.55 0.16 25 / 0.08)",
-        color: isActive ? "var(--color-success)" : "var(--color-error)",
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: isActive ? "var(--color-success)" : "var(--color-error)",
-        }}
-      />
-      {statusLabels[status] ?? status}
-    </span>
   );
 }

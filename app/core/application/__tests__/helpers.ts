@@ -162,6 +162,8 @@ export async function createTestContainer(
       deleteUser: async () => {},
       banUser: async () => {},
       unbanUser: async () => {},
+      getLastLoginAt: async () => null,
+      verifyPassword: async () => false,
     } as AuthProvider,
     memberEmailSender: {
       sendInvitationEmail: async () => {},
