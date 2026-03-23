@@ -71,11 +71,11 @@
 
 ### MemberPolicyService
 
-テナント内のメンバーに関するビジネスルールを検証する。
+テナント内のメンバーに関するビジネスルールを検証する。リポジトリに依存せず、必要なデータを引数として受け取る純粋関数として実装する。違反時は `BusinessRuleError` をスローする。
 
-- `canRemoveMember(tenantId, targetMemberId)` — メンバーを削除できるか（唯一の管理者でないこと）
-- `canChangeRole(tenantId, targetMemberId, newRole)` — ロールを変更できるか
-- `canDeleteAccount(authUserId)` — アカウントを削除できるか（唯一の管理者のテナントがないこと）
+- `canRemoveMember(adminCount: number, targetRole: MemberRole): void` — メンバーを削除できるか検証する（唯一の管理者は削除できない）
+- `canChangeRole(adminCount: number, currentRole: MemberRole, newRole: MemberRole): void` — ロールを変更できるか検証する（唯一の管理者をスタッフに変更できない）
+- `canDeleteAccount(tenantMemberships: readonly TenantMembership[]): void` — アカウントを削除できるか検証する（唯一の管理者であるテナントが存在する場合は削除できない）。`TenantMembership` は `{ tenantId: string, role: MemberRole, adminCount: number }` 型
 
 ## ドメインイベント
 

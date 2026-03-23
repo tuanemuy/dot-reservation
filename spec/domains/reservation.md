@@ -68,9 +68,9 @@
 
 ### StaffAssignmentService
 
-「指名なし」予約のスタッフ割り当てを行う。
+「指名なし」予約のスタッフ割り当てを行う。リポジトリに依存せず、必要なデータを引数として受け取る純粋関数として実装する。
 
-- `assignStaff(tenantId, menuId, date, startTime, endTime)` — 空きのあるスタッフを自動割り当てする
+- `assignStaff(params: { availableStaffProfiles: readonly StaffProfileId[], shifts: readonly ShiftForAvailability[], existingReservations: readonly Reservation[], reservationSettings: ReservationSettings, date: Date, startTime: TimeOfDay, endTime: TimeOfDay }): StaffProfileId | null` — 利用可能なスタッフ一覧から、指定日時に空きのあるスタッフを自動割り当てする
 
 ## ドメインイベント
 

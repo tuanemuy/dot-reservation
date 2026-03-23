@@ -256,6 +256,15 @@ export class DrizzleSqliteTenantRepository implements TenantRepository {
           or(like(tenants.name, pattern), like(tenants.description, pattern)),
         );
       }
+      if (filter.area) {
+        const areaPattern = `%${filter.area}%`;
+        conditions.push(
+          or(
+            like(tenants.addressPrefecture, areaPattern),
+            like(tenants.addressCity, areaPattern),
+          ),
+        );
+      }
       if (filter.status) {
         conditions.push(eq(tenants.status, filter.status));
       }

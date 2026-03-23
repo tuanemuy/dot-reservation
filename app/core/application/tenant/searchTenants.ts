@@ -32,6 +32,7 @@ export async function searchTenants({
   const filter: TenantFilter = {
     status: "active",
     ...(input.keyword ? { keyword: input.keyword } : {}),
+    ...(input.area ? { area: input.area } : {}),
     ...(input.category
       ? { category: TenantCategory.create(input.category) }
       : {}),

@@ -12,6 +12,7 @@ import type {
 
 export type TenantFilter = {
   readonly keyword?: string;
+  readonly area?: string;
   readonly status?: TenantStatus;
   readonly category?: TenantCategory;
 };

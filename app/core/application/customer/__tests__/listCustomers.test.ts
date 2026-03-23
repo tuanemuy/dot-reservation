@@ -69,11 +69,7 @@ describe("listCustomers", () => {
     expect(result.totalCount).toBe(0);
   });
 
-  // NOTE: keyword search is not yet implemented in the repository adapter.
-  // The CustomerRepository.findAll method does not filter by keyword.
-  // The following keyword tests are skipped until the repository is updated.
-
-  it.skip("名前に'田中'を含む顧客のみ返却される", async () => {
+  it("名前に'田中'を含む顧客のみ返却される", async () => {
     const container = getContainer();
     const headers = createMockHeaders();
 
@@ -104,7 +100,7 @@ describe("listCustomers", () => {
     }
   });
 
-  it.skip("メールアドレスに'example.com'を含む顧客のみ返却される", async () => {
+  it("メールアドレスに'example.com'を含む顧客のみ返却される", async () => {
     const container = getContainer();
     const headers = createMockHeaders();
 
@@ -130,7 +126,7 @@ describe("listCustomers", () => {
     expect(result.items[0].email).toContain("example.com");
   });
 
-  it.skip("キーワードに一致する顧客が存在しない場合空の一覧が返却される", async () => {
+  it("キーワードに一致する顧客が存在しない場合空の一覧が返却される", async () => {
     const container = getContainer();
     const headers = createMockHeaders();
 
@@ -344,9 +340,7 @@ describe("listCustomers", () => {
     expect(result).toBeDefined();
   });
 
-  // NOTE: keyword search combined with status filter is not yet implemented
-  // in the repository adapter (keyword is ignored). This test is skipped.
-  it.skip("keywordとstatusの両方を指定すると両条件を満たす顧客のみ返却される", async () => {
+  it("keywordとstatusの両方を指定すると両条件を満たす顧客のみ返却される", async () => {
     const container = getContainer();
     const headers = createMockHeaders();
 

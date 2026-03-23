@@ -123,7 +123,7 @@
 | email | TEXT | NOT NULL | 招待先メールアドレス |
 | role | TEXT | NOT NULL | ロール (admin / staff) |
 | invited_by | TEXT | NOT NULL, FK → members.id | 招待者メンバーID |
-| status | TEXT | NOT NULL, DEFAULT 'pending' | ステータス (pending / accepted / declined / expired) |
+| status | TEXT | NOT NULL, DEFAULT 'pending' | ステータス (pending / accepted / declined / expired / cancelled) |
 | expires_at | INTEGER | NOT NULL | 有効期限 |
 | created_at | INTEGER | NOT NULL, DEFAULT unixepoch() | 作成日時 |
 | updated_at | INTEGER | NOT NULL, DEFAULT unixepoch() | 更新日時 |

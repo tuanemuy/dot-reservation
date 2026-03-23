@@ -65,9 +65,9 @@
 
 ### ShiftConflictChecker
 
-シフトの重複を検証する。
+シフトの重複を検証する。リポジトリに依存せず、必要なデータを引数として受け取る純粋関数として実装する。
 
-- `hasConflict(tenantId, staffProfileId, date, timeRange, excludeShiftId?)` — 指定条件でシフトの重複があるかを検証する
+- `hasConflict(existingShifts: Shift[], date: Date, timeRange: TimeRange, excludeShiftId?: ShiftId): boolean` — 既存シフト一覧から、指定日・時間帯と重複するシフトがあるかを検証する
 
 ## ドメインイベント
 
