@@ -17,9 +17,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   return { user: session.user };
 }
 
-export default function PlatformLayoutRoute(_props: Route.ComponentProps) {
+export default function PlatformLayoutRoute({
+  loaderData,
+}: Route.ComponentProps) {
   return (
-    <PlatformLayout>
+    <PlatformLayout userEmail={loaderData.user.email}>
       <Outlet />
     </PlatformLayout>
   );

@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet, redirect } from "react-router";
+import { Link, NavLink, Outlet, redirect, useNavigate } from "react-router";
+import { authClient } from "@/lib/authClient";
 import type { Route } from "./+types/layout";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -30,8 +31,15 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 }
 
 export default function StaffLayout({ loaderData }: Route.ComponentProps) {
+  const navigate = useNavigate();
   const { tenantId } = loaderData;
   const basePath = `/staff/${tenantId}`;
+
+  function handleSignOut() {
+    authClient.signOut().then(() => {
+      navigate("/admin/login");
+    });
+  }
 
   const navItems = [
     { to: `${basePath}/dashboard`, label: "ダッシュボード" },
@@ -44,7 +52,7 @@ export default function StaffLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-56 shrink-0 border-r border-border bg-white md:block">
+      <aside className="hidden w-56 shrink-0 border-r border-border bg-white md:flex md:flex-col">
         <div className="flex h-16 items-center border-b border-border px-4">
           <Link
             to="/admin/tenants"
@@ -58,7 +66,7 @@ export default function StaffLayout({ loaderData }: Route.ComponentProps) {
           <h2 className="text-lg font-bold text-primary">スタッフ</h2>
         </div>
 
-        <nav className="space-y-1 px-3">
+        <nav className="flex-1 space-y-1 px-3">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -75,11 +83,27 @@ export default function StaffLayout({ loaderData }: Route.ComponentProps) {
             </NavLink>
           ))}
         </nav>
+        <div className="border-t border-border p-3">
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="block w-full rounded-md px-3 py-2 text-left text-sm text-text-secondary hover:bg-surface-secondary hover:text-text"
+          >
+            ログアウト
+          </button>
+        </div>
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center border-b border-border bg-white px-6 md:hidden">
+        <header className="flex h-14 items-center justify-between border-b border-border bg-white px-6 md:hidden">
           <p className="text-sm font-semibold text-primary">スタッフ</p>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="text-sm text-text-secondary hover:text-text"
+          >
+            ログアウト
+          </button>
         </header>
         <main className="flex-1 p-4 md:p-6">
           <Outlet />
