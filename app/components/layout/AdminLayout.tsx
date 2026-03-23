@@ -200,7 +200,7 @@ export function AdminLayout({
 
       {/* Footer */}
       <footer className="mt-auto border-t border-border bg-white">
-        <div className="ml-[260px] flex items-center justify-between px-10 py-6">
+        <div className="flex items-center justify-between px-10 py-6 md:ml-[260px]">
           <span className="text-sm font-semibold text-text-muted no-underline">
             <span className="text-primary">dot.</span>reservation
           </span>

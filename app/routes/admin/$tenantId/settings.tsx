@@ -261,12 +261,31 @@ export const handlers = {
   }),
   deleteTenant: defineHandler({
     schema: deleteTenantSchema,
-    handler: async (_value, args) => {
+    handler: async (value, args) => {
+      const tenantId = args.params.tenantId as string;
+
+      const tenantResult = await handleUseCase(() =>
+        getTenant({
+          container,
+          headers: args.request.headers,
+          input: { tenantId },
+        }),
+      ).match(
+        (result) => result,
+        (e) => {
+          throw new Error(e.message);
+        },
+      );
+
+      if (value.confirmName !== tenantResult.name) {
+        return error({ confirmName: ["テナント名が一致しません"] });
+      }
+
       return handleUseCase(() =>
         deleteTenant({
           container,
           headers: args.request.headers,
-          input: { tenantId: args.params.tenantId as string },
+          input: { tenantId },
         }),
       ).match(
         () => success(),

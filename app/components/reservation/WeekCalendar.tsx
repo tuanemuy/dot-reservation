@@ -380,7 +380,7 @@ export function WeekCalendar({
                           right: "2px",
                           height: `${heightPx}px`,
                           background: color.bg,
-                          borderLeft: `3px solid ${color.border}`,
+                          border: `1px solid ${color.border}`,
                           borderRadius: "var(--radius-sm)",
                           padding: "2px 4px",
                           overflow: "hidden",

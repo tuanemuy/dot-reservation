@@ -264,6 +264,13 @@ export default function AdminNewTenantPage(_props: Route.ComponentProps) {
       return;
     }
 
+    if (step === 1 && urlPathStatus === "taken") {
+      setStepErrors({
+        urlPath: ["このURLパスは既に使用されています"],
+      });
+      return;
+    }
+
     setStepErrors({});
     setStep((s) => s + 1);
   };

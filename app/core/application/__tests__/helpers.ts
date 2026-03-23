@@ -164,7 +164,7 @@ export async function createTestContainer(
       unbanUser: async () => {},
       getLastLoginAt: async () => null,
       verifyPassword: async () => false,
-    } as AuthProvider,
+    } satisfies AuthProvider,
     memberEmailSender: {
       sendInvitationEmail: async () => {},
     } as MemberEmailSender,

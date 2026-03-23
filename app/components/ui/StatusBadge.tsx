@@ -175,6 +175,7 @@ export function StatusBadge({ status, variant = "default" }: StatusBadgeProps) {
       }}
     >
       <span
+        aria-hidden="true"
         style={{
           width: "6px",
           height: "6px",

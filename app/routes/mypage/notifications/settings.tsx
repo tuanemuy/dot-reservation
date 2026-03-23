@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { data, redirect, useFetcher } from "react-router";
 import { z } from "zod";
 import { getNotificationPreferences } from "@/core/application/notification/getNotificationPreferences";
@@ -195,13 +195,54 @@ function SettingRow({
   );
 
   // Clear revert state when server data changes (successful revalidation)
-  // This runs after loader revalidation brings fresh data
-  if (emailReverted !== null && emailFetcher.state === "idle") {
-    setEmailReverted(null);
-  }
-  if (inAppReverted !== null && inAppFetcher.state === "idle") {
-    setInAppReverted(null);
-  }
+  useEffect(() => {
+    if (emailReverted !== null && emailFetcher.state === "idle") {
+      setEmailReverted(null);
+    }
+  }, [emailFetcher.state, emailReverted]);
+
+  useEffect(() => {
+    if (inAppReverted !== null && inAppFetcher.state === "idle") {
+      setInAppReverted(null);
+    }
+  }, [inAppFetcher.state, inAppReverted]);
+
+  // Detect failed submissions and revert
+  useEffect(() => {
+    if (
+      emailFetcher.state === "idle" &&
+      emailFetcher.data &&
+      typeof emailFetcher.data === "object" &&
+      "status" in emailFetcher.data &&
+      emailFetcher.data.status === "error" &&
+      emailReverted === null
+    ) {
+      setEmailReverted(setting.emailEnabled);
+    }
+  }, [
+    emailFetcher.state,
+    emailFetcher.data,
+    emailReverted,
+    setting.emailEnabled,
+  ]);
+
+  useEffect(() => {
+    if (
+      inAppFetcher.state === "idle" &&
+      inAppFetcher.data &&
+      typeof inAppFetcher.data === "object" &&
+      "status" in inAppFetcher.data &&
+      inAppFetcher.data.status === "error" &&
+      inAppReverted === null
+    ) {
+      setInAppReverted(setting.inAppEnabled);
+    }
+  }, [
+    inAppFetcher.state,
+    inAppFetcher.data,
+    inAppReverted,
+    setting.inAppEnabled,
+  ]);
 
   const handleToggle = (channel: "email" | "in_app", currentValue: boolean) => {
     const fetcher = channel === "email" ? emailFetcher : inAppFetcher;
@@ -213,29 +254,6 @@ function SettingRow({
     formData.set("enabled", String(!currentValue));
     fetcher.submit(formData, { method: "post" });
   };
-
-  // Detect failed submissions and revert
-  if (
-    emailFetcher.state === "idle" &&
-    emailFetcher.data &&
-    typeof emailFetcher.data === "object" &&
-    "status" in emailFetcher.data &&
-    emailFetcher.data.status === "error" &&
-    emailReverted === null
-  ) {
-    setEmailReverted(setting.emailEnabled);
-  }
-
-  if (
-    inAppFetcher.state === "idle" &&
-    inAppFetcher.data &&
-    typeof inAppFetcher.data === "object" &&
-    "status" in inAppFetcher.data &&
-    inAppFetcher.data.status === "error" &&
-    inAppReverted === null
-  ) {
-    setInAppReverted(setting.inAppEnabled);
-  }
 
   return (
     <div

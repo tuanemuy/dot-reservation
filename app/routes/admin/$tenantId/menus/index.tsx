@@ -59,10 +59,15 @@ export const handlers = {
   updateSortOrders: defineHandler({
     schema: updateSortOrdersSchema,
     handler: async (value, args) => {
-      const items = JSON.parse(value.items) as {
+      let items: {
         menuId: string;
         sortOrder: number;
       }[];
+      try {
+        items = JSON.parse(value.items);
+      } catch {
+        return error({ "": ["Invalid data format"] });
+      }
       return handleUseCase(() =>
         updateMenuSortOrders({
           container,

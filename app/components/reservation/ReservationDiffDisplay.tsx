@@ -32,6 +32,14 @@ export function ReservationDiffDisplay({
         変更内容の確認
       </h3>
       <table className="w-full text-sm">
+        <thead className="sr-only">
+          <tr>
+            <th scope="col">項目</th>
+            <th scope="col">変更前</th>
+            <th scope="col" />
+            <th scope="col">変更後</th>
+          </tr>
+        </thead>
         <tbody>
           {changedFields.map((field) => (
             <tr
@@ -41,16 +49,14 @@ export function ReservationDiffDisplay({
               <td className="whitespace-nowrap py-2.5 pr-4 font-medium text-text-secondary">
                 {field.label}
               </td>
-              <td className="py-2.5">
-                <span className="text-text-muted line-through">
-                  {field.oldValue}
-                </span>
-                <span className="mx-2 text-text-muted" aria-hidden="true">
-                  &rarr;
-                </span>
-                <span className="font-semibold text-text">
-                  {field.newValue}
-                </span>
+              <td className="py-2.5 text-text-muted line-through">
+                {field.oldValue}
+              </td>
+              <td className="px-2 py-2.5 text-text-muted" aria-hidden="true">
+                &rarr;
+              </td>
+              <td className="py-2.5 font-semibold text-text">
+                {field.newValue}
               </td>
             </tr>
           ))}

@@ -2,6 +2,7 @@ import { verifyPassword as verifyPasswordHash } from "better-auth/crypto";
 import { and, desc, eq } from "drizzle-orm";
 import type { Database } from "@/core/adapters/drizzleSqlite/client";
 import { accounts, sessions } from "@/core/adapters/drizzleSqlite/schema";
+import { SystemError, SystemErrorCode } from "@/core/application/error";
 import type { AuthProvider } from "@/core/domain/auth/ports/authProvider";
 import type { AuthSession, AuthUser } from "@/core/domain/auth/types";
 import type { BetterAuth } from "./server";
@@ -53,8 +54,9 @@ export class BetterAuthProvider implements AuthProvider {
       await this.auth.api.removeUser({
         body: { userId },
       });
-    } catch (_error: unknown) {
-      // Ignore errors when user already does not exist (idempotent)
+    } catch (error: unknown) {
+      // Idempotent: do not throw, but log so failures are observable
+      console.warn("deleteUser failed (idempotent, suppressed):", error);
     }
   }
 
@@ -71,33 +73,52 @@ export class BetterAuthProvider implements AuthProvider {
   }
 
   async getLastLoginAt(userId: string): Promise<Date | null> {
-    const rows = await this.db
-      .select({ createdAt: sessions.createdAt })
-      .from(sessions)
-      .where(eq(sessions.userId, userId))
-      .orderBy(desc(sessions.createdAt))
-      .limit(1);
+    try {
+      const rows = await this.db
+        .select({ createdAt: sessions.createdAt })
+        .from(sessions)
+        .where(eq(sessions.userId, userId))
+        .orderBy(desc(sessions.createdAt))
+        .limit(1);
 
-    if (rows.length === 0) {
-      return null;
+      if (rows.length === 0) {
+        return null;
+      }
+
+      return rows[0].createdAt;
+    } catch (error) {
+      throw new SystemError(
+        SystemErrorCode.DatabaseError,
+        "Failed to get last login date",
+        error,
+      );
     }
-
-    return rows[0].createdAt;
   }
 
   async verifyPassword(userId: string, password: string): Promise<boolean> {
-    const rows = await this.db
-      .select({ password: accounts.password })
-      .from(accounts)
-      .where(
-        and(eq(accounts.userId, userId), eq(accounts.providerId, "credential")),
-      )
-      .limit(1);
+    try {
+      const rows = await this.db
+        .select({ password: accounts.password })
+        .from(accounts)
+        .where(
+          and(
+            eq(accounts.userId, userId),
+            eq(accounts.providerId, "credential"),
+          ),
+        )
+        .limit(1);
 
-    if (rows.length === 0 || rows[0].password === null) {
-      return false;
+      if (rows.length === 0 || rows[0].password === null) {
+        return false;
+      }
+
+      return verifyPasswordHash({ hash: rows[0].password, password });
+    } catch (error) {
+      throw new SystemError(
+        SystemErrorCode.DatabaseError,
+        "Failed to verify password",
+        error,
+      );
     }
-
-    return verifyPasswordHash({ hash: rows[0].password, password });
   }
 }

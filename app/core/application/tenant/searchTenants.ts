@@ -18,6 +18,7 @@ export type TenantSummary = {
   urlPath: string;
   imageUrls: string[];
   description: string | null;
+  address: { prefecture: string; city: string; street: string } | null;
 };
 
 export type SearchTenantsOutput = {
@@ -56,6 +57,13 @@ export async function searchTenants({
     urlPath: tenant.urlPath as string,
     imageUrls: [...tenant.imageUrls],
     description: tenant.description as string | null,
+    address: tenant.address
+      ? {
+          prefecture: tenant.address.prefecture,
+          city: tenant.address.city,
+          street: tenant.address.street,
+        }
+      : null,
   }));
 
   return {

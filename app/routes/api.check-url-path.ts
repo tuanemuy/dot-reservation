@@ -4,6 +4,11 @@ import { handleUseCase } from "@/lib/handleUseCase";
 import type { Route } from "./+types/api.check-url-path";
 
 export async function loader({ request }: Route.LoaderArgs) {
+  const session = await container.authProvider.getSession(request.headers);
+  if (!session) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const url = new URL(request.url);
   const urlPath = url.searchParams.get("urlPath");
   const excludeTenantId = url.searchParams.get("excludeTenantId");

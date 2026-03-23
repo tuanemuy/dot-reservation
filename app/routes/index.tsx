@@ -145,7 +145,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 
-  // Extract unique categories from active tenants
+  // Extract unique categories and prefectures from search results
   const categorySet = new Set<string>();
   const prefectureSet = new Set<string>();
 
@@ -153,21 +153,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     if (tenant.category) {
       categorySet.add(tenant.category);
     }
-  }
-
-  // We need prefectures from tenant addresses.
-  // Since searchTenants doesn't return address info, we fetch from the repository directly.
-  const tenants = await container.unitOfWorkProvider.transaction(
-    async (repositories) => {
-      return repositories.tenantRepository.findAll(
-        { status: "active" },
-        { page: 1, limit: 1000 },
-      );
-    },
-  );
-
-  for (const tenant of tenants.items) {
-    if (tenant.address.prefecture) {
+    if (tenant.address?.prefecture) {
       prefectureSet.add(tenant.address.prefecture);
     }
   }

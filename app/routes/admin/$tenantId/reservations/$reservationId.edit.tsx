@@ -4,6 +4,7 @@ import { useState } from "react";
 import { data, Link, redirect } from "react-router";
 import { z } from "zod";
 import { ReservationDiffDisplay } from "@/components/reservation/ReservationDiffDisplay";
+import { AlertError } from "@/components/ui/AlertError";
 import { listMenus } from "@/core/application/menu/listMenus";
 import { getReservation } from "@/core/application/reservation/getReservation";
 import { updateReservation } from "@/core/application/reservation/updateReservation";
@@ -306,6 +307,9 @@ export default function TenantReservationEditPage({
                 </div>
               </div>
             </section>
+
+            {/* エラー表示 */}
+            {form.errors && <AlertError error={form.errors[0]} />}
 
             {/* 変更内容の確認 */}
             <ReservationDiffDisplay fields={diffFields} />
