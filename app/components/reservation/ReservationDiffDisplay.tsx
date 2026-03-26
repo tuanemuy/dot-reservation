@@ -17,18 +17,18 @@ export function ReservationDiffDisplay({
 
   if (changedFields.length === 0) {
     return (
-      <div className="rounded-[var(--radius-lg)] border border-border bg-surface p-6">
-        <h3 className="mb-3 text-sm font-semibold tracking-tight text-text">
+      <div className="rounded-lg border border-neutral-300 bg-neutral-100 p-6">
+        <h3 className="mb-2 text-sm font-semibold tracking-tight text-neutral-800">
           変更内容の確認
         </h3>
-        <p className="text-sm text-text-muted">変更はありません</p>
+        <p className="text-sm text-neutral-500">変更はありません</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-[var(--radius-lg)] border border-border bg-surface p-6">
-      <h3 className="mb-4 text-sm font-semibold tracking-tight text-text">
+    <div className="rounded-lg border border-neutral-300 bg-neutral-100 p-6">
+      <h3 className="mb-4 text-sm font-semibold tracking-tight text-neutral-800">
         変更内容の確認
       </h3>
       <table className="w-full text-sm">
@@ -44,18 +44,18 @@ export function ReservationDiffDisplay({
           {changedFields.map((field) => (
             <tr
               key={field.label}
-              className="border-b border-border last:border-b-0"
+              className="border-b border-neutral-300 last:border-b-0"
             >
-              <td className="whitespace-nowrap py-2.5 pr-4 font-medium text-text-secondary">
+              <td className="whitespace-nowrap py-2 pr-4 font-medium text-neutral-600">
                 {field.label}
               </td>
-              <td className="py-2.5 text-text-muted line-through">
+              <td className="py-2 text-neutral-500 line-through">
                 {field.oldValue}
               </td>
-              <td className="px-2 py-2.5 text-text-muted" aria-hidden="true">
+              <td className="px-2 py-2 text-neutral-500" aria-hidden="true">
                 &rarr;
               </td>
-              <td className="py-2.5 font-semibold text-text">
+              <td className="py-2 font-semibold text-neutral-800">
                 {field.newValue}
               </td>
             </tr>

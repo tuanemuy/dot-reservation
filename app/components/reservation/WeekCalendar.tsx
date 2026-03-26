@@ -76,45 +76,45 @@ function isToday(date: Date): boolean {
   );
 }
 
-const statusColors: Record<
+const statusColorClasses: Record<
   string,
   { bg: string; border: string; text: string }
 > = {
   pending: {
-    bg: "oklch(0.72 0.14 70 / 0.15)",
-    border: "oklch(0.72 0.14 70 / 0.4)",
-    text: "oklch(0.45 0.1 70)",
+    bg: "bg-[var(--color-status-pending-bg)]",
+    border: "border-[var(--color-status-pending-border)]",
+    text: "text-status-pending-text",
   },
   confirmed: {
-    bg: "oklch(0.55 0.12 145 / 0.12)",
-    border: "oklch(0.55 0.12 145 / 0.4)",
-    text: "oklch(0.35 0.08 145)",
+    bg: "bg-[var(--color-status-confirmed-bg)]",
+    border: "border-[var(--color-status-confirmed-border)]",
+    text: "text-status-confirmed-text",
   },
   completed: {
-    bg: "oklch(0.65 0.006 80 / 0.2)",
-    border: "oklch(0.65 0.006 80 / 0.4)",
-    text: "oklch(0.45 0.006 80)",
+    bg: "bg-[var(--color-status-completed-bg)]",
+    border: "border-[var(--color-status-completed-border)]",
+    text: "text-status-completed-text",
   },
   cancelled: {
-    bg: "oklch(0.55 0.16 25 / 0.1)",
-    border: "oklch(0.55 0.16 25 / 0.3)",
-    text: "oklch(0.45 0.12 25)",
+    bg: "bg-[var(--color-status-cancelled-bg)]",
+    border: "border-[var(--color-status-cancelled-border)]",
+    text: "text-status-cancelled-text",
   },
   rejected: {
-    bg: "oklch(0.55 0.16 25 / 0.1)",
-    border: "oklch(0.55 0.16 25 / 0.3)",
-    text: "oklch(0.45 0.12 25)",
+    bg: "bg-[var(--color-status-cancelled-bg)]",
+    border: "border-[var(--color-status-cancelled-border)]",
+    text: "text-status-cancelled-text",
   },
 };
 
-const defaultStatusColor = {
-  bg: "oklch(0.65 0.006 80 / 0.2)",
-  border: "oklch(0.65 0.006 80 / 0.4)",
-  text: "oklch(0.45 0.006 80)",
+const defaultStatusColorClasses = {
+  bg: "bg-[var(--color-status-completed-bg)]",
+  border: "border-[var(--color-status-completed-border)]",
+  text: "text-status-completed-text",
 };
 
-function getStatusColor(status: string) {
-  return statusColors[status] ?? defaultStatusColor;
+function getStatusColorClasses(status: string) {
+  return statusColorClasses[status] ?? defaultStatusColorClasses;
 }
 
 function generateTimeLabels(): string[] {
@@ -205,21 +205,21 @@ export function WeekCalendar({
           <button
             type="button"
             onClick={handlePrevWeek}
-            className="rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-200"
+            className="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-200"
           >
             前の週
           </button>
           <button
             type="button"
             onClick={handleToday}
-            className="rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-200"
+            className="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-200"
           >
             今日
           </button>
           <button
             type="button"
             onClick={handleNextWeek}
-            className="rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-200"
+            className="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-200"
           >
             次の週
           </button>
@@ -230,60 +230,34 @@ export function WeekCalendar({
       </div>
 
       {/* Calendar grid */}
-      <div
-        className="overflow-x-auto rounded-[var(--radius-lg)] border border-neutral-300 bg-white"
-        style={{ minWidth: 0 }}
-      >
-        <div style={{ minWidth: "800px" }}>
+      <div className="min-w-0 overflow-x-auto rounded-lg border border-neutral-300 bg-white">
+        <div className="min-w-[800px]">
           {/* Header row: day names */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "60px repeat(7, 1fr)",
-              borderBottom: "1px solid var(--color-border)",
-            }}
-          >
+          <div className="grid grid-cols-[60px_repeat(7,1fr)] border-b border-neutral-300">
             {/* Empty corner cell */}
-            <div
-              style={{
-                borderRight: "1px solid var(--color-border)",
-                background: "var(--color-surface)",
-              }}
-            />
+            <div className="border-r border-neutral-300 bg-neutral-100" />
             {weekDates.map((date, i) => {
               const today = isToday(date);
               return (
                 <div
                   key={formatDateISO(date)}
-                  style={{
-                    padding: "8px 4px",
-                    textAlign: "center",
-                    borderRight:
-                      i < 6 ? "1px solid var(--color-border)" : "none",
-                    background: today
-                      ? "var(--color-primary-lighter)"
-                      : "var(--color-surface)",
-                  }}
+                  className={`px-1 py-2 text-center ${
+                    i < 6 ? "border-r border-neutral-300" : ""
+                  } ${today ? "bg-primary-lighter" : "bg-neutral-100"}`}
                 >
                   <div
-                    style={{
-                      fontSize: "var(--text-xs)",
-                      fontWeight: 500,
-                      color: today
-                        ? "var(--color-primary)"
-                        : "var(--color-text-secondary)",
-                    }}
+                    className={`text-xs font-medium ${
+                      today ? "text-primary" : "text-neutral-600"
+                    }`}
                   >
                     {DAY_NAMES[i]}
                   </div>
                   <div
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      fontWeight: today ? 600 : 400,
-                      color: today
-                        ? "var(--color-primary)"
-                        : "var(--color-text)",
-                    }}
+                    className={`text-sm ${
+                      today
+                        ? "font-semibold text-primary"
+                        : "font-normal text-neutral-800"
+                    }`}
                   >
                     {formatDateShort(date)}
                   </div>
@@ -293,36 +267,19 @@ export function WeekCalendar({
           </div>
 
           {/* Time grid body */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "60px repeat(7, 1fr)",
-              position: "relative",
-            }}
-          >
+          <div className="relative grid grid-cols-[60px_repeat(7,1fr)]">
             {/* Time labels column */}
-            <div style={{ borderRight: "1px solid var(--color-border)" }}>
+            <div className="border-r border-neutral-300">
               {timeLabels.map((label, slotIndex) => {
                 const isHourMark = slotIndex % SLOTS_PER_HOUR === 0;
                 return (
                   <div
                     key={label}
-                    style={{
-                      height: `${SLOT_HEIGHT_PX}px`,
-                      display: "flex",
-                      alignItems: "flex-start",
-                      justifyContent: "flex-end",
-                      paddingRight: "8px",
-                      paddingTop: "0px",
-                      fontSize: "var(--text-xs)",
-                      color: isHourMark
-                        ? "var(--color-text-secondary)"
-                        : "transparent",
-                      borderBottom: isHourMark
-                        ? "1px solid var(--color-border)"
-                        : "1px solid var(--color-surface-secondary)",
-                      transform: "translateY(-6px)",
-                    }}
+                    className={`flex h-7 -translate-y-1.5 items-start justify-end pr-2 pt-0 text-xs ${
+                      isHourMark
+                        ? "border-b border-neutral-300 text-neutral-600"
+                        : "border-b border-neutral-200 text-transparent"
+                    }`}
                   >
                     {isHourMark ? label : ""}
                   </div>
@@ -338,14 +295,9 @@ export function WeekCalendar({
               return (
                 <div
                   key={formatDateISO(date)}
-                  style={{
-                    position: "relative",
-                    borderRight:
-                      dayIndex < 6 ? "1px solid var(--color-border)" : "none",
-                    background: today
-                      ? "oklch(0.96 0.02 155 / 0.3)"
-                      : "transparent",
-                  }}
+                  className={`relative ${
+                    dayIndex < 6 ? "border-r border-neutral-300" : ""
+                  } ${today ? "bg-[var(--color-today-highlight)]" : "bg-transparent"}`}
                 >
                   {/* Slot lines */}
                   {timeLabels.map((label, slotIndex) => {
@@ -353,19 +305,18 @@ export function WeekCalendar({
                     return (
                       <div
                         key={label}
-                        style={{
-                          height: `${SLOT_HEIGHT_PX}px`,
-                          borderBottom: isHourMark
-                            ? "1px solid var(--color-border)"
-                            : "1px solid var(--color-surface-secondary)",
-                        }}
+                        className={`h-7 border-b ${
+                          isHourMark
+                            ? "border-neutral-300"
+                            : "border-neutral-200"
+                        }`}
                       />
                     );
                   })}
 
                   {/* Reservation blocks */}
                   {dayReservations.map(({ reservation, startSlot, span }) => {
-                    const color = getStatusColor(reservation.status);
+                    const color = getStatusColorClasses(reservation.status);
                     const topPx = startSlot * SLOT_HEIGHT_PX;
                     const heightPx = span * SLOT_HEIGHT_PX - 2;
 
@@ -373,67 +324,22 @@ export function WeekCalendar({
                       <Link
                         key={reservation.id}
                         to={buildDetailPath(reservation.id)}
+                        className={`absolute left-[2px] right-[2px] z-[1] cursor-pointer overflow-hidden rounded-sm border px-1 py-[2px] no-underline transition-opacity duration-150 hover:opacity-80 ${color.bg} ${color.border} ${color.text}`}
                         style={{
-                          position: "absolute",
                           top: `${topPx}px`,
-                          left: "2px",
-                          right: "2px",
                           height: `${heightPx}px`,
-                          background: color.bg,
-                          border: `1px solid ${color.border}`,
-                          borderRadius: "var(--radius-sm)",
-                          padding: "2px 4px",
-                          overflow: "hidden",
-                          textDecoration: "none",
-                          cursor: "pointer",
-                          zIndex: 1,
-                          transition: "opacity var(--transition-default)",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.opacity =
-                            "0.8";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.opacity = "1";
                         }}
                       >
-                        <div
-                          style={{
-                            fontSize: "var(--text-xs)",
-                            fontWeight: 500,
-                            color: color.text,
-                            lineHeight: 1.3,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
+                        <div className="truncate text-xs font-medium leading-[1.3]">
                           {reservation.customerName ?? "-"}
                         </div>
                         {span >= 2 && (
-                          <div
-                            style={{
-                              fontSize: "var(--text-xs)",
-                              color: color.text,
-                              opacity: 0.8,
-                              lineHeight: 1.3,
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
+                          <div className="truncate text-xs leading-[1.3] opacity-80">
                             {reservation.menuName}
                           </div>
                         )}
                         {span >= 3 && (
-                          <div
-                            style={{
-                              fontSize: "var(--text-xs)",
-                              color: color.text,
-                              opacity: 0.7,
-                              lineHeight: 1.3,
-                            }}
-                          >
+                          <div className="text-xs leading-[1.3] opacity-70">
                             {reservation.startTime}-{reservation.endTime}
                           </div>
                         )}
