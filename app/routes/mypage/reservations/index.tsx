@@ -100,29 +100,12 @@ export default function ReservationsIndexPage({
 
   return (
     <div>
-      <h1
-        style={{
-          fontFamily: "var(--font-heading)",
-          fontSize: "var(--text-2xl)",
-          fontWeight: "var(--weight-semibold)",
-          color: "var(--color-neutral-900)",
-          letterSpacing: "var(--tracking-tight)",
-          lineHeight: "var(--leading-tight)",
-          marginBottom: "var(--space-lg)",
-        }}
-      >
+      <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight mb-6">
         予約一覧
       </h1>
 
       {/* Tabs */}
-      <div
-        className="flex"
-        style={{
-          borderBottom: "1px solid var(--color-neutral-300)",
-          marginBottom: "var(--space-lg)",
-          gap: "0",
-        }}
-      >
+      <div className="flex border-b border-neutral-300 mb-6">
         {[
           { id: "upcoming", label: "今後の予約" },
           { id: "past", label: "過去の予約" },
@@ -131,26 +114,11 @@ export default function ReservationsIndexPage({
             key={t.id}
             type="button"
             onClick={() => handleTabChange(t.id)}
-            style={{
-              padding: "var(--space-sm) var(--space-lg)",
-              fontSize: "var(--text-base)",
-              fontWeight: "var(--weight-medium)",
-              color:
-                tab === t.id
-                  ? "var(--color-neutral-900)"
-                  : "var(--color-neutral-500)",
-              position: "relative",
-              transition: "color var(--transition-default)",
-              cursor: "pointer",
-              border: "none",
-              background: "none",
-              fontFamily: "inherit",
-              borderBottom:
-                tab === t.id
-                  ? "2px solid var(--color-primary)"
-                  : "2px solid transparent",
-              marginBottom: "-1px",
-            }}
+            className={`py-2 px-6 text-base font-medium relative duration-150 cursor-pointer border-none bg-none font-[inherit] -mb-px ${
+              tab === t.id
+                ? "text-neutral-900 border-b-2 border-b-primary"
+                : "text-neutral-500 border-b-2 border-b-transparent"
+            }`}
           >
             {t.label}
           </button>
@@ -159,37 +127,20 @@ export default function ReservationsIndexPage({
 
       {/* Reservation List */}
       {reservations.length === 0 ? (
-        <p
-          className="py-12 text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
-        >
+        <p className="py-12 text-center text-sm text-neutral-500">
           予約はありません
         </p>
       ) : (
-        <div className="flex flex-col" style={{ gap: "var(--space-md)" }}>
+        <div className="flex flex-col gap-4">
           {reservations.map((reservation) => (
             <Link
               key={reservation.id}
               to={`/mypage/reservations/${reservation.id}`}
-              className="grid items-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:shadow-[var(--shadow-sm)]"
-              style={{
-                gridTemplateColumns: "1fr auto",
-                gap: "var(--space-xl)",
-                padding: "var(--space-lg) var(--space-xl)",
-                borderRadius: "var(--radius-lg)",
-                color: "inherit",
-                cursor: "pointer",
-              }}
+              className="grid grid-cols-[1fr_auto] items-center gap-8 py-6 px-8 border border-neutral-300 bg-white rounded-lg cursor-pointer no-underline text-[inherit] transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 hover:shadow-sm"
             >
-              <div className="flex flex-col" style={{ gap: "var(--space-sm)" }}>
+              <div className="flex flex-col gap-2">
                 {/* Status Badge */}
-                <div
-                  className="flex items-center"
-                  style={{ gap: "var(--space-sm)" }}
-                >
+                <div className="flex items-center gap-2">
                   <StatusBadge
                     status={reservation.status}
                     variant="reservation"
@@ -198,55 +149,27 @@ export default function ReservationsIndexPage({
 
                 {/* Tenant Name */}
                 {reservation.tenantName && (
-                  <div
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      fontWeight: "var(--weight-medium)",
-                      color: "var(--color-neutral-500)",
-                      letterSpacing: "var(--tracking-wide)",
-                    }}
-                  >
+                  <div className="text-sm font-medium text-neutral-500 tracking-wide">
                     {reservation.tenantName}
                   </div>
                 )}
 
                 {/* Menu Name */}
-                <div
-                  style={{
-                    fontSize: "var(--text-lg)",
-                    fontWeight: "var(--weight-medium)",
-                    color: "var(--color-neutral-800)",
-                    letterSpacing: "var(--tracking-tight)",
-                  }}
-                >
+                <div className="text-lg font-medium text-neutral-800 tracking-tight">
                   {reservation.menuName}
                 </div>
 
                 {/* Meta: staff + date */}
-                <div
-                  className="flex flex-wrap"
-                  style={{
-                    gap: "var(--space-md)",
-                    fontSize: "var(--text-sm)",
-                    color: "var(--color-neutral-600)",
-                  }}
-                >
+                <div className="flex flex-wrap gap-4 text-sm text-neutral-600">
                   {reservation.staffName && (
-                    <span
-                      className="flex items-center"
-                      style={{ gap: "var(--space-xs)" }}
-                    >
+                    <span className="flex items-center gap-1">
                       <svg
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
-                        style={{
-                          width: "14px",
-                          height: "14px",
-                          color: "var(--color-neutral-500)",
-                        }}
+                        className="size-[14px] text-neutral-500"
                       >
                         <path
                           strokeLinecap="round"
@@ -257,21 +180,14 @@ export default function ReservationsIndexPage({
                       {reservation.staffName}
                     </span>
                   )}
-                  <span
-                    className="flex items-center"
-                    style={{ gap: "var(--space-xs)" }}
-                  >
+                  <span className="flex items-center gap-1">
                     <svg
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="1.5"
                       viewBox="0 0 24 24"
                       aria-hidden="true"
-                      style={{
-                        width: "14px",
-                        height: "14px",
-                        color: "var(--color-neutral-500)",
-                      }}
+                      className="size-[14px] text-neutral-500"
                     >
                       <path
                         strokeLinecap="round"
@@ -288,18 +204,15 @@ export default function ReservationsIndexPage({
               </div>
 
               {/* Arrow + Re-reserve */}
-              <div
-                className="flex flex-col items-end"
-                style={{ gap: "var(--space-sm)" }}
-              >
-                <div style={{ color: "var(--color-neutral-500)" }}>
+              <div className="flex flex-col items-end gap-2">
+                <div className="text-neutral-500">
                   <svg
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
-                    style={{ width: "20px", height: "20px" }}
+                    className="size-5"
                   >
                     <path
                       strokeLinecap="round"
@@ -313,13 +226,7 @@ export default function ReservationsIndexPage({
                     <Link
                       to={`/shop/${tenantUrlPaths[reservation.tenantId]}/reserve`}
                       onClick={(e) => e.stopPropagation()}
-                      style={{
-                        fontSize: "var(--text-xs)",
-                        fontWeight: "var(--weight-medium)",
-                        color: "var(--color-primary)",
-                        textDecoration: "none",
-                        whiteSpace: "nowrap",
-                      }}
+                      className="text-xs font-medium text-primary no-underline whitespace-nowrap"
                     >
                       再予約
                     </Link>

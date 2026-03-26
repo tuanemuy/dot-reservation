@@ -196,7 +196,7 @@ export default function TenantMenusPage({
 
       {/* メニュー一覧 */}
       {filteredMenus.length === 0 ? (
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-12 text-center">
+        <div className="rounded-lg border border-neutral-300 bg-white p-12 text-center">
           <p className="text-neutral-500">メニューが登録されていません</p>
           <Link
             to={`/admin/${tenantId}/menus/new`}
@@ -206,7 +206,7 @@ export default function TenantMenusPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+        <div className="overflow-hidden rounded-lg border border-neutral-300 bg-white">
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-neutral-200">
               <tr>

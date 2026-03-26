@@ -175,7 +175,7 @@ function NotificationIcon({ type }: { type: NotificationItem["type"] }) {
   switch (type) {
     case "reservation":
       return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[oklch(0.55_0.12_145/0.1)] text-success">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[oklch(0.55_0.12_145/0.1)] text-success">
           <svg
             className="h-[18px] w-[18px]"
             fill="none"
@@ -194,7 +194,7 @@ function NotificationIcon({ type }: { type: NotificationItem["type"] }) {
       );
     case "member":
       return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[oklch(0.55_0.1_240/0.1)] text-info">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[oklch(0.55_0.1_240/0.1)] text-info">
           <svg
             className="h-[18px] w-[18px]"
             fill="none"
@@ -213,7 +213,7 @@ function NotificationIcon({ type }: { type: NotificationItem["type"] }) {
       );
     case "announcement":
       return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-accent-lighter text-accent-dark">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-lighter text-accent-dark">
           <svg
             className="h-[18px] w-[18px]"
             fill="none"
@@ -272,8 +272,8 @@ export default function AdminNotificationsPage({
 
   return (
     <div>
-      <div className="mb-[var(--space-xl)] flex items-center justify-between">
-        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
           通知
         </h1>
         {unreadCount > 0 && (
@@ -282,7 +282,7 @@ export default function AdminNotificationsPage({
             <button
               type="submit"
               disabled={isMarkingAll}
-              className="inline-flex h-9 items-center gap-[var(--space-xs)] rounded-[var(--radius-md)] bg-transparent px-[var(--space-md)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-1 rounded-md bg-transparent px-4 text-sm font-medium text-neutral-500 transition-[background,color] duration-150 hover:bg-neutral-200 hover:text-neutral-800 disabled:opacity-50"
             >
               <svg
                 className="h-4 w-4"
@@ -305,13 +305,13 @@ export default function AdminNotificationsPage({
       </div>
 
       {/* Filter Tabs */}
-      <div className="mb-[var(--space-xl)] flex w-fit gap-0.5 rounded-[var(--radius-md)] bg-neutral-200 p-[3px]">
+      <div className="mb-8 flex w-fit gap-0.5 rounded-md bg-neutral-200 p-[3px]">
         {filterTabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => handleFilterChange(tab.id)}
-            className={`whitespace-nowrap rounded-[var(--radius-sm)] px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] transition-[background,color] duration-[0.15s] ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+            className={`whitespace-nowrap rounded-sm px-4 py-2 text-sm font-medium transition-[background,color] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
               filter === tab.id
                 ? "bg-white text-neutral-900 shadow-sm"
                 : "bg-transparent text-neutral-600 hover:text-neutral-800"
@@ -324,18 +324,16 @@ export default function AdminNotificationsPage({
 
       {/* Notification List */}
       {notifications.length === 0 ? (
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white py-12 text-center">
-          <p className="text-[length:var(--text-sm)] text-neutral-500">
-            通知はありません
-          </p>
+        <div className="rounded-lg border border-neutral-300 bg-white py-12 text-center">
+          <p className="text-sm text-neutral-500">通知はありません</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+        <div className="overflow-hidden rounded-lg border border-neutral-300 bg-white">
           {notifications.map((notification, i) => (
             <a
               key={notification.id}
               href={notification.referenceUrl ?? "#"}
-              className={`flex items-start gap-[var(--space-md)] px-[var(--space-lg)] py-[var(--space-lg)] transition-colors duration-[0.15s] ease-[ease] ${
+              className={`flex items-start gap-4 px-6 py-6 transition-colors duration-150 ${
                 i < notifications.length - 1
                   ? "border-b border-neutral-200"
                   : ""
@@ -348,20 +346,20 @@ export default function AdminNotificationsPage({
               <NotificationIcon type={notification.type} />
               <div className="min-w-0 flex-1">
                 <p
-                  className={`text-[length:var(--text-base)] leading-[var(--leading-normal)] ${
+                  className={`text-base leading-normal ${
                     notification.isRead
-                      ? "font-[var(--weight-normal)] text-neutral-800"
-                      : "font-[var(--weight-medium)] text-neutral-800"
+                      ? "font-normal text-neutral-800"
+                      : "font-medium text-neutral-800"
                   }`}
                 >
                   {notification.title}
                 </p>
-                <p className="mt-[var(--space-xs)] text-[length:var(--text-xs)] text-neutral-500">
+                <p className="mt-1 text-xs text-neutral-500">
                   {notification.createdAt}
                 </p>
               </div>
               {!notification.isRead && (
-                <div className="mt-[var(--space-sm)] h-2 w-2 shrink-0 rounded-full bg-accent" />
+                <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-accent" />
               )}
             </a>
           ))}

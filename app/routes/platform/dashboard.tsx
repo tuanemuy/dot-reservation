@@ -83,72 +83,26 @@ export default function PlatformDashboardPage({
   return (
     <div>
       {/* Page Header */}
-      <div style={{ marginBottom: "var(--space-xl)" }}>
-        <h1
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: 600,
-            color: "var(--color-neutral-900)",
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: "var(--leading-tight)",
-          }}
-        >
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight">
           ダッシュボード
         </h1>
-        <p
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-            marginTop: "var(--space-xs)",
-          }}
-        >
+        <p className="text-sm text-neutral-500 mt-1">
           プラットフォーム全体の概要
         </p>
       </div>
 
       {/* Summary Cards */}
-      <div
-        className="grid"
-        style={{
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "var(--space-md)",
-          marginBottom: "var(--space-xl)",
-        }}
-      >
+      <div className="grid grid-cols-4 gap-4 mb-8">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="platform-stat-card"
-            style={{
-              background: "var(--color-bg-card)",
-              border: "1px solid var(--color-neutral-300)",
-              borderRadius: "var(--radius-lg)",
-              padding: "var(--space-lg)",
-              transition:
-                "border-color var(--transition-default), box-shadow var(--transition-default)",
-            }}
+            className="bg-white border border-neutral-300 rounded-lg p-6 transition-[border-color,box-shadow] duration-150 hover:!border-neutral-400 hover:shadow-sm"
           >
-            <div
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--color-neutral-500)",
-                fontWeight: 400,
-                marginBottom: "var(--space-sm)",
-              }}
-            >
+            <div className="text-sm text-neutral-500 font-normal mb-2">
               {stat.label}
             </div>
-            <div
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "var(--text-3xl)",
-                fontWeight: 600,
-                letterSpacing: "var(--tracking-tight)",
-                lineHeight: "var(--leading-tight)",
-                color: "var(--color-neutral-900)",
-              }}
-            >
+            <div className="font-heading text-3xl font-semibold tracking-tight leading-tight text-neutral-900">
               {stat.value.toLocaleString()}
             </div>
           </div>
@@ -156,41 +110,13 @@ export default function PlatformDashboardPage({
       </div>
 
       {/* Quick Links */}
-      <div
-        style={{
-          background: "var(--color-bg-card)",
-          border: "1px solid var(--color-neutral-300)",
-          borderRadius: "var(--radius-lg)",
-          marginBottom: "var(--space-xl)",
-        }}
-      >
-        <div
-          className="flex items-center justify-between"
-          style={{
-            padding: "var(--space-lg) var(--space-lg) 0",
-            marginBottom: "var(--space-md)",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "var(--text-lg)",
-              fontWeight: 600,
-              color: "var(--color-neutral-800)",
-              letterSpacing: "var(--tracking-tight)",
-            }}
-          >
+      <div className="bg-white border border-neutral-300 rounded-lg mb-8">
+        <div className="flex items-center justify-between p-6 pb-0 mb-4">
+          <h2 className="font-heading text-lg font-semibold text-neutral-800 tracking-tight">
             クイックリンク
           </h2>
         </div>
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "var(--space-md)",
-            padding: "0 var(--space-lg) var(--space-lg)",
-          }}
-        >
+        <div className="grid grid-cols-2 gap-4 px-6 pb-6">
           <QuickLinkCard
             to="/platform/tenants"
             title="テナント管理"
@@ -202,7 +128,7 @@ export default function PlatformDashboardPage({
                 stroke="currentColor"
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
-                style={{ width: "20px", height: "20px" }}
+                className="size-5"
               >
                 <path
                   strokeLinecap="round"
@@ -223,7 +149,7 @@ export default function PlatformDashboardPage({
                 stroke="currentColor"
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
-                style={{ width: "20px", height: "20px" }}
+                className="size-5"
               >
                 <path
                   strokeLinecap="round"
@@ -253,56 +179,25 @@ function QuickLinkCard({
   return (
     <Link
       to={to}
-      className="hover-card-highlight flex items-center no-underline"
-      style={{
-        gap: "var(--space-md)",
-        padding: "var(--space-lg)",
-        background: "var(--color-neutral-50)",
-        border: "1px solid var(--color-neutral-300)",
-        borderRadius: "var(--radius-md)",
-        color: "var(--color-neutral-800)",
-      }}
+      className="flex items-center gap-4 p-6 bg-neutral-50 border border-neutral-300 rounded-md text-neutral-800 no-underline transition-[border-color,box-shadow] duration-150 hover:border-primary-light hover:shadow-sm"
     >
-      <div
-        className="flex shrink-0 items-center justify-center"
-        style={{
-          width: "40px",
-          height: "40px",
-          borderRadius: "var(--radius-md)",
-          background: "var(--color-primary-lighter)",
-          color: "var(--color-primary)",
-        }}
-      >
+      <div className="flex shrink-0 items-center justify-center size-10 rounded-md bg-primary-lighter text-primary">
         {icon}
       </div>
       <div className="flex-1">
-        <div
-          style={{
-            fontSize: "var(--text-base)",
-            fontWeight: 500,
-            color: "var(--color-neutral-800)",
-            marginBottom: "2px",
-          }}
-        >
+        <div className="text-base font-medium text-neutral-800 mb-[2px]">
           {title}
         </div>
-        <div
-          style={{
-            fontSize: "var(--text-xs)",
-            color: "var(--color-neutral-500)",
-          }}
-        >
-          {description}
-        </div>
+        <div className="text-xs text-neutral-500">{description}</div>
       </div>
-      <div style={{ color: "var(--color-neutral-500)" }}>
+      <div className="text-neutral-500">
         <svg
           aria-hidden="true"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           viewBox="0 0 24 24"
-          style={{ width: "16px", height: "16px" }}
+          className="size-4"
         >
           <path
             strokeLinecap="round"

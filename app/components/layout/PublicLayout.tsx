@@ -27,33 +27,18 @@ function Header() {
   }
 
   return (
-    <header
-      className="sticky top-0 z-100 border-b border-neutral-300 bg-[var(--color-bg-page)]"
-      style={{ zIndex: 100 }}
-    >
-      <div
-        className="mx-auto flex items-center justify-between"
-        style={{
-          maxWidth: 1280,
-          padding: "0 var(--space-2xl)",
-          height: 64,
-        }}
-      >
+    <header className="sticky top-0 z-100 border-b border-neutral-300 bg-white">
+      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-10">
         <Link
           to="/"
-          className="font-[var(--font-heading)] text-neutral-900 no-underline"
-          style={{
-            fontSize: "var(--text-lg)",
-            fontWeight: "var(--weight-semibold)",
-            letterSpacing: "var(--tracking-tight)",
-          }}
+          className="font-heading text-lg font-semibold tracking-tight text-neutral-900 no-underline"
         >
           <span className="text-primary">dot.</span>reservation
         </Link>
-        <div className="flex items-center gap-[var(--space-sm)]">
+        <div className="flex items-center gap-2">
           <Link
             to="/search"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[var(--radius-md)] border-none bg-transparent text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-neutral-500 transition-[background,color] duration-150 hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             aria-label="検索"
           >
             <svg
@@ -77,7 +62,7 @@ function Header() {
             <>
               <Link
                 to="/mypage/reservations"
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[var(--radius-md)] border-none bg-transparent text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-neutral-500 transition-[background,color] duration-150 hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 aria-label="マイページ"
               >
                 <svg
@@ -99,11 +84,7 @@ function Header() {
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="flex h-10 cursor-pointer items-center rounded-[var(--radius-md)] border-none bg-transparent px-[var(--space-sm)] text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                style={{
-                  fontSize: "var(--text-sm)",
-                  fontWeight: "var(--weight-medium)",
-                }}
+                className="flex h-10 cursor-pointer items-center rounded-md border-none bg-transparent px-2 text-sm font-medium text-neutral-500 transition-[background,color] duration-150 hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 ログアウト
               </button>
@@ -111,7 +92,7 @@ function Header() {
           ) : (
             <Link
               to="/customer/login"
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[var(--radius-md)] border-none bg-transparent text-neutral-500 transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-neutral-500 transition-[background,color] duration-150 hover:bg-neutral-200 hover:text-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               aria-label="マイページ"
             >
               <svg
@@ -140,24 +121,14 @@ function Header() {
 function Footer() {
   return (
     <footer className="border-t border-neutral-300">
-      <div
-        className="mx-auto flex items-center justify-between"
-        style={{
-          maxWidth: 1280,
-          padding: "var(--space-xl) var(--space-2xl)",
-        }}
-      >
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-10 py-8">
         <Link
           to="/"
-          className="font-[var(--font-heading)] text-neutral-500 no-underline"
-          style={{
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--weight-semibold)",
-          }}
+          className="font-heading text-base font-semibold text-neutral-500 no-underline"
         >
           <span className="text-primary">dot.</span>reservation
         </Link>
-        <p className="text-neutral-500" style={{ fontSize: "var(--text-xs)" }}>
+        <p className="text-xs text-neutral-500">
           &copy; {new Date().getFullYear()} dot.reservation All rights reserved.
         </p>
       </div>

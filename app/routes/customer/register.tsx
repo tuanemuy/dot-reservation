@@ -158,14 +158,7 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
         title="確認メールを送信しました"
         description="メールに記載されたリンクをクリックして、アカウントを有効化してください。"
       >
-        <p
-          className="text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-600)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+        <p className="text-center text-sm text-neutral-600 mb-6">
           メールが届かない場合は、迷惑メールフォルダをご確認ください。
         </p>
         <AuthLink to="/customer/login">ログインページへ</AuthLink>
@@ -231,13 +224,10 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
         </FormField>
 
         {formError && (
-          <div style={{ marginBottom: "var(--space-lg)" }}>
+          <div className="mb-6">
             <AlertError error={formError} />
             {formError.includes("既に登録されています") && (
-              <div
-                className="text-center"
-                style={{ marginTop: "var(--space-sm)" }}
-              >
+              <div className="text-center mt-2">
                 <AuthLink to="/customer/login">ログインページへ</AuthLink>
               </div>
             )}
@@ -245,28 +235,15 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
         )}
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="text-sm text-error mb-6">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "登録中..." : "登録する"}
         </Button>
       </form>
 
-      <AuthLink to="/customer/login" style={{ marginTop: "var(--space-lg)" }}>
+      <AuthLink to="/customer/login" className="mt-6">
         アカウントをお持ちの方はこちら
       </AuthLink>
     </AuthLayout>
@@ -276,21 +253,16 @@ export default function CustomerRegisterPage(_props: Route.ComponentProps) {
 function AuthLink({
   to,
   children,
-  style: extraStyle,
+  className: extraClassName,
 }: {
   to: string;
   children: React.ReactNode;
-  style?: React.CSSProperties;
+  className?: string;
 }) {
   return (
     <Link
       to={to}
-      className="block text-center font-medium no-underline"
-      style={{
-        fontSize: "var(--text-sm)",
-        color: "var(--color-primary)",
-        ...extraStyle,
-      }}
+      className={`block text-center font-medium text-sm text-primary no-underline ${extraClassName ?? ""}`}
     >
       {children}
     </Link>

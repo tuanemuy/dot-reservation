@@ -146,7 +146,7 @@ export default function TenantReservationSettingsPage({
 
   return (
     <div className="">
-      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <h1 className="mb-8 font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
         予約設定
       </h1>
 
@@ -155,7 +155,7 @@ export default function TenantReservationSettingsPage({
         {settingsItems.map((item) => (
           <div
             key={item.key}
-            className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]"
+            className="rounded-lg border border-neutral-300 bg-white p-6"
           >
             <div className="flex items-start justify-between">
               <div>
@@ -249,7 +249,7 @@ export default function TenantReservationSettingsPage({
         ))}
 
         {/* 予約承認方法 */}
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+        <div className="rounded-lg border border-neutral-300 bg-white p-6">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-sm font-medium text-neutral-800">

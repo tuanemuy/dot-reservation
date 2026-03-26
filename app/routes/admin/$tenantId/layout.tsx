@@ -246,21 +246,14 @@ export default function TenantAdminLayout(_props: Route.ComponentProps) {
 
   return (
     <div className="flex min-h-screen">
-      <aside
-        className="hidden w-[260px] shrink-0 overflow-y-auto border-r border-neutral-300 bg-white md:block"
-        style={{
-          height: "calc(100vh - 64px)",
-          position: "sticky",
-          top: "64px",
-        }}
-      >
-        <nav className="flex flex-col gap-0.5 px-[var(--space-sm)] py-[var(--space-lg)]">
+      <aside className="sticky top-16 hidden h-[calc(100vh-64px)] w-[260px] shrink-0 overflow-y-auto border-r border-neutral-300 bg-white md:block">
+        <nav className="flex flex-col gap-0.5 px-2 py-6">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] transition-[background,color] duration-[0.15s] ease-[ease] ${
+                `flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-[background,color] duration-150 ${
                   isActive
                     ? "bg-primary-lighter text-primary"
                     : "text-neutral-600 hover:bg-neutral-200 hover:text-neutral-800"
@@ -274,10 +267,7 @@ export default function TenantAdminLayout(_props: Route.ComponentProps) {
         </nav>
       </aside>
 
-      <main
-        className="min-w-0 flex-1 px-[var(--space-2xl)] py-[var(--space-xl)]"
-        style={{ maxWidth: "1280px" }}
-      >
+      <main className="min-w-0 max-w-[1280px] flex-1 px-10 py-8">
         <Outlet />
       </main>
     </div>

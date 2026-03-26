@@ -128,7 +128,7 @@ export default function TenantReservationDetailPage({
 
       <div className="max-w-2xl space-y-6">
         {/* ステータスと操作ボタン */}
-        <div className="flex items-center justify-between rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+        <div className="flex items-center justify-between rounded-lg border border-neutral-300 bg-white p-6">
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-neutral-500">
               ステータス:
@@ -162,7 +162,7 @@ export default function TenantReservationDetailPage({
               <>
                 <Link
                   to={`/admin/${tenantId}/reservations/${reservation.id}/edit`}
-                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+                  className="inline-flex h-11 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
                 >
                   変更
                 </Link>
@@ -204,7 +204,7 @@ export default function TenantReservationDetailPage({
                 <button
                   type="button"
                   onClick={() => setShowRejectForm(false)}
-                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+                  className="inline-flex h-11 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
                 >
                   キャンセル
                 </button>
@@ -239,7 +239,7 @@ export default function TenantReservationDetailPage({
                 <button
                   type="button"
                   onClick={() => setShowCancelForm(false)}
-                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+                  className="inline-flex h-11 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
                 >
                   戻る
                 </button>
@@ -249,8 +249,8 @@ export default function TenantReservationDetailPage({
         )}
 
         {/* 予約詳細情報 */}
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
-          <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+        <div className="rounded-lg border border-neutral-300 bg-white p-6">
+          <h2 className="mb-4 font-heading text-lg font-semibold tracking-tight text-neutral-800">
             予約情報
           </h2>
           <dl className="space-y-4">

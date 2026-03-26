@@ -99,12 +99,8 @@ const CATEGORY_ICONS: Record<
 
 /** Default icon for categories without a specific icon mapping */
 const DEFAULT_CATEGORY_ICON = {
-  iconBg: "",
-  iconColor: "",
-  iconStyle: {
-    background: "var(--color-neutral-100)",
-    color: "var(--color-neutral-600)",
-  },
+  iconBg: "bg-neutral-100",
+  iconColor: "text-neutral-600",
   icon: (
     <svg
       fill="none"
@@ -183,63 +179,19 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(160deg, var(--color-primary-lighter) 0%, var(--color-neutral-100) 30%, var(--color-accent-lighter) 60%, var(--color-secondary-lighter) 100%)",
-          padding: "var(--space-section) 0",
-        }}
-      >
-        <div
-          className="mx-auto flex flex-col items-center text-center"
-          style={{
-            maxWidth: 1280,
-            padding: "0 var(--space-2xl)",
-          }}
-        >
-          <h1
-            className="text-neutral-900"
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "var(--text-3xl)",
-              fontWeight: "var(--weight-semibold)",
-              letterSpacing: "var(--tracking-tight)",
-              lineHeight: "var(--leading-tight)",
-              marginBottom: "var(--space-md)",
-            }}
-          >
+      <section className="relative overflow-hidden bg-[linear-gradient(160deg,var(--color-primary-lighter)_0%,var(--color-neutral-100)_30%,var(--color-accent-lighter)_60%,var(--color-secondary-lighter)_100%)] py-20">
+        <div className="mx-auto flex max-w-[1280px] flex-col items-center px-10 text-center">
+          <h1 className="mb-4 font-heading text-3xl font-semibold leading-tight tracking-tight text-neutral-900">
             あなたにぴったりのサロンを見つけよう
           </h1>
-          <p
-            className="text-neutral-600"
-            style={{
-              fontSize: "var(--text-lg)",
-              fontWeight: "var(--weight-light)",
-              marginBottom: "var(--space-3xl)",
-              lineHeight: "var(--leading-normal)",
-            }}
-          >
+          <p className="mb-14 text-lg font-light leading-normal text-neutral-600">
             整体院、ジム、美容院など、お気に入りの場所を簡単予約
           </p>
 
           {/* Search */}
-          <Form
-            onSubmit={handleSearch}
-            className="w-full"
-            style={{ maxWidth: 720 }}
-          >
-            <div
-              className="flex items-center border border-neutral-300 bg-[var(--color-bg-card)] transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] focus-within:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary"
-              style={{
-                borderRadius: "var(--radius-lg)",
-                padding: "var(--space-xs)",
-              }}
-            >
-              <div
-                className="flex shrink-0 items-center justify-center text-neutral-500"
-                style={{ padding: "0 var(--space-md)" }}
-              >
+          <Form onSubmit={handleSearch} className="w-full max-w-[720px]">
+            <div className="flex items-center rounded-lg border border-neutral-300 bg-white p-1 transition-[border-color,box-shadow] duration-150 focus-within:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
+              <div className="flex shrink-0 items-center justify-center px-4 text-neutral-500">
                 <svg
                   width="20"
                   height="20"
@@ -261,24 +213,11 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="サロン名、エリア、キーワードで検索"
-                className="flex-1 border-none bg-transparent text-neutral-800 outline-none placeholder:text-neutral-500"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--text-base)",
-                  padding: "var(--space-sm) 0",
-                }}
+                className="flex-1 border-none bg-transparent py-2 font-body text-base text-neutral-800 outline-none placeholder:text-neutral-500"
               />
               <button
                 type="submit"
-                className="inline-flex shrink-0 cursor-pointer items-center justify-center gap-[var(--space-sm)] border-none bg-primary text-white transition-[background] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                style={{
-                  height: 44,
-                  padding: "0 var(--space-lg)",
-                  borderRadius: "var(--radius-md)",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--text-base)",
-                  fontWeight: "var(--weight-medium)",
-                }}
+                className="inline-flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-primary px-6 font-body text-base font-medium text-white transition-[background] duration-150 hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <svg
                   width="16"
@@ -300,27 +239,12 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
             </div>
 
             {/* Search Options */}
-            <div
-              className="flex justify-center"
-              style={{
-                gap: "var(--space-md)",
-                marginTop: "var(--space-md)",
-              }}
-            >
+            <div className="mt-4 flex justify-center gap-4">
               <div className="relative">
                 <select
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  className="cursor-pointer appearance-none border border-neutral-300 bg-[var(--color-bg-card)] text-neutral-700 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--text-sm)",
-                    fontWeight: "var(--weight-medium)",
-                    borderRadius: "var(--radius-md)",
-                    padding:
-                      "var(--space-sm) var(--space-2xl) var(--space-sm) var(--space-md)",
-                    minWidth: 160,
-                  }}
+                  className="min-w-[160px] cursor-pointer appearance-none rounded-md border border-neutral-300 bg-white py-2 pl-4 pr-10 font-body text-sm font-medium text-neutral-700 transition-[border-color] duration-150 hover:border-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   <option value="">エリアを選択</option>
                   {prefectures.map((pref) => (
@@ -329,10 +253,7 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
                     </option>
                   ))}
                 </select>
-                <span
-                  className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-neutral-500"
-                  style={{ right: "var(--space-sm)" }}
-                >
+                <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500">
                   <svg
                     width="16"
                     height="16"
@@ -354,16 +275,7 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="cursor-pointer appearance-none border border-neutral-300 bg-[var(--color-bg-card)] text-neutral-700 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "var(--text-sm)",
-                    fontWeight: "var(--weight-medium)",
-                    borderRadius: "var(--radius-md)",
-                    padding:
-                      "var(--space-sm) var(--space-2xl) var(--space-sm) var(--space-md)",
-                    minWidth: 160,
-                  }}
+                  className="min-w-[160px] cursor-pointer appearance-none rounded-md border border-neutral-300 bg-white py-2 pl-4 pr-10 font-body text-sm font-medium text-neutral-700 transition-[border-color] duration-150 hover:border-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   <option value="">カテゴリを選択</option>
                   {categories.map((cat) => (
@@ -372,10 +284,7 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
                     </option>
                   ))}
                 </select>
-                <span
-                  className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-neutral-500"
-                  style={{ right: "var(--space-sm)" }}
-                >
+                <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500">
                   <svg
                     width="16"
                     height="16"
@@ -399,42 +308,18 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* Popular Categories */}
-      <section
-        className="mx-auto"
-        style={{
-          maxWidth: 1280,
-          padding: "var(--space-section) var(--space-2xl)",
-        }}
-      >
-        <h2
-          className="text-neutral-900"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: "var(--weight-semibold)",
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: "var(--leading-tight)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+      <section className="mx-auto max-w-[1280px] px-10 py-20">
+        <h2 className="mb-6 font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
           人気のカテゴリ
         </h2>
-        <p
-          className="text-neutral-500"
-          style={{
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--weight-normal)",
-            marginBottom: "var(--space-xl)",
-          }}
-        >
+        <p className="mb-8 text-base font-normal text-neutral-500">
           あなたの目的にあったカテゴリからサロンを探しましょう
         </p>
 
         <div
-          className="grid"
+          className="grid gap-4"
           style={{
             gridTemplateColumns: `repeat(${Math.min(categories.length, 4)}, 1fr)`,
-            gap: "var(--space-md)",
           }}
         >
           {categories.map((catName) => {
@@ -443,34 +328,17 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
               <Link
                 key={catName}
                 to={`/search?category=${encodeURIComponent(catName)}`}
-                className="flex cursor-pointer flex-col items-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-primary-light hover:shadow-[var(--shadow-sm)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                style={{
-                  gap: "var(--space-md)",
-                  padding: "var(--space-xl) var(--space-md)",
-                  borderRadius: "var(--radius-lg)",
-                }}
+                className="flex cursor-pointer flex-col items-center gap-4 rounded-lg border border-neutral-300 bg-white px-4 py-8 no-underline transition-[border-color,box-shadow] duration-150 hover:border-primary-light hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <div
-                  className={`flex items-center justify-center ${catIcon.iconBg} ${catIcon.iconColor}`}
-                  style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: "var(--radius-xl)",
-                    ...catIcon.iconStyle,
-                  }}
+                  className={`flex h-14 w-14 items-center justify-center rounded-xl ${catIcon.iconBg} ${catIcon.iconColor}`}
+                  style={catIcon.iconStyle}
                 >
                   <span className="[&>svg]:h-6 [&>svg]:w-6">
                     {catIcon.icon}
                   </span>
                 </div>
-                <span
-                  className="text-center text-neutral-800"
-                  style={{
-                    fontFamily: "var(--font-heading)",
-                    fontSize: "var(--text-base)",
-                    fontWeight: "var(--weight-medium)",
-                  }}
-                >
+                <span className="text-center font-heading text-base font-medium text-neutral-800">
                   {catName}
                 </span>
               </Link>
@@ -480,46 +348,16 @@ export default function TopPage({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* CTA */}
-      <section
-        className="mx-auto text-center"
-        style={{
-          maxWidth: 1280,
-          padding: "var(--space-section) var(--space-2xl)",
-        }}
-      >
-        <h2
-          className="text-neutral-900"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: "var(--weight-semibold)",
-            letterSpacing: "var(--tracking-tight)",
-            marginBottom: "var(--space-md)",
-          }}
-        >
+      <section className="mx-auto max-w-[1280px] px-10 py-20 text-center">
+        <h2 className="mb-4 font-heading text-2xl font-semibold tracking-tight text-neutral-900">
           サロンを探してみましょう
         </h2>
-        <p
-          className="text-neutral-600"
-          style={{
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--weight-light)",
-            marginBottom: "var(--space-xl)",
-          }}
-        >
+        <p className="mb-8 text-base font-light text-neutral-600">
           あなたのお気に入りがきっと見つかります
         </p>
         <Link
           to="/search"
-          className="inline-flex cursor-pointer items-center justify-center gap-[var(--space-sm)] border-none bg-primary text-white no-underline transition-[background] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          style={{
-            height: 52,
-            padding: "0 var(--space-xl)",
-            borderRadius: "var(--radius-md)",
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--weight-medium)",
-          }}
+          className="inline-flex h-[52px] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-primary px-8 font-body text-base font-medium text-white no-underline transition-[background] duration-150 hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <svg
             width="18"

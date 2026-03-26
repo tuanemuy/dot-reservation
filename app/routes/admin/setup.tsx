@@ -108,13 +108,7 @@ export default function AdminSetupPage({ loaderData }: Route.ComponentProps) {
 
         <FormField label="メールアドレス" htmlFor="setup-email-display">
           <Input id="setup-email-display" type="email" value={email} disabled />
-          <p
-            style={{
-              marginTop: "var(--space-xs)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-neutral-500)",
-            }}
-          >
+          <p className="mt-1 text-xs text-neutral-500">
             認証アカウントのメールアドレスが使用されます
           </p>
         </FormField>
@@ -132,23 +126,10 @@ export default function AdminSetupPage({ loaderData }: Route.ComponentProps) {
         </FormField>
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="mb-6 text-sm text-error">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "作成中..." : "メンバーアカウントを作成"}
         </Button>
       </fetcher.Form>

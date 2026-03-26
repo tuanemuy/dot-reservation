@@ -68,7 +68,7 @@ export default function CustomerLoginPage() {
   return (
     <AuthLayout title="ログイン">
       {formError && (
-        <div style={{ marginBottom: "var(--space-lg)" }}>
+        <div className="mb-6">
           <AlertError error={formError} />
         </div>
       )}
@@ -101,45 +101,24 @@ export default function CustomerLoginPage() {
         </FormField>
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="text-sm text-error mb-6">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "ログイン中..." : "ログイン"}
         </Button>
       </form>
 
-      <div
-        className="flex flex-col items-center"
-        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
-      >
+      <div className="flex flex-col items-center gap-2 mt-6">
         <Link
           to="/customer/forgot-password"
-          className="no-underline"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
+          className="text-sm text-neutral-500 no-underline"
         >
           パスワードをお忘れの方
         </Link>
         <Link
           to="/customer/register"
-          className="font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="font-medium text-sm text-primary no-underline"
         >
           新規会員登録はこちら
         </Link>

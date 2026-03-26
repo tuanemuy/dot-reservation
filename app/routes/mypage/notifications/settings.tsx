@@ -257,34 +257,13 @@ function SettingRow({
 
   return (
     <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 140px 140px",
-        gap: "0",
-        padding: "var(--space-lg) var(--space-xl)",
-        borderBottom: isLast ? "none" : "1px solid var(--color-neutral-200)",
-        alignItems: "center",
-        transition: "background var(--transition-default)",
-      }}
+      className={`grid grid-cols-[1fr_140px_140px] items-center py-6 px-8 duration-150 ${isLast ? "" : "border-b border-neutral-200"}`}
     >
-      <div className="flex flex-col" style={{ gap: "var(--space-xs)" }}>
-        <div
-          style={{
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--weight-medium)",
-            color: "var(--color-neutral-800)",
-          }}
-        >
+      <div className="flex flex-col gap-1">
+        <div className="text-base font-medium text-neutral-800">
           {setting.label}
         </div>
-        <div
-          style={{
-            fontSize: "var(--text-xs)",
-            color: "var(--color-neutral-500)",
-          }}
-        >
-          {setting.description}
-        </div>
+        <div className="text-xs text-neutral-500">{setting.description}</div>
       </div>
       <div className="flex justify-center">
         <label className="mypage-toggle">
@@ -319,79 +298,24 @@ export default function NotificationSettingsPage({
 
   return (
     <div>
-      <h1
-        style={{
-          fontFamily: "var(--font-heading)",
-          fontSize: "var(--text-2xl)",
-          fontWeight: "var(--weight-semibold)",
-          color: "var(--color-neutral-900)",
-          letterSpacing: "var(--tracking-tight)",
-          lineHeight: "var(--leading-tight)",
-          marginBottom: "var(--space-sm)",
-        }}
-      >
+      <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight mb-2">
         通知設定
       </h1>
-      <p
-        style={{
-          fontSize: "var(--text-sm)",
-          color: "var(--color-neutral-500)",
-          marginBottom: "var(--space-xl)",
-        }}
-      >
+      <p className="text-sm text-neutral-500 mb-8">
         通知の受信方法をカテゴリごとに設定できます。
       </p>
 
       {/* Settings Table */}
-      <div
-        style={{
-          background: "var(--color-bg-card)",
-          border: "1px solid var(--color-neutral-300)",
-          borderRadius: "var(--radius-lg)",
-          overflow: "hidden",
-        }}
-      >
+      <div className="bg-white border border-neutral-300 rounded-lg overflow-hidden">
         {/* Header */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 140px 140px",
-            gap: "0",
-            padding: "var(--space-md) var(--space-xl)",
-            background: "var(--color-neutral-100)",
-            borderBottom: "1px solid var(--color-neutral-300)",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: "var(--weight-semibold)",
-              color: "var(--color-neutral-600)",
-              letterSpacing: "var(--tracking-wide)",
-            }}
-          >
+        <div className="grid grid-cols-[1fr_140px_140px] py-4 px-8 bg-neutral-100 border-b border-neutral-300">
+          <div className="text-sm font-semibold text-neutral-600 tracking-wide">
             カテゴリ
           </div>
-          <div
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: "var(--weight-semibold)",
-              color: "var(--color-neutral-600)",
-              letterSpacing: "var(--tracking-wide)",
-              textAlign: "center",
-            }}
-          >
+          <div className="text-sm font-semibold text-neutral-600 tracking-wide text-center">
             メール通知
           </div>
-          <div
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: "var(--weight-semibold)",
-              color: "var(--color-neutral-600)",
-              letterSpacing: "var(--tracking-wide)",
-              textAlign: "center",
-            }}
-          >
+          <div className="text-sm font-semibold text-neutral-600 tracking-wide text-center">
             アプリ内通知
           </div>
         </div>
@@ -407,13 +331,7 @@ export default function NotificationSettingsPage({
         ))}
       </div>
 
-      <p
-        style={{
-          marginTop: "var(--space-lg)",
-          fontSize: "var(--text-sm)",
-          color: "var(--color-neutral-500)",
-        }}
-      >
+      <p className="mt-6 text-sm text-neutral-500">
         設定はトグルを切り替えると自動的に保存されます。
       </p>
     </div>

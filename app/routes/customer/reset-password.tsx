@@ -37,19 +37,8 @@ export default function ResetPasswordPage() {
     return (
       <AuthLayout title="新しいパスワードの設定">
         <div
-          className="flex items-start"
+          className="flex items-start gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error leading-normal"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -57,8 +46,7 @@ export default function ResetPasswordPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="shrink-0 size-[18px] mt-[2px]"
           >
             <path
               strokeLinecap="round"
@@ -144,16 +132,7 @@ export default function ResetPasswordPage() {
       >
         <Link
           to="/customer/login"
-          className="inline-flex w-full items-center justify-center font-medium no-underline"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl)",
-            background: "var(--color-primary)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--text-base)",
-            letterSpacing: "var(--tracking-wide)",
-          }}
+          className="inline-flex w-full items-center justify-center font-medium h-[44px] px-8 bg-primary text-white rounded-md text-base tracking-wide no-underline"
         >
           ログインページへ
         </Link>
@@ -165,19 +144,8 @@ export default function ResetPasswordPage() {
     <AuthLayout title="新しいパスワードの設定">
       {errors.form && (
         <div
-          className="flex items-start"
+          className="flex items-start gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error leading-normal"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -185,8 +153,7 @@ export default function ResetPasswordPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="shrink-0 size-[18px] mt-[2px]"
           >
             <path
               strokeLinecap="round"

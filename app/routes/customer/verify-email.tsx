@@ -14,18 +14,8 @@ export default function VerifyEmailPage() {
     return (
       <AuthLayout title="メール確認エラー">
         <div
-          className="flex items-center"
+          className="flex items-center gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -33,8 +23,7 @@ export default function VerifyEmailPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px" }}
+            className="shrink-0 size-[18px]"
           >
             <path
               strokeLinecap="round"
@@ -46,8 +35,7 @@ export default function VerifyEmailPage() {
         </div>
         <Link
           to="/customer/register"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center font-medium text-sm text-primary no-underline"
         >
           新規登録ページへ戻る
         </Link>
@@ -57,28 +45,15 @@ export default function VerifyEmailPage() {
 
   return (
     <AuthLayout title="メールアドレスの確認が完了しました">
-      <div className="text-center" style={{ padding: "var(--space-lg) 0" }}>
-        <div
-          className="mx-auto flex items-center justify-center"
-          style={{
-            width: "72px",
-            height: "72px",
-            borderRadius: "var(--radius-full)",
-            background: "var(--color-primary-lighter)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+      <div className="text-center py-6">
+        <div className="mx-auto flex items-center justify-center size-[72px] rounded-full bg-primary-lighter mb-6">
           <svg
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            style={{
-              width: "36px",
-              height: "36px",
-              color: "var(--color-success)",
-            }}
+            className="size-9 text-success"
           >
             <path
               strokeLinecap="round"
@@ -88,14 +63,7 @@ export default function VerifyEmailPage() {
           </svg>
         </div>
 
-        <p
-          style={{
-            fontSize: "var(--text-base)",
-            color: "var(--color-neutral-600)",
-            lineHeight: "var(--leading-relaxed)",
-            marginBottom: "var(--space-xl)",
-          }}
-        >
+        <p className="text-base text-neutral-600 leading-relaxed mb-8">
           アカウントの認証が完了しました。
           <br />
           ログインしてサービスをご利用ください。
@@ -103,16 +71,7 @@ export default function VerifyEmailPage() {
 
         <Link
           to="/customer/login"
-          className="inline-flex w-full items-center justify-center font-medium no-underline"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl)",
-            background: "var(--color-primary)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--text-base)",
-            letterSpacing: "var(--tracking-wide)",
-          }}
+          className="inline-flex w-full items-center justify-center font-medium h-[44px] px-8 bg-primary text-white rounded-md text-base tracking-wide no-underline"
         >
           ログインページへ
         </Link>

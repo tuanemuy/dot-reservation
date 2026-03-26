@@ -14,9 +14,9 @@ export default [
 
   // 公開ページ
   index("routes/index.tsx"),
-  route("search", "routes/search.tsx"),
-  route("shop/:urlPath", "routes/shop.$urlPath.tsx"),
-  route("shop/:urlPath/reserve", "routes/shop.$urlPath.reserve.tsx"),
+  route("search", "routes/search/index.tsx"),
+  route("shop/:urlPath", "routes/shop.$urlPath/index.tsx"),
+  route("shop/:urlPath/reserve", "routes/shop.$urlPath.reserve/index.tsx"),
 
   // 顧客認証
   route("customer/register", "routes/customer/register.tsx"),
@@ -35,10 +35,10 @@ export default [
     ),
     route(
       "mypage/reservations/:id/edit",
-      "routes/mypage/reservations/$id/edit.tsx",
+      "routes/mypage/reservations/$id/edit/index.tsx",
     ),
     route("mypage/notifications", "routes/mypage/notifications/index.tsx"),
-    route("mypage/profile", "routes/mypage/profile.tsx"),
+    route("mypage/profile", "routes/mypage/profile/index.tsx"),
     route(
       "mypage/notifications/settings",
       "routes/mypage/notifications/settings.tsx",
@@ -68,8 +68,14 @@ export default [
   // テナント管理（認証済み）
   layout("routes/admin/$tenantId/layout.tsx", [
     route("admin/:tenantId/dashboard", "routes/admin/$tenantId/dashboard.tsx"),
-    route("admin/:tenantId/settings", "routes/admin/$tenantId/settings.tsx"),
-    route("admin/:tenantId/members", "routes/admin/$tenantId/members.tsx"),
+    route(
+      "admin/:tenantId/settings",
+      "routes/admin/$tenantId/settings/index.tsx",
+    ),
+    route(
+      "admin/:tenantId/members",
+      "routes/admin/$tenantId/members/index.tsx",
+    ),
     route(
       "admin/:tenantId/business-hours",
       "routes/admin/$tenantId/business-hours.tsx",
@@ -109,7 +115,7 @@ export default [
   ]),
 
   // テナント新規登録
-  route("admin/new-tenant", "routes/admin/new-tenant.tsx"),
+  route("admin/new-tenant", "routes/admin/new-tenant/index.tsx"),
 
   // スタッフ画面
   layout("routes/staff/$tenantId/layout.tsx", [
@@ -150,9 +156,9 @@ export default [
     route("platform/tenants", "routes/platform/tenants/index.tsx"),
     route(
       "platform/tenants/:tenantId",
-      "routes/platform/tenants/$tenantId.tsx",
+      "routes/platform/tenants/$tenantId/index.tsx",
     ),
     route("platform/users", "routes/platform/users/index.tsx"),
-    route("platform/users/:userId", "routes/platform/users/$userId.tsx"),
+    route("platform/users/:userId", "routes/platform/users/$userId/index.tsx"),
   ]),
 ] satisfies RouteConfig;

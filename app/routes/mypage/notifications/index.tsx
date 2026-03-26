@@ -177,7 +177,7 @@ function getNotificationIcon(type: string): React.ReactNode {
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         aria-hidden="true"
-        style={{ width: "18px", height: "18px" }}
+        className="size-[18px]"
       >
         <path
           strokeLinecap="round"
@@ -195,7 +195,7 @@ function getNotificationIcon(type: string): React.ReactNode {
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         aria-hidden="true"
-        style={{ width: "18px", height: "18px" }}
+        className="size-[18px]"
       >
         <path
           strokeLinecap="round"
@@ -213,7 +213,7 @@ function getNotificationIcon(type: string): React.ReactNode {
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         aria-hidden="true"
-        style={{ width: "18px", height: "18px" }}
+        className="size-[18px]"
       >
         <path
           strokeLinecap="round"
@@ -230,7 +230,7 @@ function getNotificationIcon(type: string): React.ReactNode {
       strokeWidth="1.5"
       viewBox="0 0 24 24"
       aria-hidden="true"
-      style={{ width: "18px", height: "18px" }}
+      className="size-[18px]"
     >
       <path
         strokeLinecap="round"
@@ -297,20 +297,8 @@ export default function NotificationsIndexPage({
   return (
     <div>
       {/* Page Header */}
-      <div
-        className="flex items-center justify-between"
-        style={{ marginBottom: "var(--space-lg)" }}
-      >
-        <h1
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: "var(--weight-semibold)",
-            color: "var(--color-neutral-900)",
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: "var(--leading-tight)",
-          }}
-        >
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight">
           通知
         </h1>
         {unreadCount > 0 && (
@@ -320,23 +308,7 @@ export default function NotificationsIndexPage({
             <button
               type="submit"
               disabled={isMarkingAll}
-              className="inline-flex items-center"
-              style={{
-                gap: "var(--space-xs)",
-                height: "32px",
-                padding: "0 var(--space-md)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-neutral-300)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-sm)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-neutral-600)",
-                cursor: isMarkingAll ? "not-allowed" : "pointer",
-                fontFamily: "inherit",
-                transition:
-                  "background var(--transition-default), border-color var(--transition-default), color var(--transition-default)",
-                opacity: isMarkingAll ? 0.5 : 1,
-              }}
+              className={`inline-flex items-center gap-1 h-8 px-4 bg-white border border-neutral-300 rounded-md text-sm font-medium text-neutral-600 font-[inherit] duration-150 ${isMarkingAll ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
             >
               <svg
                 fill="none"
@@ -344,7 +316,7 @@ export default function NotificationsIndexPage({
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                style={{ width: "14px", height: "14px" }}
+                className="size-[14px]"
               >
                 <path
                   strokeLinecap="round"
@@ -359,39 +331,17 @@ export default function NotificationsIndexPage({
       </div>
 
       {/* Filter Tabs */}
-      <div
-        className="flex"
-        style={{
-          borderBottom: "1px solid var(--color-neutral-300)",
-          marginBottom: "var(--space-lg)",
-          gap: "0",
-        }}
-      >
+      <div className="flex border-b border-neutral-300 mb-6">
         {tabs.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => handleFilterChange(t.id)}
-            style={{
-              padding: "var(--space-sm) var(--space-lg)",
-              fontSize: "var(--text-base)",
-              fontWeight: "var(--weight-medium)",
-              color:
-                filter === t.id
-                  ? "var(--color-neutral-900)"
-                  : "var(--color-neutral-500)",
-              position: "relative",
-              transition: "color var(--transition-default)",
-              cursor: "pointer",
-              border: "none",
-              background: "none",
-              fontFamily: "inherit",
-              borderBottom:
-                filter === t.id
-                  ? "2px solid var(--color-primary)"
-                  : "2px solid transparent",
-              marginBottom: "-1px",
-            }}
+            className={`py-2 px-6 text-base font-medium relative duration-150 cursor-pointer border-none bg-none font-[inherit] -mb-px ${
+              filter === t.id
+                ? "text-neutral-900 border-b-2 border-b-primary"
+                : "text-neutral-500 border-b-2 border-b-transparent"
+            }`}
           >
             {t.label}
           </button>
@@ -400,13 +350,7 @@ export default function NotificationsIndexPage({
 
       {/* Notification List */}
       {notifications.length === 0 ? (
-        <p
-          className="py-12 text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
-        >
+        <p className="py-12 text-center text-sm text-neutral-500">
           通知はありません
         </p>
       ) : (
@@ -417,74 +361,31 @@ export default function NotificationsIndexPage({
               <Link
                 key={notification.id}
                 to={getNotificationUrl(notification)}
-                className={`flex items-start ${notification.isRead ? "hover-notification-read" : "hover-notification-unread"}`}
-                style={{
-                  gap: "var(--space-md)",
-                  padding: "var(--space-md) var(--space-lg)",
-                  borderBottom: "1px solid var(--color-neutral-200)",
-                  borderTop:
-                    idx === 0 ? "1px solid var(--color-neutral-200)" : "none",
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  color: "inherit",
-                  background: notification.isRead
-                    ? "transparent"
-                    : "var(--color-primary-lighter)",
-                }}
+                className={`flex items-start gap-4 py-4 px-6 cursor-pointer no-underline text-[inherit] transition-colors duration-150 ${notification.isRead ? "bg-transparent hover:bg-neutral-50" : "bg-primary-lighter hover:bg-primary-lighter/70"} ${idx === 0 ? "border-t border-t-neutral-200" : ""} border-b border-b-neutral-200`}
               >
                 {/* Icon */}
                 <div
-                  className="flex items-center justify-center shrink-0"
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "var(--radius-md)",
-                    marginTop: "2px",
-                    ...iconStyle,
-                  }}
+                  className="flex items-center justify-center shrink-0 size-9 rounded-md mt-[2px]"
+                  style={iconStyle}
                 >
                   {getNotificationIcon(notification.type)}
                 </div>
 
                 {/* Body */}
-                <div className="flex-1" style={{ minWidth: 0 }}>
+                <div className="flex-1 min-w-0">
                   <div
-                    style={{
-                      fontSize: "var(--text-base)",
-                      color: notification.isRead
-                        ? "var(--color-neutral-700)"
-                        : "var(--color-neutral-800)",
-                      fontWeight: notification.isRead
-                        ? "var(--weight-normal)"
-                        : ("var(--weight-medium)" as string),
-                      lineHeight: "var(--leading-normal)",
-                    }}
+                    className={`text-base leading-normal ${notification.isRead ? "text-neutral-700 font-normal" : "text-neutral-800 font-medium"}`}
                   >
                     {notification.title || notification.message}
                   </div>
-                  <div
-                    style={{
-                      fontSize: "var(--text-xs)",
-                      color: "var(--color-neutral-500)",
-                      marginTop: "var(--space-xs)",
-                    }}
-                  >
+                  <div className="text-xs text-neutral-500 mt-1">
                     {formatRelativeTime(notification.createdAt)}
                   </div>
                 </div>
 
                 {/* Unread dot */}
                 {!notification.isRead && (
-                  <div
-                    className="shrink-0"
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "var(--radius-full)",
-                      background: "var(--color-primary)",
-                      marginTop: "var(--space-sm)",
-                    }}
-                  />
+                  <div className="shrink-0 size-2 rounded-full bg-primary mt-2" />
                 )}
               </Link>
             );

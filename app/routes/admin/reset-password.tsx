@@ -82,19 +82,8 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
     return (
       <AuthLayout badge="管理画面" title="新しいパスワードを設定">
         <div
-          className="flex items-start"
+          className="mb-6 flex items-start gap-2 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] p-4 text-sm leading-normal text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -102,8 +91,7 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="mt-[2px] h-[18px] w-[18px] shrink-0"
           >
             <path
               strokeLinecap="round"
@@ -117,8 +105,7 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
         </div>
         <Link
           to="/admin/forgot-password"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center text-sm font-medium text-primary no-underline"
         >
           パスワードリセットを再送信
         </Link>
@@ -135,16 +122,7 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
       >
         <Link
           to="/admin/login"
-          className="inline-flex w-full items-center justify-center font-medium no-underline"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl)",
-            background: "var(--color-primary)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--text-base)",
-            letterSpacing: "var(--tracking-wide)",
-          }}
+          className="inline-flex h-11 w-full items-center justify-center rounded-md bg-primary px-8 text-base font-medium tracking-wide text-white no-underline"
         >
           ログインページへ
         </Link>
@@ -160,19 +138,8 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
     >
       {formError && (
         <div
-          className="flex items-start"
+          className="mb-6 flex items-start gap-2 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] p-4 text-sm leading-normal text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -180,8 +147,7 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="mt-[2px] h-[18px] w-[18px] shrink-0"
           >
             <path
               strokeLinecap="round"
@@ -223,23 +189,10 @@ export default function AdminResetPasswordPage(_props: Route.ComponentProps) {
         </FormField>
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="mb-6 text-sm text-error">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "設定中..." : "パスワードを変更"}
         </Button>
       </form>

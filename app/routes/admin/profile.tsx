@@ -2,6 +2,7 @@ import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod/v4";
 import { type FormEvent, useRef, useState } from "react";
 import { redirect } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Modal } from "@/components/ui/Modal";
 import { deleteMemberAccount } from "@/core/application/member/deleteMemberAccount";
@@ -201,7 +202,14 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
     },
   });
 
-  fetcher.register("updateProfile", {});
+  fetcher.register("updateProfile", {
+    onSuccess: () => {
+      toast.success("プロフィールを更新しました");
+    },
+    onHandlerError: ({ error: err }) => {
+      toast.error(err?.[""]?.[0] ?? "更新に失敗しました");
+    },
+  });
 
   fetcher.register("deleteAccount", {
     onSuccess: async () => {
@@ -250,40 +258,40 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="mb-[var(--space-xl)]">
-        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
           プロフィール設定
         </h1>
-        <p className="mt-[var(--space-xs)] text-[length:var(--text-sm)] text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-500">
           メンバーアカウントの情報を管理します
         </p>
       </div>
 
-      <div className="space-y-[var(--space-xl)]">
+      <div className="space-y-8">
         {/* Profile Section */}
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
-          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
-            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+        <div className="rounded-lg border border-neutral-300 bg-white">
+          <div className="px-6 pt-6">
+            <h2 className="font-heading text-lg font-semibold tracking-tight text-neutral-800">
               基本情報
             </h2>
           </div>
-          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
+          <div className="px-6 py-6">
             <fetcher.Form method="post" {...getFormProps(profileForm)}>
               <input type="hidden" name="intent" value="updateProfile" />
-              <div className="grid grid-cols-2 gap-[var(--space-lg)]">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label
                     htmlFor={profileFields.name.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     氏名
                   </label>
                   <input
                     {...getInputProps(profileFields.name, { type: "text" })}
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {profileFields.name.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {profileFields.name.errors}
                     </p>
                   )}
@@ -292,16 +300,16 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                 <div>
                   <label
                     htmlFor={profileFields.email.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     メールアドレス
                   </label>
                   <input
                     {...getInputProps(profileFields.email, { type: "email" })}
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {profileFields.email.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {profileFields.email.errors}
                     </p>
                   )}
@@ -310,7 +318,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                 <div className="col-span-2">
                   <label
                     htmlFor={profileFields.phoneNumber.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     電話番号
                   </label>
@@ -319,24 +327,22 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                       type: "tel",
                     })}
                     placeholder="090-1234-5678"
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                 </div>
               </div>
 
               {profileForm.errors && (
-                <p className="mt-2 text-[length:var(--text-xs)] text-error">
-                  {profileForm.errors}
-                </p>
+                <p className="mt-2 text-xs text-error">{profileForm.errors}</p>
               )}
             </fetcher.Form>
           </div>
-          <div className="flex justify-end gap-[var(--space-sm)] border-t border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)]">
+          <div className="flex justify-end gap-2 border-t border-neutral-200 px-6 py-6">
             <button
               type="submit"
               form="admin-profile-form"
               disabled={isPendingProfile}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-white transition-[background,transform] duration-150 hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
             >
               {isPendingProfile ? "更新中..." : "保存する"}
             </button>
@@ -344,23 +350,23 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* Password Section */}
-        <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
-          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
-            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+        <div className="rounded-lg border border-neutral-300 bg-white">
+          <div className="px-6 pt-6">
+            <h2 className="font-heading text-lg font-semibold tracking-tight text-neutral-800">
               パスワード変更
             </h2>
           </div>
-          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
+          <div className="px-6 py-6">
             <form
               ref={passwordFormRef}
               {...getFormProps(passwordForm)}
               onSubmit={handlePasswordSubmit}
             >
-              <div className="grid grid-cols-2 gap-[var(--space-lg)]">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="col-span-2">
                   <label
                     htmlFor={passwordFields.currentPassword.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     現在のパスワード
                   </label>
@@ -368,10 +374,10 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                     {...getInputProps(passwordFields.currentPassword, {
                       type: "password",
                     })}
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {passwordFields.currentPassword.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {passwordFields.currentPassword.errors}
                     </p>
                   )}
@@ -380,7 +386,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                 <div>
                   <label
                     htmlFor={passwordFields.newPassword.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     新しいパスワード
                   </label>
@@ -389,10 +395,10 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                       type: "password",
                     })}
                     placeholder="8文字以上"
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 placeholder:text-neutral-500 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {passwordFields.newPassword.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {passwordFields.newPassword.errors}
                     </p>
                   )}
@@ -401,7 +407,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                 <div>
                   <label
                     htmlFor={passwordFields.newPasswordConfirmation.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium tracking-wide text-neutral-700"
                   >
                     新しいパスワード（確認）
                   </label>
@@ -409,10 +415,10 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
                     {...getInputProps(passwordFields.newPasswordConfirmation, {
                       type: "password",
                     })}
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 transition-[border-color,box-shadow] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {passwordFields.newPasswordConfirmation.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {passwordFields.newPasswordConfirmation.errors}
                     </p>
                   )}
@@ -420,28 +426,24 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
               </div>
 
               {passwordError && (
-                <p className="mt-2 text-[length:var(--text-xs)] text-error">
-                  {passwordError}
-                </p>
+                <p className="mt-2 text-xs text-error">{passwordError}</p>
               )}
               {passwordSuccess && (
-                <p className="mt-2 text-[length:var(--text-xs)] text-success">
+                <p className="mt-2 text-xs text-success">
                   パスワードを変更しました
                 </p>
               )}
               {passwordForm.errors && (
-                <p className="mt-2 text-[length:var(--text-xs)] text-error">
-                  {passwordForm.errors}
-                </p>
+                <p className="mt-2 text-xs text-error">{passwordForm.errors}</p>
               )}
             </form>
           </div>
-          <div className="flex justify-end gap-[var(--space-sm)] border-t border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)]">
+          <div className="flex justify-end gap-2 border-t border-neutral-200 px-6 py-6">
             <button
               type="submit"
               form="admin-password-form"
               disabled={isPendingPassword}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-white transition-[background,transform] duration-150 hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
             >
               {isPendingPassword ? "変更中..." : "パスワードを変更"}
             </button>
@@ -449,14 +451,14 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* Danger Zone */}
-        <div className="rounded-[var(--radius-lg)] border border-error bg-white">
-          <div className="px-[var(--space-lg)] pt-[var(--space-lg)]">
-            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-error">
+        <div className="rounded-lg border border-error bg-white">
+          <div className="px-6 pt-6">
+            <h2 className="font-heading text-lg font-semibold tracking-tight text-error">
               アカウント削除
             </h2>
           </div>
-          <div className="px-[var(--space-lg)] py-[var(--space-lg)]">
-            <div className="mb-[var(--space-lg)] flex items-start gap-[var(--space-sm)] rounded-[var(--radius-md)] bg-[var(--color-error-bg)] p-[var(--space-md)] text-[length:var(--text-sm)] leading-[var(--leading-normal)] text-error">
+          <div className="px-6 py-6">
+            <div className="mb-6 flex items-start gap-2 rounded-md bg-[var(--color-error-bg)] p-4 text-sm leading-normal text-error">
               <svg
                 className="mt-0.5 h-[18px] w-[18px] shrink-0"
                 fill="none"
@@ -476,7 +478,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
             <button
               type="button"
               onClick={() => setShowDeleteDialog(true)}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-error transition-[background,color,transform] duration-[0.15s] ease-[ease] hover:bg-error hover:text-white active:scale-[0.99]"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-error bg-white px-6 text-sm font-medium tracking-wide text-error transition-[background,color,transform] duration-150 hover:bg-error hover:text-white active:scale-[0.99]"
             >
               アカウントを削除する
             </button>
@@ -489,7 +491,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
         onClose={() => setShowDeleteDialog(false)}
         title="本当にアカウントを削除しますか？"
       >
-        <p className="mb-4 text-[length:var(--text-sm)] text-neutral-600">
+        <p className="mb-4 text-sm text-neutral-600">
           この操作は取り消せません。確認のためパスワードを入力してください。
         </p>
         <fetcher.Form method="post" {...getFormProps(deleteForm)}>
@@ -497,7 +499,7 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
           <div className="mb-4">
             <label
               htmlFor={deleteFields.password.id}
-              className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
+              className="mb-2 block text-sm font-medium text-neutral-700"
             >
               パスワード
             </label>
@@ -505,31 +507,29 @@ export default function AdminProfilePage({ loaderData }: Route.ComponentProps) {
               {...getInputProps(deleteFields.password, {
                 type: "password",
               })}
-              className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-900 transition-[border-color] duration-[0.15s] ease-[ease] focus:border-error focus:outline-2 focus:outline-offset-2 focus:outline-error"
+              className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-900 transition-[border-color] duration-150 focus:border-error focus:outline-2 focus:outline-offset-2 focus:outline-error"
             />
             {deleteFields.password.errors && (
-              <p className="mt-1 text-[length:var(--text-xs)] text-error">
+              <p className="mt-1 text-xs text-error">
                 {deleteFields.password.errors}
               </p>
             )}
           </div>
           {deleteForm.errors && (
-            <p className="mb-4 text-[length:var(--text-xs)] text-error">
-              {deleteForm.errors}
-            </p>
+            <p className="mb-4 text-xs text-error">{deleteForm.errors}</p>
           )}
           <div className="flex justify-end gap-3">
             <button
               type="button"
               onClick={() => setShowDeleteDialog(false)}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
             >
               キャンセル
             </button>
             <button
               type="submit"
               disabled={isPendingDelete}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-error bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-error transition-[background,color] hover:bg-error hover:text-white disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-error bg-white px-6 text-sm font-medium text-error transition-[background,color] hover:bg-error hover:text-white disabled:opacity-50"
             >
               {isPendingDelete ? "削除中..." : "削除する"}
             </button>

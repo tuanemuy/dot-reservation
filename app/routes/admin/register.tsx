@@ -160,20 +160,12 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
         title="確認メールを送信しました"
         description="ご入力いただいたメールアドレスに確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。"
       >
-        <p
-          className="text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-600)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+        <p className="mb-6 text-center text-sm text-neutral-600">
           メールが届かない場合は、迷惑メールフォルダをご確認ください。
         </p>
         <Link
           to="/admin/login"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center text-sm font-medium text-primary no-underline"
         >
           ログインページへ
         </Link>
@@ -239,19 +231,10 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
         </FormField>
 
         {formError && (
-          <div style={{ marginBottom: "var(--space-lg)" }}>
+          <div className="mb-6">
             <div
-              className="flex items-center"
+              className="flex items-center gap-2 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] p-4 text-sm text-error"
               role="alert"
-              style={{
-                gap: "var(--space-sm)",
-                padding: "var(--space-md)",
-                background: "var(--color-error-bg)",
-                border: "1px solid var(--color-error-border)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-error)",
-              }}
             >
               <svg
                 aria-hidden="true"
@@ -259,8 +242,7 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
                 stroke="currentColor"
                 strokeWidth="2"
                 viewBox="0 0 24 24"
-                className="shrink-0"
-                style={{ width: "18px", height: "18px" }}
+                className="h-[18px] w-[18px] shrink-0"
               >
                 <path
                   strokeLinecap="round"
@@ -271,17 +253,10 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
               {formError}
             </div>
             {formError.includes("既に登録されています") && (
-              <div
-                className="text-center"
-                style={{ marginTop: "var(--space-sm)" }}
-              >
+              <div className="mt-2 text-center">
                 <Link
                   to="/admin/login"
-                  className="font-medium no-underline"
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--color-primary)",
-                  }}
+                  className="text-sm font-medium text-primary no-underline"
                 >
                   ログインページへ
                 </Link>
@@ -291,35 +266,18 @@ export default function AdminRegisterPage(_props: Route.ComponentProps) {
         )}
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="mb-6 text-sm text-error">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "登録中..." : "アカウントを作成"}
         </Button>
       </form>
 
-      <div
-        className="flex flex-col items-center"
-        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
-      >
+      <div className="mt-6 flex flex-col items-center gap-2">
         <Link
           to="/admin/login"
-          className="font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="text-sm font-medium text-primary no-underline"
         >
           既にアカウントをお持ちの方
         </Link>

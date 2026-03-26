@@ -62,20 +62,12 @@ export default function ForgotPasswordPage() {
         title="リセットメールを送信しました"
         description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
       >
-        <p
-          className="text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-600)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+        <p className="text-center text-sm text-neutral-600 mb-6">
           メールが届かない場合は、迷惑メールフォルダをご確認ください。
         </p>
         <Link
           to="/customer/login"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center font-medium text-sm text-primary no-underline"
         >
           ログインに戻る
         </Link>
@@ -103,15 +95,7 @@ export default function ForgotPasswordPage() {
         </FormField>
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="text-sm text-error mb-6">{form.errors}</p>
         )}
 
         <Button type="submit" disabled={isPending} className="w-full">
@@ -121,12 +105,7 @@ export default function ForgotPasswordPage() {
 
       <Link
         to="/customer/login"
-        className="block text-center font-medium no-underline"
-        style={{
-          marginTop: "var(--space-lg)",
-          fontSize: "var(--text-sm)",
-          color: "var(--color-primary)",
-        }}
+        className="block text-center font-medium mt-6 text-sm text-primary no-underline"
       >
         ログインに戻る
       </Link>

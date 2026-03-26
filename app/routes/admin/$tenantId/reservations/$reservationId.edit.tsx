@@ -196,13 +196,13 @@ export default function TenantReservationEditPage({
         <fetcher.Form
           method="post"
           {...getFormProps(form)}
-          className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]"
+          className="rounded-lg border border-neutral-300 bg-white p-6"
         >
           <input type="hidden" name="intent" value="updateReservation" />
           <div className="space-y-6">
             {/* メニュー選択 */}
             <section>
-              <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              <h2 className="mb-4 font-heading text-lg font-semibold tracking-tight text-neutral-800">
                 メニュー
               </h2>
               <select
@@ -223,7 +223,7 @@ export default function TenantReservationEditPage({
                 ))}
               </select>
               {fields.menuId.errors && (
-                <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                <p className="mt-1 text-xs text-error">
                   {fields.menuId.errors}
                 </p>
               )}
@@ -231,7 +231,7 @@ export default function TenantReservationEditPage({
 
             {/* スタッフ選択 */}
             <section>
-              <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              <h2 className="mb-4 font-heading text-lg font-semibold tracking-tight text-neutral-800">
                 担当スタッフ
               </h2>
               <select
@@ -255,14 +255,14 @@ export default function TenantReservationEditPage({
 
             {/* 日時選択 */}
             <section>
-              <h2 className="mb-[var(--space-md)] font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+              <h2 className="mb-4 font-heading text-lg font-semibold tracking-tight text-neutral-800">
                 日時
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor={fields.date.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium text-neutral-700"
                   >
                     日付
                   </label>
@@ -274,10 +274,10 @@ export default function TenantReservationEditPage({
                         date: e.target.value,
                       }))
                     }
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-800 transition-[border-color] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {fields.date.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {fields.date.errors}
                     </p>
                   )}
@@ -285,7 +285,7 @@ export default function TenantReservationEditPage({
                 <div>
                   <label
                     htmlFor={fields.time.id}
-                    className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
+                    className="mb-2 block text-sm font-medium text-neutral-700"
                   >
                     時刻
                   </label>
@@ -297,10 +297,10 @@ export default function TenantReservationEditPage({
                         time: e.target.value,
                       }))
                     }
-                    className="h-11 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-md)] text-[length:var(--text-base)] text-neutral-800 transition-[border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-base text-neutral-800 transition-[border-color] duration-150 hover:border-neutral-400 focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                   />
                   {fields.time.errors && (
-                    <p className="mt-1 text-[length:var(--text-xs)] text-error">
+                    <p className="mt-1 text-xs text-error">
                       {fields.time.errors}
                     </p>
                   )}
@@ -318,14 +318,14 @@ export default function TenantReservationEditPage({
             <div className="flex justify-end gap-3 border-t border-neutral-300 pt-4">
               <Link
                 to={`/admin/${tenantId}/reservations/${reservation.id}`}
-                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+                className="inline-flex h-11 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
               >
                 キャンセル
               </Link>
               <button
                 type="submit"
                 disabled={isPending}
-                className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-white transition-[background,transform] duration-150 hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
               >
                 {isPending ? "変更中..." : "予約を変更"}
               </button>

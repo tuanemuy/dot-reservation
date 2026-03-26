@@ -195,124 +195,50 @@ export default function ReservationDetailPage({
   return (
     <div>
       {/* Page Header */}
-      <div
-        className="flex items-center"
-        style={{ gap: "var(--space-md)", marginBottom: "var(--space-xl)" }}
-      >
-        <h1
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: "var(--weight-semibold)",
-            color: "var(--color-neutral-900)",
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: "var(--leading-tight)",
-          }}
-        >
+      <div className="flex items-center gap-4 mb-8">
+        <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight">
           予約詳細
         </h1>
         <StatusBadge status={reservation.status} variant="reservation" />
       </div>
 
       {/* Detail Card */}
-      <div
-        style={{
-          background: "var(--color-bg-card)",
-          border: "1px solid var(--color-neutral-300)",
-          borderRadius: "var(--radius-lg)",
-          padding: "var(--space-xl)",
-          marginBottom: "var(--space-lg)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-lg)",
-            fontWeight: "var(--weight-semibold)",
-            color: "var(--color-neutral-800)",
-            letterSpacing: "var(--tracking-tight)",
-            marginBottom: "var(--space-lg)",
-            paddingBottom: "var(--space-sm)",
-            borderBottom: "1px solid var(--color-neutral-200)",
-          }}
-        >
+      <div className="bg-white border border-neutral-300 rounded-lg p-8 mb-6">
+        <h2 className="font-heading text-lg font-semibold text-neutral-800 tracking-tight mb-6 pb-2 border-b border-neutral-200">
           予約情報
         </h2>
-        <div className="flex flex-col" style={{ gap: "var(--space-md)" }}>
+        <div className="flex flex-col gap-4">
           {detailRows
             .filter((row) => row.value !== null)
             .map((row) => (
               <div
                 key={row.label}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "160px 1fr",
-                  gap: "var(--space-md)",
-                  alignItems: "baseline",
-                }}
+                className="grid grid-cols-[160px_1fr] gap-4 items-baseline"
               >
-                <div
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    fontWeight: "var(--weight-medium)",
-                    color: "var(--color-neutral-500)",
-                    letterSpacing: "var(--tracking-wide)",
-                  }}
-                >
+                <div className="text-sm font-medium text-neutral-500 tracking-wide">
                   {row.label}
                 </div>
                 <div>
                   {row.isLink && row.linkHref ? (
                     <Link
                       to={row.linkHref}
-                      style={{
-                        color: "var(--color-primary)",
-                        textDecoration: "none",
-                        fontWeight: "var(--weight-medium)",
-                        fontSize: "var(--text-base)",
-                      }}
+                      className="text-primary font-medium text-base no-underline"
                     >
                       {row.value}
                     </Link>
                   ) : row.isPrice ? (
-                    <span
-                      style={{
-                        fontSize: "var(--text-lg)",
-                        fontWeight: "var(--weight-semibold)",
-                        color: "var(--color-accent-dark)",
-                      }}
-                    >
+                    <span className="text-lg font-semibold text-accent-dark">
                       {row.value}{" "}
-                      <span
-                        style={{
-                          fontSize: "var(--text-xs)",
-                          fontWeight: "var(--weight-normal)",
-                          color: "var(--color-neutral-500)",
-                        }}
-                      >
+                      <span className="text-xs font-normal text-neutral-500">
                         (税込)
                       </span>
                     </span>
                   ) : row.isNote ? (
-                    <div
-                      style={{
-                        fontSize: "var(--text-sm)",
-                        color: "var(--color-neutral-600)",
-                        lineHeight: "var(--leading-relaxed)",
-                        background: "var(--color-neutral-100)",
-                        padding: "var(--space-md)",
-                        borderRadius: "var(--radius-md)",
-                      }}
-                    >
+                    <div className="text-sm text-neutral-600 leading-relaxed bg-neutral-100 p-4 rounded-md">
                       {row.value}
                     </div>
                   ) : (
-                    <span
-                      style={{
-                        fontSize: "var(--text-base)",
-                        color: "var(--color-neutral-800)",
-                      }}
-                    >
+                    <span className="text-base text-neutral-800">
                       {row.value}
                     </span>
                   )}
@@ -326,23 +252,11 @@ export default function ReservationDetailPage({
       {(reservation.canModify ||
         reservation.canCancel ||
         reservation.status === "completed") && (
-        <div
-          className="flex"
-          style={{ gap: "var(--space-md)", marginTop: "var(--space-xl)" }}
-        >
+        <div className="flex gap-4 mt-8">
           {reservation.canModify && (
             <Link
               to={`/mypage/reservations/${reservation.id}/edit`}
-              className="inline-flex items-center justify-center border border-neutral-300 bg-[var(--color-bg-card)] no-underline transition-[background,border-color] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:bg-neutral-100"
-              style={{
-                gap: "var(--space-sm)",
-                height: "44px",
-                padding: "0 var(--space-lg)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-neutral-700)",
-              }}
+              className="inline-flex items-center justify-center gap-2 h-[44px] px-6 rounded-md text-base font-medium text-neutral-700 border border-neutral-300 bg-white no-underline transition-[background,border-color] duration-150 hover:border-neutral-400 hover:bg-neutral-100"
             >
               <svg
                 fill="none"
@@ -350,7 +264,7 @@ export default function ReservationDetailPage({
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                style={{ width: "16px", height: "16px" }}
+                className="size-4"
               >
                 <path
                   strokeLinecap="round"
@@ -364,19 +278,8 @@ export default function ReservationDetailPage({
           {reservation.canCancel && (
             <button
               type="button"
-              className="inline-flex items-center justify-center border border-error bg-[var(--color-bg-card)] transition-[background] duration-[0.15s] ease-[ease] hover:bg-[var(--color-error-bg)]"
+              className="inline-flex items-center justify-center gap-2 h-[44px] px-6 rounded-md text-base font-medium text-error border border-error bg-white cursor-pointer font-[inherit] transition-[background] duration-150 hover:bg-[var(--color-error-bg)]"
               onClick={() => setShowCancelDialog(true)}
-              style={{
-                gap: "var(--space-sm)",
-                height: "44px",
-                padding: "0 var(--space-lg)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-error)",
-                cursor: "pointer",
-                fontFamily: "inherit",
-              }}
             >
               <svg
                 fill="none"
@@ -384,7 +287,7 @@ export default function ReservationDetailPage({
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                style={{ width: "16px", height: "16px" }}
+                className="size-4"
               >
                 <path
                   strokeLinecap="round"
@@ -398,21 +301,7 @@ export default function ReservationDetailPage({
           {reservation.status === "completed" && reservation.tenantUrlPath && (
             <Link
               to={`/shop/${reservation.tenantUrlPath}/reserve`}
-              className="inline-flex items-center justify-center"
-              style={{
-                gap: "var(--space-sm)",
-                height: "44px",
-                padding: "0 var(--space-lg)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-neutral-300)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-neutral-700)",
-                textDecoration: "none",
-                transition:
-                  "background var(--transition-default), border-color var(--transition-default)",
-              }}
+              className="inline-flex items-center justify-center gap-2 h-[44px] px-6 bg-white border border-neutral-300 rounded-md text-base font-medium text-neutral-700 no-underline duration-150"
             >
               再予約する
             </Link>
@@ -429,16 +318,10 @@ export default function ReservationDetailPage({
         <fetcher.Form method="post" {...getFormProps(cancelForm)}>
           <input type="hidden" name="intent" value="cancelReservation" />
           <input type="hidden" name="reservationId" value={reservation.id} />
-          <div style={{ marginBottom: "var(--space-lg)" }}>
+          <div className="mb-6">
             <label
               htmlFor="cancel-reason"
-              className="block"
-              style={{
-                fontSize: "var(--text-sm)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-neutral-700)",
-                marginBottom: "var(--space-sm)",
-              }}
+              className="block text-sm font-medium text-neutral-700 mb-2"
             >
               キャンセル理由（任意）
             </label>
@@ -451,53 +334,20 @@ export default function ReservationDetailPage({
             </Select>
           </div>
           {cancelForm.errors && (
-            <p
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--color-error)",
-                marginBottom: "var(--space-md)",
-              }}
-            >
-              {cancelForm.errors}
-            </p>
+            <p className="text-sm text-error mb-4">{cancelForm.errors}</p>
           )}
-          <div className="flex justify-end" style={{ gap: "var(--space-md)" }}>
+          <div className="flex justify-end gap-4">
             <button
               type="button"
               onClick={() => setShowCancelDialog(false)}
-              className="inline-flex items-center justify-center"
-              style={{
-                height: "44px",
-                padding: "0 var(--space-lg)",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-neutral-300)",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontWeight: "var(--weight-medium)",
-                color: "var(--color-neutral-700)",
-                cursor: "pointer",
-                fontFamily: "inherit",
-              }}
+              className="inline-flex items-center justify-center h-[44px] px-6 bg-white border border-neutral-300 rounded-md text-base font-medium text-neutral-700 cursor-pointer font-[inherit]"
             >
               戻る
             </button>
             <button
               type="submit"
               disabled={isCancelling}
-              className="inline-flex items-center justify-center"
-              style={{
-                height: "44px",
-                padding: "0 var(--space-lg)",
-                background: "var(--color-error)",
-                border: "none",
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontWeight: "var(--weight-medium)",
-                color: "#FFFFFF",
-                cursor: isCancelling ? "not-allowed" : "pointer",
-                fontFamily: "inherit",
-                opacity: isCancelling ? 0.5 : 1,
-              }}
+              className={`inline-flex items-center justify-center h-[44px] px-6 bg-error border-none rounded-md text-base font-medium text-white font-[inherit] ${isCancelling ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
             >
               {isCancelling ? "キャンセル中..." : "キャンセルする"}
             </button>

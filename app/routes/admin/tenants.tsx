@@ -48,18 +48,18 @@ export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {
   const { tenants } = loaderData;
 
   return (
-    <div className="flex flex-1 items-center justify-center px-[var(--space-xl)] py-[var(--space-3xl)]">
+    <div className="flex flex-1 items-center justify-center px-8 py-14">
       <div className="w-full max-w-[560px]">
-        <h1 className="mb-[var(--space-sm)] text-center font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        <h1 className="mb-2 text-center font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
           テナントを選択
         </h1>
-        <p className="mb-[var(--space-xl)] text-center text-[length:var(--text-sm)] text-neutral-500">
+        <p className="mb-8 text-center text-sm text-neutral-500">
           管理するテナントを選択してください
         </p>
 
         {tenants.length === 0 ? (
-          <div className="mb-[var(--space-2xl)] rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-3xl)] text-center">
-            <div className="mx-auto mb-[var(--space-lg)] flex h-14 w-14 items-center justify-center rounded-full bg-neutral-200">
+          <div className="mb-10 rounded-lg border border-neutral-300 bg-white p-14 text-center">
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-200">
               <svg
                 className="h-6 w-6 text-neutral-500"
                 fill="none"
@@ -75,22 +75,22 @@ export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {
                 />
               </svg>
             </div>
-            <p className="text-[length:var(--text-base)] text-neutral-500">
+            <p className="text-base text-neutral-500">
               所属テナントがありません
             </p>
           </div>
         ) : (
-          <div className="mb-[var(--space-2xl)] flex flex-col gap-[var(--space-md)]">
+          <div className="mb-10 flex flex-col gap-4">
             {tenants.map((tenant) => {
               const role = getRoleLabel(tenant.role);
               return (
                 <Link
                   key={tenant.tenantId}
                   to={`/admin/${tenant.tenantId}/dashboard`}
-                  className="flex items-center justify-between rounded-[var(--radius-lg)] border border-neutral-300 bg-white px-[var(--space-xl)] py-[var(--space-lg)] transition-[border-color,box-shadow] duration-[0.15s] ease-[ease] hover:border-primary-light hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  className="flex items-center justify-between rounded-lg border border-neutral-300 bg-white px-8 py-6 transition-[border-color,box-shadow] duration-150 hover:border-primary-light hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
-                  <div className="flex items-center gap-[var(--space-md)]">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-neutral-200">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-neutral-200">
                       <svg
                         className="h-[22px] w-[22px] text-neutral-600"
                         fill="none"
@@ -106,13 +106,13 @@ export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {
                         />
                       </svg>
                     </div>
-                    <span className="text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+                    <span className="text-lg font-semibold tracking-tight text-neutral-800">
                       {tenant.tenantName}
                     </span>
                   </div>
-                  <div className="flex items-center gap-[var(--space-md)]">
+                  <div className="flex items-center gap-4">
                     <span
-                      className={`inline-flex items-center rounded-full px-3 py-1 text-[length:var(--text-xs)] font-[var(--weight-medium)] ${role.className}`}
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${role.className}`}
                     >
                       {role.label}
                     </span>
@@ -138,14 +138,14 @@ export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {
         )}
 
         {/* Bottom Section */}
-        <div className="border-t border-neutral-300 pt-[var(--space-xl)]">
-          <p className="mb-[var(--space-md)] text-center text-[length:var(--text-sm)] text-neutral-500">
+        <div className="border-t border-neutral-300 pt-8">
+          <p className="mb-4 text-center text-sm text-neutral-500">
             テナント未所属の方・招待をお待ちの方
           </p>
-          <div className="flex justify-center gap-[var(--space-xl)]">
+          <div className="flex justify-center gap-8">
             <Link
               to="/admin/new-tenant"
-              className="inline-flex items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-primary transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-primary-lighter hover:text-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-primary transition-[background,color] duration-150 hover:bg-primary-lighter hover:text-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <svg
                 className="h-4 w-4"
@@ -165,7 +165,7 @@ export default function AdminTenantsPage({ loaderData }: Route.ComponentProps) {
             </Link>
             <Link
               to="/admin/invitations"
-              className="inline-flex items-center gap-[var(--space-sm)] rounded-[var(--radius-md)] px-[var(--space-md)] py-[var(--space-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-primary transition-[background,color] duration-[0.15s] ease-[ease] hover:bg-primary-lighter hover:text-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-primary transition-[background,color] duration-150 hover:bg-primary-lighter hover:text-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <svg
                 className="h-4 w-4"

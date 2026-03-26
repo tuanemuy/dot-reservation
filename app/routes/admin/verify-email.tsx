@@ -14,18 +14,8 @@ export default function AdminVerifyEmailPage() {
     return (
       <AuthLayout badge="管理画面" title="メール確認エラー">
         <div
-          className="flex items-center"
+          className="mb-6 flex items-center gap-2 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] p-4 text-sm text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -33,8 +23,7 @@ export default function AdminVerifyEmailPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px" }}
+            className="h-[18px] w-[18px] shrink-0"
           >
             <path
               strokeLinecap="round"
@@ -46,8 +35,7 @@ export default function AdminVerifyEmailPage() {
         </div>
         <Link
           to="/admin/register"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center text-sm font-medium text-primary no-underline"
         >
           新規登録ページへ戻る
         </Link>
@@ -57,28 +45,15 @@ export default function AdminVerifyEmailPage() {
 
   return (
     <AuthLayout badge="管理画面" title="メールアドレスの確認が完了しました">
-      <div className="text-center" style={{ padding: "var(--space-lg) 0" }}>
-        <div
-          className="mx-auto flex items-center justify-center"
-          style={{
-            width: "64px",
-            height: "64px",
-            borderRadius: "var(--radius-full)",
-            background: "var(--color-success-bg)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+      <div className="py-6 text-center">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-success-bg)]">
           <svg
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            style={{
-              width: "32px",
-              height: "32px",
-              color: "var(--color-success)",
-            }}
+            className="h-8 w-8 text-success"
           >
             <path
               strokeLinecap="round"
@@ -88,29 +63,13 @@ export default function AdminVerifyEmailPage() {
           </svg>
         </div>
 
-        <p
-          style={{
-            fontSize: "var(--text-base)",
-            color: "var(--color-neutral-600)",
-            lineHeight: "var(--leading-normal)",
-            marginBottom: "var(--space-xl)",
-          }}
-        >
+        <p className="mb-8 text-base leading-normal text-neutral-600">
           メールアドレスの確認が正常に完了しました。管理画面にログインしてご利用を開始してください。
         </p>
 
         <Link
           to="/admin/login"
-          className="inline-flex w-full items-center justify-center font-medium no-underline"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl)",
-            background: "var(--color-primary)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--text-base)",
-            letterSpacing: "var(--tracking-wide)",
-          }}
+          className="inline-flex h-11 w-full items-center justify-center rounded-md bg-primary px-8 text-base font-medium tracking-wide text-white no-underline"
         >
           管理画面にログイン
         </Link>

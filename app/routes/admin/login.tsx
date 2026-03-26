@@ -69,18 +69,8 @@ export default function AdminLoginPage(_props: Route.ComponentProps) {
     <AuthLayout badge="管理画面" title="管理画面ログイン">
       {formError && (
         <div
-          className="flex items-center"
+          className="flex items-center gap-2 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] p-4 mb-6 text-sm text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -88,8 +78,7 @@ export default function AdminLoginPage(_props: Route.ComponentProps) {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px" }}
+            className="h-[18px] w-[18px] shrink-0"
           >
             <path
               strokeLinecap="round"
@@ -129,45 +118,24 @@ export default function AdminLoginPage(_props: Route.ComponentProps) {
         </FormField>
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="mb-6 text-sm text-error">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "ログイン中..." : "ログイン"}
         </Button>
       </form>
 
-      <div
-        className="flex flex-col items-center"
-        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
-      >
+      <div className="mt-6 flex flex-col items-center gap-2">
         <Link
           to="/admin/forgot-password"
-          className="no-underline"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
+          className="text-sm text-neutral-500 no-underline"
         >
           パスワードをお忘れの方
         </Link>
         <Link
           to="/admin/register"
-          className="font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="text-sm font-medium text-primary no-underline"
         >
           新規アカウント登録はこちら
         </Link>

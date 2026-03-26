@@ -71,43 +71,22 @@ export default function PlatformUsersPage({
   return (
     <div>
       {/* Page Header */}
-      <div style={{ marginBottom: "var(--space-xl)" }}>
-        <h1
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "var(--text-2xl)",
-            fontWeight: 600,
-            color: "var(--color-neutral-900)",
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: "var(--leading-tight)",
-          }}
-        >
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold text-neutral-900 tracking-tight leading-tight">
           ユーザー管理
         </h1>
       </div>
 
       {/* Filters */}
-      <Form
-        method="get"
-        className="flex items-center"
-        style={{ gap: "var(--space-md)", marginBottom: "var(--space-xl)" }}
-      >
-        <div className="relative flex-1" style={{ maxWidth: "400px" }}>
+      <Form method="get" className="flex items-center gap-4 mb-8">
+        <div className="relative flex-1 max-w-[400px]">
           <svg
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="pointer-events-none absolute"
-            style={{
-              left: "var(--space-md)",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: "16px",
-              height: "16px",
-              color: "var(--color-neutral-500)",
-            }}
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 size-4 text-neutral-500"
           >
             <path
               strokeLinecap="round"
@@ -120,42 +99,13 @@ export default function PlatformUsersPage({
             name="keyword"
             placeholder="顧客名・メールアドレスで検索"
             defaultValue={searchParams.get("keyword") ?? ""}
-            className="w-full focus:outline-none"
-            style={{
-              height: "44px",
-              padding: "0 var(--space-md) 0 calc(var(--space-md) + 24px)",
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--text-sm)",
-              fontWeight: 400,
-              color: "var(--color-neutral-900)",
-              background: "var(--color-bg-page)",
-              border: "1px solid var(--color-neutral-300)",
-              borderRadius: "var(--radius-md)",
-              transition: "border-color var(--transition-default)",
-            }}
+            className="w-full h-[44px] pl-[calc(1rem+24px)] pr-4 font-body text-sm font-normal text-neutral-900 bg-white border border-neutral-300 rounded-md duration-150 focus:outline-none"
           />
         </div>
         <select
           name="status"
           defaultValue={searchParams.get("status") ?? ""}
-          className="cursor-pointer appearance-none focus:outline-none"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl) 0 var(--space-md)",
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-sm)",
-            fontWeight: 400,
-            color: "var(--color-neutral-700)",
-            background: "var(--color-bg-page)",
-            border: "1px solid var(--color-neutral-300)",
-            borderRadius: "var(--radius-md)",
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23B8B5B1' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E\")",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right var(--space-sm) center",
-            backgroundSize: "16px",
-            transition: "border-color var(--transition-default)",
-          }}
+          className="h-[44px] pl-4 pr-8 font-body text-sm font-normal text-neutral-700 bg-white border border-neutral-300 rounded-md cursor-pointer appearance-none duration-150 bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20fill=%27none%27%20viewBox=%270%200%2024%2024%27%20stroke=%27%23B8B5B1%27%20stroke-width=%272%27%3E%3Cpath%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%20d=%27M19.5%208.25l-7.5%207.5-7.5-7.5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.5rem_center] bg-[length:16px] focus:outline-none"
         >
           <option value="">すべてのステータス</option>
           <option value="active">アクティブ</option>
@@ -167,28 +117,13 @@ export default function PlatformUsersPage({
       </Form>
 
       {/* Table */}
-      <div
-        style={{
-          background: "var(--color-bg-card)",
-          border: "1px solid var(--color-neutral-300)",
-          borderRadius: "var(--radius-lg)",
-          marginBottom: "var(--space-xl)",
-          overflow: "hidden",
-        }}
-      >
+      <div className="bg-white border border-neutral-300 rounded-lg mb-8 overflow-hidden">
         {users.length === 0 ? (
-          <p
-            className="text-center"
-            style={{
-              padding: "var(--space-xl)",
-              fontSize: "var(--text-sm)",
-              color: "var(--color-neutral-500)",
-            }}
-          >
+          <p className="text-center p-8 text-sm text-neutral-500">
             ユーザーが見つかりません
           </p>
         ) : (
-          <table className="w-full" style={{ borderCollapse: "collapse" }}>
+          <table className="w-full border-collapse">
             <thead>
               <tr>
                 {[
@@ -200,16 +135,7 @@ export default function PlatformUsersPage({
                 ].map((header) => (
                   <th
                     key={header}
-                    className="text-left"
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-xs)",
-                      fontWeight: 500,
-                      color: "var(--color-neutral-500)",
-                      letterSpacing: "var(--tracking-wide)",
-                      borderBottom: "1px solid var(--color-neutral-300)",
-                      background: "var(--color-neutral-50)",
-                    }}
+                    className="text-left py-4 px-6 text-xs font-medium text-neutral-500 tracking-wide border-b border-neutral-300 bg-neutral-50"
                   >
                     {header}
                   </th>
@@ -218,77 +144,37 @@ export default function PlatformUsersPage({
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={user.id} className="hover-table-row">
+                <tr
+                  key={user.id}
+                  className="transition-colors duration-150 hover:bg-neutral-50"
+                >
                   <td
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-sm)",
-                      borderBottom:
-                        index < users.length - 1
-                          ? "1px solid var(--color-neutral-200)"
-                          : "none",
-                    }}
+                    className={`py-4 px-6 text-sm ${index < users.length - 1 ? "border-b border-neutral-200" : ""}`}
                   >
                     <Link
                       to={user.id}
-                      className="no-underline"
-                      style={{
-                        fontWeight: 500,
-                        color: "var(--color-primary)",
-                        transition: "color var(--transition-default)",
-                      }}
+                      className="font-medium text-primary duration-150 no-underline"
                     >
                       {user.name}
                     </Link>
                   </td>
                   <td
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-sm)",
-                      color: "var(--color-neutral-700)",
-                      borderBottom:
-                        index < users.length - 1
-                          ? "1px solid var(--color-neutral-200)"
-                          : "none",
-                    }}
+                    className={`py-4 px-6 text-sm text-neutral-700 ${index < users.length - 1 ? "border-b border-neutral-200" : ""}`}
                   >
                     {user.email}
                   </td>
                   <td
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-sm)",
-                      borderBottom:
-                        index < users.length - 1
-                          ? "1px solid var(--color-neutral-200)"
-                          : "none",
-                    }}
+                    className={`py-4 px-6 text-sm ${index < users.length - 1 ? "border-b border-neutral-200" : ""}`}
                   >
                     <StatusBadge status={user.status} variant="customer" />
                   </td>
                   <td
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-sm)",
-                      color: "var(--color-neutral-700)",
-                      borderBottom:
-                        index < users.length - 1
-                          ? "1px solid var(--color-neutral-200)"
-                          : "none",
-                    }}
+                    className={`py-4 px-6 text-sm text-neutral-700 ${index < users.length - 1 ? "border-b border-neutral-200" : ""}`}
                   >
                     {user.createdAt}
                   </td>
                   <td
-                    style={{
-                      padding: "var(--space-md) var(--space-lg)",
-                      fontSize: "var(--text-sm)",
-                      color: "var(--color-neutral-700)",
-                      borderBottom:
-                        index < users.length - 1
-                          ? "1px solid var(--color-neutral-200)"
-                          : "none",
-                    }}
+                    className={`py-4 px-6 text-sm text-neutral-700 ${index < users.length - 1 ? "border-b border-neutral-200" : ""}`}
                   >
                     {user.lastLoginAt ?? "-"}
                   </td>
@@ -298,12 +184,7 @@ export default function PlatformUsersPage({
           </table>
         )}
         {pagination.totalPages > 1 && (
-          <div
-            style={{
-              borderTop: "1px solid var(--color-neutral-200)",
-              padding: "var(--space-md)",
-            }}
-          >
+          <div className="border-t border-neutral-200 p-4">
             <Pagination
               currentPage={pagination.currentPage}
               totalPages={pagination.totalPages}

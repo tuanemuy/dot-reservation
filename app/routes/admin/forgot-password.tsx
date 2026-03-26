@@ -64,20 +64,12 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
         title="リセットメールを送信しました"
         description="パスワードリセット用のメールを送信しました。メールに記載されたリンクからパスワードを再設定してください。"
       >
-        <p
-          className="text-center"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-600)",
-            marginBottom: "var(--space-lg)",
-          }}
-        >
+        <p className="mb-6 text-center text-sm text-neutral-600">
           メールが届かない場合は、迷惑メールフォルダをご確認ください。
         </p>
         <Link
           to="/admin/login"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center text-sm font-medium text-primary no-underline"
         >
           ログインページへ戻る
         </Link>
@@ -105,51 +97,21 @@ export default function AdminForgotPasswordPage(_props: Route.ComponentProps) {
           />
         </FormField>
 
-        {formError && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {formError}
-          </p>
-        )}
+        {formError && <p className="mb-6 text-sm text-error">{formError}</p>}
 
         {form.errors && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-error)",
-              marginBottom: "var(--space-lg)",
-            }}
-          >
-            {form.errors}
-          </p>
+          <p className="mb-6 text-sm text-error">{form.errors}</p>
         )}
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "送信中..." : "リセットリンクを送信"}
         </Button>
       </form>
 
-      <div
-        className="flex flex-col items-center"
-        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
-      >
+      <div className="mt-6 flex flex-col items-center gap-2">
         <Link
           to="/admin/login"
-          className="no-underline"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
+          className="text-sm text-neutral-500 no-underline"
         >
           ログインに戻る
         </Link>

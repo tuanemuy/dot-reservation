@@ -218,7 +218,7 @@ function ToggleSwitch({
         className="peer h-0 w-0 opacity-0"
         aria-label={ariaLabel}
       />
-      <span className="absolute inset-0 rounded-full bg-neutral-300 transition-colors duration-[0.15s] ease-[ease] before:absolute before:bottom-[3px] before:left-[3px] before:h-[18px] before:w-[18px] before:rounded-full before:bg-white before:shadow-sm before:transition-transform before:duration-[0.15s] before:ease-[ease] peer-checked:bg-primary peer-checked:before:translate-x-5 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary" />
+      <span className="absolute inset-0 rounded-full bg-neutral-300 transition-colors duration-150 before:absolute before:bottom-[3px] before:left-[3px] before:h-[18px] before:w-[18px] before:rounded-full before:bg-white before:shadow-sm before:transition-transform before:duration-150 peer-checked:bg-primary peer-checked:before:translate-x-5 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary" />
     </label>
   );
 }
@@ -316,28 +316,28 @@ function AdminSettingRow({
 
   return (
     <tr
-      className={`transition-colors duration-[0.15s] ease-[ease] hover:bg-neutral-50 ${
+      className={`transition-colors duration-150 hover:bg-neutral-50 ${
         !isLast ? "border-b border-neutral-200" : ""
       }`}
     >
-      <td className="px-[var(--space-lg)] py-[var(--space-md)]">
-        <div className="text-[length:var(--text-base)] font-[var(--weight-medium)] text-neutral-800">
+      <td className="px-6 py-4">
+        <div className="text-base font-medium text-neutral-800">
           {setting.label}
         </div>
         {setting.description && (
-          <div className="mt-0.5 text-[length:var(--text-xs)] text-neutral-500">
+          <div className="mt-0.5 text-xs text-neutral-500">
             {setting.description}
           </div>
         )}
       </td>
-      <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+      <td className="px-6 py-4 text-center">
         <ToggleSwitch
           checked={emailDisplayed}
           onChange={() => handleToggle("email", emailDisplayed)}
           ariaLabel={`${setting.label}のメール通知を${emailDisplayed ? "オフ" : "オン"}にする`}
         />
       </td>
-      <td className="px-[var(--space-lg)] py-[var(--space-md)] text-center">
+      <td className="px-6 py-4 text-center">
         <ToggleSwitch
           checked={inAppDisplayed}
           onChange={() => handleToggle("in_app", inAppDisplayed)}
@@ -355,26 +355,26 @@ export default function AdminNotificationSettingsPage({
 
   return (
     <div>
-      <div className="mb-[var(--space-xl)]">
-        <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <div className="mb-8">
+        <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
           通知設定
         </h1>
-        <p className="mt-[var(--space-xs)] text-[length:var(--text-sm)] text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-500">
           通知の受信方法を設定します
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+      <div className="overflow-hidden rounded-lg border border-neutral-300 bg-white">
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+              <th className="border-b border-neutral-200 px-6 py-6 pb-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                 通知カテゴリ
               </th>
-              <th className="w-[140px] border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-center text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+              <th className="w-[140px] border-b border-neutral-200 px-6 py-6 pb-4 text-center text-xs font-medium tracking-wide text-neutral-500">
                 メール通知
               </th>
-              <th className="w-[140px] border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-lg)] pb-[var(--space-md)] text-center text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+              <th className="w-[140px] border-b border-neutral-200 px-6 py-6 pb-4 text-center text-xs font-medium tracking-wide text-neutral-500">
                 アプリ内通知
               </th>
             </tr>
@@ -391,7 +391,7 @@ export default function AdminNotificationSettingsPage({
         </table>
       </div>
 
-      <p className="mt-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-500">
+      <p className="mt-4 text-sm text-neutral-500">
         設定はトグルを切り替えると自動的に保存されます。
       </p>
     </div>

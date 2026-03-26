@@ -191,15 +191,15 @@ export default function TenantBusinessHoursPage({
 
   return (
     <div className="">
-      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <h1 className="mb-8 font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
         営業設定
       </h1>
 
       <div className="max-w-2xl space-y-8">
         {/* 営業時間 */}
-        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+        <section className="rounded-lg border border-neutral-300 bg-white p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            <h2 className="font-heading text-lg font-semibold tracking-tight text-neutral-800">
               営業時間
             </h2>
             {editingSection === "hours" ? (
@@ -303,9 +303,9 @@ export default function TenantBusinessHoursPage({
         </section>
 
         {/* 臨時休業日 */}
-        <section className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-lg)]">
+        <section className="rounded-lg border border-neutral-300 bg-white p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+            <h2 className="font-heading text-lg font-semibold tracking-tight text-neutral-800">
               臨時休業日
             </h2>
           </div>
@@ -316,7 +316,7 @@ export default function TenantBusinessHoursPage({
             <div>
               <label
                 htmlFor="closedDate"
-                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
+                className="mb-2 block text-sm font-medium text-neutral-700"
               >
                 日付
               </label>
@@ -331,7 +331,7 @@ export default function TenantBusinessHoursPage({
             <div className="flex-1">
               <label
                 htmlFor="closedReason"
-                className="mb-[var(--space-sm)] block text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-700"
+                className="mb-2 block text-sm font-medium text-neutral-700"
               >
                 理由
               </label>
@@ -346,7 +346,7 @@ export default function TenantBusinessHoursPage({
             <button
               type="submit"
               disabled={isPendingAddClosed}
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-white transition-[background,transform] duration-150 hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
             >
               追加
             </button>

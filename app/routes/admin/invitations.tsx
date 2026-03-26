@@ -221,15 +221,15 @@ export default function AdminInvitationsPage({
   );
 
   return (
-    <div className="flex flex-1 justify-center px-[var(--space-xl)] py-[var(--space-3xl)]">
+    <div className="flex flex-1 justify-center px-8 py-14">
       <div className="w-full max-w-[640px]">
-        <div className="mb-[var(--space-xl)] flex items-center justify-between">
-          <h1 className="font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+        <div className="mb-8 flex items-center justify-between">
+          <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
             招待一覧
           </h1>
           <Link
             to="/admin/tenants"
-            className="inline-flex items-center gap-[var(--space-xs)] rounded-[var(--radius-sm)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-500 transition-colors duration-[0.15s] ease-[ease] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="inline-flex items-center gap-1 rounded-sm text-sm font-medium text-neutral-500 transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <svg
               className="h-4 w-4"
@@ -250,8 +250,8 @@ export default function AdminInvitationsPage({
         </div>
 
         {invitations.length === 0 ? (
-          <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-3xl)] text-center">
-            <div className="mx-auto mb-[var(--space-lg)] flex h-14 w-14 items-center justify-center rounded-full bg-neutral-200">
+          <div className="rounded-lg border border-neutral-300 bg-white p-14 text-center">
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-200">
               <svg
                 className="h-6 w-6 text-neutral-500"
                 fill="none"
@@ -267,55 +267,53 @@ export default function AdminInvitationsPage({
                 />
               </svg>
             </div>
-            <p className="text-[length:var(--text-base)] text-neutral-500">
-              招待はありません
-            </p>
+            <p className="text-base text-neutral-500">招待はありません</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-[var(--space-md)]">
+          <div className="flex flex-col gap-4">
             {invitations.map((invitation) => {
               const role = getRoleBadge(invitation.role);
               return (
                 <div
                   key={invitation.id}
-                  className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white px-[var(--space-xl)] py-[var(--space-lg)]"
+                  className="rounded-lg border border-neutral-300 bg-white px-8 py-6"
                 >
-                  <div className="mb-[var(--space-md)] flex items-center justify-between">
-                    <span className="text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="text-lg font-semibold tracking-tight text-neutral-800">
                       {invitation.tenantName}
                     </span>
                     <span
-                      className={`inline-flex items-center rounded-full px-3 py-1 text-[length:var(--text-xs)] font-[var(--weight-medium)] ${role.className}`}
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${role.className}`}
                     >
                       {role.label}
                     </span>
                   </div>
-                  <div className="mb-[var(--space-lg)] flex gap-[var(--space-xl)]">
+                  <div className="mb-6 flex gap-8">
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-[length:var(--text-xs)] tracking-[var(--tracking-wide)] text-neutral-500">
+                      <span className="text-xs tracking-wide text-neutral-500">
                         招待日時
                       </span>
-                      <span className="text-[length:var(--text-sm)] text-neutral-700">
+                      <span className="text-sm text-neutral-700">
                         {invitation.invitedAt}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-[length:var(--text-xs)] tracking-[var(--tracking-wide)] text-neutral-500">
+                      <span className="text-xs tracking-wide text-neutral-500">
                         招待者
                       </span>
-                      <span className="text-[length:var(--text-sm)] text-neutral-700">
+                      <span className="text-sm text-neutral-700">
                         {invitation.inviterName}
                       </span>
                     </div>
                   </div>
-                  <div className="flex gap-[var(--space-sm)]">
+                  <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => {
                         setConfirmingId(invitation.id);
                         setConfirmAction("accept");
                       }}
-                      className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-white transition-[background,transform] duration-[0.15s] ease-[ease] hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-white transition-[background,transform] duration-150 hover:bg-primary-dark active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
                       承認する
                     </button>
@@ -325,7 +323,7 @@ export default function AdminInvitationsPage({
                         setConfirmingId(invitation.id);
                         setConfirmAction("decline");
                       }}
-                      className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-600 transition-[background,border-color,color,transform] duration-[0.15s] ease-[ease] hover:border-neutral-400 hover:bg-neutral-200 hover:text-neutral-800 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      className="inline-flex h-10 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium tracking-wide text-neutral-600 transition-[background,border-color,color,transform] duration-150 hover:border-neutral-400 hover:bg-neutral-200 hover:text-neutral-800 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
                       辞退する
                     </button>
@@ -345,7 +343,7 @@ export default function AdminInvitationsPage({
         }}
         title={confirmAction === "accept" ? "招待の承認" : "招待の辞退"}
       >
-        <p className="mb-4 text-[length:var(--text-sm)] text-neutral-600">
+        <p className="mb-4 text-sm text-neutral-600">
           {confirmAction === "accept"
             ? `${confirmingInvitation?.tenantName ?? ""}への招待を承認しますか？`
             : `${confirmingInvitation?.tenantName ?? ""}への招待を辞退しますか？`}
@@ -357,7 +355,7 @@ export default function AdminInvitationsPage({
               setConfirmingId(null);
               setConfirmAction(null);
             }}
-            className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] border border-neutral-300 bg-white px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-neutral-600 transition-colors hover:bg-neutral-200"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200"
           >
             キャンセル
           </button>
@@ -372,7 +370,7 @@ export default function AdminInvitationsPage({
               <button
                 type="submit"
                 disabled={isPendingAccept}
-                className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-primary px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
               >
                 {isPendingAccept ? "処理中..." : "承認する"}
               </button>
@@ -388,7 +386,7 @@ export default function AdminInvitationsPage({
               <button
                 type="submit"
                 disabled={isPendingDecline}
-                className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-destructive px-[var(--space-lg)] text-[length:var(--text-sm)] font-[var(--weight-medium)] text-white transition-colors hover:bg-destructive/90 disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-md bg-destructive px-6 text-sm font-medium text-white transition-colors hover:bg-destructive/90 disabled:opacity-50"
               >
                 {isPendingDecline ? "処理中..." : "辞退する"}
               </button>

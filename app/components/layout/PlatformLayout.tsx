@@ -87,79 +87,29 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
   }
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: "var(--color-bg-section)" }}
-    >
+    <div className="flex min-h-screen flex-col bg-surface">
       {/* Header */}
-      <header
-        className="sticky top-0 z-50"
-        style={{
-          background: "var(--color-bg-page)",
-          borderBottom: "1px solid var(--color-neutral-300)",
-          height: "64px",
-        }}
-      >
-        <div
-          className="flex h-full items-center justify-between"
-          style={{ padding: "0 var(--space-xl)" }}
-        >
-          <div className="flex items-center" style={{ gap: "var(--space-xl)" }}>
+      <header className="sticky top-0 z-50 h-16 border-b border-neutral-300 bg-white">
+        <div className="flex h-full items-center justify-between px-8">
+          <div className="flex items-center gap-8">
             <Link
               to="/platform/dashboard"
-              className="no-underline"
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "var(--text-lg)",
-                fontWeight: 600,
-                color: "var(--color-neutral-900)",
-                letterSpacing: "var(--tracking-tight)",
-              }}
+              className="font-heading text-lg font-semibold tracking-tight text-neutral-900 no-underline"
             >
-              <span style={{ color: "var(--color-primary)" }}>dot.</span>
+              <span className="text-primary">dot.</span>
               reservation
             </Link>
-            <span
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--color-neutral-600)",
-                fontWeight: 400,
-                paddingLeft: "var(--space-xl)",
-                borderLeft: "1px solid var(--color-neutral-300)",
-              }}
-            >
+            <span className="border-l border-neutral-300 pl-8 text-sm text-neutral-600">
               プラットフォーム管理
             </span>
           </div>
-          <div className="flex items-center" style={{ gap: "var(--space-sm)" }}>
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleSignOut}
-              className="hover-bg-neutral-200 flex cursor-pointer items-center border-none bg-transparent"
-              style={{
-                gap: "var(--space-sm)",
-                height: "40px",
-                padding: "0 var(--space-md)",
-                borderRadius: "var(--radius-md)",
-                color: "var(--color-neutral-700)",
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 500,
-              }}
+              className="flex h-10 cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-4 font-body text-sm font-medium text-neutral-700 transition-colors duration-150 hover:bg-neutral-200"
             >
-              <span
-                className="flex items-center justify-center"
-                style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-full)",
-                  background:
-                    "linear-gradient(135deg, var(--color-secondary-lighter), var(--color-secondary-light))",
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 500,
-                  color: "var(--color-secondary)",
-                }}
-              >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-secondary-lighter to-secondary-light text-xs font-medium text-secondary">
                 {getUserInitial(userEmail)}
               </span>
               管理者
@@ -170,11 +120,7 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
                   stroke="currentColor"
                   strokeWidth="2"
                   viewBox="0 0 24 24"
-                  style={{
-                    width: "14px",
-                    height: "14px",
-                    color: "var(--color-neutral-500)",
-                  }}
+                  className="h-3.5 w-3.5 text-neutral-500"
                 >
                   <path
                     strokeLinecap="round"
@@ -190,46 +136,19 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside
-          className="shrink-0 overflow-y-auto"
-          style={{
-            width: "260px",
-            background: "var(--color-bg-page)",
-            borderRight: "1px solid var(--color-neutral-300)",
-            padding: "var(--space-lg) 0",
-            height: "calc(100vh - 64px)",
-            position: "sticky",
-            top: "64px",
-          }}
-        >
-          <nav
-            className="flex flex-col"
-            style={{ gap: "2px", padding: "0 var(--space-sm)" }}
-          >
+        <aside className="sticky top-16 h-[calc(100vh-64px)] w-[260px] shrink-0 overflow-y-auto border-r border-neutral-300 bg-white py-6">
+          <nav className="flex flex-col gap-0.5 px-2">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
-                className="no-underline"
-                style={({ isActive }) => ({
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "var(--space-sm)",
-                  padding: "var(--space-sm) var(--space-md)",
-                  borderRadius: "var(--radius-md)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 500,
-                  color: isActive
-                    ? "var(--color-primary)"
-                    : "var(--color-neutral-600)",
-                  background: isActive
-                    ? "var(--color-primary-lighter)"
-                    : "transparent",
-                  textDecoration: "none",
-                  transition:
-                    "background var(--transition-default), color var(--transition-default)",
-                  cursor: "pointer",
-                })}
+                className={({ isActive }) =>
+                  `flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-medium no-underline transition-colors duration-150 ${
+                    isActive
+                      ? "bg-primary-lighter text-primary"
+                      : "text-neutral-600 hover:bg-surface-secondary hover:text-text"
+                  }`
+                }
               >
                 {item.icon}
                 {item.label}
@@ -239,49 +158,19 @@ export function PlatformLayout({ children, userEmail }: PlatformLayoutProps) {
         </aside>
 
         {/* Main Content */}
-        <main
-          className="min-w-0 flex-1"
-          style={{
-            padding: "var(--space-xl) var(--space-2xl)",
-            maxWidth: "1280px",
-          }}
-        >
+        <main className="min-w-0 max-w-[1280px] flex-1 px-10 py-8">
           {children}
         </main>
       </div>
 
       {/* Footer */}
-      <footer
-        style={{
-          borderTop: "1px solid var(--color-neutral-300)",
-          background: "var(--color-bg-page)",
-          marginTop: "auto",
-        }}
-      >
-        <div
-          className="flex items-center justify-between"
-          style={{
-            padding: "var(--space-lg) var(--space-2xl)",
-            marginLeft: "260px",
-          }}
-        >
-          <span
-            className="no-underline"
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: 600,
-              color: "var(--color-neutral-500)",
-            }}
-          >
-            <span style={{ color: "var(--color-primary)" }}>dot.</span>
+      <footer className="mt-auto border-t border-neutral-300 bg-white">
+        <div className="ml-[260px] flex items-center justify-between px-10 py-6">
+          <span className="text-sm font-semibold text-neutral-500 no-underline">
+            <span className="text-primary">dot.</span>
             reservation
           </span>
-          <p
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--color-neutral-500)",
-            }}
-          >
+          <p className="text-xs text-neutral-500">
             &copy; 2026 dot.reservation All rights reserved.
           </p>
         </div>

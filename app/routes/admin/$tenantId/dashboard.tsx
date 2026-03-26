@@ -150,14 +150,14 @@ export default function TenantDashboardPage({
 
   return (
     <div>
-      <h1 className="mb-[var(--space-xl)] font-[var(--font-heading)] text-[length:var(--text-2xl)] font-[var(--weight-semibold)] leading-[var(--leading-tight)] tracking-[var(--tracking-tight)] text-neutral-900">
+      <h1 className="mb-8 font-heading text-2xl font-semibold leading-tight tracking-tight text-neutral-900">
         ダッシュボード
       </h1>
 
       {pendingInvitationCount > 0 && (
-        <div className="mb-[var(--space-lg)] rounded-[var(--radius-lg)] border border-[var(--color-info-border)] bg-[var(--color-info-bg)] px-[var(--space-xl)] py-[var(--space-md)]">
+        <div className="mb-6 rounded-lg border border-[var(--color-info-border)] bg-[var(--color-info-bg)] px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-[var(--space-sm)]">
+            <div className="flex items-center gap-2">
               <svg
                 className="h-5 w-5 text-info"
                 fill="none"
@@ -172,13 +172,13 @@ export default function TenantDashboardPage({
                   d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                 />
               </svg>
-              <p className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-info">
+              <p className="text-sm font-medium text-info">
                 {pendingInvitationCount}件の未対応の招待があります
               </p>
             </div>
             <Link
               to="/admin/invitations"
-              className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-info underline"
+              className="text-sm font-medium text-info underline"
             >
               確認する
             </Link>
@@ -187,9 +187,9 @@ export default function TenantDashboardPage({
       )}
 
       {pendingCount > 0 && (
-        <div className="mb-[var(--space-lg)] rounded-[var(--radius-lg)] border border-[var(--color-warning-border)] bg-[var(--color-warning-bg)] px-[var(--space-xl)] py-[var(--space-md)]">
+        <div className="mb-6 rounded-lg border border-[var(--color-warning-border)] bg-[var(--color-warning-bg)] px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-[var(--space-sm)]">
+            <div className="flex items-center gap-2">
               <svg
                 className="h-5 w-5 text-warning"
                 fill="none"
@@ -204,13 +204,13 @@ export default function TenantDashboardPage({
                   d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
                 />
               </svg>
-              <p className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-warning">
+              <p className="text-sm font-medium text-warning">
                 承認待ちの予約が {pendingCount} 件あります
               </p>
             </div>
             <Link
               to={`/admin/${tenantId}/reservations?status=pending`}
-              className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-warning underline"
+              className="text-sm font-medium text-warning underline"
             >
               確認する
             </Link>
@@ -223,42 +223,40 @@ export default function TenantDashboardPage({
       )}
 
       <section>
-        <div className="mb-[var(--space-md)] flex items-center justify-between">
-          <h2 className="font-[var(--font-heading)] text-[length:var(--text-xl)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-heading text-xl font-semibold tracking-tight text-neutral-800">
             本日の予約
           </h2>
           <Link
             to={`/admin/${tenantId}/reservations`}
-            className="text-[length:var(--text-sm)] font-[var(--weight-medium)] text-primary transition-colors hover:text-primary-dark"
+            className="text-sm font-medium text-primary transition-colors hover:text-primary-dark"
           >
             すべての予約を見る
           </Link>
         </div>
 
         {todayReservations.length === 0 ? (
-          <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white p-[var(--space-3xl)] text-center">
-            <p className="text-[length:var(--text-base)] text-neutral-500">
-              本日の予約はありません
-            </p>
+          <div className="rounded-lg border border-neutral-300 bg-white p-14 text-center">
+            <p className="text-base text-neutral-500">本日の予約はありません</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
+          <div className="overflow-hidden rounded-lg border border-neutral-300 bg-white">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  <th className="border-b border-neutral-200 px-6 py-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                     時間
                   </th>
-                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  <th className="border-b border-neutral-200 px-6 py-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                     顧客名
                   </th>
-                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  <th className="border-b border-neutral-200 px-6 py-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                     メニュー
                   </th>
-                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  <th className="border-b border-neutral-200 px-6 py-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                     担当
                   </th>
-                  <th className="border-b border-neutral-200 px-[var(--space-lg)] py-[var(--space-md)] text-left text-[length:var(--text-xs)] font-[var(--weight-medium)] tracking-[var(--tracking-wide)] text-neutral-500">
+                  <th className="border-b border-neutral-200 px-6 py-4 text-left text-xs font-medium tracking-wide text-neutral-500">
                     ステータス
                   </th>
                 </tr>
@@ -273,19 +271,19 @@ export default function TenantDashboardPage({
                         : ""
                     }`}
                   >
-                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {reservation.startTime}
                     </td>
-                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {reservation.customerName ?? "-"}
                     </td>
-                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {reservation.menuName}
                     </td>
-                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)] text-[length:var(--text-sm)] text-neutral-800">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-800">
                       {reservation.staffName ?? "-"}
                     </td>
-                    <td className="whitespace-nowrap px-[var(--space-lg)] py-[var(--space-md)]">
+                    <td className="whitespace-nowrap px-6 py-4">
                       <StatusBadge
                         status={reservation.status}
                         variant="reservation"
@@ -365,13 +363,13 @@ function SetupGuide({
   ).length;
 
   return (
-    <section className="mb-[var(--space-xl)]">
-      <div className="rounded-[var(--radius-lg)] border border-neutral-300 bg-white">
-        <div className="border-b border-neutral-200 px-[var(--space-xl)] py-[var(--space-lg)]">
-          <h2 className="font-[var(--font-heading)] text-[length:var(--text-lg)] font-[var(--weight-semibold)] tracking-[var(--tracking-tight)] text-neutral-800">
+    <section className="mb-8">
+      <div className="rounded-lg border border-neutral-300 bg-white">
+        <div className="border-b border-neutral-200 px-8 py-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight text-neutral-800">
             セットアップガイド
           </h2>
-          <p className="mt-[var(--space-xs)] text-[length:var(--text-sm)] text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-500">
             予約の受付を開始するために、以下の設定を完了してください（
             {completedCount}/{setupItems.length}）
           </p>
@@ -384,7 +382,7 @@ function SetupGuide({
               <li key={item.key}>
                 <Link
                   to={`/admin/${tenantId}/${item.path}`}
-                  className="flex items-start gap-[var(--space-md)] px-[var(--space-xl)] py-[var(--space-lg)] transition-colors hover:bg-neutral-50"
+                  className="flex items-start gap-4 px-8 py-6 transition-colors hover:bg-neutral-50"
                 >
                   <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center">
                     {completed ? (
@@ -403,7 +401,7 @@ function SetupGuide({
                         />
                       </svg>
                     ) : (
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-neutral-300 text-[length:var(--text-xs)] font-[var(--weight-medium)] text-neutral-400">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-neutral-300 text-xs font-medium text-neutral-400">
                         {index + 1}
                       </span>
                     )}
@@ -411,19 +409,19 @@ function SetupGuide({
 
                   <div className="min-w-0 flex-1">
                     <p
-                      className={`text-[length:var(--text-sm)] font-[var(--weight-medium)] ${
+                      className={`text-sm font-medium ${
                         completed ? "text-neutral-500" : "text-neutral-800"
                       }`}
                     >
                       {item.label}
                     </p>
-                    <p className="mt-0.5 text-[length:var(--text-xs)] text-neutral-500">
+                    <p className="mt-0.5 text-xs text-neutral-500">
                       {item.description}
                     </p>
                   </div>
 
                   {!completed && (
-                    <span className="mt-0.5 shrink-0 text-[length:var(--text-xs)] font-[var(--weight-medium)] text-primary">
+                    <span className="mt-0.5 shrink-0 text-xs font-medium text-primary">
                       設定する
                     </span>
                   )}

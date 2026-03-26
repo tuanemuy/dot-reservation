@@ -101,42 +101,19 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header
-        className="sticky top-0 z-50 bg-white"
-        style={{ borderBottom: "1px solid var(--color-neutral-300)" }}
-      >
-        <div
-          className="mx-auto flex items-center justify-between"
-          style={{
-            maxWidth: "1280px",
-            padding: "0 var(--space-2xl)",
-            height: "64px",
-          }}
-        >
+      <header className="sticky top-0 z-50 border-b border-neutral-300 bg-white">
+        <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-10">
           <Link
             to="/"
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "var(--text-lg)",
-              fontWeight: "var(--weight-semibold)",
-              color: "var(--color-neutral-900)",
-              textDecoration: "none",
-              letterSpacing: "var(--tracking-tight)",
-            }}
+            className="font-heading text-lg font-semibold tracking-tight text-neutral-900 no-underline"
           >
-            <span style={{ color: "var(--color-primary)" }}>dot.</span>
+            <span className="text-primary">dot.</span>
             reservation
           </Link>
-          <div className="flex items-center" style={{ gap: "var(--space-sm)" }}>
+          <div className="flex items-center gap-2">
             <Link
               to="/"
-              className="hover-icon-button flex items-center justify-center"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "var(--radius-md)",
-                color: "var(--color-neutral-500)",
-              }}
+              className="flex h-10 w-10 items-center justify-center rounded-md text-neutral-500 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-800"
               aria-label="検索"
             >
               <svg
@@ -144,7 +121,7 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
                 stroke="currentColor"
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
-                style={{ width: "20px", height: "20px" }}
+                className="h-5 w-5"
                 aria-hidden="true"
               >
                 <path
@@ -157,16 +134,7 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
             <button
               type="button"
               onClick={handleLogout}
-              className="hover-icon-button flex items-center justify-center"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "var(--radius-md)",
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                color: "var(--color-neutral-500)",
-              }}
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-neutral-500 transition-colors duration-150 hover:bg-neutral-200 hover:text-neutral-800"
               aria-label="ログアウト"
             >
               <svg
@@ -174,7 +142,7 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
                 stroke="currentColor"
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
-                style={{ width: "20px", height: "20px" }}
+                className="h-5 w-5"
                 aria-hidden="true"
               >
                 <path
@@ -189,33 +157,19 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
       </header>
 
       {/* Main container */}
-      <div
-        className="mx-auto w-full"
-        style={{
-          maxWidth: "1280px",
-          padding: "0 var(--space-2xl)",
-        }}
-      >
+      <div className="mx-auto w-full max-w-[1280px] px-10">
         {/* Mypage Layout: sidebar + content */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "240px 1fr",
-            gap: "var(--space-2xl)",
-            paddingBottom: "var(--space-section)",
-            paddingTop: "var(--space-md)",
-          }}
-        >
+        <div className="grid grid-cols-[240px_1fr] gap-10 pb-20 pt-4">
           {/* Sidebar */}
-          <aside style={{ paddingTop: "var(--space-sm)" }}>
-            <nav className="flex flex-col" style={{ gap: "var(--space-xs)" }}>
+          <aside className="pt-2">
+            <nav className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   end={item.to === "/mypage/notifications"}
                   className={({ isActive }) =>
-                    `mypage-sidebar-nav-item ${isActive ? "active" : ""}`
+                    `flex items-center gap-2 px-4 py-2 text-base font-normal text-neutral-600 no-underline rounded-md transition-colors duration-150 [&>svg]:size-[18px] [&>svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${isActive ? "bg-primary-lighter text-primary font-medium" : "hover:bg-neutral-200 hover:text-neutral-800"}`
                   }
                 >
                   {item.icon}
@@ -226,43 +180,21 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
           </aside>
 
           {/* Content */}
-          <main style={{ minWidth: 0 }}>{children}</main>
+          <main className="min-w-0">{children}</main>
         </div>
       </div>
 
       {/* Footer */}
-      <footer
-        style={{
-          borderTop: "1px solid var(--color-neutral-300)",
-          marginTop: "auto",
-        }}
-      >
-        <div
-          className="mx-auto flex items-center justify-between"
-          style={{
-            maxWidth: "1280px",
-            padding: "var(--space-xl) var(--space-2xl)",
-          }}
-        >
+      <footer className="mt-auto border-t border-neutral-300">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-10 py-8">
           <Link
             to="/"
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "var(--text-base)",
-              fontWeight: "var(--weight-semibold)",
-              color: "var(--color-neutral-500)",
-              textDecoration: "none",
-            }}
+            className="font-heading text-base font-semibold text-neutral-500 no-underline"
           >
-            <span style={{ color: "var(--color-primary)" }}>dot.</span>
+            <span className="text-primary">dot.</span>
             reservation
           </Link>
-          <p
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--color-neutral-500)",
-            }}
-          >
+          <p className="text-xs text-neutral-500">
             &copy; 2026 dot.reservation All rights reserved.
           </p>
         </div>

@@ -62,18 +62,8 @@ export default function PlatformLoginPage() {
     <AuthLayout badge="プラットフォーム管理" title="プラットフォーム管理">
       {errors.form && (
         <div
-          className="flex items-center"
+          className="flex items-center gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -81,8 +71,7 @@ export default function PlatformLoginPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px" }}
+            className="shrink-0 size-[18px]"
           >
             <path
               strokeLinecap="round"
@@ -129,27 +118,15 @@ export default function PlatformLoginPage() {
           />
         </FormField>
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full"
-          style={{ marginTop: "var(--space-xl)" }}
-        >
+        <Button type="submit" disabled={isPending} className="mt-8 w-full">
           {isPending ? "ログイン中..." : "ログイン"}
         </Button>
       </form>
 
-      <div
-        className="flex flex-col items-center"
-        style={{ gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}
-      >
+      <div className="flex flex-col items-center gap-2 mt-6">
         <Link
           to="/platform/forgot-password"
-          className="no-underline"
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--color-neutral-500)",
-          }}
+          className="text-sm text-neutral-500 no-underline"
         >
           パスワードをお忘れの方
         </Link>

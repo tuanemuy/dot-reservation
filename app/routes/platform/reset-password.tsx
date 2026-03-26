@@ -37,19 +37,8 @@ export default function PlatformResetPasswordPage() {
     return (
       <AuthLayout badge="プラットフォーム管理" title="新しいパスワードの設定">
         <div
-          className="flex items-start"
+          className="flex items-start gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error leading-normal"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -57,8 +46,7 @@ export default function PlatformResetPasswordPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="shrink-0 size-[18px] mt-[2px]"
           >
             <path
               strokeLinecap="round"
@@ -72,8 +60,7 @@ export default function PlatformResetPasswordPage() {
         </div>
         <Link
           to="/platform/forgot-password"
-          className="block text-center font-medium no-underline"
-          style={{ fontSize: "var(--text-sm)", color: "var(--color-primary)" }}
+          className="block text-center font-medium text-sm text-primary no-underline"
         >
           パスワードリセットを再送信
         </Link>
@@ -128,16 +115,7 @@ export default function PlatformResetPasswordPage() {
       >
         <Link
           to="/platform/login"
-          className="inline-flex w-full items-center justify-center font-medium no-underline"
-          style={{
-            height: "44px",
-            padding: "0 var(--space-xl)",
-            background: "var(--color-primary)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--text-base)",
-            letterSpacing: "var(--tracking-wide)",
-          }}
+          className="inline-flex w-full items-center justify-center font-medium h-[44px] px-8 bg-primary text-white rounded-md text-base tracking-wide no-underline"
         >
           ログインページへ
         </Link>
@@ -153,19 +131,8 @@ export default function PlatformResetPasswordPage() {
     >
       {errors.form && (
         <div
-          className="flex items-start"
+          className="flex items-start gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md mb-6 text-sm text-error leading-normal"
           role="alert"
-          style={{
-            gap: "var(--space-sm)",
-            padding: "var(--space-md)",
-            background: "var(--color-error-bg)",
-            border: "1px solid var(--color-error-border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: "var(--space-lg)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-            lineHeight: "var(--leading-normal)",
-          }}
         >
           <svg
             aria-hidden="true"
@@ -173,8 +140,7 @@ export default function PlatformResetPasswordPage() {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "18px", height: "18px", marginTop: "2px" }}
+            className="shrink-0 size-[18px] mt-[2px]"
           >
             <path
               strokeLinecap="round"
@@ -202,13 +168,7 @@ export default function PlatformResetPasswordPage() {
             autoComplete="new-password"
             error={errors.password}
           />
-          <p
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--color-neutral-500)",
-              marginTop: "var(--space-xs)",
-            }}
-          >
+          <p className="text-xs text-neutral-500 mt-1">
             8文字以上の英数字を含むパスワードを設定してください
           </p>
         </FormField>
