@@ -9,17 +9,8 @@ export function AlertError({ error }: AlertErrorProps) {
 
   return (
     <div
-      className="flex items-center"
+      className="flex items-center gap-2 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] rounded-md text-sm text-error"
       role="alert"
-      style={{
-        gap: "var(--space-sm)",
-        padding: "var(--space-md)",
-        background: "var(--color-error-bg)",
-        border: "1px solid var(--color-error-border)",
-        borderRadius: "var(--radius-md)",
-        fontSize: "var(--text-sm)",
-        color: "var(--color-error)",
-      }}
     >
       <svg
         aria-hidden="true"
@@ -27,8 +18,7 @@ export function AlertError({ error }: AlertErrorProps) {
         stroke="currentColor"
         strokeWidth="2"
         viewBox="0 0 24 24"
-        className="shrink-0"
-        style={{ width: "18px", height: "18px" }}
+        className="shrink-0 w-[18px] h-[18px]"
       >
         <path
           strokeLinecap="round"

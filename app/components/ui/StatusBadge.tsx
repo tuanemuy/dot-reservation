@@ -1,34 +1,28 @@
-type StatusStyle = {
-  background: string;
-  color: string;
-  dotColor: string;
+type StatusClasses = {
+  badge: string;
+  dot: string;
 };
 
-const reservationStyles: Record<string, StatusStyle> = {
+const reservationStyles: Record<string, StatusClasses> = {
   confirmed: {
-    background: "oklch(0.55 0.12 145 / 0.1)",
-    color: "var(--color-success)",
-    dotColor: "var(--color-success)",
+    badge: "bg-success/10 text-success",
+    dot: "bg-success",
   },
   pending: {
-    background: "oklch(0.72 0.14 70 / 0.1)",
-    color: "var(--color-warning)",
-    dotColor: "var(--color-warning)",
+    badge: "bg-warning/10 text-warning",
+    dot: "bg-warning",
   },
   completed: {
-    background: "var(--color-neutral-200)",
-    color: "var(--color-neutral-600)",
-    dotColor: "var(--color-neutral-500)",
+    badge: "bg-neutral-200 text-neutral-600",
+    dot: "bg-neutral-500",
   },
   cancelled: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
   rejected: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
 };
 
@@ -40,16 +34,14 @@ const reservationLabels: Record<string, string> = {
   rejected: "却下",
 };
 
-const tenantStyles: Record<string, StatusStyle> = {
+const tenantStyles: Record<string, StatusClasses> = {
   active: {
-    background: "oklch(0.55 0.12 145 / 0.1)",
-    color: "var(--color-success)",
-    dotColor: "var(--color-success)",
+    badge: "bg-success/10 text-success",
+    dot: "bg-success",
   },
   suspended: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
 };
 
@@ -58,21 +50,18 @@ const tenantLabels: Record<string, string> = {
   suspended: "停止中",
 };
 
-const customerStyles: Record<string, StatusStyle> = {
+const customerStyles: Record<string, StatusClasses> = {
   active: {
-    background: "oklch(0.55 0.12 145 / 0.1)",
-    color: "var(--color-success)",
-    dotColor: "var(--color-success)",
+    badge: "bg-success/10 text-success",
+    dot: "bg-success",
   },
   suspended: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
   banned: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
 };
 
@@ -82,31 +71,26 @@ const customerLabels: Record<string, string> = {
   banned: "利用停止",
 };
 
-const invitationStyles: Record<string, StatusStyle> = {
+const invitationStyles: Record<string, StatusClasses> = {
   pending: {
-    background: "oklch(0.72 0.14 70 / 0.1)",
-    color: "var(--color-warning)",
-    dotColor: "var(--color-warning)",
+    badge: "bg-warning/10 text-warning",
+    dot: "bg-warning",
   },
   accepted: {
-    background: "oklch(0.55 0.12 145 / 0.1)",
-    color: "var(--color-success)",
-    dotColor: "var(--color-success)",
+    badge: "bg-success/10 text-success",
+    dot: "bg-success",
   },
   declined: {
-    background: "oklch(0.55 0.16 25 / 0.08)",
-    color: "var(--color-error)",
-    dotColor: "var(--color-error)",
+    badge: "bg-error/8 text-error",
+    dot: "bg-error",
   },
   expired: {
-    background: "var(--color-neutral-200)",
-    color: "var(--color-neutral-600)",
-    dotColor: "var(--color-neutral-500)",
+    badge: "bg-neutral-200 text-neutral-600",
+    dot: "bg-neutral-500",
   },
   cancelled: {
-    background: "var(--color-neutral-200)",
-    color: "var(--color-neutral-600)",
-    dotColor: "var(--color-neutral-500)",
+    badge: "bg-neutral-200 text-neutral-600",
+    dot: "bg-neutral-500",
   },
 };
 
@@ -127,7 +111,7 @@ type StatusBadgeVariant =
 
 const stylesByVariant: Record<
   StatusBadgeVariant,
-  Record<string, StatusStyle>
+  Record<string, StatusClasses>
 > = {
   reservation: reservationStyles,
   tenant: tenantStyles,
@@ -144,10 +128,9 @@ const labelsByVariant: Record<StatusBadgeVariant, Record<string, string>> = {
   default: { ...reservationLabels, ...tenantLabels },
 };
 
-const defaultStyle: StatusStyle = {
-  background: "var(--color-neutral-200)",
-  color: "var(--color-neutral-600)",
-  dotColor: "var(--color-neutral-500)",
+const defaultClasses: StatusClasses = {
+  badge: "bg-neutral-200 text-neutral-600",
+  dot: "bg-neutral-500",
 };
 
 type StatusBadgeProps = {
@@ -158,31 +141,14 @@ type StatusBadgeProps = {
 export function StatusBadge({ status, variant = "default" }: StatusBadgeProps) {
   const styles = stylesByVariant[variant];
   const labels = labelsByVariant[variant];
-  const s = styles[status] ?? defaultStyle;
+  const s = styles[status] ?? defaultClasses;
   const label = labels[status] ?? status;
 
   return (
     <span
-      className="inline-flex items-center whitespace-nowrap"
-      style={{
-        gap: "4px",
-        padding: "4px 12px",
-        borderRadius: "var(--radius-full)",
-        fontSize: "var(--text-xs)",
-        fontWeight: 500,
-        background: s.background,
-        color: s.color,
-      }}
+      className={`inline-flex items-center whitespace-nowrap gap-1 px-3 py-1 rounded-full text-xs font-medium ${s.badge}`}
     >
-      <span
-        aria-hidden="true"
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          background: s.dotColor,
-        }}
-      />
+      <span aria-hidden="true" className={`size-1.5 rounded-full ${s.dot}`} />
       {label}
     </span>
   );

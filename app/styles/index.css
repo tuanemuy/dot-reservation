@@ -49,6 +49,35 @@
   --color-destructive: oklch(0.55 0.16 25);
   --color-info: oklch(0.55 0.1 240);
 
+  /* Calendar Status Text Colors */
+  --color-status-pending-text: oklch(0.45 0.1 70);
+  --color-status-confirmed-text: oklch(0.35 0.08 145);
+  --color-status-completed-text: oklch(0.45 0.006 80);
+  --color-status-cancelled-text: oklch(0.45 0.12 25);
+
+  /* Font Size */
+  --text-xs: clamp(0.6875rem, 0.65rem + 0.1vw, 0.75rem);
+  --text-sm: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);
+  --text-base: clamp(0.8125rem, 0.75rem + 0.2vw, 0.9375rem);
+  --text-lg: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
+  --text-xl: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+  --text-2xl: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+  --text-3xl: clamp(1.75rem, 1.5rem + 0.7vw, 2.125rem);
+
+  /* Font Family */
+  --font-heading: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --font-body: "Inter", "Noto Sans JP", system-ui, sans-serif;
+
+  /* Line Height */
+  --leading-tight: 1.3;
+  --leading-normal: 1.7;
+  --leading-relaxed: 1.9;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+
   /* Border Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -60,11 +89,6 @@
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.04);
   --shadow-md: 0 2px 8px oklch(0 0 0 / 0.06);
   --shadow-lg: 0 4px 16px oklch(0 0 0 / 0.08);
-
-  /* Transition */
-  --transition-fast: 0.1s ease;
-  --transition-default: 0.15s ease;
-  --transition-slow: 0.25s ease;
 }
 
 :root {
@@ -79,89 +103,29 @@
   --color-info-border: oklch(0.55 0.1 240 / 0.2);
   --color-overlay: oklch(0 0 0 / 0.4);
 
+  /* Calendar status colors (alpha values not supported in @theme) */
+  --color-status-pending-bg: oklch(0.72 0.14 70 / 0.15);
+  --color-status-pending-border: oklch(0.72 0.14 70 / 0.4);
+  --color-status-confirmed-bg: oklch(0.55 0.12 145 / 0.12);
+  --color-status-confirmed-border: oklch(0.55 0.12 145 / 0.4);
+  --color-status-completed-bg: oklch(0.65 0.006 80 / 0.2);
+  --color-status-completed-border: oklch(0.65 0.006 80 / 0.4);
+  --color-status-cancelled-bg: oklch(0.55 0.16 25 / 0.1);
+  --color-status-cancelled-border: oklch(0.55 0.16 25 / 0.3);
+  --color-today-highlight: oklch(0.96 0.02 155 / 0.3);
+
   /* Background */
   --color-bg-page: #ffffff;
   --color-bg-card: #ffffff;
   --color-bg-section: var(--color-neutral-100);
   --color-bg-elevated: #ffffff;
-
-  /* Typography */
-  --font-heading: "Inter", "Noto Sans JP", system-ui, sans-serif;
-  --font-body: "Inter", "Noto Sans JP", system-ui, sans-serif;
-  --text-xs: clamp(0.6875rem, 0.65rem + 0.1vw, 0.75rem);
-  --text-sm: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);
-  --text-base: clamp(0.8125rem, 0.75rem + 0.2vw, 0.9375rem);
-  --text-lg: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
-  --text-xl: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
-  --text-2xl: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
-  --text-3xl: clamp(1.75rem, 1.5rem + 0.7vw, 2.125rem);
-  --weight-light: 300;
-  --weight-normal: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --leading-tight: 1.3;
-  --leading-normal: 1.7;
-  --leading-relaxed: 1.9;
-  --tracking-tight: -0.02em;
-  --tracking-normal: 0;
-  --tracking-wide: 0.04em;
-
-  /* Spacing */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 2.5rem;
-  --space-3xl: 3.5rem;
-  --space-section: 5rem;
 }
 
 body {
-  font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
-  color: var(--color-text);
-  background-color: var(--color-bg-page);
+  @apply bg-white font-body text-text;
 }
 
-/* ===== Mypage Sidebar Navigation ===== */
-.mypage-sidebar-nav-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--text-base);
-  font-weight: var(--weight-normal);
-  color: var(--color-neutral-600);
-  text-decoration: none;
-  border-radius: var(--radius-md);
-  transition:
-    background var(--transition-default),
-    color var(--transition-default);
-}
-
-.mypage-sidebar-nav-item svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.mypage-sidebar-nav-item:hover {
-  background: var(--color-neutral-200);
-  color: var(--color-neutral-800);
-}
-
-.mypage-sidebar-nav-item:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.mypage-sidebar-nav-item.active {
-  background: var(--color-primary-lighter);
-  color: var(--color-primary);
-  font-weight: var(--weight-medium);
-}
-
-/* ===== Mypage Toggle Switch ===== */
+/* ===== Toggle Switch (pseudo-elements require CSS) ===== */
 .mypage-toggle {
   position: relative;
   display: inline-block;
@@ -176,32 +140,16 @@ body {
 }
 
 .mypage-toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-neutral-300);
-  border-radius: var(--radius-full);
-  transition: background var(--transition-default);
+  @apply absolute inset-0 cursor-pointer rounded-full bg-neutral-300 transition-colors duration-150;
 }
 
 .mypage-toggle-slider::before {
+  @apply absolute bottom-[3px] left-[3px] h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-150;
   content: "";
-  position: absolute;
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background: #ffffff;
-  border-radius: var(--radius-full);
-  transition: transform var(--transition-default);
-  box-shadow: var(--shadow-sm);
 }
 
 .mypage-toggle input:checked + .mypage-toggle-slider {
-  background: var(--color-primary);
+  @apply bg-primary;
 }
 
 .mypage-toggle input:checked + .mypage-toggle-slider::before {
@@ -209,87 +157,5 @@ body {
 }
 
 .mypage-toggle input:focus-visible + .mypage-toggle-slider {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.platform-stat-card:hover {
-  border-color: var(--color-neutral-400) !important;
-  box-shadow: var(--shadow-sm);
-}
-
-/* ===== Hover: transparent -> neutral-200 background ===== */
-.hover-bg-neutral-200 {
-  transition: background var(--transition-default);
-}
-.hover-bg-neutral-200:hover {
-  background: var(--color-neutral-200);
-}
-
-/* ===== Hover: icon button (neutral-500 -> neutral-800 + neutral-200 bg) ===== */
-.hover-icon-button {
-  transition:
-    background var(--transition-default),
-    color var(--transition-default);
-}
-.hover-icon-button:hover {
-  background: var(--color-neutral-200);
-  color: var(--color-neutral-800);
-}
-
-/* ===== Hover: card border highlight ===== */
-.hover-card-highlight {
-  transition:
-    border-color var(--transition-default),
-    box-shadow var(--transition-default);
-}
-.hover-card-highlight:hover {
-  border-color: var(--color-primary-light);
-  box-shadow: var(--shadow-sm);
-}
-
-/* ===== Hover: table row background ===== */
-.hover-table-row {
-  transition: background var(--transition-default);
-}
-.hover-table-row:hover {
-  background: var(--color-neutral-50);
-}
-
-/* ===== Hover: action button (warning) ===== */
-.hover-action-warning {
-  transition:
-    background var(--transition-default),
-    color var(--transition-default),
-    transform var(--transition-fast);
-}
-.hover-action-warning:hover {
-  background: oklch(0.72 0.14 70 / 0.08);
-}
-
-/* ===== Hover: action button (error) ===== */
-.hover-action-error {
-  transition:
-    background var(--transition-default),
-    color var(--transition-default),
-    transform var(--transition-fast);
-}
-.hover-action-error:hover {
-  background: oklch(0.55 0.16 25 / 0.06);
-}
-
-/* ===== Hover: notification item (read) ===== */
-.hover-notification-read {
-  transition: background var(--transition-default);
-}
-.hover-notification-read:hover {
-  background: var(--color-neutral-50);
-}
-
-/* ===== Hover: notification item (unread) ===== */
-.hover-notification-unread {
-  transition: background var(--transition-default);
-}
-.hover-notification-unread:hover {
-  background: oklch(0.96 0.02 155 / 0.7);
+  @apply outline-2 outline-offset-2 outline-primary;
 }

@@ -7,22 +7,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 export function Input({ className = "", error, ...props }: InputProps) {
   return (
     <input
-      className={`w-full transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed ${className}`}
-      style={{
-        height: "44px",
-        padding: "0 var(--space-md)",
-        fontFamily: "var(--font-body)",
-        fontSize: "var(--text-base)",
-        fontWeight: "var(--weight-normal)" as unknown as number,
-        color: props.disabled
-          ? "var(--color-neutral-500)"
-          : "var(--color-neutral-900)",
-        background: props.disabled
-          ? "var(--color-neutral-100)"
-          : "var(--color-bg-page)",
-        border: `1px solid ${error ? "var(--color-error)" : "var(--color-neutral-300)"}`,
-        borderRadius: "var(--radius-md)",
-      }}
+      className={`w-full transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed h-11 px-4 font-body text-base font-normal rounded-md ${props.disabled ? "text-neutral-500 bg-neutral-100" : "text-neutral-900 bg-white"} ${error ? "border border-error" : "border border-neutral-300"} ${className}`}
       {...props}
     />
   );

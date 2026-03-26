@@ -18,43 +18,24 @@ export function FormField({
   const errorMessage = Array.isArray(error) ? error[0] : error;
 
   return (
-    <div style={{ marginBottom: "var(--space-lg)" }}>
+    <div className="mb-6">
       <label
         htmlFor={htmlFor}
-        className="block font-medium"
-        style={{
-          fontSize: "var(--text-sm)",
-          color: "var(--color-neutral-700)",
-          marginBottom: "var(--space-sm)",
-          letterSpacing: "var(--tracking-wide)",
-        }}
+        className="block font-medium text-sm text-neutral-700 mb-2 tracking-wide"
       >
         {label}
-        {required && (
-          <span style={{ color: "var(--color-error)", marginLeft: "2px" }}>
-            *
-          </span>
-        )}
+        {required && <span className="text-error ml-0.5">*</span>}
       </label>
       {children}
       {errorMessage && (
-        <div
-          className="flex items-center"
-          style={{
-            gap: "var(--space-xs)",
-            marginTop: "var(--space-sm)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-error)",
-          }}
-        >
+        <div className="flex items-center gap-1 mt-2 text-sm text-error">
           <svg
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            className="shrink-0"
-            style={{ width: "14px", height: "14px" }}
+            className="shrink-0 size-3.5"
           >
             <path
               strokeLinecap="round"
