@@ -110,3 +110,21 @@
 - [x] スタイリング方針の統一 — ハードコードカラーをセマンティックトークンに置換
 - [x] AdminLayout のデザインシステム整合 — ロゴ・アバター・フッター・ナビアイコン・active state 追加
 - [x] フォームハンドリングパターンの統一 — 顧客ログイン・パスワードリセットを Conform に変換
+- [x] 大規模ルートファイルのコンポーネント化・ロジック切り出し — 10ルートをディレクトリベースに分割、loader/action分離、50+コンポーネント抽出
+  - shop.$urlPath.reserve (1677行→13ファイル): 予約ステップ共通コンポーネント (app/components/reservation/)
+  - shop.$urlPath (1530行→14ファイル): 店舗セクションコンポーネント (app/components/shop/)
+  - mypage/reservations/$id/edit (1027行→8ファイル): 編集ステップコンポーネント + ComparisonCard
+  - admin/$tenantId/settings (1002行→7ファイル): テナント管理コンポーネント (app/components/tenant/)
+  - platform/tenants/$tenantId (813行→16ファイル): プラットフォーム共通コンポーネント (app/components/platform/)
+  - platform/users/$userId (705行→6ファイル): platform共通コンポーネント再利用
+  - search (688行→6ファイル): 検索コンポーネント (app/components/search/)
+  - mypage/profile (667行→6ファイル): 顧客コンポーネント (app/components/customer/)
+  - admin/new-tenant (664行→7ファイル): テナントステップコンポーネント + UrlPathField再利用
+  - admin/$tenantId/members (633行→7ファイル): メンバー管理コンポーネント (app/components/member/)
+- [x] 共通UIコンポーネント追加 — StepIndicator統一、Breadcrumb統一、Container、PriceDisplay、日付ユーティリティ (app/presentation/date.ts)
+- [x] デザイントークン一貫性改善 — CSSカスタムプロパティへの統一、fontWeight/スペーシング/角丸全てトークン化、レスポンシブ対応追加、aria属性追加
+- [x] 重複コード解消 — roleLabels/inputClass/labelClass/cardStyle/categoryOptions/statusLabels等を共通定数に抽出
+- [x] Button コンポーネント統一 — 全ルートのボタンを ui/Button に統一、warning-outline/error-outline variant 追加、ActionButton 廃止
+- [x] compositeAction パターン統一 — reserve/action.ts, shop.$urlPath/action.ts を compositeAction に変換、getTenant 重複呼出し解消
+- [x] 薄いラッパーコンポーネント廃止 — shop/Breadcrumb, platform/Breadcrumb を削除し ui/Breadcrumb 直接使用に統一
+- [x] プロフィール更新の toast フィードバック追加 — mypage/profile, admin/profile に成功/エラー通知
