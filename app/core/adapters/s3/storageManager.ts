@@ -15,44 +15,6 @@ function getExtension(filename: string): string {
   return filename.slice(lastDot);
 }
 
-function buildObjectUrl(
-  bucketName: string,
-  region: string,
-  key: string,
-  endpoint: string | undefined,
-): string {
-  if (endpoint) {
-    return `${endpoint}/${bucketName}/${key}`;
-  }
-  return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
-}
-
-function extractKeyFromUrl(
-  url: string,
-  bucketName: string,
-  endpoint: string | undefined,
-): string {
-  if (endpoint) {
-    const prefix = `${endpoint}/${bucketName}/`;
-    if (url.startsWith(prefix)) {
-      return url.slice(prefix.length);
-    }
-  }
-
-  const s3Prefix = `https://${bucketName}.s3.`;
-  if (url.startsWith(s3Prefix)) {
-    const pathStart = url.indexOf(".amazonaws.com/");
-    if (pathStart !== -1) {
-      return url.slice(pathStart + ".amazonaws.com/".length);
-    }
-  }
-
-  throw new SystemError(
-    SystemErrorCode.StorageError,
-    `Cannot extract key from URL: ${url}`,
-  );
-}
-
 export class S3StorageManager implements StorageManager {
   constructor(
     private readonly client: S3Client,
@@ -83,12 +45,10 @@ export class S3StorageManager implements StorageManager {
       );
     }
 
-    return buildObjectUrl(this.bucketName, this.region, key, this.endpoint);
+    return key;
   }
 
-  async deleteImage(url: string): Promise<void> {
-    const key = extractKeyFromUrl(url, this.bucketName, this.endpoint);
-
+  async deleteImage(key: string): Promise<void> {
     try {
       await this.client.send(
         new DeleteObjectCommand({
@@ -103,5 +63,12 @@ export class S3StorageManager implements StorageManager {
         error,
       );
     }
+  }
+
+  resolveImageUrl(key: string): string {
+    if (this.endpoint) {
+      return `${this.endpoint}/${this.bucketName}/${key}`;
+    }
+    return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${key}`;
   }
 }
