@@ -159,6 +159,7 @@ describe("getTenant", () => {
       input: { tenantId: created.id },
     });
 
+    expect(tenant.imageKeys).toEqual([]);
     expect(tenant.imageUrls).toEqual([]);
   });
 

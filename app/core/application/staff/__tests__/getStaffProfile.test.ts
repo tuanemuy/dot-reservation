@@ -136,7 +136,7 @@ describe("getStaffProfile", () => {
       memberId,
       {
         displayName: "Alice",
-        imageUrl: "https://example.com/alice.jpg",
+        imageUrl: "images/alice.jpg",
         bio: "Experienced stylist",
       },
     );
@@ -151,7 +151,7 @@ describe("getStaffProfile", () => {
 
     expect(result.id).toBe(staffProfileId);
     expect(result.displayName).toBe("Alice");
-    expect(result.imageUrl).toBe("https://example.com/alice.jpg");
+    expect(result.imageUrl).toBe("https://example.com/images/alice.jpg");
     expect(result.bio).toBe("Experienced stylist");
     expect(result.assignedMenus).toHaveLength(1);
     expect(result.assignedMenus[0].id).toBe(menuId);

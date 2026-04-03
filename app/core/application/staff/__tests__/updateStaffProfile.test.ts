@@ -105,7 +105,7 @@ describe("updateStaffProfile", () => {
       input: {
         staffProfileId,
         displayName: "Updated Name",
-        imageUrl: "https://example.com/new.jpg",
+        imageUrl: "images/new.jpg",
         bio: "Updated bio",
       },
     });
@@ -120,7 +120,7 @@ describe("updateStaffProfile", () => {
       input: { staffProfileId },
     });
     expect(profile.displayName).toBe("Updated Name");
-    expect(profile.imageUrl).toBe("https://example.com/new.jpg");
+    expect(profile.imageUrl).toBe("https://example.com/images/new.jpg");
     expect(profile.bio).toBe("Updated bio");
   });
 
@@ -133,7 +133,7 @@ describe("updateStaffProfile", () => {
       tenantId,
       memberId,
       {
-        imageUrl: "https://example.com/old.jpg",
+        imageUrl: "images/old.jpg",
         bio: "Old bio",
       },
     );
@@ -177,7 +177,7 @@ describe("updateStaffProfile", () => {
       input: {
         staffProfileId,
         displayName: "Test Staff",
-        imageUrl: "https://example.com/new.jpg",
+        imageUrl: "images/new.jpg",
         bio: null,
       },
     });
@@ -187,7 +187,7 @@ describe("updateStaffProfile", () => {
       headers,
       input: { staffProfileId },
     });
-    expect(profile.imageUrl).toBe("https://example.com/new.jpg");
+    expect(profile.imageUrl).toBe("https://example.com/images/new.jpg");
   });
 
   it("should update bio to a new value", async () => {

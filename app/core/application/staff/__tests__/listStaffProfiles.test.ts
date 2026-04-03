@@ -196,7 +196,7 @@ describe("listStaffProfiles", () => {
       memberId,
       {
         displayName: "Alice",
-        imageUrl: "https://example.com/alice.jpg",
+        imageUrl: "images/alice.jpg",
       },
     );
 
@@ -209,6 +209,8 @@ describe("listStaffProfiles", () => {
     expect(result.items).toHaveLength(1);
     expect(result.items[0].id).toBe(staffProfileId);
     expect(result.items[0].displayName).toBe("Alice");
-    expect(result.items[0].imageUrl).toBe("https://example.com/alice.jpg");
+    expect(result.items[0].imageUrl).toBe(
+      "https://example.com/images/alice.jpg",
+    );
   });
 });

@@ -172,9 +172,10 @@ export async function createTestContainer(
       sendNotificationEmail: async () => {},
     } as NotificationEmailSender,
     storageManager: {
-      uploadImage: async () => "https://example.com/test-image.png",
+      uploadImage: async () => "images/test-image.png",
       deleteImage: async () => {},
-    } as StorageManager,
+      resolveImageUrl: (key: string) => `https://example.com/${key}`,
+    } satisfies StorageManager,
     outboxRepository: new DrizzleSqliteOutboxRepository(dbWithCleanup.db),
     // Test utilities
     db: dbWithCleanup.db,

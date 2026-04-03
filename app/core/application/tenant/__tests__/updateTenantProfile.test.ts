@@ -198,7 +198,7 @@ describe("updateTenantProfile", () => {
 
     const imageUrls = Array.from(
       { length: 10 },
-      (_, i) => `https://example.com/image${i}.jpg`,
+      (_, i) => `images/image${i}.jpg`,
     );
 
     await updateTenantProfile({
@@ -231,7 +231,7 @@ describe("updateTenantProfile", () => {
 
     const imageUrls = Array.from(
       { length: 11 },
-      (_, i) => `https://example.com/image${i}.jpg`,
+      (_, i) => `images/image${i}.jpg`,
     );
 
     await expect(
