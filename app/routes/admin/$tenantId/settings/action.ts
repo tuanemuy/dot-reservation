@@ -22,23 +22,27 @@ export const updateTenantSchema = z.object({
   street: z.string().min(1, "番地を入力してください"),
   phone: z.string().optional().default(""),
   description: z.string().optional().default(""),
-  imageUrls: z.string().optional().default(""),
+  imageKeys: z.string().optional().default(""),
 });
 
 export const deleteTenantSchema = z.object({
   confirmName: z.string().min(1, "テナント名を入力してください"),
 });
 
+function parseKeys(value: string): string[] {
+  return value
+    .split("\n")
+    .map((k: string) => k.trim())
+    .filter(Boolean);
+}
+
 export const handlers = {
   updateTenant: defineHandler({
     schema: updateTenantSchema,
     handler: async (value, args) => {
       const { container } = await import("@/core/di/server");
-      const existingImageUrls = value.imageUrls
-        ? value.imageUrls
-            .split("\n")
-            .map((u: string) => u.trim())
-            .filter(Boolean)
+      const existingImageKeys = value.imageKeys
+        ? parseKeys(value.imageKeys)
         : [];
       return handleUseCase(() =>
         updateTenantProfile({
@@ -57,7 +61,7 @@ export const handlers = {
             },
             phoneNumber: value.phone,
             description: value.description || null,
-            imageUrls: existingImageUrls,
+            imageUrls: existingImageKeys,
           },
         }),
       ).match(
@@ -91,26 +95,26 @@ export const handlers = {
         return error({ "": ["ファイルサイズは10MB以下にしてください"] });
       }
 
-      const currentUrls = formData.get("currentImageUrls");
-      const existingUrls =
-        typeof currentUrls === "string" && currentUrls
-          ? currentUrls.split("\n").filter(Boolean)
+      const currentKeys = formData.get("currentImageKeys");
+      const existingKeys =
+        typeof currentKeys === "string" && currentKeys
+          ? parseKeys(currentKeys)
           : [];
 
-      if (existingUrls.length >= 10) {
+      if (existingKeys.length >= 10) {
         return error({ "": ["画像は最大10枚までです"] });
       }
 
-      const url = await handleUseCase(() =>
+      const key = await handleUseCase(() =>
         container.storageManager.uploadImage(file),
       ).match(
-        (uploadedUrl) => uploadedUrl,
+        (uploadedKey) => uploadedKey,
         (e) => {
           throw new Error(e.message);
         },
       );
 
-      const newUrls = [...existingUrls, url];
+      const newKeys = [...existingKeys, key];
 
       const tenantId = args.params.tenantId as string;
       const tenantResult = await handleUseCase(() =>
@@ -139,11 +143,17 @@ export const handlers = {
             address: tenantResult.address,
             phoneNumber: tenantResult.phoneNumber,
             description: tenantResult.description,
-            imageUrls: newUrls,
+            imageUrls: newKeys,
           },
         }),
       ).match(
-        () => success({ imageUrls: newUrls }),
+        () =>
+          success({
+            imageKeys: newKeys,
+            imageUrls: newKeys.map((k) =>
+              container.storageManager.resolveImageUrl(k),
+            ),
+          }),
         (e) => error({ "": [e.message] }),
       );
     },
@@ -151,18 +161,18 @@ export const handlers = {
   deleteImage: defineHandler({
     handler: async (formData, args) => {
       const { container } = await import("@/core/di/server");
-      const imageUrl = formData.get("imageUrl");
-      if (typeof imageUrl !== "string" || !imageUrl) {
+      const imageKey = formData.get("imageKey");
+      if (typeof imageKey !== "string" || !imageKey) {
         return error({ "": ["削除する画像が指定されていません"] });
       }
 
-      const currentUrls = formData.get("currentImageUrls");
-      const existingUrls =
-        typeof currentUrls === "string" && currentUrls
-          ? currentUrls.split("\n").filter(Boolean)
+      const currentKeys = formData.get("currentImageKeys");
+      const existingKeys =
+        typeof currentKeys === "string" && currentKeys
+          ? parseKeys(currentKeys)
           : [];
 
-      const newUrls = existingUrls.filter((u) => u !== imageUrl);
+      const newKeys = existingKeys.filter((k) => k !== imageKey);
 
       const tenantId = args.params.tenantId as string;
       const tenantResult = await handleUseCase(() =>
@@ -179,7 +189,7 @@ export const handlers = {
       );
 
       await handleUseCase(() =>
-        container.storageManager.deleteImage(imageUrl),
+        container.storageManager.deleteImage(imageKey),
       ).match(
         () => {},
         () => {},
@@ -198,11 +208,17 @@ export const handlers = {
             address: tenantResult.address,
             phoneNumber: tenantResult.phoneNumber,
             description: tenantResult.description,
-            imageUrls: newUrls,
+            imageUrls: newKeys,
           },
         }),
       ).match(
-        () => success({ imageUrls: newUrls }),
+        () =>
+          success({
+            imageKeys: newKeys,
+            imageUrls: newKeys.map((k) =>
+              container.storageManager.resolveImageUrl(k),
+            ),
+          }),
         (e) => error({ "": [e.message] }),
       );
     },
@@ -210,10 +226,10 @@ export const handlers = {
   reorderImages: defineHandler({
     handler: async (formData, args) => {
       const { container } = await import("@/core/di/server");
-      const orderedUrls = formData.get("orderedImageUrls");
-      const newUrls =
-        typeof orderedUrls === "string" && orderedUrls
-          ? orderedUrls.split("\n").filter(Boolean)
+      const orderedKeys = formData.get("orderedImageKeys");
+      const newKeys =
+        typeof orderedKeys === "string" && orderedKeys
+          ? parseKeys(orderedKeys)
           : [];
 
       const tenantId = args.params.tenantId as string;
@@ -243,11 +259,17 @@ export const handlers = {
             address: tenantResult.address,
             phoneNumber: tenantResult.phoneNumber,
             description: tenantResult.description,
-            imageUrls: newUrls,
+            imageUrls: newKeys,
           },
         }),
       ).match(
-        () => success({ imageUrls: newUrls }),
+        () =>
+          success({
+            imageKeys: newKeys,
+            imageUrls: newKeys.map((k) =>
+              container.storageManager.resolveImageUrl(k),
+            ),
+          }),
         (e) => error({ "": [e.message] }),
       );
     },

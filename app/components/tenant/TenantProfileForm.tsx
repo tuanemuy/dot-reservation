@@ -30,6 +30,7 @@ type TenantData = {
   };
   phoneNumber: string;
   description: string | null;
+  imageKeys: string[];
   imageUrls: string[];
 };
 
@@ -59,7 +60,7 @@ export function TenantProfileForm({ tenant }: TenantProfileFormProps) {
       street: tenant.address.street,
       phone: tenant.phoneNumber,
       description: tenant.description ?? "",
-      imageUrls: tenant.imageUrls.join("\n"),
+      imageKeys: tenant.imageKeys.join("\n"),
     },
     onValidate({ formData }) {
       return parseWithZod(formData, {
@@ -222,7 +223,12 @@ export function TenantProfileForm({ tenant }: TenantProfileFormProps) {
           />
         </div>
 
-        <ImageManager imageUrls={tenant.imageUrls} />
+        <ImageManager
+          images={tenant.imageKeys.map((key, i) => ({
+            key,
+            url: tenant.imageUrls[i],
+          }))}
+        />
 
         {updateForm.errors && (
           <p className="text-xs text-error">{updateForm.errors}</p>

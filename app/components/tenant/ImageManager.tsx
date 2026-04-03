@@ -4,16 +4,21 @@ import { useCompositeAction } from "@/lib/compositeAction";
 import type { handlers } from "@/routes/admin/$tenantId/settings/action";
 import { labelClass } from "./styles";
 
-type ImageManagerProps = {
-  imageUrls: string[];
+type ImageEntry = {
+  key: string;
+  url: string;
 };
 
-export function ImageManager({ imageUrls }: ImageManagerProps) {
+type ImageManagerProps = {
+  images: ImageEntry[];
+};
+
+export function ImageManager({ images }: ImageManagerProps) {
   const fetcher = useCompositeAction<typeof handlers>();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [localImageUrls, setLocalImageUrls] = useState<string[]>(imageUrls);
+  const [localImages, setLocalImages] = useState<ImageEntry[]>(images);
 
-  const currentImageUrlsValue = localImageUrls.join("\n");
+  const currentImageKeysValue = localImages.map((img) => img.key).join("\n");
 
   const isPendingUpload = fetcher.isPending("uploadImage");
   const isPendingDelete = fetcher.isPending("deleteImage");
@@ -22,7 +27,11 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
 
   fetcher.register("uploadImage", {
     onSuccess: ({ data: result }) => {
-      setLocalImageUrls(result.imageUrls);
+      const entries = result.imageKeys.map((key: string, i: number) => ({
+        key,
+        url: result.imageUrls[i],
+      }));
+      setLocalImages(entries);
       toast.success("画像をアップロードしました");
     },
     onHandlerError: ({ error: err }) => {
@@ -32,7 +41,11 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
 
   fetcher.register("deleteImage", {
     onSuccess: ({ data: result }) => {
-      setLocalImageUrls(result.imageUrls);
+      const entries = result.imageKeys.map((key: string, i: number) => ({
+        key,
+        url: result.imageUrls[i],
+      }));
+      setLocalImages(entries);
       toast.success("画像を削除しました");
     },
     onHandlerError: ({ error: err }) => {
@@ -42,7 +55,11 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
 
   fetcher.register("reorderImages", {
     onSuccess: ({ data: result }) => {
-      setLocalImageUrls(result.imageUrls);
+      const entries = result.imageKeys.map((key: string, i: number) => ({
+        key,
+        url: result.imageUrls[i],
+      }));
+      setLocalImages(entries);
     },
     onHandlerError: ({ error: err }) => {
       toast.error(err?.[""]?.[0] ?? "並び替えに失敗しました");
@@ -60,7 +77,7 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
     const formData = new FormData();
     formData.set("intent", "uploadImage");
     formData.set("file", file);
-    formData.set("currentImageUrls", currentImageUrlsValue);
+    formData.set("currentImageKeys", currentImageKeysValue);
 
     fetcher.submit(formData, {
       method: "post",
@@ -72,36 +89,48 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
     }
   };
 
-  const handleDelete = (url: string) => {
+  const handleDelete = (key: string) => {
     const formData = new FormData();
     formData.set("intent", "deleteImage");
-    formData.set("imageUrl", url);
-    formData.set("currentImageUrls", currentImageUrlsValue);
+    formData.set("imageKey", key);
+    formData.set("currentImageKeys", currentImageKeysValue);
 
     fetcher.submit(formData, { method: "post" });
   };
 
   const handleMoveUp = (index: number) => {
     if (index === 0) return;
-    const newUrls = [...localImageUrls];
-    [newUrls[index - 1], newUrls[index]] = [newUrls[index], newUrls[index - 1]];
-    setLocalImageUrls(newUrls);
+    const newImages = [...localImages];
+    [newImages[index - 1], newImages[index]] = [
+      newImages[index],
+      newImages[index - 1],
+    ];
+    setLocalImages(newImages);
 
     const formData = new FormData();
     formData.set("intent", "reorderImages");
-    formData.set("orderedImageUrls", newUrls.join("\n"));
+    formData.set(
+      "orderedImageKeys",
+      newImages.map((img) => img.key).join("\n"),
+    );
     fetcher.submit(formData, { method: "post" });
   };
 
   const handleMoveDown = (index: number) => {
-    if (index >= localImageUrls.length - 1) return;
-    const newUrls = [...localImageUrls];
-    [newUrls[index], newUrls[index + 1]] = [newUrls[index + 1], newUrls[index]];
-    setLocalImageUrls(newUrls);
+    if (index >= localImages.length - 1) return;
+    const newImages = [...localImages];
+    [newImages[index], newImages[index + 1]] = [
+      newImages[index + 1],
+      newImages[index],
+    ];
+    setLocalImages(newImages);
 
     const formData = new FormData();
     formData.set("intent", "reorderImages");
-    formData.set("orderedImageUrls", newUrls.join("\n"));
+    formData.set(
+      "orderedImageKeys",
+      newImages.map((img) => img.key).join("\n"),
+    );
     fetcher.submit(formData, { method: "post" });
   };
 
@@ -110,19 +139,19 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
       <div className="mb-2 flex items-center justify-between">
         <span className={labelClass}>店舗画像</span>
         <span className="text-xs text-neutral-500">
-          {localImageUrls.length} / 10
+          {localImages.length} / 10
         </span>
       </div>
 
-      {localImageUrls.length > 0 && (
+      {localImages.length > 0 && (
         <div className="mb-4 space-y-2">
-          {localImageUrls.map((url, index) => (
+          {localImages.map((img, index) => (
             <div
-              key={url}
+              key={img.key}
               className="flex items-center gap-2 rounded-md border border-neutral-200 bg-neutral-50 p-2"
             >
               <img
-                src={url}
+                src={img.url}
                 alt={`店舗画像 ${index + 1}`}
                 className="h-16 w-16 shrink-0 rounded-sm border border-neutral-200 object-cover"
               />
@@ -154,7 +183,7 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
                 </button>
                 <button
                   type="button"
-                  disabled={index >= localImageUrls.length - 1 || isProcessing}
+                  disabled={index >= localImages.length - 1 || isProcessing}
                   onClick={() => handleMoveDown(index)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-neutral-300 bg-white text-neutral-600 transition-colors hover:bg-neutral-100 disabled:opacity-30"
                   title="下に移動"
@@ -177,7 +206,7 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
                 <button
                   type="button"
                   disabled={isProcessing}
-                  onClick={() => handleDelete(url)}
+                  onClick={() => handleDelete(img.key)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-error bg-white text-error transition-colors hover:bg-error hover:text-white disabled:opacity-30"
                   title="削除"
                 >
@@ -202,7 +231,7 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
         </div>
       )}
 
-      {localImageUrls.length < 10 ? (
+      {localImages.length < 10 ? (
         <div>
           <input
             ref={fileInputRef}
@@ -230,7 +259,7 @@ export function ImageManager({ imageUrls }: ImageManagerProps) {
         </p>
       )}
 
-      <input type="hidden" name="imageUrls" value={currentImageUrlsValue} />
+      <input type="hidden" name="imageKeys" value={currentImageKeysValue} />
     </div>
   );
 }
