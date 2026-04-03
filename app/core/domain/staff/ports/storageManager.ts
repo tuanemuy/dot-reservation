@@ -1,4 +1,5 @@
 export interface StorageManager {
   uploadImage(file: File): Promise<string>;
-  deleteImage(url: string): Promise<void>;
+  deleteImage(key: string): Promise<void>;
+  resolveImageUrl(key: string): string;
 }
