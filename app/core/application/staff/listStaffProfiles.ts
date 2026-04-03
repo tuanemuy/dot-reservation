@@ -28,7 +28,9 @@ export async function listStaffProfiles({
     items: staffProfiles.map((profile) => ({
       id: profile.id,
       displayName: profile.displayName,
-      imageUrl: profile.imageUrl,
+      imageUrl: profile.imageUrl
+        ? container.storageManager.resolveImageUrl(profile.imageUrl)
+        : null,
     })),
   };
 }

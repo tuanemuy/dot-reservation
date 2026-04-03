@@ -55,7 +55,9 @@ export async function searchTenants({
     name: tenant.name as string,
     category: tenant.category as string,
     urlPath: tenant.urlPath as string,
-    imageUrls: [...tenant.imageUrls],
+    imageUrls: tenant.imageUrls.map((key) =>
+      container.storageManager.resolveImageUrl(key),
+    ),
     description: tenant.description as string | null,
     address: tenant.address
       ? {

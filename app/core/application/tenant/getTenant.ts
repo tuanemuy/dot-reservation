@@ -25,6 +25,7 @@ export type GetTenantOutput = {
   address: { prefecture: string; city: string; street: string };
   phoneNumber: string;
   description: string | null;
+  imageKeys: string[];
   imageUrls: string[];
   businessHours: Record<number, { open: string; close: string } | null>;
   regularHolidays: number[];
@@ -91,7 +92,10 @@ export async function getTenant({
     },
     phoneNumber: tenant.phoneNumber,
     description: tenant.description,
-    imageUrls: [...tenant.imageUrls],
+    imageKeys: [...tenant.imageUrls],
+    imageUrls: tenant.imageUrls.map((key) =>
+      container.storageManager.resolveImageUrl(key),
+    ),
     businessHours: businessHoursOutput,
     regularHolidays: [...tenant.regularHolidays],
     temporaryHolidays: tenant.temporaryHolidays.map((h: TemporaryHoliday) => ({

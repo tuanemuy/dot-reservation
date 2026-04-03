@@ -48,7 +48,9 @@ export async function getStaffProfile({
   return {
     id: staffProfile.id,
     displayName: staffProfile.displayName,
-    imageUrl: staffProfile.imageUrl,
+    imageUrl: staffProfile.imageUrl
+      ? container.storageManager.resolveImageUrl(staffProfile.imageUrl)
+      : null,
     bio: staffProfile.bio,
     assignedMenus,
   };
